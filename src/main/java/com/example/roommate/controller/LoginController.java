@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LoginController {
@@ -17,17 +18,22 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String index() {
         return "login";
     }
 
     @PostMapping("/login")
-    public @ResponseBody String validLogin(LoginData loginData) {
+    public String validLogin(LoginData loginData) {
         System.out.println(loginData);
         if (loginService.tryLogin(loginData)) {
-            return "<h1>Succses!!</h1>";
+            return "redirect:/home";
         }
-        return "<h1>Error</h1>";
+        return "error1";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "register";
     }
 }
 
