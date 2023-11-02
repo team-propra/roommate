@@ -19,14 +19,15 @@ public class BookingControllerTest {
     MockMvc mvc;
 
     @Test
-    @DisplayName("Die roomDetails-Seite ist unter /room/4 erreichbar")
+    @DisplayName("Die roomDetails-Seite ist unter /room/{ID} erreichbar")
     void test_1() throws Exception {
-        MvcResult result = mvc.perform(get("/room/4"))
+        int roomId = 4;
+
+        MvcResult result = mvc.perform(get("/room/{ID}", roomId))
                 .andExpect(status().isOk())
-                //.andExpect(MockMvcResultMatchers.model().attributeExists("ID"))
                 .andReturn();
 
-        String html  = result.getResponse().getContentAsString();
-        assertThat(html).contains("Details zu Arbeitsplatz 4");
+        String html = result.getResponse().getContentAsString();
+        assertThat(html).contains("Details zu Arbeitsplatz " + roomId);
     }
 }
