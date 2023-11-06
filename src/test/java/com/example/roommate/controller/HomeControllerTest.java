@@ -1,4 +1,4 @@
-package com.example.roommate;
+package com.example.roommate.controller;
 
 
 import com.example.roommate.controller.HomeController;

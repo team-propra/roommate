@@ -1,4 +1,4 @@
-package com.example.roommate;
+package com.example.roommate.controller;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
