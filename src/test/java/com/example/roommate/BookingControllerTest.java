@@ -1,14 +1,15 @@
 package com.example.roommate;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,5 +30,13 @@ public class BookingControllerTest {
 
         String html = result.getResponse().getContentAsString();
         assertThat(html).contains("Details zu Arbeitsplatz " + roomId);
+    }
+    
+    @Disabled
+    @Test
+    @DisplayName("Its possible to POST /book")
+    void test_2() throws Exception {
+        mvc.perform(post("/book"))
+                .andExpect(status().isCreated());
     }
 }
