@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,5 +39,15 @@ public class BookingControllerTest {
     void test_2() throws Exception {
         mvc.perform(post("/book"))
                 .andExpect(status().isCreated());
+    }
+
+
+    @Test
+    @DisplayName("Wenn ein Get-Request auf /book ausgeführt wird, wird book.html zurückgegeben")
+    void test_3()throws Exception{
+
+            mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/book"))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(MockMvcResultMatchers.view().name("book"));
     }
 }
