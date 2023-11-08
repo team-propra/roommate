@@ -1,6 +1,6 @@
 package com.example.roommate.controller.booking;
 
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class PostBookTest {
     @Autowired
     MockMvc mvc;
 
-    @Disabled
+
     @Test
     @DisplayName("Its possible to POST /book")
     void test_2() throws Exception {
