@@ -1,5 +1,6 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.domain.values.BookDataForm;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public RedirectView addBooking() {
+    public RedirectView addBooking(BookDataForm form) {
+        System.out.println(form);
         RedirectView view = new RedirectView("/home");
         view.setStatusCode(HttpStatus.CREATED);
         return view;
