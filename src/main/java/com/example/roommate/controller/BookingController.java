@@ -9,6 +9,10 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class BookingController {
 
+
+
+    // /book?time=1930&day=m
+    // @RequestParam nutzen
     @GetMapping("/book")
     public String index() {
         return "book";
