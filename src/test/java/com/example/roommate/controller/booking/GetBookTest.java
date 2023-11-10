@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 public class GetBookTest {
@@ -19,8 +19,8 @@ public class GetBookTest {
     @DisplayName("Wenn ein Get-Request auf /book ausgeführt wird, wird book.html zurückgegeben")
     void test_3()throws Exception{
 
-        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/book"))
+        mvc.perform(get("/book"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.view().name("book"));
+                .andExpect(view().name("book"));
     }
 }
