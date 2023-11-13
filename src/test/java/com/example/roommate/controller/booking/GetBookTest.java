@@ -23,4 +23,15 @@ public class GetBookTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("book"));
     }
+
+
+    //vorerst noch keine Parametervalidierung, da evtl. neues Form-Objekt oder andere Informationen übergeben werden
+    @Test
+    @DisplayName("Ein GET-request auf /book mit Query Parametern date und time verarbeitet diese korrekt")
+    void test_04() throws Exception{
+        mvc.perform(get("/book")
+                .param("date", "08.07.2014")
+                .param("time", "14:30"))
+                .andExpect(model().attributeExists("date", "time"));
+    }
 }
