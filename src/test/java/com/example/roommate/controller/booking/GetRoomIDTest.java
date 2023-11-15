@@ -1,21 +1,18 @@
-package com.example.roommate.controller;
+package com.example.roommate.controller.booking;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class BookingControllerTest {
+public class GetRoomIDTest {
 
     @Autowired
     MockMvc mvc;
@@ -31,23 +28,5 @@ public class BookingControllerTest {
 
         String html = result.getResponse().getContentAsString();
         assertThat(html).contains("Details zu Arbeitsplatz " + roomId);
-    }
-    
-    @Disabled
-    @Test
-    @DisplayName("Its possible to POST /book")
-    void test_2() throws Exception {
-        mvc.perform(post("/book"))
-                .andExpect(status().isCreated());
-    }
-
-
-    @Test
-    @DisplayName("Wenn ein Get-Request auf /book ausgeführt wird, wird book.html zurückgegeben")
-    void test_3()throws Exception{
-
-            mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/book"))
-                    .andExpect(status().is2xxSuccessful())
-                    .andExpect(MockMvcResultMatchers.view().name("book"));
     }
 }

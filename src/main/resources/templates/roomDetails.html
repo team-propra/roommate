@@ -6,7 +6,9 @@
 </head>
 <body>
   <h1>Details zu Arbeitsplatz 4</h1>
-  <form method="post" action="/book/4">
+  <form method="post" action="/book">
+    <input type="hidden" name="roomID" value="4">
+
     <table class="table">
       <thead class="table-header">
       <tr>
@@ -17,10 +19,15 @@
       </thead>
       <tbody>
       <tr>
-        <td><input type="checkbox"></td>
+        <td><label>
+          Monday19
+          <input type="checkbox" name="Monday19">
+        </label></td>
       </tr>
       </tbody>
     </table>
+
+    <input type="submit">
   </form>
 </body>
 </html>
