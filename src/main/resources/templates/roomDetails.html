@@ -2,12 +2,12 @@
 <html lang="en" th:object="${room}">
 <head>
     <meta charset="UTF-8">
-    <title>Raum <span th:text="*{roomnumber}">-1</span> </title>
+    <title th:text="*{roomnumber}" >-1</title>
 </head>
 <body>
   <h1>Details zu Raum <span th:text="*{roomnumber}">-1</span> </h1>
   <form method="post" action="/book">
-    <input type="hidden" th:field="*{roomnumber}">
+    <input type="hidden" name="roomID" th:value="*{roomID}">
 
     <table class="table">
       <thead class="table-header">
