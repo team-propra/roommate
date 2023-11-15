@@ -49,4 +49,21 @@ public class LoginControllerTest {
                 .andExpect(view().name("error1"));
     }
 
+    @Test
+    @DisplayName("Ein GET request auf /login gibt login.html zurück")
+    public void test_03() throws Exception {
+
+
+        mockMvc.perform(get("/login"))
+                .andExpect(view().name("login"));
+    }
+
+    @Test
+    @DisplayName("Ein GET request auf /register gibt register.html zurück")
+    public void test_04() throws Exception {
+
+
+        mockMvc.perform(get("/register"))
+                .andExpect(view().name("register"));
+    }
 }
