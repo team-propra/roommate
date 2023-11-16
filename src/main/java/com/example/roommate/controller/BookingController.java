@@ -2,10 +2,14 @@ package com.example.roommate.controller;
 
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.services.BookEntryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.UUID;
@@ -13,6 +17,12 @@ import java.util.UUID;
 @Controller
 public class BookingController {
 
+    private final BookEntryService bookEntryService;
+
+    @Autowired
+    public BookingController(BookEntryService bookEntryService) {
+        this.bookEntryService = bookEntryService;
+    }
 
     @GetMapping("/book")
     public String index() {
@@ -36,11 +46,17 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public RedirectView addBooking(BookDataForm form) {
+    public String addBooking(Model model, BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            return "addroom";
+        }
         System.out.println(form);
-        RedirectView view = new RedirectView("/home");
-        view.setStatusCode(HttpStatus.CREATED);
-        return view;
+
+        //view.setStatusCode(HttpStatus.CREATED);
+        bookEntryService.addBookEntry(form);
+        //model.addAttribute("form", form);
+        redirectAttributes.addFlashAttribute("success", "Buchung erfolgreich hinzugefügt.");
+        return "redirect:/home";
     }
 
 
