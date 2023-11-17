@@ -2,13 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Homepage</title>
 </head>
 <body>
 <h1>Homepage</h1>
 <a href="/book">Arbeitsplatz buchen</a>
-<ul>
-    <li>Buchen</li>
-</ul>
+<h2>Buchungen</h2>
+<div id="links" th:if="${forms}">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Raum</th>
+            <th>Austattung</th>
+        </tr>
+        </thead>
+        <tbody th:remove="all-but-first" >
+        <tr th:each="form:${forms}" th:object="${form}">
+            <td>
+                <span th:text="*{roomID}"> 123 </span>
+            </td>
+            <td>
+                <span th:text="*{roomID}"> Küche </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
