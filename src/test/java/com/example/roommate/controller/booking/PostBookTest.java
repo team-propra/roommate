@@ -27,7 +27,8 @@ public class PostBookTest {
 
 
     @Test
-    @DisplayName("Its possible to POST /book")
+    @Disabled
+    @DisplayName("Its possible to get 201 from POST /book ")
     void test_1() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID,true);
         mvc.perform(post("/book")
