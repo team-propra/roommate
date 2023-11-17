@@ -12,14 +12,14 @@
 <body>
 <div class="container">
     <h1>Arbeitsplatzreservierung</h1>
-    <form action="/reservieren" method="POST">
+    <form action="/book" method="GET">
         <div class="form-group">
-            <label for="datum">Datum</label>
-            <input type="date" id="datum" name="datum" class="form-control" required>
+            <label for="date">Datum</label>
+            <input type="date" id="date" name="date" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="uhrzeit">Uhrzeit</label>
-            <input type="time" id="uhrzeit" name="uhrzeit" class="form-control" required>
+            <label for="time">Uhrzeit</label>
+            <input type="time" id="time" name="time" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="gegenstaende">Gegenstände im Raum</label>
@@ -30,7 +30,7 @@
                 <option value="tische">Tische</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Arbeitsplatz reservieren</button>
+        <button type="submit" class="btn btn-primary">Suchen</button>
     </form>
 </div>
 
