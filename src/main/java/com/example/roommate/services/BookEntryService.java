@@ -1,6 +1,6 @@
 package com.example.roommate.services;
 
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.domain.entities.BookDataEntry;
 import com.example.roommate.repositories.BookEntryRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ public class BookEntryService {
         this.bookEntryRepository = bookEntryRepository;
     }
 
-    public List<BookDataForm> getBookEntries() {
+    public List<BookDataEntry> getBookEntries() {
         return bookEntryRepository.getBookDataFormList();
     }
-    public void addBookEntry(BookDataForm bookDataForm) {
+    public void addBookEntry(BookDataEntry bookDataForm) {
         bookEntryRepository.addBookEntry(bookDataForm);
     }
 

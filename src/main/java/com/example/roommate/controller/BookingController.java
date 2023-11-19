@@ -1,5 +1,6 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.domain.entities.BookDataEntry;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.values.BookDataForm;
 import com.example.roommate.services.BookEntryService;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.UUID;
 
@@ -44,14 +47,15 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public String addBooking(Model model, BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addBooking(Model model, @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
-            return "/book";
+            return "book";
         }
         System.out.println(form);
 
         //view.setStatusCode(HttpStatus.CREATED);
-        bookEntryService.addBookEntry(form);
+        BookDataEntry bookDataEntry = new BookDataEntry(form.roomID(), form.Monday19());
+        bookEntryService.addBookEntry(bookDataEntry);
         redirectAttributes.addFlashAttribute("success", "Buchung erfolgreich hinzugefügt.");
         return "redirect:/home";
     }
