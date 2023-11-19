@@ -1,6 +1,5 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.entities.BookDataEntry;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.values.BookDataForm;
 import com.example.roommate.services.BookEntryService;
@@ -54,8 +53,12 @@ public class BookingController {
         System.out.println(form);
 
         //view.setStatusCode(HttpStatus.CREATED);
-        BookDataEntry bookDataEntry = new BookDataEntry(form.roomID(), form.Monday19());
-        bookEntryService.addBookEntry(bookDataEntry);
+
+        try {
+            bookEntryService.addBookEntry(form);
+        } catch (BookEntryService.DomainErrorException e) {
+            return "error";
+        }
         redirectAttributes.addFlashAttribute("success", "Buchung erfolgreich hinzugefügt.");
         return "redirect:/home";
     }

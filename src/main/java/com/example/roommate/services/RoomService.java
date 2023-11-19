@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+//mediate between Repository, domain; map forms to domain-objects/data
 public class RoomService {
 
     RoomRepository roomRepository;

@@ -18,12 +18,12 @@
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="form:${forms}" th:object="${form}">
+        <tr th:each="form:${forms}">
             <td>
-                <span th:text="*{roomID}"> 123 </span>
+                <span th:text="${form.roomID}"> 123 </span>
             </td>
             <td>
-                <span th:text="*{roomID}"> Küche </span>
+                <span th:text="${form.roomID}"> Küche </span>
             </td>
         </tr>
         </tbody>
