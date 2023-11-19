@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class BookEntryRepository {
-    private List<BookDataEntry> bookDataFormList = new ArrayList<>();
+    private final List<BookDataEntry> bookDataFormList = new ArrayList<>();
 
     public List<BookDataEntry> getBookDataFormList() {
         return bookDataFormList;
