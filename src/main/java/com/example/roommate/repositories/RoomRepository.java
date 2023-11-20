@@ -1,6 +1,7 @@
 package com.example.roommate.repositories;
 
 import com.example.roommate.domain.entities.Room;
+import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,16 +11,18 @@ import java.util.UUID;
 
 @Repository
 public class RoomRepository {
-    private List<Room> rooms = new ArrayList<>();
-    private Room notExisting = new Room(UUID.randomUUID(), "-1");
+    private final List<Room> rooms = new ArrayList<>();
+    
 
     public List<Room> findAll(){
         return rooms;
     }
 
-    public Room findRoomByID(UUID roomID) {
-        Optional<Room> roomOptional = rooms.stream().filter(r -> r.getRoomID().equals(roomID)).findFirst();
-        return roomOptional.orElse(notExisting);
+    public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
+        Optional<Room> first = rooms.stream().filter(r -> r.getRoomID().equals(roomID)).findFirst();
+        if(first.isEmpty())
+            throw new NotFoundRepositoryException();
+        return first.get();
     }
 
     public void remove(Room room){
@@ -37,6 +40,6 @@ public class RoomRepository {
     }
 
     public void saveAll(List<Room> rooms) {
-        rooms.stream().forEach(this::save);
+        rooms.forEach(this::save);
     }
 }

@@ -2,13 +2,14 @@ package com.example.roommate.services;
 
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.repositories.RoomRepository;
+import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class RoomServiceTest {
 
@@ -72,14 +73,17 @@ class RoomServiceTest {
 
     @Test
     @DisplayName("testing the findRoomByID function")
-    void test_4_1() {
+    void test_4_1() throws NotFoundRepositoryException {
         RoomRepository roomRepository = new RoomRepository();
         RoomService roomService = new RoomService(roomRepository);
 
         Room room = new Room(UUID.randomUUID(), "105");
         roomService.addRoom(room);
 
+        assertThatCode(()->roomService.findRoomByID(room.getRoomID()))
+                .doesNotThrowAnyException();
         assertThat(roomService.findRoomByID(room.getRoomID())).isEqualTo(room);
+                
     }
 
     @Test
@@ -92,7 +96,7 @@ class RoomServiceTest {
         roomService.addRoom(room);
 
         UUID randomRoomID = UUID.randomUUID();
-        assertThat(roomService.findRoomByID(randomRoomID).roomnumber).isEqualTo("-1");
+        assertThatThrownBy(()->roomService.findRoomByID(randomRoomID)).isInstanceOf(NotFoundRepositoryException.class);
     }
 
     @Test

@@ -1,8 +1,11 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.exceptions.GeneralDomainException;
 import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
+import com.example.roommate.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +21,12 @@ import java.util.UUID;
 public class BookingController {
 
     private final BookEntryService bookEntryService;
+    private final RoomService roomService;
 
     @Autowired
-    public BookingController(BookEntryService bookEntryService) {
+    public BookingController(BookEntryService bookEntryService, RoomService roomService) {
         this.bookEntryService = bookEntryService;
+        this.roomService = roomService;
     }
 
     @GetMapping("/book")
@@ -39,14 +44,17 @@ public class BookingController {
 
     @GetMapping("/room/{roomID}")
     public String roomDetails(Model model, @PathVariable UUID roomID) {
-        // search with the roomID the room
-        Room room = new Room(roomID, "4");
-        model.addAttribute("room", room);
-        return "roomDetails";
+        try {
+            Room roomByID = roomService.findRoomByID(roomID);
+            model.addAttribute("room", roomByID);
+            return "roomDetails";
+        } catch (NotFoundRepositoryException e) {
+            return "not-found";
+        }
     }
 
     @PostMapping("/book")
-    public String addBooking(Model model, @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             return "book";
         }
@@ -56,7 +64,7 @@ public class BookingController {
 
         try {
             bookEntryService.addBookEntry(form);
-        } catch (BookEntryService.DomainErrorException e) {
+        } catch (GeneralDomainException e) {
             return "error";
         }
         redirectAttributes.addFlashAttribute("success", "Buchung erfolgreich hinzugefügt.");
