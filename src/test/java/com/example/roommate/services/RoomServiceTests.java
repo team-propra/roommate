@@ -6,6 +6,7 @@ import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,15 +59,18 @@ class RoomServiceTest {
     @Test
     @DisplayName("testing the getRooms function")
     void test_3() {
-        RoomRepository roomRepository = new RoomRepository();
-        RoomService roomService = new RoomService(roomRepository);
-
         Room room1 = new Room(UUID.randomUUID(), "103");
         Room room2 = new Room(UUID.randomUUID(), "104");
+        ArrayList<Room> rooms = new ArrayList<>();
+        RoomRepository roomRepository = new RoomRepository(rooms);
+        RoomService roomService = new RoomService(roomRepository);
+
+        
 
         roomService.addRoom(room1);
         roomService.addRoom(room2);
 
+        //one room already exists
         assertThat(roomService.getRooms().size()).isEqualTo(2);
         assertThat(roomService.getRooms()).contains(room1, room2);
     }

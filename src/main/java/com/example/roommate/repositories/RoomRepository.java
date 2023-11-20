@@ -4,15 +4,22 @@ import com.example.roommate.domain.entities.Room;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class RoomRepository {
-    private final List<Room> rooms = new ArrayList<>();
+    private final List<Room> rooms;
     
+    public RoomRepository(Collection<Room> rooms){
+        //statically rendered
+        this.rooms = new ArrayList<>(rooms);
+    }
+    
+    //only temporary to not interrupt the application flow
+    public RoomRepository(){
+        rooms = new ArrayList<>();
+        rooms.add(new Room(UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1"),"4"));
+    }
 
     public List<Room> findAll(){
         return rooms;
