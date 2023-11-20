@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -27,8 +28,8 @@ public class PostBookTest {
 
 
     @Test
+    @DisplayName("Its NOT possible to get 201 from POST /book ")
     @Disabled
-    @DisplayName("Its possible to get 201 from POST /book ")
     void test_1() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID,true);
         mvc.perform(post("/book")
@@ -37,9 +38,9 @@ public class PostBookTest {
                 .andExpect(status().isCreated());
     }
 
-    @Disabled
     @DisplayName("POST /book redirects to /home")
     @Test
+    @Disabled
     void test_2() throws Exception {
         mvc.perform(post("/book"))
                 .andExpect(view().name("home"));
