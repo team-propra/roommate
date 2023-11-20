@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -46,20 +47,27 @@ public class BookingController {
     }
 
     @GetMapping("/room/{roomID}")
-    public String roomDetails(Model model, @PathVariable UUID roomID) {
+    public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
             Room roomByID = roomService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
-            return "roomDetails";
+            
+            ModelAndView modelAndView = new ModelAndView("roomDetails");
+            modelAndView.setStatus(HttpStatus.OK);
+            return modelAndView;
         } catch (NotFoundRepositoryException e) {
-            return "not-found";
+            ModelAndView modelAndView = new ModelAndView("not-found");
+            modelAndView.setStatus(HttpStatus.NOT_FOUND);
+            return modelAndView;
         }
     }
 
     @PostMapping("/book")
-    public ResponseEntity<String> addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<>("book", HttpStatus.OK);
+            ModelAndView modelAndView = new ModelAndView("book");
+            modelAndView.setStatus(HttpStatus.OK);
+            return modelAndView;
         }
         System.out.println(form);
 
@@ -68,10 +76,15 @@ public class BookingController {
         try {
             bookEntryService.addBookEntry(form);
         } catch (GeneralDomainException e) {
-            return new ResponseEntity<>("bad-request", HttpStatus.BAD_REQUEST);
+            ModelAndView modelAndView = new ModelAndView("bad-request");
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+            return modelAndView;
         }
-        redirectAttributes.addFlashAttribute("success", "Buchung erfolgreich hinzugefügt.");
-        return new ResponseEntity<>("redirect:/home", HttpStatus.CREATED);
+        System.out.println("hitting it");
+//        redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
+        modelAndView.setStatus(HttpStatus.valueOf(301));
+        return modelAndView;
     }
 
 
