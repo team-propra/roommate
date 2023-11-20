@@ -28,7 +28,7 @@ public class RoomService {
     }
 
     public Room findRoomByID(UUID roomID) {
-        return findRoomByID(roomID);
+        return roomRepository.findRoomByID(roomID);
     }
 
     public void saveAll(List<Room> rooms) {
