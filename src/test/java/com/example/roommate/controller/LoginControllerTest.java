@@ -1,6 +1,5 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.controller.LoginController;
 import com.example.roommate.domain.values.LoginData;
 import com.example.roommate.services.LoginService;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +37,7 @@ public class LoginControllerTest {
 
 
     @Test
-    @DisplayName("Ein POST request auf /login löst, wenn loginservices.trylogin() false zurückgibt")
+    @DisplayName("If loginservices.trylogin() returns false, a POST request on /login returns an error")
     public void test_02() throws Exception {
 
         when(loginService.tryLogin(new LoginData("Otto", "1234"))).thenReturn(false);
@@ -50,7 +49,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    @DisplayName("Ein GET request auf /login gibt login.html zurück")
+    @DisplayName("A GET request on /login displays login.html")
     public void test_03() throws Exception {
 
 
@@ -59,7 +58,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    @DisplayName("Ein GET request auf /register gibt register.html zurück")
+    @DisplayName("A GET request on /register displays register.html")
     public void test_04() throws Exception {
 
 

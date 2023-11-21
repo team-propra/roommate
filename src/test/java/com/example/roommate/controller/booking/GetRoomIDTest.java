@@ -18,7 +18,7 @@ public class GetRoomIDTest {
     MockMvc mvc;
 
     @Test
-    @DisplayName("Die roomDetails-Seite ist unter /room/{ID} erreichbar")
+    @DisplayName("The roomDetails-page is /room/{ID} reachable")
     void test_1() throws Exception {
         int roomId = 4;
 
