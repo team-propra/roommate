@@ -66,7 +66,7 @@ class RoomServiceTest {
         Room room2 = new Room(differentRoomID, "104");
         ArrayList<Room> rooms = new ArrayList<>();
         rooms.add(room1);
-        rooms.add(room1);
+        rooms.add(room2);
         RoomRepository roomRepository = new RoomRepository(rooms);
         RoomService roomService = new RoomService(roomRepository);
 
@@ -90,7 +90,7 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("testing the findRoomByID function when there ")
+    @DisplayName("testing the findRoomByID function when there is no room there")
     void test_4_2() {
         RoomRepository roomRepository = new RoomRepository();
         RoomService roomService = new RoomService(roomRepository);
@@ -98,7 +98,7 @@ class RoomServiceTest {
         Room room = new Room(roomID, "105");
         roomService.addRoom(room);
 
-        assertThatThrownBy(()->roomService.findRoomByID(randomRoomID)).isInstanceOf(NotFoundRepositoryException.class);
+        assertThatThrownBy(()->roomService.findRoomByID(differentRoomID)).isInstanceOf(NotFoundRepositoryException.class);
     }
 
     @Test
