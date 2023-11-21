@@ -2,6 +2,7 @@ package com.example.roommate.services;
 
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.repositories.RoomRepository;
+import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,8 +28,12 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Room findRoomByID(UUID roomID) {
-        return roomRepository.findRoomByID(roomID);
+    public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
+        try {
+            return roomRepository.findRoomByID(roomID);
+        } catch (NotFoundRepositoryException e) {
+            throw new NotFoundRepositoryException();
+        }
     }
 
     public void saveAll(List<Room> rooms) {

@@ -2,13 +2,15 @@ package com.example.roommate.services;
 
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.repositories.RoomRepository;
+import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class RoomServiceTest {
 
@@ -60,33 +62,35 @@ class RoomServiceTest {
     @Test
     @DisplayName("testing the getRooms function")
     void test_3() {
-        RoomRepository roomRepository = new RoomRepository();
-        RoomService roomService = new RoomService(roomRepository);
-
         Room room1 = new Room(roomID, "103");
         Room room2 = new Room(differentRoomID, "104");
+        ArrayList<Room> rooms = new ArrayList<>();
+        rooms.add(room1);
+        rooms.add(room2);
+        RoomRepository roomRepository = new RoomRepository(rooms);
+        RoomService roomService = new RoomService(roomRepository);
 
-        roomService.addRoom(room1);
-        roomService.addRoom(room2);
-
+        //one room already exists
         assertThat(roomService.getRooms().size()).isEqualTo(2);
         assertThat(roomService.getRooms()).contains(room1, room2);
     }
 
     @Test
     @DisplayName("testing the findRoomByID function")
-    void test_4_1() {
+    void test_4_1() throws NotFoundRepositoryException {
         RoomRepository roomRepository = new RoomRepository();
         RoomService roomService = new RoomService(roomRepository);
 
         Room room = new Room(roomID, "105");
         roomService.addRoom(room);
 
-        assertThat(roomService.findRoomByID(roomID)).isEqualTo(room);
+        assertThatCode(()->roomService.findRoomByID(room.getRoomID()))
+                .doesNotThrowAnyException();
+        assertThat(roomService.findRoomByID(room.getRoomID())).isEqualTo(room);
     }
 
     @Test
-    @DisplayName("testing the findRoomByID function when there ")
+    @DisplayName("testing the findRoomByID function when there is no room there")
     void test_4_2() {
         RoomRepository roomRepository = new RoomRepository();
         RoomService roomService = new RoomService(roomRepository);
@@ -94,7 +98,7 @@ class RoomServiceTest {
         Room room = new Room(roomID, "105");
         roomService.addRoom(room);
 
-        assertThat(roomService.findRoomByID(differentRoomID).roomnumber).isEqualTo("-1");
+        assertThatThrownBy(()->roomService.findRoomByID(differentRoomID)).isInstanceOf(NotFoundRepositoryException.class);
     }
 
     @Test
