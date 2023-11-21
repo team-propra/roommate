@@ -1,5 +1,6 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.controller.LoginController;
 import com.example.roommate.domain.values.LoginData;
 import com.example.roommate.services.LoginService;
 import org.junit.jupiter.api.DisplayName;
