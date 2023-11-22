@@ -1,4 +1,4 @@
-package com.example.roommate.data;
+package com.example.roommate.repositories.data;
 
 import org.springframework.lang.NonNull;
 

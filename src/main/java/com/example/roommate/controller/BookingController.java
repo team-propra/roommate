@@ -6,10 +6,9 @@ import com.example.roommate.domain.values.BookDataForm;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -52,6 +53,20 @@ public class BookingController {
             Room roomByID = roomService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
             
+            //Frames
+            int times = 24;
+            int days = 7;
+            List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
+            List<String> timeLabels = new ArrayList<>();
+            generateTimeLabels(days, times, timeLabels);
+
+            System.out.println(dayLabels.size());
+            System.out.println(timeLabels.size());
+            DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,15,dayLabels,timeLabels);
+            model.addAttribute("frame",dayTimeFrame);
+
+//            
+            
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
             return modelAndView;
@@ -62,8 +77,32 @@ public class BookingController {
         }
     }
 
+    private static void generateTimeLabels(int days, int times, List<String> timeLabels) {
+        for (int day = 0; day < days; day++) {
+            for (int time = 0; time < times; time++) {
+                timeLabels.add(String.format("%d:%d",day,time));
+            }
+        }
+    }
+
+    record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels,List<String> timeLabels){
+        DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels) {
+            if(dayLabels.size() != days)
+                throw new RuntimeException();
+            if(timeLabels.size() != times*days)
+                throw new RuntimeException();
+            this.days = days;
+            this.times = times;
+            this.stepSize = stepSize;
+            this.dayLabels = dayLabels;
+            this.timeLabels = timeLabels;
+        }
+    }
+
+
     @PostMapping("/book")
-    public ModelAndView addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView addBooking(@Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("book");
             modelAndView.setStatus(HttpStatus.OK);
