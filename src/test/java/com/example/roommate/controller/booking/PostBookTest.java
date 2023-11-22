@@ -60,4 +60,18 @@ public class PostBookTest {
         assertThat(html).contains("Monday19");
 
     }
+
+    @Test
+    @DisplayName("POST /book returns error1.html page when BookDataForm is not validated (f.ex.ID is blank)")
+
+    public void test_4() throws Exception {
+        BookDataForm wrongForm = new BookDataForm(null,true);
+
+        mvc.perform(post("/book")
+                //.param("roomID", "")
+                //.param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                        .param("form", wrongForm.toString()))
+                .andExpect(view().name("error1"))
+                .andExpect(status().is(400));
+    }
 }
