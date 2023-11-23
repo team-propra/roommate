@@ -3,6 +3,7 @@ package com.example.roommate.controller;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
 import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.domain.values.Item;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
@@ -19,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -34,9 +38,28 @@ public class BookingController {
     }
 
     @GetMapping("/book")
-    public String index() {
+    public String index(Model model) {
+        Room room = new Room(UUID.randomUUID(), "44");
+        room.addItem(List.of(new Item("Chair"), new Item("Desk")));
+        roomService.addRoom(room);
+
+
+        Room room2 = new Room(UUID.randomUUID(), "45");
+        room2.addItem(List.of(new Item("Table"), new Item("HDMI Cable"), new Item("Desk")));
+        roomService.addRoom(room2);
+
+        System.out.println(roomService.getItems());
+        model.addAttribute("items", roomService.getItems());
+        model.addAttribute("rooms", roomService.getRooms());
         return "book";
     }
+
+    @PostMapping("/filter")
+    public String filterRooms(Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("rooms", roomService.getRooms());
+        return "redirect:/book";
+    }
+
 
     // alternativ kann auch @ModelAttribute("date") String date, @ModelAttribute("time") String time genutzt werden
     @GetMapping(path = "/book", params = {"date", "time"})
