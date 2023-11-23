@@ -39,6 +39,6 @@ public class GetRoomIDTest {
                 .andReturn();
 
         String html = result.getResponse().getContentAsString();
-        assertThat(html).contains(room.roomnumber);
+        assertThat(html).contains(room.getRoomnumber());
     }
 }

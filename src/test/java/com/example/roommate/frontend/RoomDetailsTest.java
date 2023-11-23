@@ -29,7 +29,7 @@ public class RoomDetailsTest {
         String render = thymeleafTestEngine.render("roomDetails.html",model);
 
         //Assert
-        assertThat(render).contains(room.roomnumber);
+        assertThat(render).contains(room.getRoomnumber());
     }
 
 }
