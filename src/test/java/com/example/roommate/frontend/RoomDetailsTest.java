@@ -6,7 +6,6 @@ import com.example.roommate.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.servlet.support.BindStatus;
 
 
 import java.util.UUID;

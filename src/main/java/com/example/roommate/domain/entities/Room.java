@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class Room {
 
-    private UUID roomID;
-    private String roomnumber;
+    private final UUID roomID;
+    private final String roomnumber;
 
     private final List<Item> itemList = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class Room {
     }
 
     public void addItem(List<Item> items) {
-        items.forEach(item -> itemList.add(item));
+        itemList.addAll(items);
     }
 
     public List<Item> getItems() {
