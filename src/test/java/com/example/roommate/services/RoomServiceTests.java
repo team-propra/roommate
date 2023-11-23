@@ -114,5 +114,19 @@ class RoomServiceTest {
 
         assertThat(roomRepository.findAll()).contains(room1, room2);
     }
+
+    @DisplayName("Adding a room that is already in the List does not change it")
+    @Test
+    void test_6() {
+        RoomRepository roomRepository = new RoomRepository();
+        RoomService roomService = new RoomService(roomRepository);
+
+        Room room = new Room(roomID, "106");
+
+        roomService.saveAll(List.of(room));
+        roomService.addRoom(room);
+
+        assertThat(roomRepository.findAll()).containsOnlyOnce(room);
+    }
 }
 

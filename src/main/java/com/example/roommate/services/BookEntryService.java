@@ -21,8 +21,7 @@ public class BookEntryService {
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         BookingEntity bookDataEntry = new BookingEntity(form.roomID(), form.Monday19());
-        BookingEntity bookingEntity = new BookingEntity(bookDataEntry.roomID(),bookDataEntry.Monday19());
-        if (bookingEntity.validateBookingCoorectness()) {
+        if (bookDataEntry.validateBookingCoorectness()) {
             bookEntryRepository.addBookEntry(bookDataEntry);
             return;
         }
