@@ -62,15 +62,12 @@ public class BookingController {
 
     @PostMapping("/book")
     public ModelAndView addBooking(@Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("error1");
-            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-            return modelAndView;
+        if(bindingResult.hasErrors()) {
+            String id = form.roomID().toString();
+            String errorMessage = "No Room selected. Please select a room to book or return home";
+            redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
+            return new ModelAndView("redirect:/room/%s".formatted(id));
         }
-        System.out.println(form);
-
-        //view.setStatusCode(HttpStatus.CREATED);
-
         try {
             bookEntryService.addBookEntry(form);
         } catch (GeneralDomainException e) {
@@ -78,10 +75,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        System.out.println("hitting it");
-//      redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
         ModelAndView modelAndView = new ModelAndView("redirect:/home");
-        modelAndView.setStatus(HttpStatus.valueOf(301));
         return modelAndView;
     }
 }
