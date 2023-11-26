@@ -14,18 +14,34 @@
       <thead class="table-header">
       
         <tr>
-          <th>Datum</th>
-          <th>Uhrzeit</th>
+            <th>Uhrzeit</th>
+            <th>Datum</th>
           <th></th>
         </tr>
       </thead>
+
       <tbody>
-        <tr th:each="time: ${#numbers.sequence(0, (frame.times())*(frame.stepSize())-1,1)}" th:remove="all-but-first">
-          <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first"><label>
-            <span th:text="${frame.dayLabels()[day]}">Monday</span> <span th:text="${frame.timeLabels()[time]}">19:00</span>
-            <input  type="checkbox" name="Monday19">
-          </label></td>
-        </tr>
+<!-- old       <tr th:each="time: ${#numbers.sequence(0, (frame.times())*(frame.stepSize())-1,1)}" th:remove="all-but-first">-->
+<!--          <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first"><label>-->
+<!--            <span th:text="${frame.dayLabels()[day]}">Monday</span> <span th:text="${frame.timeLabels()[time]}">19:00</span>-->
+<!--            <input  type="checkbox" name="Monday19">-->
+<!--          </label></td>-->
+<!--        </tr>-->
+
+          <tr>
+              <td></td>
+              <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
+                  <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>
+              </td>
+          </tr>
+
+          <tr th:each="time: ${#numbers.sequence(0, ((frame.times())* 60) / frame.stepSize(),1)}">
+              <td> <span th:text="${frame.timeLabels()[time]}">19:00</span> </td>
+              <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
+
+              <input  type="checkbox" name="Monday19">
+              </td>
+          </tr>
       </tbody>
     </table>
 
