@@ -1,5 +1,6 @@
 package com.example.roommate.frontend;
 
+import com.example.roommate.controller.BookingController;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.frontend.utility.TestModel;
 import com.example.roommate.frontend.utility.ThymeleafTestEngine;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Description;
 import org.springframework.web.servlet.support.BindStatus;
 
 
+import java.util.ArrayList;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,9 +28,13 @@ public class RoomDetailsTest {
         UUID uuid = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(uuid,"whatever");
         model.addAttribute("room", room);
-        String render = thymeleafTestEngine.render("roomDetails.html",model);
 
+        //stepSize needs to be >= 1
+        BookingController.DayTimeFrame dummyDayTimeFrame = new BookingController.DayTimeFrame(0,0,1,new ArrayList<>(),new ArrayList<>());
+        model.addAttribute("frame",dummyDayTimeFrame);
+        String render = thymeleafTestEngine.render("roomDetails.html",model);
         //Assert
+        System.out.println(render);
         assertThat(render).contains(room.roomnumber);
     }
 

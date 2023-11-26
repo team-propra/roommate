@@ -95,8 +95,8 @@ public class BookingController {
         }
     }
 
-    record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels,List<String> timeLabels){
-        DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels) {
+    public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels,List<String> timeLabels){
+        public DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels) {
             if(dayLabels.size() != days)
                 throw new RuntimeException();
          //   if(timeLabels.size() != times*days)
