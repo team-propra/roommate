@@ -63,7 +63,7 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public ModelAndView addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView addBooking(@Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("book");
             modelAndView.setStatus(HttpStatus.OK);
