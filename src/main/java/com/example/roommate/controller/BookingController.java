@@ -57,7 +57,7 @@ public class BookingController {
             //Frames
             int times = 24;
             int days = 7;
-            int stepSize = 60;
+            int stepSize = 30;
             List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
             List<String> timeLabels = new ArrayList<>();
             generateTimeLabels(days, times,stepSize, timeLabels);

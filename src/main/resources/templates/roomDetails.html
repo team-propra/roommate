@@ -35,7 +35,7 @@
               </td>
           </tr>
 
-          <tr th:each="time: ${#numbers.sequence(0, ((frame.times())* 60) / frame.stepSize(),1)}">
+          <tr th:each="time: ${#numbers.sequence(0, (((frame.times())* 60) / frame.stepSize()) - 1,1)}">
               <td> <span th:text="${frame.timeLabels()[time]}">19:00</span> </td>
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
 
