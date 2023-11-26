@@ -1,27 +1,37 @@
 package com.example.roommate.controller.booking;
 
 
+import com.example.roommate.domain.exceptions.GeneralDomainException;
 import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.services.BookEntryService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.awt.print.Book;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 public class PostBookTest {
 
     @Autowired
     MockMvc mvc;
+
+    @MockBean
+    BookEntryService entryService;
+
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
@@ -39,10 +49,12 @@ public class PostBookTest {
 
     @DisplayName("POST /book redirects to /home")
     @Test
-    @Disabled
     void test_2() throws Exception {
-        mvc.perform(post("/book"))
-                .andExpect(view().name("home"));
+        BookDataForm bookDataForm = new BookDataForm(roomID,true);
+        mvc.perform(post("/book")
+                        .param("roomID", roomID.toString())
+                        .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                .andExpect(redirectedUrl("/home"));
     }
 
     @Disabled
@@ -73,4 +85,25 @@ public class PostBookTest {
                 .andExpect(view().name("error1"))
                 .andExpect(status().is(400));
     }
+
+
+    //
+    @Test
+    @DisplayName("POST /book returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
+            "throws GeneralDomainiException")
+
+    public void test_5() throws Exception {
+        BookDataForm bookDataForm = new BookDataForm(roomID,true);
+        //entryService = mock(BookEntryService.class);
+        Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
+
+        mvc.perform(post("/book")
+                        //.param("form", bookDataForm.toString()))
+                        .param("roomID", roomID.toString())
+                        .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                .andExpect(view().name("bad-request"))
+                .andExpect(status().is(400));
+    }
+
+
 }

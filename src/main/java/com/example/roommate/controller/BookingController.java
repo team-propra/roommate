@@ -79,12 +79,10 @@ public class BookingController {
             return modelAndView;
         }
         System.out.println("hitting it");
-//        redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
+//      redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
         ModelAndView modelAndView = new ModelAndView("redirect:/home");
         modelAndView.setStatus(HttpStatus.valueOf(301));
         return modelAndView;
     }
-
-
 }
 
