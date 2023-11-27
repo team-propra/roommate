@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class LoginServiceTest {
 
-    @DisplayName("can create LoginData")
+    @DisplayName("login with valid LoginData possible")
     @Test
     void test_() {
         LoginData loginData = ValuesFactory.createLoginData();

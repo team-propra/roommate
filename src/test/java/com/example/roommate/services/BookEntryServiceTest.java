@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 public class BookEntryServiceTest {
 
-    @DisplayName("can add a BookDataForm to BookEntryService")
+    @DisplayName("BookDataForm can be added to BookEntryService")
     @Test
     void test_1() throws GeneralDomainException {
         BookEntryRepository bookEntryRepository = new BookEntryRepository();
@@ -25,12 +25,14 @@ public class BookEntryServiceTest {
         bookEntryService.addBookEntry(validBookDataForm);
 
         UUID id = ValuesFactory.id;
+
+        //assert: look if the id is contained in the bookEntryService
         List<UUID> ids = bookEntryService.getBookEntries().stream().map(b -> b.roomID()).toList();
         assertThat(ids).contains(id);
 
     }
 
-    @DisplayName("throws GeneralDomainException if the bookDataForm is invalid")
+    @DisplayName("adding a invalid bookDataForm results in a GeneralDomainException")
     @Test
     @Disabled
     void test_2() {
