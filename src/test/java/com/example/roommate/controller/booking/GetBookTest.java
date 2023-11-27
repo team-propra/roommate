@@ -16,7 +16,7 @@ public class GetBookTest {
     MockMvc mvc;
 
     @Test
-    @DisplayName("Wenn ein Get-Request auf /book ausgeführt wird, wird book.html zurückgegeben")
+    @DisplayName("A Get-Request on /book returns home.html")
     void test_3()throws Exception{
 
         mvc.perform(get("/book"))
@@ -27,7 +27,7 @@ public class GetBookTest {
 
     //vorerst noch keine Parametervalidierung, da evtl. neues Form-Objekt oder andere Informationen übergeben werden
     @Test
-    @DisplayName("Ein GET-request auf /book mit Query Parametern date und time verarbeitet diese korrekt")
+    @DisplayName("A GET-request on /book with the query parameters date and time stores them in the model")
     void test_04() throws Exception{
         mvc.perform(get("/book")
                 .param("date", "08.07.2014")

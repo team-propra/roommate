@@ -19,7 +19,7 @@ public class  HomeControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @DisplayName("Ein GET-Request auf /home gibt Status 200 zurück und zeigt home.hmtl an")
+    @DisplayName("A GET-Request on /home returns a status 200 and displays the home.html")
     @Test
     public void test_01() throws Exception {
         mockMvc.perform(get("/home"))
