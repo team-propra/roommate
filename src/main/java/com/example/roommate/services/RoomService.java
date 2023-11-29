@@ -1,8 +1,8 @@
 package com.example.roommate.services;
 
 import com.example.roommate.domain.entities.Room;
-import com.example.roommate.repositories.RoomRepository;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.persistence.RoomRepository;
+import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class RoomService {
 
     RoomRepository roomRepository;
 
-    RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
