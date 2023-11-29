@@ -1,13 +1,14 @@
 package com.example.roommate.repositories;
 
 import com.example.roommate.domain.models.entities.BookingEntity;
+import com.example.roommate.interfaces.IBookEntryRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class BookEntryRepository {
+public class BookEntryRepository implements IBookEntryRepository {
     private final List<BookingEntity> bookDataFormList = new ArrayList<>();
 
     public List<BookingEntity> getBookDataFormList() {
