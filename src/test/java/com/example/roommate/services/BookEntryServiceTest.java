@@ -34,7 +34,6 @@ public class BookEntryServiceTest {
 
     @DisplayName("adding a invalid bookDataForm results in a GeneralDomainException")
     @Test
-    @Disabled
     void test_2() {
         BookEntryRepository bookEntryRepository = new BookEntryRepository();
         BookEntryService bookEntryService = new BookEntryService(bookEntryRepository);
@@ -42,8 +41,21 @@ public class BookEntryServiceTest {
 
         assertThatThrownBy(() -> {
             bookEntryService.addBookEntry(invalidBookDataForm);
-            throw new GeneralDomainException();
         }).isInstanceOf(GeneralDomainException.class);
+
+    }
+
+
+    @DisplayName("adding a null results in a GeneralDomainException")
+    @Test
+    void test_3() {
+        BookEntryRepository bookEntryRepository = new BookEntryRepository();
+        BookEntryService bookEntryService = new BookEntryService(bookEntryRepository);
+
+        assertThatThrownBy(() -> {
+            bookEntryService.addBookEntry(null);
+//            throw new IllegalArgumentException();
+        }).isInstanceOf(IllegalArgumentException.class);
 
     }
 }
