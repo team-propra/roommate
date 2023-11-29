@@ -1,7 +1,7 @@
 package com.example.roommate.controller.booking;
 
 
-import com.example.roommate.domain.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.domain.models.values.BookDataForm;
 import com.example.roommate.services.BookEntryService;
 import org.junit.jupiter.api.Disabled;

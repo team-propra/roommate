@@ -1,6 +1,6 @@
 package com.example.roommate.domain;
 
-import com.example.roommate.domain.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

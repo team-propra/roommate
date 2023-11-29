@@ -1,10 +1,9 @@
 package com.example.roommate.services;
 
 import com.example.roommate.domain.models.entities.BookingEntity;
-import com.example.roommate.domain.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.domain.models.values.BookDataForm;
 import com.example.roommate.interfaces.IBookEntryRepository;
-import com.example.roommate.repositories.BookEntryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

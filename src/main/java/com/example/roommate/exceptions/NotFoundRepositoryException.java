@@ -1,4 +1,4 @@
-package com.example.roommate.repositories.exceptions;
+package com.example.roommate.exceptions;
 
 public class NotFoundRepositoryException extends Exception {
 }

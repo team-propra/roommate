@@ -1,7 +1,7 @@
 package com.example.roommate.interfaces;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 
 import java.util.List;
 import java.util.UUID;

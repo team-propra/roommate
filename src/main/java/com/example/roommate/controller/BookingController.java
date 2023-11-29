@@ -1,9 +1,9 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.domain.models.values.BookDataForm;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
 import jakarta.validation.Valid;
@@ -63,7 +63,7 @@ public class BookingController {
     @PostMapping("/book")
     public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
-            String id = form.roomID().toString();
+            String id = form.roomID();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));
@@ -75,8 +75,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        ModelAndView modelAndView = new ModelAndView("redirect:/home");
-        return modelAndView;
+        return new ModelAndView("redirect:/home");
     }
 }
 
