@@ -1,12 +1,12 @@
 package com.example.roommate.services;
 
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.dtos.forms.LoginForm;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
 
-    public boolean tryLogin(LoginData loginData) {
+    public boolean tryLogin(LoginForm loginForm) {
         return true;
     }
 
