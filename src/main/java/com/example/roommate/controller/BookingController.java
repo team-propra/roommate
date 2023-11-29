@@ -1,18 +1,17 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.entities.Room;
-import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
+import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,9 +35,19 @@ public class BookingController {
     }
 
     @GetMapping("/book")
-    public String index() {
+    public String index(Model model) {
+
+        model.addAttribute("items", roomService.getItems());
+        model.addAttribute("rooms", roomService.getRooms());
         return "book";
     }
+
+    @PostMapping("/filter")
+    public String filterRooms(Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("rooms", roomService.getRooms());
+        return "redirect:/book";
+    }
+
 
     // alternativ kann auch @ModelAttribute("date") String date, @ModelAttribute("time") String time genutzt werden
     @GetMapping(path = "/book", params = {"date", "time"})
@@ -67,8 +76,8 @@ public class BookingController {
             DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels);
             model.addAttribute("frame",dayTimeFrame);
 
-//            
-            
+//
+
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
             return modelAndView;
@@ -111,12 +120,12 @@ public class BookingController {
 
 
     @PostMapping("/book")
-    public ModelAndView addBooking(@Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        
-        if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("book");
-            modelAndView.setStatus(HttpStatus.OK);
-            return modelAndView;
+    public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            String id = form.roomID();
+            String errorMessage = "No Room selected. Please select a room to book or return home";
+            redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
+            return new ModelAndView("redirect:/room/%s".formatted(id));
         }
         System.out.println(form);
 
@@ -129,11 +138,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        System.out.println("hitting it");
-//        redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
-        ModelAndView modelAndView = new ModelAndView("redirect:/home");
-        modelAndView.setStatus(HttpStatus.valueOf(301));
-        return modelAndView;
+        return new ModelAndView("redirect:/home");
     }
 
 

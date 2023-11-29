@@ -7,19 +7,24 @@
 </head>
 <body>
   <h1>Details zu Raum <span th:text="*{roomnumber}">-1</span> </h1>
-  <form method="post" action="/book" id="dynamic-form">
+
+  <div th:if="${formValidationErrorText}">
+    <div th:text="${formValidationErrorText}">ErrorText</div>
+  </div>
+
+
+  <form method="post" action="/book">
     <input type="hidden" name="roomID" th:value="*{roomID}">
 
     <table class="table">
       <thead class="table-header">
-      
+
         <tr>
             <th>Uhrzeit</th>
             <th>Datum</th>
           <th></th>
         </tr>
       </thead>
-
       <tbody>
 <!-- old       <tr th:each="time: ${#numbers.sequence(0, (frame.times())*(frame.stepSize())-1,1)}" th:remove="all-but-first">-->
 <!--          <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first"><label>-->
@@ -45,11 +50,6 @@
       </tbody>
     </table>
 
-<!--    <script>-->
-<!--      let elementById = document.getElementById("dynamic-form");-->
-<!--      elementById.children[]-->
-<!--      -->
-<!--    </script>-->
     <input type="submit">
   </form>
 </body>
