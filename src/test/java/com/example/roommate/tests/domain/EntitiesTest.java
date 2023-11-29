@@ -1,7 +1,7 @@
 package com.example.roommate.tests.domain;
 
 import com.example.roommate.domain.entities.Admin;
-import com.example.roommate.domain.entities.BookingEntity;
+import com.example.roommate.domain.entities.Booking;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.entities.User;
 import com.example.roommate.tests.factories.EntityFactory;
@@ -22,7 +22,7 @@ public class EntitiesTest {
     @DisplayName("BookingEntity validates Booking correctly")
     @Test
     void test_2() {
-        BookingEntity bookingEntity = EntityFactory.createBookingEntity();
+        Booking bookingEntity = EntityFactory.createBookingEntity();
         boolean validated = bookingEntity.validateBookingCoorectness();
         assertThat(validated).isTrue();
     }

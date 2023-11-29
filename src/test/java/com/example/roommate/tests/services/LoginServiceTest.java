@@ -1,7 +1,7 @@
 package com.example.roommate.tests.services;
 
 import com.example.roommate.tests.factories.ValuesFactory;
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.dtos.forms.LoginForm;
 import com.example.roommate.services.LoginService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ public class LoginServiceTest {
     @DisplayName("login with valid LoginData possible")
     @Test
     void test_() {
-        LoginData loginData = ValuesFactory.createLoginData();
+        LoginForm loginForm = ValuesFactory.createLoginData();
         LoginService loginService = new LoginService();
-        assertThat(loginService.tryLogin(loginData)).isTrue();
+        assertThat(loginService.tryLogin(loginForm)).isTrue();
     }
 }

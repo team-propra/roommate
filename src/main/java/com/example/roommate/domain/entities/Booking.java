@@ -2,7 +2,7 @@ package com.example.roommate.domain.entities;
 
 import java.util.UUID;
 
-public record BookingEntity(UUID roomID, boolean Monday19) {
+public record Booking(UUID roomID, boolean Monday19) {
 
     public boolean validateBookingCoorectness() {
         //At least one box is set to true

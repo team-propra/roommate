@@ -1,9 +1,9 @@
 package com.example.roommate.services;
 
 import com.example.roommate.data.BookingEntry;
-import com.example.roommate.domain.entities.BookingEntity;
+import com.example.roommate.domain.entities.Booking;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.BookEntryRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ public class BookEntryService {
         this.bookEntryRepository = bookEntryRepository;
     }
 
-    public List<BookingEntity> getBookEntries() {
-        return bookEntryRepository.getBookings().stream().map(b -> new BookingEntity(b.roomID(), b.Monday19())).toList();
+    public List<Booking> getBookEntries() {
+        return bookEntryRepository.getBookings().stream().map(b -> new Booking(b.roomID(), b.Monday19())).toList();
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        BookingEntity bookDataEntry = new BookingEntity(UUID.fromString(form.roomID()), form.Monday19());
+        Booking bookDataEntry = new Booking(UUID.fromString(form.roomID()), form.Monday19());
         
         if (!bookDataEntry.validateBookingCoorectness()) 
             throw new GeneralDomainException();

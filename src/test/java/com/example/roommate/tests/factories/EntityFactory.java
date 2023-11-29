@@ -1,7 +1,7 @@
 package com.example.roommate.tests.factories;
 
 import com.example.roommate.domain.entities.Admin;
-import com.example.roommate.domain.entities.BookingEntity;
+import com.example.roommate.domain.entities.Booking;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.entities.User;
 
@@ -14,8 +14,8 @@ public class EntityFactory {
         return new Admin();
     }
 
-    public static BookingEntity createBookingEntity() {
-        return new BookingEntity(id, true);
+    public static Booking createBookingEntity() {
+        return new Booking(id, true);
     }
 
     public static Room createRoom() {

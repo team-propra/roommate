@@ -1,9 +1,10 @@
 package com.example.roommate.tests.services;
 
 
+import com.example.roommate.domain.entities.Booking;
 import com.example.roommate.tests.factories.ValuesFactory;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.BookEntryRepository;
 import com.example.roommate.services.BookEntryService;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,7 @@ public class BookEntryServiceTest {
         UUID id = ValuesFactory.id;
 
         //assert: look if the id is contained in the bookEntryService
-        List<UUID> ids = bookEntryService.getBookEntries().stream().map(b -> b.roomID()).toList();
+        List<UUID> ids = bookEntryService.getBookEntries().stream().map(Booking::roomID).toList();
         assertThat(ids).contains(id);
 
     }
@@ -39,9 +40,7 @@ public class BookEntryServiceTest {
         BookEntryService bookEntryService = new BookEntryService(bookEntryRepository);
         BookDataForm invalidBookDataForm = ValuesFactory.createInvalidBookDataForm();
 
-        assertThatThrownBy(() -> {
-            bookEntryService.addBookEntry(invalidBookDataForm);
-        }).isInstanceOf(GeneralDomainException.class);
+        assertThatThrownBy(() -> bookEntryService.addBookEntry(invalidBookDataForm)).isInstanceOf(GeneralDomainException.class);
 
     }
 

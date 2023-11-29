@@ -1,8 +1,8 @@
 package com.example.roommate.tests.factories;
 
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.domain.values.Item;
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.dtos.forms.LoginForm;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class ValuesFactory {
         return new Item("Item");
     }
 
-    public static LoginData createLoginData() {
-        return new LoginData("user", "password");
+    public static LoginForm createLoginData() {
+        return new LoginForm("user", "password");
     }
 }
