@@ -21,14 +21,12 @@ public class BookEntryService {
         return bookEntryRepository.getBookDataFormList();
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
+        if(form == null) throw new IllegalArgumentException();
         BookingEntity bookDataEntry = new BookingEntity(UUID.fromString(form.roomID()), form.Monday19());
-        BookingEntity bookingEntity = new BookingEntity(bookDataEntry.roomID(),bookDataEntry.Monday19());
-        if (bookingEntity.validateBookingCoorectness()) {
-            bookEntryRepository.addBookEntry(bookDataEntry);
-            return;
-        }
-        throw new GeneralDomainException();
-
+        
+        if (!bookDataEntry.validateBookingCoorectness()) 
+            throw new GeneralDomainException();
+        bookEntryRepository.addBookEntry(bookDataEntry);
     }
 
     
