@@ -3,9 +3,8 @@ package com.example.roommate.services;
 
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.domain.models.values.BookDataForm;
 import com.example.roommate.repositories.BookEntryRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

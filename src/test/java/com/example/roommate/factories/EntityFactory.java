@@ -1,9 +1,9 @@
 package com.example.roommate.factories;
 
-import com.example.roommate.domain.entities.Admin;
-import com.example.roommate.domain.entities.BookingEntity;
-import com.example.roommate.domain.entities.Room;
-import com.example.roommate.domain.entities.User;
+import com.example.roommate.domain.models.entities.Admin;
+import com.example.roommate.domain.models.entities.BookingEntity;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.entities.User;
 
 import java.util.UUID;
 

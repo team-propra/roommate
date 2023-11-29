@@ -1,4 +1,4 @@
-package com.example.roommate.domain.values;
+package com.example.roommate.domain.models.values;
 
 import java.io.Serializable;
 

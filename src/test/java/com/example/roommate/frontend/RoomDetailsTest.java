@@ -1,12 +1,11 @@
 package com.example.roommate.frontend;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.frontend.utility.TestModel;
 import com.example.roommate.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.servlet.support.BindStatus;
 
 
 import java.util.UUID;

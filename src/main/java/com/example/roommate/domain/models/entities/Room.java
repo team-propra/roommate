@@ -1,4 +1,4 @@
-package com.example.roommate.domain.entities;
+package com.example.roommate.domain.models.entities;
 
 
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.example.roommate.domain.values;
+package com.example.roommate.domain.models.values;
 
 
 import com.example.roommate.validator.IsValidUUID;

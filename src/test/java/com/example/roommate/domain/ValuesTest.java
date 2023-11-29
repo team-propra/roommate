@@ -1,8 +1,8 @@
 package com.example.roommate.domain;
 
-import com.example.roommate.domain.values.BookDataForm;
-import com.example.roommate.domain.values.Item;
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.domain.models.values.BookDataForm;
+import com.example.roommate.domain.models.values.Item;
+import com.example.roommate.domain.models.values.LoginData;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

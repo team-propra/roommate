@@ -1,6 +1,6 @@
 package com.example.roommate.repositories;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 

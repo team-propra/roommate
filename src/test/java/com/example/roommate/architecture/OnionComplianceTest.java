@@ -14,9 +14,9 @@ import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 public class OnionComplianceTest {
     @ArchTest
     static ArchRule onion = onionArchitecture()
-                .domainModels("domain")
-//                .domainServices("example.domainservices")
-                .applicationServices("services")
-                .adapter("http", "controller")
-                .adapter("persistence", "repositories");
+                .domainModels("..roommate.domain.models..")
+                .domainServices("..roommate.domain.services..")
+                .applicationServices("..roommate.services..")
+                .adapter("http", "..roommate.controller..")
+                .adapter("persistence", "..roommate.repositories..");
 }

@@ -1,8 +1,8 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.domain.models.values.BookDataForm;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
@@ -12,14 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.UUID;
-
 
 @Controller
 public class BookingController {

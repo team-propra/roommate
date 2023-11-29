@@ -1,7 +1,7 @@
 package com.example.roommate.services;
 
 import com.example.roommate.factories.ValuesFactory;
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.domain.models.values.LoginData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

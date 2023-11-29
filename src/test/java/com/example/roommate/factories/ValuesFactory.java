@@ -1,8 +1,8 @@
 package com.example.roommate.factories;
 
-import com.example.roommate.domain.values.BookDataForm;
-import com.example.roommate.domain.values.Item;
-import com.example.roommate.domain.values.LoginData;
+import com.example.roommate.domain.models.values.BookDataForm;
+import com.example.roommate.domain.models.values.Item;
+import com.example.roommate.domain.models.values.LoginData;
 
 import java.util.UUID;
 
