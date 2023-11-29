@@ -2,8 +2,8 @@ package com.example.roommate.services;
 
 import com.example.roommate.data.RoomEntry;
 import com.example.roommate.repositories.ItemRepository;
-import com.example.roommate.tests.domain.entities.Room;
-import com.example.roommate.tests.domain.entities.ItemName;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.persistence.RoomRepository;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;

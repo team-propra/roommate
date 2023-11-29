@@ -1,6 +1,6 @@
 package com.example.roommate.tests.controller.room;
 
-import com.example.roommate.tests.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.RoomService;
 import org.junit.jupiter.api.DisplayName;

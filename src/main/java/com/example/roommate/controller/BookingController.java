@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.tests.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;

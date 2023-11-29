@@ -1,6 +1,6 @@
 package com.example.roommate.repositories;
 
-import com.example.roommate.tests.domain.entities.ItemName;
+import com.example.roommate.domain.models.values.ItemName;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

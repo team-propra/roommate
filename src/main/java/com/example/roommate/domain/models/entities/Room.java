@@ -1,7 +1,7 @@
-package com.example.roommate.tests.domain.entities;
+package com.example.roommate.domain.models.entities;
 
 
-import com.example.roommate.tests.domain.values.ItemName;
+import com.example.roommate.domain.models.values.ItemName;
 
 import java.util.ArrayList;
 import java.util.List;
