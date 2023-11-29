@@ -1,15 +1,36 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.values.BookDataForm;
+import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.exceptions.GeneralDomainException;
+import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
+import com.example.roommate.services.BookEntryService;
+import com.example.roommate.services.RoomService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+import java.util.UUID;
+
 
 @Controller
 public class BookingController {
 
+    private final BookEntryService bookEntryService;
+    private final RoomService roomService;
+
+    @Autowired
+    public BookingController(BookEntryService bookEntryService, RoomService roomService) {
+        this.bookEntryService = bookEntryService;
+        this.roomService = roomService;
+    }
 
     @GetMapping("/book")
     public String index() {
@@ -24,19 +45,38 @@ public class BookingController {
         return "book";
     }
 
-    @GetMapping("/room/4")
-    public String roomDetails() {
-        return "roomDetails";
+    @GetMapping("/room/{roomID}")
+    public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
+        try {
+            Room roomByID = roomService.findRoomByID(roomID);
+            model.addAttribute("room", roomByID);
+            
+            ModelAndView modelAndView = new ModelAndView("roomDetails");
+            modelAndView.setStatus(HttpStatus.OK);
+            return modelAndView;
+        } catch (NotFoundRepositoryException e) {
+            ModelAndView modelAndView = new ModelAndView("not-found");
+            modelAndView.setStatus(HttpStatus.NOT_FOUND);
+            return modelAndView;
+        }
     }
 
     @PostMapping("/book")
-    public RedirectView addBooking(BookDataForm form) {
-        System.out.println(form);
-        RedirectView view = new RedirectView("/home");
-        view.setStatusCode(HttpStatus.CREATED);
-        return view;
+    public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            String id = form.roomID();
+            String errorMessage = "No Room selected. Please select a room to book or return home";
+            redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
+            return new ModelAndView("redirect:/room/%s".formatted(id));
+        }
+        try {
+            bookEntryService.addBookEntry(form);
+        } catch (GeneralDomainException e) {
+            ModelAndView modelAndView = new ModelAndView("bad-request");
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+            return modelAndView;
+        }
+        return new ModelAndView("redirect:/home");
     }
-
-
 }
 

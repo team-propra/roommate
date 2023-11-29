@@ -1,4 +1,4 @@
-package com.example.roommate.frontend.utility;
+package com.example.roommate.tests.frontend.utility;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;

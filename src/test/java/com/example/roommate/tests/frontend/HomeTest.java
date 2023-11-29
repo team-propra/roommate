@@ -1,6 +1,6 @@
-package com.example.roommate.frontend;
+package com.example.roommate.tests.frontend;
 
-import com.example.roommate.frontend.utility.ThymeleafTestEngine;
+import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
