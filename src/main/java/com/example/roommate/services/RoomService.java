@@ -1,7 +1,7 @@
 package com.example.roommate.services;
 
 import com.example.roommate.data.RoomEntry;
-import com.example.roommate.repositories.ItemRepository;
+import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.persistence.RoomRepository;
@@ -18,8 +18,9 @@ public class RoomService {
     RoomRepository roomRepository;
     ItemRepository itemRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, ItemRepository itemRepository) {
         this.roomRepository = roomRepository;
+        this.itemRepository = itemRepository;
     }
 
     public void addRoom(Room room) {

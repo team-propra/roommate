@@ -1,4 +1,4 @@
-package com.example.roommate.repositories;
+package com.example.roommate.persistence;
 
 import com.example.roommate.domain.models.values.ItemName;
 import org.springframework.stereotype.Repository;
