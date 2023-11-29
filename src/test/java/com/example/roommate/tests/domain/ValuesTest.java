@@ -1,7 +1,7 @@
 package com.example.roommate.tests.domain;
 
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.domain.values.Item;
+import com.example.roommate.tests.domain.entities.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
 import com.example.roommate.tests.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
@@ -30,8 +30,8 @@ public class ValuesTest {
     @DisplayName("can create Item")
     @Test
     void test_3() {
-        Item item = ValuesFactory.createItem();
-        assertThat(item).isInstanceOf(Item.class);
+        ItemName item = ValuesFactory.createItemName();
+        assertThat(item).isInstanceOf(ItemName.class);
     }
 
     @DisplayName("can create LoginData")

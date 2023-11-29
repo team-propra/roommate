@@ -1,6 +1,6 @@
 package com.example.roommate.tests.frontend;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.tests.domain.entities.Room;
 import com.example.roommate.tests.frontend.utility.TestModel;
 import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;

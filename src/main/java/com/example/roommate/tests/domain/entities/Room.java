@@ -1,7 +1,7 @@
-package com.example.roommate.domain.entities;
+package com.example.roommate.tests.domain.entities;
 
 
-import com.example.roommate.domain.values.Item;
+import com.example.roommate.tests.domain.values.ItemName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class Room {
     private final UUID roomID;
     private final String roomnumber;
 
-    private final List<Item> itemList = new ArrayList<>();
+    private final List<ItemName> itemNameList = new ArrayList<>();
 
     public Room(UUID roomID, String roomnumber) {
         this.roomID = roomID;
@@ -41,15 +41,15 @@ public class Room {
         return Objects.hash(roomID, roomnumber);
     }
 
-    public void addItem(Item item) {
-        itemList.add(item);
+    public void addItem(ItemName item) {
+        itemNameList.add(item);
     }
 
-    public void addItem(List<Item> items) {
-        itemList.addAll(items);
+    public void addItem(List<ItemName> items) {
+        itemNameList.addAll(items);
     }
 
-    public List<Item> getItems() {
-        return itemList;
+    public List<ItemName> getItems() {
+        return itemNameList;
     }
 }

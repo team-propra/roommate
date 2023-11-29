@@ -2,6 +2,7 @@ package com.example.roommate.persistence;
 
 import com.example.roommate.data.RoomEntry;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
+import com.example.roommate.tests.domain.entities.Room;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -19,6 +20,8 @@ public class RoomRepository {
     public RoomRepository(){
         rooms = new ArrayList<>();
         rooms.add(new RoomEntry(UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1"),"4"));
+        rooms.add(new RoomEntry(UUID.randomUUID(), "44"));
+        rooms.add(new RoomEntry(UUID.randomUUID(), "45"));
     }
 
     public List<RoomEntry> findAll(){

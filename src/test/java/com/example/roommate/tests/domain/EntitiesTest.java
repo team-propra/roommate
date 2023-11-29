@@ -1,12 +1,16 @@
 package com.example.roommate.tests.domain;
 
-import com.example.roommate.domain.entities.Admin;
-import com.example.roommate.domain.entities.Booking;
-import com.example.roommate.domain.entities.Room;
-import com.example.roommate.domain.entities.User;
+import com.example.roommate.tests.domain.entities.Admin;
+import com.example.roommate.tests.domain.entities.Booking;
+import com.example.roommate.tests.domain.entities.Room;
+import com.example.roommate.tests.domain.entities.User;
+import com.example.roommate.tests.domain.entities.ItemName;
 import com.example.roommate.tests.factories.EntityFactory;
+import com.example.roommate.tests.factories.ValuesFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,6 +44,42 @@ public class EntitiesTest {
     void test_4() {
         User user = EntityFactory.createUser();
         assertThat(user).isInstanceOf(User.class);
+    }
+
+    @Test
+    @DisplayName("add item to room")
+    void test_5() {
+        Room room = EntityFactory.createRoom();
+        ItemName item = ValuesFactory.createItemName("Chair");
+
+        room.addItem(item);
+
+        assertThat(room.getItems()).containsExactly(item);
+    }
+
+    @Test
+    @DisplayName("Add List of Items to a room")
+    void test_6() {
+        Room room = EntityFactory.createRoom();
+        List<ItemName> items = List.of(ValuesFactory.createItemName("Desk"), ValuesFactory.createItemName("Chair"));
+
+        room.addItem(items);
+
+        assertThat(room.getItems()).containsExactlyElementsOf(items);
+    }
+
+    @Test
+    @DisplayName("Get a List of items when getItems() is called")
+    void test_7() {
+        Room room = EntityFactory.createRoom();
+        ItemName desk = ValuesFactory.createItemName("Desk");
+        ItemName chair = ValuesFactory.createItemName("Chair");
+        room.addItem(chair);
+        room.addItem(desk);
+
+        List<ItemName> result = room.getItems();
+
+        assertThat(result).containsExactly(chair, desk);
     }
 }
 
