@@ -1,9 +1,9 @@
 package com.example.roommate.services;
 
+import com.example.roommate.data.RoomEntry;
 import com.example.roommate.domain.entities.Room;
-import com.example.roommate.domain.values.Item;
-import com.example.roommate.repositories.RoomRepository;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.persistence.RoomRepository;
+import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,30 +17,31 @@ public class RoomService {
 
     RoomRepository roomRepository;
 
-    RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
     public void addRoom(Room room) {
-        roomRepository.save(room);
+        roomRepository.save(new RoomEntry(room.roomID, room.roomnumber));
     }
 
-    public void removeRoom(Room room) {roomRepository.remove(room);}
+    public void removeRoom(Room room) {roomRepository.remove(room.roomID);}
 
     public List<Room> getRooms() {
-        return roomRepository.findAll();
+        return roomRepository.findAll().stream().map(r -> new Room(r.roomID(), r.roomnumber())).toList();
     }
 
     public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
-            return roomRepository.findRoomByID(roomID);
+            RoomEntry roomByID = roomRepository.findRoomByID(roomID);
+            return new Room(roomByID.roomID(), roomByID.roomnumber());
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }
     }
 
     public void saveAll(List<Room> rooms) {
-        roomRepository.saveAll(rooms);
+        roomRepository.saveAll(rooms.stream().map(r -> new RoomEntry(r.roomID, r.roomnumber)).toList());
     }
 
     public List<Item> getItems() {

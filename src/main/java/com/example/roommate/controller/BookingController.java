@@ -2,11 +2,11 @@ package com.example.roommate.controller;
 
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
-import com.example.roommate.domain.values.BookDataForm;
-import com.example.roommate.domain.values.Item;
-import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
+import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -86,11 +86,12 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public ModelAndView addBooking( @Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("book");
-            modelAndView.setStatus(HttpStatus.OK);
-            return modelAndView;
+    public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            String id = form.roomID();
+            String errorMessage = "No Room selected. Please select a room to book or return home";
+            redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
+            return new ModelAndView("redirect:/room/%s".formatted(id));
         }
         System.out.println(form);
 
@@ -103,11 +104,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        System.out.println("hitting it");
-//        redirectAttributes.addFlashAttribute("successss", "Buchung erfolgreich hinzugefügt.");
-        ModelAndView modelAndView = new ModelAndView("redirect:/home");
-        modelAndView.setStatus(HttpStatus.valueOf(301));
-        return modelAndView;
+        return new ModelAndView("redirect:/home");
     }
 
 

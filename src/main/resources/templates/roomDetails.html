@@ -7,6 +7,12 @@
 </head>
 <body>
   <h1>Details zu Raum <span th:text="*{roomnumber}">-1</span> </h1>
+
+  <div th:if="${formValidationErrorText}">
+    <div th:text="${formValidationErrorText}">ErrorText</div>
+  </div>
+
+
   <form method="post" action="/book">
     <input type="hidden" name="roomID" th:value="*{roomID}">
 
