@@ -1,5 +1,6 @@
 package com.example.roommate.services;
 
+import com.example.roommate.data.BookingEntry;
 import com.example.roommate.domain.entities.BookingEntity;
 import com.example.roommate.domain.exceptions.GeneralDomainException;
 import com.example.roommate.domain.values.BookDataForm;
@@ -18,7 +19,7 @@ public class BookEntryService {
     }
 
     public List<BookingEntity> getBookEntries() {
-        return bookEntryRepository.getBookDataFormList();
+        return bookEntryRepository.getBookings().stream().map(b -> new BookingEntity(b.roomID(), b.Monday19())).toList();
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
@@ -26,7 +27,7 @@ public class BookEntryService {
         
         if (!bookDataEntry.validateBookingCoorectness()) 
             throw new GeneralDomainException();
-        bookEntryRepository.addBookEntry(bookDataEntry);
+        bookEntryRepository.addBookEntry(new BookingEntry(UUID.fromString(form.roomID()), form.Monday19()));
     }
 
     

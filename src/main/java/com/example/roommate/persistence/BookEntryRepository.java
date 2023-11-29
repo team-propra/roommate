@@ -1,6 +1,6 @@
 package com.example.roommate.persistence;
 
-import com.example.roommate.domain.entities.BookingEntity;
+import com.example.roommate.data.BookingEntry;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import java.util.List;
 
 @Repository
 public class BookEntryRepository {
-    private final List<BookingEntity> bookDataFormList = new ArrayList<>();
+    private final List<BookingEntry> bookDataFormList = new ArrayList<>();
 
-    public List<BookingEntity> getBookDataFormList() {
+    public List<BookingEntry> getBookings() {
         return bookDataFormList;
     }
 
-    public void addBookEntry(BookingEntity bookDataForm) {
+    public void addBookEntry(BookingEntry bookDataForm) {
         bookDataFormList.add(bookDataForm);
     }
 }

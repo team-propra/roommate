@@ -1,10 +1,8 @@
 package com.example.roommate.tests.data;
 
-import com.example.roommate.data.BookDataEntry;
+import com.example.roommate.data.BookingEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.awt.print.Book;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +10,7 @@ public class BookEntryTest {
     @Test
     @DisplayName("Can create BookEntry")
     public void test_01() {
-        BookDataEntry entry = new BookDataEntry(null, true);
+        BookingEntry entry = new BookingEntry(null, true);
         assertThat(entry.Monday19()).isTrue();
     }
 }
