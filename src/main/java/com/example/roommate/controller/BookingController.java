@@ -6,6 +6,7 @@ import com.example.roommate.domain.values.BookDataForm;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.RoomService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class BookingController {
     }
 
     @PostMapping("/book")
-    public ModelAndView addBooking(@Validated BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             String id = form.roomID().toString();
             String errorMessage = "No Room selected. Please select a room to book or return home";

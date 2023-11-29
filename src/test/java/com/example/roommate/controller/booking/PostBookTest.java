@@ -38,7 +38,7 @@ public class PostBookTest {
     @DisplayName("POST /book redirects to /home")
     @Test
     void test_1() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID,true);
+        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         mvc.perform(post("/book")
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
@@ -51,7 +51,7 @@ public class PostBookTest {
     @DisplayName("Booking Details appear on the homepage after submiting the booking form")
     @Test
     void test_2() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID,true);
+        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
 
         MvcResult postResult = mvc.perform(post("/book")
                         .param("roomID", roomID.toString())
@@ -73,9 +73,10 @@ public class PostBookTest {
         BookDataForm wrongForm = new BookDataForm(null,true);
 
         mvc.perform(post("/book")
-                .param("roomID", "")
+                .param("roomID", "null")
                 .param("Monday19", Boolean.toString(wrongForm.Monday19())))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/room/*")) ;
 
     }
 
@@ -86,7 +87,7 @@ public class PostBookTest {
             "throws GeneralDomainException")
 
     public void test_4() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID,true);
+        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);
         Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
 
