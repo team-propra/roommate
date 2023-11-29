@@ -1,13 +1,14 @@
 package com.example.roommate.repositories;
 
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.interfaces.IRoomRepository;
 import com.example.roommate.repositories.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class RoomRepository {
+public class RoomRepository implements IRoomRepository {
     private final List<Room> rooms;
     
     public RoomRepository(Collection<Room> rooms){
