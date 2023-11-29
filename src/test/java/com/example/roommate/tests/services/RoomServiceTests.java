@@ -1,5 +1,6 @@
 package com.example.roommate.tests.services;
 
+import com.example.roommate.data.RoomEntry;
 import com.example.roommate.domain.entities.Room;
 import com.example.roommate.persistence.RoomRepository;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
@@ -27,7 +28,8 @@ class RoomServiceTest {
         Room room = new Room(roomID, "101");
         roomService.addRoom(room);
 
-        assertThat(roomRepository.findAll()).contains(room);
+        RoomEntry roomEntry = new RoomEntry(room.roomID, room.roomnumber);
+        assertThat(roomRepository.findAll()).contains(roomEntry);
     }
 
     @Test
@@ -41,7 +43,9 @@ class RoomServiceTest {
 
         roomService.removeRoom(room);
 
-        assertThat(roomRepository.findAll()).doesNotContain(room);
+
+        RoomEntry roomEntry = new RoomEntry(room.roomID, room.roomnumber);
+        assertThat(roomRepository.findAll()).doesNotContain(roomEntry);
     }
 
     @Test
@@ -57,7 +61,8 @@ class RoomServiceTest {
 
         roomService.removeRoom(differentRoom);
 
-        assertThat(roomRepository.findAll()).contains(room);
+        RoomEntry roomEntry = new RoomEntry(room.roomID, room.roomnumber);
+        assertThat(roomRepository.findAll()).contains(roomEntry);
     }
 
     @Test
@@ -68,7 +73,7 @@ class RoomServiceTest {
         ArrayList<Room> rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
-        RoomRepository roomRepository = new RoomRepository(rooms);
+        RoomRepository roomRepository = new RoomRepository(rooms.stream().map(r -> new RoomEntry(r.roomID, r.roomnumber)).toList());
         RoomService roomService = new RoomService(roomRepository);
 
         //one room already exists
@@ -113,7 +118,7 @@ class RoomServiceTest {
 
         roomService.saveAll(List.of(room1, room2));
 
-        assertThat(roomRepository.findAll()).contains(room1, room2);
+        assertThat(roomRepository.findAll()).contains(new RoomEntry(room1.roomID, room1.roomnumber), new RoomEntry(room2.roomID, room2.roomnumber));
     }
 
     @DisplayName("Adding a room that is already in the List does not change it")
@@ -127,7 +132,7 @@ class RoomServiceTest {
         roomService.saveAll(List.of(room));
         roomService.addRoom(room);
 
-        assertThat(roomRepository.findAll()).containsOnlyOnce(room);
+        assertThat(roomRepository.findAll()).containsOnlyOnce(new RoomEntry(room.roomID, room.roomnumber));
     }
 }
 
