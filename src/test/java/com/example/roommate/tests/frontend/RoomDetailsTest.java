@@ -1,14 +1,13 @@
-package com.example.roommate.frontend;
+package com.example.roommate.tests.frontend;
 
 import com.example.roommate.controller.BookingController;
-import com.example.roommate.domain.entities.Room;
-import com.example.roommate.frontend.utility.TestModel;
-import com.example.roommate.frontend.utility.ThymeleafTestEngine;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.tests.frontend.utility.TestModel;
+import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
 import org.springframework.web.servlet.support.BindStatus;
-
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,9 +32,10 @@ public class RoomDetailsTest {
         BookingController.DayTimeFrame dummyDayTimeFrame = new BookingController.DayTimeFrame(0,0,1,new ArrayList<>(),new ArrayList<>());
         model.addAttribute("frame",dummyDayTimeFrame);
         String render = thymeleafTestEngine.render("roomDetails.html",model);
+
         //Assert
         System.out.println(render);
-        assertThat(render).contains(room.roomnumber);
+        assertThat(render).contains(room.getRoomnumber());
     }
 
 }
