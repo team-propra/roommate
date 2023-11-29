@@ -7,6 +7,7 @@ import com.example.roommate.repositories.BookEntryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BookEntryService {
@@ -20,7 +21,7 @@ public class BookEntryService {
         return bookEntryRepository.getBookDataFormList();
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
-        BookingEntity bookDataEntry = new BookingEntity(form.roomID(), form.Monday19());
+        BookingEntity bookDataEntry = new BookingEntity(UUID.fromString(form.roomID()), form.Monday19());
         if (bookDataEntry.validateBookingCoorectness()) {
             bookEntryRepository.addBookEntry(bookDataEntry);
             return;
