@@ -1,7 +1,8 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
+import com.example.roommate.domain.models.exceptions.GeneralDomainException;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
@@ -17,10 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalTime;
 
-
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookingController {
@@ -42,11 +44,77 @@ public class BookingController {
         return "book";
     }
 
-    @PostMapping("/filter")
-    public String filterRooms(Model model, RedirectAttributes redirectAttributes) {
-        model.addAttribute("rooms", roomService.getRooms());
+    /*@PostMapping("/filter")public ModelAndView filterRooms(
+            @RequestParam("gegenstaende") String[] selectedItems,
+            @RequestParam("datum") String datum,
+            @RequestParam("uhrzeit") String uhrzeit,
+            RedirectAttributes redirectAttributes) {
+        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
+                .map(ItemName::new)
+                .collect(Collectors.toList());
+        System.out.println(selectedItemsList + datum);
+
+        ModelAndView modelAndView = new ModelAndView("book");
+        modelAndView.addObject("gegenstaende", selectedItems);
+        modelAndView.addObject("datum", datum);
+        modelAndView.addObject("uhrzeit", uhrzeit);
+        modelAndView.addObject("rooms", roomService.findRoomsWithItem(selectedItemsList));
+        return modelAndView;
+    }*/
+
+    /*@PostMapping("/filter")
+    public String filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
+                             @RequestParam("datum") String datum,
+                             @RequestParam("uhrzeit") String uhrzeit,
+                             final RedirectAttributes redirectAttributes) {
+
+        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
+                .map(ItemName::new)
+                .collect(Collectors.toList());
+        System.out.println(selectedItemsList + datum);
+
+        redirectAttributes.addFlashAttribute("gegenstaende", selectedItems);
+        redirectAttributes.addFlashAttribute("datum", datum);
+        redirectAttributes.addFlashAttribute("uhrzeit", uhrzeit);
+        redirectAttributes.addFlashAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
         return "redirect:/book";
+    }*/
+
+    /*@PostMapping("/filter")
+    public RedirectView filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
+                                   @RequestParam("datum") String datum,
+                                   @RequestParam("uhrzeit") String uhrzeit,
+                                   final RedirectAttributes redirectAttributes) {
+
+        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
+                .map(ItemName::new)
+                .collect(Collectors.toList());
+        System.out.println(selectedItemsList + datum);
+
+        redirectAttributes.addAttribute("gegenstaende", selectedItems);
+        redirectAttributes.addAttribute("datum", datum);
+        redirectAttributes.addAttribute("uhrzeit", uhrzeit);
+        redirectAttributes.addAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
+        return new RedirectView("book");
+    }*/
+    @PostMapping("/filter")
+    public String filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
+                                    @RequestParam("datum") String datum,
+                                    @RequestParam("uhrzeit") String uhrzeit,
+                                    Model model) {
+
+        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
+                .map(ItemName::new)
+                .collect(Collectors.toList());
+        System.out.println(selectedItemsList + datum);
+
+        model.addAttribute("gegenstaende", selectedItems);
+        model.addAttribute("datum", datum);
+        model.addAttribute("uhrzeit", uhrzeit);
+        model.addAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
+        return "book";
     }
+
 
 
     // alternativ kann auch @ModelAttribute("date") String date, @ModelAttribute("time") String time genutzt werden

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 //mediate between Repository, domain; map forms to domain-objects/data
@@ -48,12 +49,11 @@ public class RoomService {
 
     public List<ItemName> getItems() {
         return itemRepository.getItems();
-        /*return roomRepository.findAll().stream()
-                .map(roomEntry -> new Room(roomEntry.roomID(), roomEntry.roomnumber()))
-                .map(Room::getItems)
-                .flatMap(List::stream)
-                .distinct()
-                .collect(Collectors.toList());*/
     }
 
+    public List<Room> findRoomsWithItem(List<ItemName> items) {
+        return this.getRooms().stream()
+                .filter(room -> room.getItems().containsAll(items))
+                .collect(Collectors.toList());
+    }
 }
