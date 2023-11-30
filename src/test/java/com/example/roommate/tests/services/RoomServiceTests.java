@@ -2,11 +2,15 @@ package com.example.roommate.tests.services;
 
 import com.example.roommate.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.persistence.RoomRepository;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.RoomService;
+import com.example.roommate.tests.factories.EntityFactory;
 import com.example.roommate.tests.factories.ServiceFactory;
+import com.example.roommate.tests.factories.ValuesFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -126,6 +130,19 @@ class RoomServiceTest {
         assertThat(roomRepository.findAll()).containsOnlyOnce(new RoomEntry(room.getRoomID(), room.getRoomnumber()));
     }
 
+    @DisplayName("Can find a room with an item")
+    @Test
+    @Disabled
+    void test_7() {
+        Room room = EntityFactory.createRoom();
+        ItemName itemName = ValuesFactory.createItemName("chair");
+        roomService.saveAll(List.of(room));
+        room.addItem(itemName);
 
+        List<Room> resultList = roomService.findRoomsWithItem(List.of(itemName));
+        System.out.println(room.getItems());
+
+        assertThat(resultList).contains(room);
+    }
 }
 

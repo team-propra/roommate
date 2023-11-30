@@ -52,8 +52,8 @@ public class RoomService {
     }
 
     public List<Room> findRoomsWithItem(List<ItemName> items) {
-        return this.getRooms().stream()
-                .filter(room -> room.getItems().containsAll(items))
+        return getRooms().stream()
+                .filter(room -> {System.out.println(room.getItems()); return room.getItems().containsAll(items);})
                 .collect(Collectors.toList());
     }
 }
