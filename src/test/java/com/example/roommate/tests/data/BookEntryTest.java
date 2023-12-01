@@ -1,6 +1,6 @@
 package com.example.roommate.tests.data;
 
-import com.example.roommate.data.BookingEntry;
+import com.example.roommate.persistence.data.BookingEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

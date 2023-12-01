@@ -1,6 +1,6 @@
 package com.example.roommate.tests.services;
 
-import com.example.roommate.data.RoomEntry;
+import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.persistence.ItemRepository;

@@ -1,6 +1,6 @@
 package com.example.roommate.persistence;
 
-import com.example.roommate.data.BookingEntry;
+import com.example.roommate.persistence.data.BookingEntry;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

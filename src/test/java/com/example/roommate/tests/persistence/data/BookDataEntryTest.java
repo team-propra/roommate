@@ -1,11 +1,11 @@
-package com.example.roommate.tests.repositories.data;
+package com.example.roommate.tests.persistence.data;
 
-import com.example.roommate.repositories.data.BookDataEntry;
+import com.example.roommate.persistence.data.BookDataEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-public class bookDataEntryTest {
+public class BookDataEntryTest {
 
     @DisplayName("Can create a bookDataEntry")
     @Test

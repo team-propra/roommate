@@ -1,4 +1,4 @@
-package com.example.roommate.data;
+package com.example.roommate.persistence.data;
 
 import java.util.UUID;
 
