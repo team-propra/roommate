@@ -19,6 +19,8 @@ public class RoomRepository {
     public RoomRepository(){
         rooms = new ArrayList<>();
         rooms.add(new RoomEntry(UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1"),"4"));
+        rooms.add(new RoomEntry(UUID.randomUUID(), "44"));
+        rooms.add(new RoomEntry(UUID.randomUUID(), "45"));
     }
 
     public List<RoomEntry> findAll(){

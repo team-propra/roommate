@@ -1,13 +1,19 @@
-package com.example.roommate.domain.entities;
+package com.example.roommate.domain.models.entities;
 
 
+import com.example.roommate.domain.models.values.ItemName;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Room {
 
-    public UUID roomID;
-    public String roomnumber;
+    private final UUID roomID;
+    private final String roomnumber;
+
+    private final List<ItemName> itemNameList = new ArrayList<>();
 
     public Room(UUID roomID, String roomnumber) {
         this.roomID = roomID;
@@ -33,5 +39,17 @@ public class Room {
     @Override
     public int hashCode() {
         return Objects.hash(roomID, roomnumber);
+    }
+
+    public void addItem(ItemName item) {
+        itemNameList.add(item);
+    }
+
+    public void addItem(List<ItemName> items) {
+        itemNameList.addAll(items);
+    }
+
+    public List<ItemName> getItems() {
+        return itemNameList;
     }
 }

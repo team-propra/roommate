@@ -24,7 +24,7 @@ public class OnionComplianceTest {
                     .layer("Controllers").definedBy("com.example.roommate.controller..")
                     .layer("Services").definedBy("com.example.roommate.services..")
                     .layer("Persistence").definedBy("com.example.roommate.persistence..")
-                    .layer("Domain").definedBy("com.example.roommate.domain..")
+                    .layer("Domain").definedBy("com.example.roommate.tests.domain..")
                     .layer("Tests").definedBy("com.example.roommate.tests..")
                     .layer("DTOs").definedBy("com.example.roommate.dtos..")
 

@@ -1,6 +1,6 @@
 package com.example.roommate.tests.controller.room;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.RoomService;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ public class GetRoomTest {
         MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertThat(result.getResponse().getContentAsString()).contains(room.roomnumber);
+        assertThat(result.getResponse().getContentAsString()).contains(room.getRoomnumber());
         
     }
 
@@ -48,7 +48,7 @@ public class GetRoomTest {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room goodRoom = new Room(roomID,"test-room-123");
         
-        when(roomService.findRoomByID(goodRoom.roomID)).thenThrow(new NotFoundRepositoryException());
+        when(roomService.findRoomByID(goodRoom.getRoomID())).thenThrow(new NotFoundRepositoryException());
         
         mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isNotFound())

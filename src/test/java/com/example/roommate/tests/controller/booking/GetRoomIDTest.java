@@ -1,6 +1,6 @@
 package com.example.roommate.tests.controller.booking;
 
-import com.example.roommate.domain.entities.Room;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.services.RoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +39,6 @@ public class GetRoomIDTest {
                 .andReturn();
 
         String html = result.getResponse().getContentAsString();
-        assertThat(html).contains(room.roomnumber);
+        assertThat(html).contains(room.getRoomnumber());
     }
 }

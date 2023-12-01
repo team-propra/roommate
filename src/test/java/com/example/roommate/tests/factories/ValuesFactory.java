@@ -1,7 +1,7 @@
 package com.example.roommate.tests.factories;
 
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.domain.values.Item;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
 
 import java.util.UUID;
@@ -17,9 +17,14 @@ public class ValuesFactory {
         return new BookDataForm(id.toString(), false);
     }
 
-    public static Item createItem() {
-        return new Item("Item");
+    public static ItemName createItemName() {
+        return new ItemName("Item");
     }
+
+    public static ItemName createItemName(String type) {
+        return new ItemName(type);
+    }
+
 
     public static LoginForm createLoginData() {
         return new LoginForm("user", "password");
