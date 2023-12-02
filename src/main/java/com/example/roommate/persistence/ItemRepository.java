@@ -1,6 +1,6 @@
 package com.example.roommate.persistence;
 
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.interfaces.values.ItemName;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

@@ -7,7 +7,6 @@ import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.servlet.support.BindStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class RoomDetailsTest {
 
         //Assert
         System.out.println(render);
-        assertThat(render).contains(room.getRoomnumber());
+        assertThat(render).contains(room.getRoomNumber());
     }
 
 }

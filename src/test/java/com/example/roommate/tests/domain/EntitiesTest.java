@@ -4,7 +4,7 @@ import com.example.roommate.domain.models.entities.Admin;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.User;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.tests.factories.EntityFactory;
 import com.example.roommate.tests.factories.ValuesFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +35,7 @@ public class EntitiesTest {
     @Test
     void test_3() {
         Room room = EntityFactory.createRoom();
-        String roomNumber = room.getRoomnumber();
+        String roomNumber = room.getRoomNumber();
         assertThat(roomNumber).isEqualTo("12");
     }
 

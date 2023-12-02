@@ -1,14 +1,15 @@
 package com.example.roommate.domain.models.entities;
 
 
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.values.ItemName;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Room {
+public class Room implements IRoom {
 
     private final UUID roomID;
     private final String roomnumber;
@@ -24,7 +25,7 @@ public class Room {
         return roomID;
     }
 
-    public String getRoomnumber() {
+    public String getRoomNumber() {
         return roomnumber;
     }
 

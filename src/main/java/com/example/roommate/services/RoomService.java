@@ -3,7 +3,7 @@ package com.example.roommate.services;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.persistence.RoomRepository;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class RoomService {
     }
 
     public void addRoom(Room room) {
-        roomRepository.save(new RoomEntry(room.getRoomID(), room.getRoomnumber()));
+        roomRepository.save(new RoomEntry(room.getRoomID(), room.getRoomNumber()));
     }
 
     public void removeRoom(Room room) {roomRepository.remove(room.getRoomID());}
@@ -44,7 +44,7 @@ public class RoomService {
     }
 
     public void saveAll(List<Room> rooms) {
-        roomRepository.saveAll(rooms.stream().map(r -> new RoomEntry(r.getRoomID(), r.getRoomnumber())).toList());
+        roomRepository.saveAll(rooms.stream().map(r -> new RoomEntry(r.getRoomID(), r.getRoomNumber())).toList());
     }
 
     public List<ItemName> getItems() {

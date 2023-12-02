@@ -38,7 +38,7 @@ public class GetRoomTest {
         MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertThat(result.getResponse().getContentAsString()).contains(room.getRoomnumber());
+        assertThat(result.getResponse().getContentAsString()).contains(room.getRoomNumber());
         
     }
 
