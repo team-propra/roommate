@@ -17,66 +17,74 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 public class Correlations {
     
-    static ClassesThat<GivenClassesConjunction> actuallyClasses = classes()
+    static GivenClassesConjunction actuallyClasses = classes()
             .that()
-            .areNotInterfaces()
-            .and();
+            .areNotInterfaces();
 
-    static ClassesThat<GivenClassesConjunction> actuallyInterfaces = classes()
+    static GivenClassesConjunction actuallyInterfaces = classes()
             .that()
             .areInterfaces()
             .and()
-            .areNotAnnotations()
-            .and();
+            .areNotAnnotations();
 
     static ClassesThat<GivenClassesConjunction> actuallyAnnotations = classes()
             .that()
             .areAnnotations()
             .and();
     public static Stream<DynamicTest> classCorrelations(String packageIdentifier, Class<? extends Annotation> annotation, ArchCondition<JavaClass> nameRequirement){
+        return correlations(packageIdentifier, annotation, nameRequirement, actuallyClasses);
+    }
+
+    public static Stream<DynamicTest> interfaceCorrelations(String packageIdentifier, Class<? extends Annotation> annotation, ArchCondition<JavaClass> nameRequirement) {
+        return correlations(packageIdentifier, annotation, nameRequirement, actuallyInterfaces);
+    }
+
+    static Stream<DynamicTest> correlations(String packageIdentifier, Class<? extends Annotation> annotation, ArchCondition<JavaClass> nameRequirement, GivenClassesConjunction base) {
         JavaClasses classes =
                 new ClassFileImporter().importPackages("com.example.roommate");
         String annotationName = annotation.getSimpleName();
 
-        ArchRule annotationPackage = actuallyClasses
+        ArchRule annotationPackage = base
+                .and()
                 .areAnnotatedWith(annotation)
                 .should()
                 .resideInAPackage(packageIdentifier);
 
-        ArchRule annotationNaming = actuallyClasses
+        ArchRule annotationNaming = base
+                .and()
                 .areAnnotatedWith(annotation)
                 .should(nameRequirement);
 
-        ArchRule packageAnnotation = actuallyClasses
+        ArchRule packageAnnotation = base
+                .and()
                 .resideInAPackage(packageIdentifier)
                 .should()
                 .beAnnotatedWith(annotation);
 
-        ArchRule packageNaming = actuallyClasses
+        ArchRule packageNaming = base
+                .and()
                 .resideInAPackage(packageIdentifier)
                 .should(nameRequirement);
 
 
-        ArchRule namingAnnotation = actuallyClasses
-                .areNotInterfaces()
+        ArchRule namingAnnotation = base
                 .and(ArchConditionToDescribedPredicateAdapter.create(nameRequirement))
                 .should()
                 .beAnnotatedWith(annotation);
 
-        ArchRule namingPackage = actuallyClasses
-                .areNotInterfaces()
+        ArchRule namingPackage = base
                 .and(ArchConditionToDescribedPredicateAdapter.create(nameRequirement))
                 .should()
                 .resideInAPackage(packageIdentifier);
 
         return Stream.of(
-                DynamicTest.dynamicTest("annotation: <%s> correlates to package: <%s>".formatted(annotationName,packageIdentifier), ()->annotationPackage.check(classes)),
-                DynamicTest.dynamicTest("annotation: <%s> correlates to naming: <%s>".formatted(annotationName,nameRequirement), ()->annotationNaming.check(classes)),
-                DynamicTest.dynamicTest("package: <%s> correlates to annotation: <%s>".formatted(packageIdentifier,annotationName), ()->packageAnnotation.check(classes)),
-                DynamicTest.dynamicTest("package: <%s> correlates to naming: <%s>".formatted(packageIdentifier,nameRequirement), ()->packageNaming.check(classes)),
-                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement,annotationName), ()->namingAnnotation.check(classes)),
-                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement,packageIdentifier), ()->namingPackage.check(classes))
-                
+                DynamicTest.dynamicTest("annotation: <%s> correlates to package: <%s>".formatted(annotationName, packageIdentifier), () -> annotationPackage.check(classes)),
+                DynamicTest.dynamicTest("annotation: <%s> correlates to naming: <%s>".formatted(annotationName, nameRequirement), () -> annotationNaming.check(classes)),
+                DynamicTest.dynamicTest("package: <%s> correlates to annotation: <%s>".formatted(packageIdentifier, annotationName), () -> packageAnnotation.check(classes)),
+                DynamicTest.dynamicTest("package: <%s> correlates to naming: <%s>".formatted(packageIdentifier, nameRequirement), () -> packageNaming.check(classes)),
+                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement, annotationName), () -> namingAnnotation.check(classes)),
+                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement, packageIdentifier), () -> namingPackage.check(classes))
+
         );
     }
 }
