@@ -1,5 +1,6 @@
 package com.example.roommate.domain.services;
 
+import com.example.roommate.annotations.DomainService;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+@DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
 public class RoomDomainService {
 
