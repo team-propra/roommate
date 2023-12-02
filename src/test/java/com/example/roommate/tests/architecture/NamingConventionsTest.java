@@ -17,4 +17,15 @@ public class NamingConventionsTest {
             .areAnnotatedWith(Service.class)
             .should()
             .haveSimpleNameEndingWith("Service");
+
+    @ArchTest
+    static ArchRule tests = classes()
+            .that()
+            .resideInAPackage("com.example.roommate.tests..")
+            .and()
+            .resideOutsideOfPackage("..utility..")
+            .and()
+            .resideOutsideOfPackage("..factories..")
+            .should()
+            .haveSimpleNameEndingWith("Test");
 }
