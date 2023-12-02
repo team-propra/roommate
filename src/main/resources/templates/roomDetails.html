@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title th:text="*{roomnumber}" >-1</title>
+    <title th:text="*{roomNumber}" >-1</title>
 </head>
 <body>
-  <h1>Details zu Raum <span th:text="*{roomnumber}">-1</span> </h1>
+  <h1>Details zu Raum <span th:text="*{roomNumber}">-1</span> </h1>
 
   <div th:if="${formValidationErrorText}">
     <div th:text="${formValidationErrorText}">ErrorText</div>

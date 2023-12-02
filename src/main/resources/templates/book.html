@@ -50,7 +50,7 @@
             <td><a href="/room/3c857752-79ed-4fde-a916-770ae34e70e1">Raum ansehen</a></td>
         </tr>
         <tr th:each="room : ${rooms}">
-            <td th:text="${'Raum ' + room.roomnumber}"></td>
+            <td th:text="${'Raum ' + room.roomNumber}"></td>
             <td>Uhrzeit</td>
             <td>
                 <a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Raum ansehen</a>
