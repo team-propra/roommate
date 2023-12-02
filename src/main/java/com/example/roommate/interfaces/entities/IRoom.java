@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface IRoom {
     UUID getRoomID();
     String getRoomNumber();
-    public List<ItemName> getItems();
+    List<ItemName> getItems();
 }

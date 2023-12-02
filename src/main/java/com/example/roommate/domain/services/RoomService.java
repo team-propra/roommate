@@ -3,8 +3,6 @@ package com.example.roommate.domain.services;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
-import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
@@ -26,17 +24,17 @@ public class RoomService {
         this.itemRepository = itemRepository;
     }
 
-    public void addRoom(Room room) {
+    public void addRoom(IRoom room) {
         roomRepository.save(room);
     }
 
-    public void removeRoom(Room room) {roomRepository.remove(room.getRoomID());}
+    public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
 
     public List<IRoom> getRooms() {
         return roomRepository.findAll();
     }
 
-    public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
+    public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
             IRoom roomByID = roomRepository.findRoomByID(roomID);
             return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());

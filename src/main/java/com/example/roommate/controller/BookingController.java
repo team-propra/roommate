@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
@@ -128,7 +129,7 @@ public class BookingController {
     @GetMapping("/room/{roomID}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
-            Room roomByID = roomService.findRoomByID(roomID);
+            IRoom roomByID = roomService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
             
             //Frames
