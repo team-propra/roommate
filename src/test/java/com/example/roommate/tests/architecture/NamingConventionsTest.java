@@ -19,6 +19,15 @@ public class NamingConventionsTest {
             .haveSimpleNameEndingWith("Service");
 
     @ArchTest
+    static ArchRule domainServices = classes()
+            .that()
+            .resideInAPackage("com.example.roommate.domain.services..")
+            .and()
+            .areAnnotatedWith(Service.class)
+            .should()
+            .haveSimpleNameEndingWith("DomainService");
+
+    @ArchTest
     static ArchRule tests = classes()
             .that()
             .resideInAPackage("com.example.roommate.tests..")
