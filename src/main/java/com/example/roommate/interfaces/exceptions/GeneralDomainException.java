@@ -1,4 +1,4 @@
-package com.example.roommate.domain.models.exceptions;
+package com.example.roommate.interfaces.exceptions;
 
 public class GeneralDomainException extends Exception {
 }

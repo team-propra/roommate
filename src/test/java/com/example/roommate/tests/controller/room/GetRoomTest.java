@@ -1,8 +1,8 @@
 package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.RoomService;
+import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
+import com.example.roommate.domain.services.RoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

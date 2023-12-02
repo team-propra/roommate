@@ -1,12 +1,12 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.models.exceptions.GeneralDomainException;
+import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
+import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookEntryService;
-import com.example.roommate.services.RoomService;
+import com.example.roommate.domain.services.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

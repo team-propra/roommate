@@ -1,5 +1,6 @@
 package com.example.roommate.persistence;
 
+import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.values.ItemName;
 import org.springframework.stereotype.Repository;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ItemRepository {
+public class ItemRepository implements IItemRepository{
 
     List<ItemName> itemList = new ArrayList<>();
 

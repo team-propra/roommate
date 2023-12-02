@@ -1,12 +1,13 @@
-package com.example.roommate.services;
+package com.example.roommate.domain.services;
 
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.repositories.IItemRepository;
+import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.values.ItemName;
-import com.example.roommate.persistence.RoomRepository;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
+import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,22 +18,22 @@ import java.util.stream.Collectors;
 //mediate between Repository, domain; map forms to domain-objects/data
 public class RoomService {
 
-    RoomRepository roomRepository;
-    ItemRepository itemRepository;
+    IRoomRepository roomRepository;
+    IItemRepository itemRepository;
 
-    public RoomService(RoomRepository roomRepository, ItemRepository itemRepository) {
+    public RoomService(IRoomRepository roomRepository, IItemRepository itemRepository) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
     }
 
     public void addRoom(Room room) {
-        roomRepository.save(new RoomEntry(room.getRoomID(), room.getRoomNumber()));
+        roomRepository.save(room);
     }
 
     public void removeRoom(Room room) {roomRepository.remove(room.getRoomID());}
 
-    public List<Room> getRooms() {
-        return roomRepository.findAll().stream().map(r -> new Room(r.getRoomID(), r.getRoomNumber())).toList();
+    public List<IRoom> getRooms() {
+        return roomRepository.findAll();
     }
 
     public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
@@ -52,7 +53,7 @@ public class RoomService {
         return itemRepository.getItems();
     }
 
-    public List<Room> findRoomsWithItem(List<ItemName> items) {
+    public List<IRoom> findRoomsWithItem(List<ItemName> items) {
         return getRooms().stream()
                 .filter(room -> {System.out.println(room.getItems()); return room.getItems().containsAll(items);})
                 .collect(Collectors.toList());

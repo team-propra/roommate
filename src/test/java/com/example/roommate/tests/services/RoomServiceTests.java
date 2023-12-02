@@ -6,8 +6,8 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.persistence.RoomRepository;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.RoomService;
+import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
+import com.example.roommate.domain.services.RoomService;
 import com.example.roommate.tests.factories.EntityFactory;
 import com.example.roommate.tests.factories.ServiceFactory;
 import com.example.roommate.tests.factories.ValuesFactory;
@@ -38,8 +38,7 @@ class RoomServiceTest {
         Room room = new Room(roomID, "101");
         roomService.addRoom(room);
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber());
-        assertThat(roomRepository.findAll()).contains(roomEntry);
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.getRoomID());
     }
 
     @Test
@@ -68,8 +67,7 @@ class RoomServiceTest {
 
         roomService.removeRoom(differentRoom);
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber());
-        assertThat(roomRepository.findAll()).contains(roomEntry);
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.getRoomID());
     }
 
     @Test
@@ -128,7 +126,7 @@ class RoomServiceTest {
         roomService.saveAll(List.of(room));
         roomService.addRoom(room);
 
-        assertThat(roomRepository.findAll()).containsOnlyOnce(new RoomEntry(room.getRoomID(), room.getRoomNumber()));
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).containsOnlyOnce(room.getRoomID());
     }
 
     @DisplayName("Can find a room with an item")
@@ -140,7 +138,7 @@ class RoomServiceTest {
         roomService.saveAll(List.of(room));
         room.addItem(itemName);
 
-        List<Room> resultList = roomService.findRoomsWithItem(List.of(itemName));
+        List<IRoom> resultList = roomService.findRoomsWithItem(List.of(itemName));
         System.out.println(room.getItems());
 
         assertThat(resultList).contains(room);

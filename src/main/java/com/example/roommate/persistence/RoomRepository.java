@@ -1,14 +1,15 @@
 package com.example.roommate.persistence;
 
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
+import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class RoomRepository {
+public class RoomRepository implements IRoomRepository {
     private final List<IRoom> rooms;
     
     public RoomRepository(Collection<IRoom> rooms){

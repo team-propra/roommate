@@ -1,7 +1,9 @@
 package com.example.roommate.persistence.data;
 
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.values.ItemName;
 
+import java.util.List;
 import java.util.UUID;
 
 public record RoomEntry(UUID roomID,String roomnumber) implements IRoom {
@@ -13,5 +15,10 @@ public record RoomEntry(UUID roomID,String roomnumber) implements IRoom {
     @Override
     public String getRoomNumber() {
         return roomnumber;
+    }
+
+    @Override
+    public List<ItemName> getItems() {
+        throw new UnsupportedOperationException();
     }
 }

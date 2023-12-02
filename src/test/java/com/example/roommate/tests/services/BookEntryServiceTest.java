@@ -3,7 +3,7 @@ package com.example.roommate.tests.services;
 
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.tests.factories.ValuesFactory;
-import com.example.roommate.domain.models.exceptions.GeneralDomainException;
+import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.BookEntryRepository;
 import com.example.roommate.services.BookEntryService;

@@ -5,7 +5,7 @@ import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.persistence.RoomRepository;
 import com.example.roommate.services.BookEntryService;
 import com.example.roommate.services.LoginService;
-import com.example.roommate.services.RoomService;
+import com.example.roommate.domain.services.RoomService;
 
 public class ServiceFactory {
     public static RoomService createRoomService(RoomRepository roomRepository, ItemRepository itemRepository) {
