@@ -4,7 +4,7 @@ import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.interfaces.entities.IBooking;
-import com.example.roommate.interfaces.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 
 import java.util.Collection;

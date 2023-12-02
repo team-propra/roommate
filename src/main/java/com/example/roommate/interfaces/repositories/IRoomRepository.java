@@ -2,7 +2,7 @@ package com.example.roommate.interfaces.repositories;
 
 import com.example.roommate.annotations.RepositoryInterface;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 
 import java.util.List;
 import java.util.UUID;

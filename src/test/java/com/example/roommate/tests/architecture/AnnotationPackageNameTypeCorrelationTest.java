@@ -35,6 +35,11 @@ public class AnnotationPackageNameTypeCorrelationTest {
     }
 
     @TestFactory
+    public Stream<DynamicTest> allInterfaces(){
+        return interfaceCorrelations("..roommate.interfaces..", Interface.class, ArchConditions.haveSimpleNameStartingWith("I"));
+    }
+
+    @TestFactory
     public Stream<DynamicTest> tests(){
         return classCorrelations("..roommate.tests..", TestClass.class, ArchConditions.haveSimpleNameEndingWith("Test"));
     }

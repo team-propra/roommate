@@ -1,10 +1,10 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.interfaces.exceptions.GeneralDomainException;
-import com.example.roommate.interfaces.values.ItemName;
+import com.example.roommate.exceptions.GeneralDomainException;
+import com.example.roommate.domain.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.services.BookingApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;

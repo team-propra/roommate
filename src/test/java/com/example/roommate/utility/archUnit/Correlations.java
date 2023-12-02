@@ -46,20 +46,20 @@ public class Correlations {
 
         ArchRule annotationPackage = base
                 .and()
-                .areAnnotatedWith(annotation)
+                .areMetaAnnotatedWith(annotation)
                 .should()
                 .resideInAPackage(packageIdentifier);
 
         ArchRule annotationNaming = base
                 .and()
-                .areAnnotatedWith(annotation)
+                .areMetaAnnotatedWith(annotation)
                 .should(nameRequirement);
 
         ArchRule packageAnnotation = base
                 .and()
                 .resideInAPackage(packageIdentifier)
                 .should()
-                .beAnnotatedWith(annotation);
+                .beMetaAnnotatedWith(annotation);
 
         ArchRule packageNaming = base
                 .and()
@@ -70,7 +70,7 @@ public class Correlations {
         ArchRule namingAnnotation = base
                 .and(ArchConditionToDescribedPredicateAdapter.create(nameRequirement))
                 .should()
-                .beAnnotatedWith(annotation);
+                .beMetaAnnotatedWith(annotation);
 
         ArchRule namingPackage = base
                 .and(ArchConditionToDescribedPredicateAdapter.create(nameRequirement))

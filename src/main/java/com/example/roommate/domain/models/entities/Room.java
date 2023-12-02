@@ -2,7 +2,7 @@ package com.example.roommate.domain.models.entities;
 
 
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.interfaces.values.ItemName;
+import com.example.roommate.domain.values.ItemName;
 
 import java.util.ArrayList;
 import java.util.List;

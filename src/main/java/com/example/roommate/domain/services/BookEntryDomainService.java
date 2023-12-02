@@ -3,9 +3,8 @@ package com.example.roommate.domain.services;
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.interfaces.entities.IBooking;
-import com.example.roommate.interfaces.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.interfaces.repositories.IBookEntryRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

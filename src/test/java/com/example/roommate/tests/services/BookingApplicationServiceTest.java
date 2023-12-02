@@ -5,7 +5,7 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
-import com.example.roommate.interfaces.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.services.BookingApplicationService;
 import org.junit.jupiter.api.DisplayName;
