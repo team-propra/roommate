@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.services.BookingService;
+import com.example.roommate.services.BookingApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller()
 @RequestMapping("/home")
 public class HomeController {
-    private final BookingService bookingService;
+    private final BookingApplicationService bookingApplicationService;
     @Autowired
-    public HomeController(BookingService bookingService) {
-        this.bookingService = bookingService;
+    public HomeController(BookingApplicationService bookingApplicationService) {
+        this.bookingApplicationService = bookingApplicationService;
     }
 
     @GetMapping
     public String home(Model model) {
-        model.addAttribute("forms", bookingService.getBookEntries());
+        model.addAttribute("forms", bookingApplicationService.getBookEntries());
         return "home";
     }
 }

@@ -6,17 +6,16 @@ import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.UUID;
 
 @ApplicationService
-public class BookingService {
+public class BookingApplicationService {
     
     BookEntryDomainService bookEntryDomainService;
 
-    public BookingService(BookEntryDomainService bookEntryDomainService) {
+    public BookingApplicationService(BookEntryDomainService bookEntryDomainService) {
         this.bookEntryDomainService = bookEntryDomainService;
     }
     

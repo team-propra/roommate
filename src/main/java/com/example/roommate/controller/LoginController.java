@@ -1,7 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.dtos.forms.LoginForm;
-import com.example.roommate.services.LoginService;
+import com.example.roommate.services.LoginApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
-    LoginService loginService;
+    LoginApplicationService loginApplicationService;
     @Autowired
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginController(LoginApplicationService loginApplicationService) {
+        this.loginApplicationService = loginApplicationService;
     }
 
     @GetMapping("/login")
@@ -24,7 +24,7 @@ public class LoginController {
     @PostMapping("/login")
     public String validLogin(LoginForm loginForm) {
         System.out.println(loginForm);
-        if (loginService.tryLogin(loginForm)) {
+        if (loginApplicationService.tryLogin(loginForm)) {
             return "redirect:/home";
         }
         return "error1";

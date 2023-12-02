@@ -5,7 +5,7 @@ import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.BookingService;
+import com.example.roommate.services.BookingApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,12 @@ import java.util.stream.Collectors;
 @Controller
 public class BookingController {
 
-    private final BookingService bookingService;
+    private final BookingApplicationService bookingApplicationService;
     private final RoomDomainService roomDomainService;
 
     @Autowired
-    public BookingController(BookingService bookingService, RoomDomainService roomDomainService) {
-        this.bookingService = bookingService;
+    public BookingController(BookingApplicationService bookingApplicationService, RoomDomainService roomDomainService) {
+        this.bookingApplicationService = bookingApplicationService;
         this.roomDomainService = roomDomainService;
     }
 
@@ -200,7 +200,7 @@ public class BookingController {
         //view.setStatusCode(HttpStatus.CREATED);
 
         try {
-            bookingService.addBookEntry(form);
+            bookingApplicationService.addBookEntry(form);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
