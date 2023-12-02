@@ -1,4 +1,4 @@
-package com.example.roommate.persistence;
+package com.example.roommate.persistence.repositories;
 
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.interfaces.repositories.IBookEntryRepository;
