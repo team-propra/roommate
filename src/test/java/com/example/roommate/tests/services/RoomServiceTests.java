@@ -4,7 +4,7 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.values.ItemName;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
