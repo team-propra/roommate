@@ -1,7 +1,7 @@
 package com.example.roommate.tests.services;
 
 
-import com.example.roommate.domain.models.entities.Booking;
+import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.tests.factories.ValuesFactory;
 import com.example.roommate.domain.models.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
@@ -28,7 +28,7 @@ public class BookEntryServiceTest {
         UUID id = ValuesFactory.id;
 
         //assert: look if the id is contained in the bookEntryService
-        List<UUID> ids = bookEntryService.getBookEntries().stream().map(Booking::roomID).toList();
+        List<UUID> ids = bookEntryService.getBookEntries().stream().map(IBooking::getRoomID).toList();
         assertThat(ids).contains(id);
 
     }
