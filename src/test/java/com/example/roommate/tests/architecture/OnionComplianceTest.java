@@ -29,12 +29,13 @@ public class OnionComplianceTest {
                     .layer("Domain").definedBy("com.example.roommate.tests.domain..")
                     .layer("Tests").definedBy("com.example.roommate.tests..")
                     .layer("DTOs").definedBy("com.example.roommate.dtos..")
+                    .layer("Factory").definedBy("com.example.roommate.factories..")
 
 
                     .whereLayer("Controllers").mayOnlyBeAccessedByLayers("Tests")
-                    .whereLayer("Domain").mayOnlyBeAccessedByLayers("Tests","Services")
-                    .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers","Tests")
-                    .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services","Tests")
-                    .whereLayer("DTOs").mayOnlyBeAccessedByLayers("Controllers","Tests","Services");
+                    .whereLayer("Domain").mayOnlyBeAccessedByLayers("Tests","Services","Factory")
+                    .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers","Tests","Factory")
+                    .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services","Tests","Factory")
+                    .whereLayer("DTOs").mayOnlyBeAccessedByLayers("Controllers","Tests","Services","Factory");
 
 }
