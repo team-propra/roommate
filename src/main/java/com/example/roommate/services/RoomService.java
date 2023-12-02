@@ -1,5 +1,6 @@
 package com.example.roommate.services;
 
+import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
@@ -31,20 +32,20 @@ public class RoomService {
     public void removeRoom(Room room) {roomRepository.remove(room.getRoomID());}
 
     public List<Room> getRooms() {
-        return roomRepository.findAll().stream().map(r -> new Room(r.roomID(), r.roomnumber())).toList();
+        return roomRepository.findAll().stream().map(r -> new Room(r.getRoomID(), r.getRoomNumber())).toList();
     }
 
     public Room findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
-            RoomEntry roomByID = roomRepository.findRoomByID(roomID);
-            return new Room(roomByID.roomID(), roomByID.roomnumber());
+            IRoom roomByID = roomRepository.findRoomByID(roomID);
+            return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }
     }
 
-    public void saveAll(List<Room> rooms) {
-        roomRepository.saveAll(rooms.stream().map(r -> new RoomEntry(r.getRoomID(), r.getRoomNumber())).toList());
+    public void saveAll(List<IRoom> rooms) {
+        roomRepository.saveAll(rooms);
     }
 
     public List<ItemName> getItems() {

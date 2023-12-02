@@ -1,5 +1,6 @@
 package com.example.roommate.tests.services;
 
+import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.values.ItemName;
@@ -76,10 +77,10 @@ class RoomServiceTest {
     void test_3() {
         Room room1 = new Room(roomID, "103");
         Room room2 = new Room(differentRoomID, "104");
-        ArrayList<Room> rooms = new ArrayList<>();
+        ArrayList<IRoom> rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
-        RoomRepository roomRepository = new RoomRepository(rooms.stream().map(r -> new RoomEntry(r.getRoomID(), r.getRoomNumber())).toList());
+        RoomRepository roomRepository = new RoomRepository(rooms);
         RoomService roomService = ServiceFactory.createRoomService(roomRepository, itemRepository);
 
         //one room already exists
@@ -116,7 +117,7 @@ class RoomServiceTest {
 
         roomService.saveAll(List.of(room1, room2));
 
-        assertThat(roomRepository.findAll()).contains(new RoomEntry(room1.getRoomID(), room1.getRoomNumber()), new RoomEntry(room2.getRoomID(), room2.getRoomNumber()));
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room1.getRoomID(), room2.getRoomID());
     }
 
     @DisplayName("Adding a room that is already in the List does not change it")
