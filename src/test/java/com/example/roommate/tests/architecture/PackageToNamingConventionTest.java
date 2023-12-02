@@ -8,13 +8,11 @@ import org.springframework.stereotype.Service;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(packages = "com.example.roommate")
-public class NamingConventionsTest {
+public class PackageToNamingConventionTest {
     @ArchTest
     static ArchRule services = classes()
             .that()
             .resideInAPackage("com.example.roommate.services..")
-            .and()
-            .areAnnotatedWith(Service.class)
             .should()
             .haveSimpleNameEndingWith("Service");
 
@@ -22,8 +20,6 @@ public class NamingConventionsTest {
     static ArchRule domainServices = classes()
             .that()
             .resideInAPackage("com.example.roommate.domain.services..")
-            .and()
-            .areAnnotatedWith(Service.class)
             .should()
             .haveSimpleNameEndingWith("DomainService");
 
