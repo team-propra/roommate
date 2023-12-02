@@ -37,4 +37,10 @@ public class NamingConventionsTest {
             .resideOutsideOfPackage("..factories..")
             .should()
             .haveSimpleNameEndingWith("Test");
+    @ArchTest
+    static ArchRule interfaces = classes()
+            .that()
+            .areInterfaces()
+            .should()
+            .haveSimpleNameStartingWith("I");
 }
