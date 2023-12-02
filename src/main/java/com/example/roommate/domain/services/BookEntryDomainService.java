@@ -1,5 +1,6 @@
 package com.example.roommate.domain.services;
 
+import com.example.roommate.annotations.DomainService;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@DomainService
 public class BookEntryDomainService {
     IBookEntryRepository bookEntryRepository;
 

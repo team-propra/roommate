@@ -1,5 +1,6 @@
 package com.example.roommate.tests.architecture;
 
+import com.example.roommate.annotations.DomainService;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
@@ -7,13 +8,11 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(packages = "com.example.roommate")
-public class TypeToNamingTest {
+public class AnnotationToPackageTest {
     @ArchTest
-    static ArchRule interfaces = classes()
+    static ArchRule domainServices = classes()
             .that()
-            .areInterfaces()
-            .and()
-            .areNotAnnotations()
+            .areAnnotatedWith(DomainService.class)
             .should()
-            .haveSimpleNameStartingWith("I");
+            .resideInAPackage("..roommate.domain.services");
 }
