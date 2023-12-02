@@ -3,7 +3,7 @@ package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.services.BookEntryService;
+import com.example.roommate.services.BookingService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class PostBookTest {
     MockMvc mvc;
 
     @MockBean
-    BookEntryService entryService;
+    BookingService entryService;
 
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");

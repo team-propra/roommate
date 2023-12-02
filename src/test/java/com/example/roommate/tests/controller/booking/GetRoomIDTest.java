@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.services.RoomService;
+import com.example.roommate.domain.services.RoomDomainService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class GetRoomIDTest {
     MockMvc mvc;
     
     @MockBean
-    RoomService roomService;
+    RoomDomainService roomDomainService;
     
     
 
@@ -33,7 +33,7 @@ public class GetRoomIDTest {
     void test_1() throws Exception {
         UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomId,"test");
-        when(roomService.findRoomByID(roomId)).thenReturn(room);
+        when(roomDomainService.findRoomByID(roomId)).thenReturn(room);
         MvcResult result = mvc.perform(get("/room/{ID}", roomId.toString()))
                 .andExpect(status().isOk())
                 .andReturn();

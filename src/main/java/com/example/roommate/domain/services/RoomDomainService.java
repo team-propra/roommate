@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 @Service
 //mediate between Repository, domain; map forms to domain-objects/data
-public class RoomService {
+public class RoomDomainService {
 
     IRoomRepository roomRepository;
     IItemRepository itemRepository;
 
-    public RoomService(IRoomRepository roomRepository, IItemRepository itemRepository) {
+    public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
     }

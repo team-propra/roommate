@@ -2,7 +2,7 @@ package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
-import com.example.roommate.domain.services.RoomService;
+import com.example.roommate.domain.services.RoomDomainService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ public class GetRoomTest {
     
     
     @MockBean
-    RoomService roomService;
+    RoomDomainService roomDomainService;
     @Test
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
-        when(roomService.findRoomByID(roomID)).thenReturn(room);
+        when(roomDomainService.findRoomByID(roomID)).thenReturn(room);
         
         MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isOk())
@@ -48,7 +48,7 @@ public class GetRoomTest {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room goodRoom = new Room(roomID,"test-room-123");
         
-        when(roomService.findRoomByID(goodRoom.getRoomID())).thenThrow(new NotFoundRepositoryException());
+        when(roomDomainService.findRoomByID(goodRoom.getRoomID())).thenThrow(new NotFoundRepositoryException());
         
         mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isNotFound())

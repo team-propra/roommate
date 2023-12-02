@@ -1,13 +1,12 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.interfaces.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.BookEntryService;
-import com.example.roommate.domain.services.RoomService;
+import com.example.roommate.services.BookingService;
+import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,20 +27,20 @@ import java.util.stream.Collectors;
 @Controller
 public class BookingController {
 
-    private final BookEntryService bookEntryService;
-    private final RoomService roomService;
+    private final BookingService bookingService;
+    private final RoomDomainService roomDomainService;
 
     @Autowired
-    public BookingController(BookEntryService bookEntryService, RoomService roomService) {
-        this.bookEntryService = bookEntryService;
-        this.roomService = roomService;
+    public BookingController(BookingService bookingService, RoomDomainService roomDomainService) {
+        this.bookingService = bookingService;
+        this.roomDomainService = roomDomainService;
     }
 
     @GetMapping("/book")
     public String index(Model model) {
 
-        model.addAttribute("items", roomService.getItems());
-        model.addAttribute("rooms", roomService.getRooms());
+        model.addAttribute("items", roomDomainService.getItems());
+        model.addAttribute("rooms", roomDomainService.getRooms());
         return "book";
     }
 
@@ -112,7 +111,7 @@ public class BookingController {
         model.addAttribute("gegenstaende", selectedItems);
         model.addAttribute("datum", datum);
         model.addAttribute("uhrzeit", uhrzeit);
-        model.addAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
+        model.addAttribute("rooms", roomDomainService.findRoomsWithItem(selectedItemsList));
         return "book";
     }
 
@@ -129,7 +128,7 @@ public class BookingController {
     @GetMapping("/room/{roomID}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
-            IRoom roomByID = roomService.findRoomByID(roomID);
+            IRoom roomByID = roomDomainService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
             
             //Frames
@@ -201,7 +200,7 @@ public class BookingController {
         //view.setStatusCode(HttpStatus.CREATED);
 
         try {
-            bookEntryService.addBookEntry(form);
+            bookingService.addBookEntry(form);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
