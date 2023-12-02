@@ -1,5 +1,6 @@
 package com.example.roommate.tests.architecture;
 
+import com.example.roommate.annotations.TestClass;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
@@ -8,6 +9,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 
 @AnalyzeClasses(packages = "com.example.roommate")
+@TestClass
 public class OnionComplianceTest {
 //    @ArchTest
 //    static ArchRule onion = onionArchitecture()

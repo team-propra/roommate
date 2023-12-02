@@ -1,5 +1,6 @@
 package com.example.roommate.tests.controller.room;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.interfaces.exceptions.NotFoundRepositoryException;
 import com.example.roommate.domain.services.RoomDomainService;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest
+@TestClass
 public class GetRoomTest {
 
     @Autowired

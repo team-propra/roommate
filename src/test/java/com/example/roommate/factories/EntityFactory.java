@@ -1,4 +1,4 @@
-package com.example.roommate.tests.factories;
+package com.example.roommate.factories;
 
 import com.example.roommate.domain.models.entities.Admin;
 import com.example.roommate.domain.models.entities.Booking;

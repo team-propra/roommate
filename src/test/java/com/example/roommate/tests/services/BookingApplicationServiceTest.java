@@ -1,9 +1,10 @@
 package com.example.roommate.tests.services;
 
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.interfaces.entities.IBooking;
-import com.example.roommate.tests.factories.ServiceFactory;
-import com.example.roommate.tests.factories.ValuesFactory;
+import com.example.roommate.factories.ServiceFactory;
+import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.services.BookingApplicationService;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
+@TestClass
 public class BookingApplicationServiceTest {
 
     @DisplayName("BookDataForm can be added to BookEntryService")

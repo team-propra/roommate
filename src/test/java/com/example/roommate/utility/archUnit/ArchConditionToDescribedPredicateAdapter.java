@@ -1,4 +1,4 @@
-package com.example.roommate.tests.architecture.utility;
+package com.example.roommate.utility.archUnit;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;

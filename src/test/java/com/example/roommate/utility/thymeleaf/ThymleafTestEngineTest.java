@@ -1,5 +1,6 @@
-package com.example.roommate.tests.frontend.utility;
+package com.example.roommate.utility.thymeleaf;
 
+import com.example.roommate.annotations.TestClass;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

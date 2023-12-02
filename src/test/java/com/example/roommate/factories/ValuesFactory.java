@@ -1,4 +1,4 @@
-package com.example.roommate.tests.factories;
+package com.example.roommate.factories;
 
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.interfaces.values.ItemName;

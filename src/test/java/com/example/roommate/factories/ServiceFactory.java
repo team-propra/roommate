@@ -1,4 +1,4 @@
-package com.example.roommate.tests.factories;
+package com.example.roommate.factories;
 
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.persistence.repositories.BookEntryRepository;

@@ -1,4 +1,4 @@
-package com.example.roommate.tests.frontend.utility;
+package com.example.roommate.utility.thymeleaf;
 
 import org.springframework.lang.NonNull;
 import org.springframework.ui.Model;

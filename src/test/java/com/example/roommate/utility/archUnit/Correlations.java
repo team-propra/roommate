@@ -1,20 +1,15 @@
-package com.example.roommate.tests.architecture.utility;
+package com.example.roommate.utility.archUnit;
 
-import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.lang.ConditionEvents;
-import com.tngtech.archunit.lang.syntax.elements.ClassesShould;
-import com.tngtech.archunit.lang.syntax.elements.ClassesShouldConjunction;
 import com.tngtech.archunit.lang.syntax.elements.ClassesThat;
 import com.tngtech.archunit.lang.syntax.elements.GivenClassesConjunction;
 import org.junit.jupiter.api.DynamicTest;
 
 import java.lang.annotation.Annotation;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;

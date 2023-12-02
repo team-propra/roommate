@@ -1,5 +1,6 @@
 package com.example.roommate.tests.controller;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.controller.LoginController;
 import com.example.roommate.dtos.forms.LoginForm;
 import com.example.roommate.services.LoginApplicationService;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LoginController.class)
+@TestClass
 public class LoginControllerTest {
 
     @Autowired

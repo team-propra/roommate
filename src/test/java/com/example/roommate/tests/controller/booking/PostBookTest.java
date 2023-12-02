@@ -1,6 +1,7 @@
 package com.example.roommate.tests.controller.booking;
 
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.interfaces.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.services.BookingApplicationService;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
+@TestClass
 public class PostBookTest {
 
     @Autowired
