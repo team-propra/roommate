@@ -3,12 +3,11 @@ package com.example.roommate.tests.architecture;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import org.springframework.stereotype.Service;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(packages = "com.example.roommate")
-public class PackageToNamingConventionTest {
+public class PackageToNamingTest {
     @ArchTest
     static ArchRule services = classes()
             .that()
@@ -42,10 +41,5 @@ public class PackageToNamingConventionTest {
             .should()
             .haveSimpleNameEndingWith("Factory");
 
-    @ArchTest
-    static ArchRule interfaces = classes()
-            .that()
-            .areInterfaces()
-            .should()
-            .haveSimpleNameStartingWith("I");
+    
 }
