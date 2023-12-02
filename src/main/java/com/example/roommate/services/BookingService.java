@@ -1,5 +1,6 @@
 package com.example.roommate.services;
 
+import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.interfaces.entities.IBooking;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.UUID;
 
-@Service
+@ApplicationService
 public class BookingService {
     
     BookEntryDomainService bookEntryDomainService;
