@@ -37,6 +37,15 @@ public class NamingConventionsTest {
             .resideOutsideOfPackage("..factories..")
             .should()
             .haveSimpleNameEndingWith("Test");
+
+
+    @ArchTest
+    static ArchRule factories = classes()
+            .that()
+            .resideInAPackage("com.example.roommate.tests.factories..")
+            .should()
+            .haveSimpleNameEndingWith("Factory");
+
     @ArchTest
     static ArchRule interfaces = classes()
             .that()
