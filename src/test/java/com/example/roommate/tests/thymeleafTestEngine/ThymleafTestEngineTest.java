@@ -1,11 +1,14 @@
-package com.example.roommate.utility.thymeleaf;
+package com.example.roommate.tests.thymeleafTestEngine;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.utility.thymeleaf.TestModel;
+import com.example.roommate.utility.thymeleaf.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestClass
 public class ThymleafTestEngineTest {
     
     @Test

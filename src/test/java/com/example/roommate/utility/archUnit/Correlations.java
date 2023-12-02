@@ -63,12 +63,19 @@ public class Correlations {
                 .should()
                 .beAnnotatedWith(annotation);
 
+        ArchRule namingPackage = actuallyClasses
+                .areNotInterfaces()
+                .and(ArchConditionToDescribedPredicateAdapter.create(nameRequirement))
+                .should()
+                .resideInAPackage(packageIdentifier);
+
         return Stream.of(
                 DynamicTest.dynamicTest("annotation: <%s> correlates to package: <%s>".formatted(annotationName,packageIdentifier), ()->annotationPackage.check(classes)),
                 DynamicTest.dynamicTest("annotation: <%s> correlates to naming: <%s>".formatted(annotationName,nameRequirement), ()->annotationNaming.check(classes)),
                 DynamicTest.dynamicTest("package: <%s> correlates to annotation: <%s>".formatted(packageIdentifier,annotationName), ()->packageAnnotation.check(classes)),
                 DynamicTest.dynamicTest("package: <%s> correlates to naming: <%s>".formatted(packageIdentifier,nameRequirement), ()->packageNaming.check(classes)),
-                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement,annotationName), ()->namingAnnotation.check(classes))
+                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement,annotationName), ()->namingAnnotation.check(classes)),
+                DynamicTest.dynamicTest("naming: <%s> correlates to annotation: <%s>".formatted(nameRequirement,packageIdentifier), ()->namingPackage.check(classes))
                 
         );
     }
