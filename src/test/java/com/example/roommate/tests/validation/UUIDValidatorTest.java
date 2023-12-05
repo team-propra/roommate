@@ -1,11 +1,13 @@
 package com.example.roommate.tests.validation;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.validator.UUIDValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestClass
 public class UUIDValidatorTest {
     @Test
     @DisplayName("Call validator with correct uuid")

@@ -1,9 +1,10 @@
 package com.example.roommate.tests.controller.booking;
 
 
-import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
+import com.example.roommate.annotations.TestClass;
+import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.services.BookEntryService;
+import com.example.roommate.applicationServices.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
+@TestClass
 public class PostBookTest {
 
     @Autowired
     MockMvc mvc;
 
     @MockBean
-    BookEntryService entryService;
+    BookingApplicationService entryService;
 
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");

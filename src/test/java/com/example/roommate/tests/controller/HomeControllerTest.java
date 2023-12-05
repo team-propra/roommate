@@ -1,6 +1,7 @@
 package com.example.roommate.tests.controller;
 
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.controller.HomeController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(HomeController.class)
+@TestClass
 public class  HomeControllerTest {
 
     @Autowired

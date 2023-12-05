@@ -1,18 +1,19 @@
 package com.example.roommate.tests.frontend;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.controller.BookingController;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.tests.frontend.utility.TestModel;
-import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
+import com.example.roommate.utility.thymeleaf.TestModel;
+import com.example.roommate.utility.thymeleaf.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.servlet.support.BindStatus;
 
 import java.util.ArrayList;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestClass
 public class RoomDetailsTest {
 
     @Test
@@ -35,7 +36,7 @@ public class RoomDetailsTest {
 
         //Assert
         System.out.println(render);
-        assertThat(render).contains(room.getRoomnumber());
+        assertThat(render).contains(room.getRoomNumber());
     }
 
 }

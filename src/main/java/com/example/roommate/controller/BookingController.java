@@ -1,11 +1,12 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.applicationService.NotFoundException;
+import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.BookEntryService;
-import com.example.roommate.services.RoomService;
+import com.example.roommate.applicationServices.BookingApplicationService;
+import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,50 +18,47 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalTime;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookingController {
 
-    private final BookEntryService bookEntryService;
-    private final RoomService roomService;
+    private final BookingApplicationService bookingApplicationService;
+    private final String[] emptyStringArray = new String[0];
 
     @Autowired
-    public BookingController(BookEntryService bookEntryService, RoomService roomService) {
-        this.bookEntryService = bookEntryService;
-        this.roomService = roomService;
+    public BookingController(BookingApplicationService bookingApplicationService, RoomDomainService roomDomainService) {
+        this.bookingApplicationService = bookingApplicationService;
     }
 
+    // http://localhost:8080/book?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/book")
-    public String index(Model model) {
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
+        if (datum == null) datum = "2024-01-01";
+        if (uhrzeit == null) uhrzeit = "08:00";
+        if (gegenstaende == null) gegenstaende = new ArrayList<>();
 
-        model.addAttribute("items", roomService.getItems());
-        model.addAttribute("rooms", roomService.getRooms());
+        List<ItemName> selectedItemsList = gegenstaende.stream()
+                .map(ItemName::new)
+                .collect(Collectors.toList());
+
+        model.addAttribute("date", datum);
+        model.addAttribute("time", uhrzeit);
+        model.addAttribute("items", bookingApplicationService.getItems());
+        model.addAttribute("gegenstaende", gegenstaende);
+        model.addAttribute("rooms", bookingApplicationService.getRooms()); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "book";
     }
 
-    @PostMapping("/filter")
-    public String filterRooms(Model model, RedirectAttributes redirectAttributes) {
-        model.addAttribute("rooms", roomService.getRooms());
-        return "redirect:/book";
-    }
 
 
-    // alternativ kann auch @ModelAttribute("date") String date, @ModelAttribute("time") String time genutzt werden
-    @GetMapping(path = "/book", params = {"date", "time"})
-    public String changeBookings(@RequestParam String date, @RequestParam String time, Model model) {
-        model.addAttribute("date", date);
-        model.addAttribute("time", time);
-        return "book";
-    }
+
 
     @GetMapping("/room/{roomID}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
-            Room roomByID = roomService.findRoomByID(roomID);
+            IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
             
             //Frames
@@ -81,7 +79,7 @@ public class BookingController {
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
             return modelAndView;
-        } catch (NotFoundRepositoryException e) {
+        } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
             modelAndView.setStatus(HttpStatus.NOT_FOUND);
             return modelAndView;
@@ -132,7 +130,7 @@ public class BookingController {
         //view.setStatusCode(HttpStatus.CREATED);
 
         try {
-            bookEntryService.addBookEntry(form);
+            bookingApplicationService.addBookEntry(form);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);

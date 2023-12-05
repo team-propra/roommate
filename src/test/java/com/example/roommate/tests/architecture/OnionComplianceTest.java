@@ -1,5 +1,6 @@
 package com.example.roommate.tests.architecture;
 
+import com.example.roommate.annotations.TestClass;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
@@ -8,6 +9,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 
 @AnalyzeClasses(packages = "com.example.roommate")
+@TestClass
 public class OnionComplianceTest {
 //    @ArchTest
 //    static ArchRule onion = onionArchitecture()
@@ -22,17 +24,18 @@ public class OnionComplianceTest {
             layeredArchitecture().consideringAllDependencies()
 
                     .layer("Controllers").definedBy("com.example.roommate.controller..")
-                    .layer("Services").definedBy("com.example.roommate.services..")
+                    .layer("Services").definedBy("com.example.roommate.applicationServices..")
                     .layer("Persistence").definedBy("com.example.roommate.persistence..")
                     .layer("Domain").definedBy("com.example.roommate.tests.domain..")
                     .layer("Tests").definedBy("com.example.roommate.tests..")
                     .layer("DTOs").definedBy("com.example.roommate.dtos..")
+                    .layer("Factory").definedBy("com.example.roommate.factories..")
 
 
                     .whereLayer("Controllers").mayOnlyBeAccessedByLayers("Tests")
-                    .whereLayer("Domain").mayOnlyBeAccessedByLayers("Tests","Services")
-                    .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers","Tests")
-                    .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services","Tests")
-                    .whereLayer("DTOs").mayOnlyBeAccessedByLayers("Controllers","Tests","Services");
+                    .whereLayer("Domain").mayOnlyBeAccessedByLayers("Tests","Services","Factory")
+                    .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers","Tests","Factory")
+                    .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services","Tests","Factory")
+                    .whereLayer("DTOs").mayOnlyBeAccessedByLayers("Controllers","Tests","Services","Factory");
 
 }
