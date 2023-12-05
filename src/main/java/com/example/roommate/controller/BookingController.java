@@ -1,11 +1,11 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
-import com.example.roommate.services.BookingApplicationService;
+import com.example.roommate.applicationServices.BookingApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,117 +18,47 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalTime;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 public class BookingController {
 
     private final BookingApplicationService bookingApplicationService;
-    private final RoomDomainService roomDomainService;
+    private final String[] emptyStringArray = new String[0];
 
     @Autowired
     public BookingController(BookingApplicationService bookingApplicationService, RoomDomainService roomDomainService) {
         this.bookingApplicationService = bookingApplicationService;
-        this.roomDomainService = roomDomainService;
     }
 
+    // http://localhost:8080/book?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/book")
-    public String index(Model model) {
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
+        if (datum == null) datum = "2024-01-01";
+        if (uhrzeit == null) uhrzeit = "08:00";
+        if (gegenstaende == null) gegenstaende = new ArrayList<>();
 
-        model.addAttribute("items", roomDomainService.getItems());
-        model.addAttribute("rooms", roomDomainService.getRooms());
-        return "book";
-    }
-
-    /*@PostMapping("/filter")public ModelAndView filterRooms(
-            @RequestParam("gegenstaende") String[] selectedItems,
-            @RequestParam("datum") String datum,
-            @RequestParam("uhrzeit") String uhrzeit,
-            RedirectAttributes redirectAttributes) {
-        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
+        List<ItemName> selectedItemsList = gegenstaende.stream()
                 .map(ItemName::new)
                 .collect(Collectors.toList());
-        System.out.println(selectedItemsList + datum);
 
-        ModelAndView modelAndView = new ModelAndView("book");
-        modelAndView.addObject("gegenstaende", selectedItems);
-        modelAndView.addObject("datum", datum);
-        modelAndView.addObject("uhrzeit", uhrzeit);
-        modelAndView.addObject("rooms", roomService.findRoomsWithItem(selectedItemsList));
-        return modelAndView;
-    }*/
-
-    /*@PostMapping("/filter")
-    public String filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
-                             @RequestParam("datum") String datum,
-                             @RequestParam("uhrzeit") String uhrzeit,
-                             final RedirectAttributes redirectAttributes) {
-
-        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
-                .map(ItemName::new)
-                .collect(Collectors.toList());
-        System.out.println(selectedItemsList + datum);
-
-        redirectAttributes.addFlashAttribute("gegenstaende", selectedItems);
-        redirectAttributes.addFlashAttribute("datum", datum);
-        redirectAttributes.addFlashAttribute("uhrzeit", uhrzeit);
-        redirectAttributes.addFlashAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
-        return "redirect:/book";
-    }*/
-
-    /*@PostMapping("/filter")
-    public RedirectView filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
-                                   @RequestParam("datum") String datum,
-                                   @RequestParam("uhrzeit") String uhrzeit,
-                                   final RedirectAttributes redirectAttributes) {
-
-        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
-                .map(ItemName::new)
-                .collect(Collectors.toList());
-        System.out.println(selectedItemsList + datum);
-
-        redirectAttributes.addAttribute("gegenstaende", selectedItems);
-        redirectAttributes.addAttribute("datum", datum);
-        redirectAttributes.addAttribute("uhrzeit", uhrzeit);
-        redirectAttributes.addAttribute("rooms", roomService.findRoomsWithItem(selectedItemsList));
-        return new RedirectView("book");
-    }*/
-    @PostMapping("/filter")
-    public String filterRooms(@RequestParam("gegenstaende") String[] selectedItems,
-                                    @RequestParam("datum") String datum,
-                                    @RequestParam("uhrzeit") String uhrzeit,
-                                    Model model) {
-
-        List<ItemName> selectedItemsList = Arrays.stream(selectedItems)
-                .map(ItemName::new)
-                .collect(Collectors.toList());
-        System.out.println(selectedItemsList + datum);
-
-        model.addAttribute("gegenstaende", selectedItems);
-        model.addAttribute("datum", datum);
-        model.addAttribute("uhrzeit", uhrzeit);
-        model.addAttribute("rooms", roomDomainService.findRoomsWithItem(selectedItemsList));
+        model.addAttribute("date", datum);
+        model.addAttribute("time", uhrzeit);
+        model.addAttribute("items", bookingApplicationService.getItems());
+        model.addAttribute("gegenstaende", gegenstaende);
+        model.addAttribute("rooms", bookingApplicationService.getRooms()); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "book";
     }
 
 
 
-    // alternativ kann auch @ModelAttribute("date") String date, @ModelAttribute("time") String time genutzt werden
-    @GetMapping(path = "/book", params = {"date", "time"})
-    public String changeBookings(@RequestParam String date, @RequestParam String time, Model model) {
-        model.addAttribute("date", date);
-        model.addAttribute("time", time);
-        return "book";
-    }
+
 
     @GetMapping("/room/{roomID}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
-            IRoom roomByID = roomDomainService.findRoomByID(roomID);
+            IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
             model.addAttribute("room", roomByID);
             
             //Frames
@@ -149,7 +79,7 @@ public class BookingController {
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
             return modelAndView;
-        } catch (NotFoundRepositoryException e) {
+        } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
             modelAndView.setStatus(HttpStatus.NOT_FOUND);
             return modelAndView;

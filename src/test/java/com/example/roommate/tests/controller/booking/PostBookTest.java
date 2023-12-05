@@ -2,9 +2,9 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.exceptions.GeneralDomainException;
+import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.services.BookingApplicationService;
+import com.example.roommate.applicationServices.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

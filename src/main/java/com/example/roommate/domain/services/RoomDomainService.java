@@ -10,7 +10,6 @@ import com.example.roommate.exceptions.NotFoundRepositoryException;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
@@ -51,9 +50,5 @@ public class RoomDomainService {
         return itemRepository.getItems();
     }
 
-    public List<IRoom> findRoomsWithItem(List<ItemName> items) {
-        return getRooms().stream()
-                .filter(room -> {System.out.println(room.getItems()); return room.getItems().containsAll(items);})
-                .collect(Collectors.toList());
-    }
+
 }

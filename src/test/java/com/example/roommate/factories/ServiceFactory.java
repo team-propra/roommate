@@ -5,8 +5,8 @@ import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.persistence.repositories.BookEntryRepository;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
-import com.example.roommate.services.BookingApplicationService;
-import com.example.roommate.services.LoginApplicationService;
+import com.example.roommate.applicationServices.BookingApplicationService;
+import com.example.roommate.applicationServices.LoginApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 
 @Factory
@@ -20,6 +20,6 @@ public class ServiceFactory {
     }
     
     public static BookingApplicationService createBookingService() {
-        return new BookingApplicationService(new BookEntryDomainService(new BookEntryRepository()));
+        return new BookingApplicationService(new BookEntryDomainService(new BookEntryRepository()), new RoomDomainService(new RoomRepository(), new ItemRepository()));
     }
 }
