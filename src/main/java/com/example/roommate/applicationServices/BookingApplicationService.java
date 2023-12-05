@@ -37,7 +37,7 @@ public class BookingApplicationService {
         bookEntryDomainService.addBocking(new Booking(UUID.fromString(form.roomID()), form.Monday19()));
     }
 
-    public List<IRoom> findRoomsWithItem(List<ItemName> items) {
+    public List<IRoom> findRoomsWithItems(List<ItemName> items) {
             return roomDomainService.getRooms().stream()
                     .filter(room -> room.getItems().containsAll(items))
                     .collect(Collectors.toList());
