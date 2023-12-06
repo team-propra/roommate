@@ -4,6 +4,7 @@ import com.example.roommate.annotations.Factory;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
+import com.example.roommate.persistence.data.RoomEntry;
 
 import java.util.UUID;
 
@@ -31,4 +32,8 @@ public class ValuesFactory {
     public static LoginForm createLoginData() {
         return new LoginForm("user", "password");
     }
+
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14");}
+
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber);}
 }
