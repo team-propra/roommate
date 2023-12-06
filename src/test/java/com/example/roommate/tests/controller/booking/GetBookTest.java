@@ -1,5 +1,6 @@
 package com.example.roommate.tests.controller.booking;
 
+import com.example.roommate.annotations.TestClass;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
+@TestClass
 public class GetBookTest {
 
     @Autowired

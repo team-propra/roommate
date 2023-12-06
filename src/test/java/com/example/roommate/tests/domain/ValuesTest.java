@@ -1,15 +1,17 @@
 package com.example.roommate.tests.domain;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.domain.values.Item;
+import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
-import com.example.roommate.tests.factories.ValuesFactory;
+import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
+@TestClass
 public class ValuesTest {
 
     @DisplayName("can create BookDataForm")
@@ -30,8 +32,8 @@ public class ValuesTest {
     @DisplayName("can create Item")
     @Test
     void test_3() {
-        Item item = ValuesFactory.createItem();
-        assertThat(item).isInstanceOf(Item.class);
+        ItemName item = ValuesFactory.createItemName();
+        assertThat(item).isInstanceOf(ItemName.class);
     }
 
     @DisplayName("can create LoginData")

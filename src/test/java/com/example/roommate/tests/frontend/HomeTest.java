@@ -1,12 +1,14 @@
 package com.example.roommate.tests.frontend;
 
-import com.example.roommate.tests.frontend.utility.ThymeleafTestEngine;
+import com.example.roommate.annotations.TestClass;
+import com.example.roommate.utility.thymeleaf.ThymeleafTestEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestClass
 public class HomeTest {
     
     @Test

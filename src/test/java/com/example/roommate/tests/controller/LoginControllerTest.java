@@ -1,8 +1,9 @@
 package com.example.roommate.tests.controller;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.controller.LoginController;
 import com.example.roommate.dtos.forms.LoginForm;
-import com.example.roommate.services.LoginService;
+import com.example.roommate.applicationServices.LoginApplicationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LoginController.class)
+@TestClass
 public class LoginControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    LoginService loginService;
+    LoginApplicationService loginApplicationService;
 
     @Test
     @DisplayName("Ein POST request auf /login löst einen redirect auf /home wenn loginservices.trylogin() true zurückgibt")
     public void test_01() throws Exception {
 
-        when(loginService.tryLogin(new LoginForm("Otto", "1234"))).thenReturn(true);
+        when(loginApplicationService.tryLogin(new LoginForm("Otto", "1234"))).thenReturn(true);
 
         mockMvc.perform(post("/login")
                         .param("username", "Otto")
@@ -41,7 +43,7 @@ public class LoginControllerTest {
     @DisplayName("If loginservices.trylogin() returns false, a POST request on /login returns an error")
     public void test_02() throws Exception {
 
-        when(loginService.tryLogin(new LoginForm("Otto", "1234"))).thenReturn(false);
+        when(loginApplicationService.tryLogin(new LoginForm("Otto", "1234"))).thenReturn(false);
 
         mockMvc.perform(post("/login")
                         .param("username", "Otto")
