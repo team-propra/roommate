@@ -18,7 +18,7 @@ public record RoomEntry(UUID roomID,String roomnumber) implements IRoom {
     }
 
     @Override
-    public List<ItemName> getItems() {
+    public List<ItemName> getItemNames() {
         throw new UnsupportedOperationException();
     }
 }

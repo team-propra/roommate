@@ -26,6 +26,7 @@ public class BookingApplicationService {
     public BookingApplicationService(BookEntryDomainService bookEntryDomainService, RoomDomainService roomDomainService) {
         this.bookEntryDomainService = bookEntryDomainService;
         this.roomDomainService = roomDomainService;
+        roomDomainService.addDummieRooms();
     }
 
     public Collection<IBooking> getBookEntries() {
@@ -39,7 +40,7 @@ public class BookingApplicationService {
 
     public List<IRoom> findRoomsWithItems(List<ItemName> items) {
             return roomDomainService.getRooms().stream()
-                    .filter(room -> room.getItems().containsAll(items))
+                    .filter(room -> room.getItemNames().containsAll(items))
                     .collect(Collectors.toList());
 }
 
