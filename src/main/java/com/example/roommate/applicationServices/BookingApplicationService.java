@@ -26,6 +26,7 @@ public class BookingApplicationService {
     public BookingApplicationService(BookEntryDomainService bookEntryDomainService, RoomDomainService roomDomainService) {
         this.bookEntryDomainService = bookEntryDomainService;
         this.roomDomainService = roomDomainService;
+        roomDomainService.addDummieRooms();
     }
 
     public Collection<IBooking> getBookEntries() {

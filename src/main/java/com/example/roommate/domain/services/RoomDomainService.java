@@ -22,6 +22,9 @@ public class RoomDomainService {
     public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
+    }
+
+    public void addDummieRooms() {
         Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), "12");
         room1.addItem(new ItemName("Chair"));
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
