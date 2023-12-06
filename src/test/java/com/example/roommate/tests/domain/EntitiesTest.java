@@ -56,7 +56,7 @@ public class EntitiesTest {
 
         room.addItem(item);
 
-        assertThat(room.getItems()).containsExactly(item);
+        assertThat(room.getItemNames()).containsExactly(item);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class EntitiesTest {
 
         room.addItem(items);
 
-        assertThat(room.getItems()).containsExactlyElementsOf(items);
+        assertThat(room.getItemNames()).containsExactlyElementsOf(items);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class EntitiesTest {
         room.addItem(chair);
         room.addItem(desk);
 
-        List<ItemName> result = room.getItems();
+        List<ItemName> result = room.getItemNames();
 
         assertThat(result).containsExactly(chair, desk);
     }

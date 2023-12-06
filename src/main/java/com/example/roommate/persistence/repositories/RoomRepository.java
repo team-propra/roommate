@@ -20,9 +20,6 @@ public class RoomRepository implements IRoomRepository {
     //only temporary to not interrupt the application flow
     public RoomRepository(){
         rooms = new ArrayList<>();
-        rooms.add(new RoomEntry(UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1"),"4"));
-        rooms.add(new RoomEntry(UUID.randomUUID(), "44"));
-        rooms.add(new RoomEntry(UUID.randomUUID(), "45"));
     }
 
     public List<IRoom> findAll(){
@@ -40,7 +37,7 @@ public class RoomRepository implements IRoomRepository {
         rooms.stream().filter(r -> r.getRoomID().equals(room)).findFirst().ifPresent(rooms::remove);
     }
 
-    public void save(IRoom room){
+    public void add(IRoom room){
         for(int i=0;i<rooms.size();++i){
             if(rooms.get(i).getRoomID()==room.getRoomID()){
                 rooms.set(i,room);
@@ -51,6 +48,6 @@ public class RoomRepository implements IRoomRepository {
     }
 
     public void saveAll(List<IRoom> rooms) {
-        rooms.forEach(this::save);
+        rooms.forEach(this::add);
     }
 }

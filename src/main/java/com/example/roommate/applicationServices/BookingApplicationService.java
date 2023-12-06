@@ -39,7 +39,7 @@ public class BookingApplicationService {
 
     public List<IRoom> findRoomsWithItem(List<ItemName> items) {
             return roomDomainService.getRooms().stream()
-                    .filter(room -> room.getItems().containsAll(items))
+                    .filter(room -> room.getItemNames().containsAll(items))
                     .collect(Collectors.toList());
 }
 

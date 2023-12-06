@@ -41,11 +41,6 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>Raum 15</td>
-        <td> Uhrzeit </td>
-        <td><a href="/room/3c857752-79ed-4fde-a916-770ae34e70e1">Raum ansehen</a></td>
-    </tr>
     <tr th:each="room : ${rooms}">
         <td th:text="${'Raum ' + room.roomNumber}"></td>
         <td>Uhrzeit</td>

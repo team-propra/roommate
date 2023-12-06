@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface IRoom {
     UUID getRoomID();
     String getRoomNumber();
-    List<ItemName> getItems();
+    List<ItemName> getItemNames();
 }

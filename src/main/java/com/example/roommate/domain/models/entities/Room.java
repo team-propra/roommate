@@ -50,7 +50,7 @@ public class Room implements IRoom {
         itemNameList.addAll(items);
     }
 
-    public List<ItemName> getItems() {
+    public List<ItemName> getItemNames() {
         return itemNameList;
     }
 }
