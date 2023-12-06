@@ -1,6 +1,6 @@
 package com.example.roommate.tests.percistence.data;
 
-import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.persistence.data.RoomEntry;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("RoomEntry Class Tests")
+@TestClass
 class RoomEntryTest {
 
     UUID id = ValuesFactory.id;
@@ -37,7 +37,7 @@ class RoomEntryTest {
     void getItemNames() {
         RoomEntry roomEntry = ValuesFactory.createRoomEntry();
 
-        assertThatThrownBy(() -> roomEntry.getItemNames()).isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(roomEntry::getItemNames).isInstanceOf(UnsupportedOperationException.class);
     }
 }
 

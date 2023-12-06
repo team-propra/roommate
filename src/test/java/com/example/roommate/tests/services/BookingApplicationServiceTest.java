@@ -2,19 +2,24 @@ package com.example.roommate.tests.services;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.applicationServices.BookingApplicationService;
+import com.example.roommate.interfaces.entities.IRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
+
 @TestClass
 public class BookingApplicationServiceTest {
 
@@ -55,5 +60,16 @@ public class BookingApplicationServiceTest {
 //            throw new IllegalArgumentException();
         }).isInstanceOf(IllegalArgumentException.class);
 
+    }
+    @DisplayName("getRooms() returns a Collection of Rooms")
+    @Test
+    void test_4() {
+        BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
+        Room room = EntityFactory.createRoom();
+
+        bookingApplicationService.addRoom(room);
+        Collection<IRoom> rooms = bookingApplicationService.getRooms();
+
+        assertThat(rooms).contains(room);
     }
 }
