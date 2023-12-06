@@ -6,6 +6,16 @@
     <title th:text="*{roomnumber}" >-1</title>
 </head>
 <body>
+
+<script>
+    function renameParent(parent) {
+        if(parent.value.includes('_X'))
+            parent.value = parent.value.replace('_X', '')
+        else
+            parent.value = parent.value + '_X'
+    }
+    
+</script>
   <h1>Details zu Raum <span th:text="*{roomnumber}">-1</span> </h1>
 
   <div th:if="${formValidationErrorText}">
@@ -50,7 +60,7 @@
 <!--                          // console.log('test');-->
 <!--                          // e.parent.children[0].value = e.parent.children[0].value+'_X'-->
 <!--                      }">-->
-                      <input type="checkbox" name="box" onchange="this.parentElement.children[0].value = this.parentElement.children[0].value+'_X'">
+                      <input type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
                   </div>
               </td>
           </tr>
