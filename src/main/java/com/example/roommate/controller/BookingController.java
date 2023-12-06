@@ -120,8 +120,17 @@ public class BookingController {
 
 
     @PostMapping("/book")
-    public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()) {
+    public ModelAndView addBooking(@Valid BookDataForm form
+            , BindingResult bindingResult
+            , RedirectAttributes redirectAttributes
+            ,@RequestParam(value="cell", defaultValue = "false")List<String> checkedDays,
+             @RequestParam(value="box", defaultValue = "false")List<String> boxes
+    ) {
+        ModelAndView modelAndView = new ModelAndView("bad-request");
+        modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+        return modelAndView;
+
+       /* if(bindingResult.hasErrors()) {
             String id = form.roomID();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
@@ -129,6 +138,11 @@ public class BookingController {
         }
         System.out.println(form);
 
+        for(int i = 0;i < checkedDays.size();i++){
+
+            System.out.println("Box for " + checkedDays.get(i)+ " is " + boxes.get(i));
+        }
+        System.out.println("groesse: " + checkedDays.size());
         //view.setStatusCode(HttpStatus.CREATED);
 
         try {
@@ -138,7 +152,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/home");*/
     }
 
 

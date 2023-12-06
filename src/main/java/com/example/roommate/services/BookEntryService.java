@@ -19,15 +19,15 @@ public class BookEntryService {
     }
 
     public List<Booking> getBookEntries() {
-        return bookEntryRepository.getBookings().stream().map(b -> new Booking(b.roomID(), b.Monday19())).toList();
+        return bookEntryRepository.getBookings().stream().map(b -> new Booking(b.roomID(), b.bookingDays())).toList();
     }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        Booking bookDataEntry = new Booking(UUID.fromString(form.roomID()), form.Monday19());
+        Booking bookDataEntry = new Booking(UUID.fromString(form.roomID()), form.bookingDays());
         
-        if (!bookDataEntry.validateBookingCoorectness()) 
-            throw new GeneralDomainException();
-        bookEntryRepository.addBookEntry(new BookingEntry(UUID.fromString(form.roomID()), form.Monday19()));
+      /*  if (!bookDataEntry.validateBookingCoorectness())
+            throw new GeneralDomainException();*/
+        bookEntryRepository.addBookEntry(new BookingEntry(UUID.fromString(form.roomID()), form.bookingDays()));
     }
 
     
