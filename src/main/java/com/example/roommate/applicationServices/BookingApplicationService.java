@@ -9,7 +9,7 @@ import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.interfaces.entities.IRoom;
 
 import java.util.Collection;

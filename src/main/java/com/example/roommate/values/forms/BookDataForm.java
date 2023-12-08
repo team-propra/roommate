@@ -1,4 +1,4 @@
-package com.example.roommate.dtos.forms;
+package com.example.roommate.values.forms;
 
 
 import com.example.roommate.validator.IsValidUUID;

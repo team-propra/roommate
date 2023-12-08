@@ -14,7 +14,7 @@ public class Layers {
     public static final String DOMAIN_VALUES = "DomainValues";
     public static final String DOMAIN_SERVICES = "DomainServices";
     public static final String TESTS = "Tests";
-    public static final String DTOS = "DTOs";
+    public static final String FORMS = "DTOs";
     public static final String FACTORIES = "Factory";
     
     public static final Architectures.LayeredArchitecture all = layeredArchitecture().consideringAllDependencies()
@@ -27,6 +27,6 @@ public class Layers {
                     .layer(DOMAIN_VALUES).definedBy("com.example.roommate.values.domain..")
                     .layer(DOMAIN_SERVICES).definedBy("com.example.roommate.domain.services..")
                     .layer(TESTS).definedBy("com.example.roommate.tests..")
-                    .layer(DTOS).definedBy("com.example.roommate.dtos..")
+                    .layer(FORMS).definedBy("com.example.roommate.values.forms..")
                     .layer(FACTORIES).definedBy("com.example.roommate.factories..");
 }

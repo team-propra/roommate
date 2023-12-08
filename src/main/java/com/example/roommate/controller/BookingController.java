@@ -4,7 +4,7 @@ import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.domain.ItemName;
-import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.applicationServices.BookingApplicationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

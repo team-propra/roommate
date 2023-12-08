@@ -27,6 +27,6 @@ public class OnionComplianceTest {
                     .whereLayer(DOMAIN).mayOnlyBeAccessedByLayers(TESTS, APPLICATION_SERVICES, FACTORIES)
                     .whereLayer(APPLICATION_SERVICES).mayOnlyBeAccessedByLayers(CONTROLLERS,TESTS, FACTORIES)
                     .whereLayer(PERSISTENCE).mayOnlyBeAccessedByLayers(APPLICATION_SERVICES,TESTS, FACTORIES)
-                    .whereLayer(DTOS).mayOnlyBeAccessedByLayers(CONTROLLERS,TESTS, APPLICATION_SERVICES, FACTORIES);
+                    .whereLayer(FORMS).mayOnlyBeAccessedByLayers(CONTROLLERS,TESTS, APPLICATION_SERVICES, FACTORIES);
 
 }
