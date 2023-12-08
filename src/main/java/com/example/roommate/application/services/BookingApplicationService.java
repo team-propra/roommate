@@ -1,7 +1,7 @@
 package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
-import com.example.roommate.application.data.BookingData;
+import com.example.roommate.application.data.BookingApplicationData;
 import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.domain.services.RoomDomainService;
@@ -35,7 +35,7 @@ public class BookingApplicationService {
 
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        bookEntryDomainService.addBocking(new BookingData(UUID.fromString(form.roomID()), form.Monday19()));
+        bookEntryDomainService.addBocking(new BookingApplicationData(UUID.fromString(form.roomID()), form.Monday19()));
     }
 
     public List<IRoom> findRoomsWithItems(List<ItemName> items) {

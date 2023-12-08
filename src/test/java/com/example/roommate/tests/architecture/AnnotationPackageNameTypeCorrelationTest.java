@@ -25,6 +25,11 @@ public class AnnotationPackageNameTypeCorrelationTest {
     }
 
     @TestFactory
+    public Stream<DynamicTest> applicationDats(){
+        return classCorrelations("..roommate.application.data..", ApplicationData.class, ArchConditions.haveSimpleNameEndingWith("ApplicationData"));
+    }
+
+    @TestFactory
     public Stream<DynamicTest> repositories(){
         return classCorrelations("..roommate.persistence.repositories..", Repository.class, ArchConditions.haveSimpleNameEndingWith("Repository"));
     }

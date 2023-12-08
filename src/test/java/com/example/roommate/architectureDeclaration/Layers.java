@@ -7,6 +7,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 public class Layers {
     public static final String CONTROLLERS = "Controllers";
     public static final String APPLICATION_SERVICES = "ApplicationServices";
+    public static final String APPLICATION_DATA = "ApplicationData";
     public static final String PERSISTENCE = "Persistence";
     public static final String DOMAIN = "Domain";
     public static final String DOMAIN_MODELS = "DomainModels";
@@ -20,6 +21,7 @@ public class Layers {
     public static final Architectures.LayeredArchitecture all = layeredArchitecture().consideringAllDependencies()
                     .layer(CONTROLLERS).definedBy("com.example.roommate.controller..")
                     .layer(APPLICATION_SERVICES).definedBy("com.example.roommate.application.services..")
+                    .layer(APPLICATION_DATA).definedBy("com.example.roommate.application.data..")
                     .layer(PERSISTENCE).definedBy("com.example.roommate.persistence..")
                     .layer(DOMAIN).definedBy("com.example.roommate.domain..")
                     .layer(DOMAIN_MODELS).definedBy("com.example.roommate.domain.models..")

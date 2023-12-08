@@ -1,10 +1,12 @@
 package com.example.roommate.application.data;
 
+import com.example.roommate.annotations.ApplicationData;
 import com.example.roommate.interfaces.entities.IBooking;
 
 import java.util.UUID;
 
-public record BookingData (UUID roomID,boolean Monday19) implements IBooking {
+@ApplicationData
+public record BookingApplicationData(UUID roomID, boolean Monday19) implements IBooking {
     @Override
     public UUID getRoomID() {
         return roomID;
