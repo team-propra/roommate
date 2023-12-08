@@ -1,9 +1,9 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
-import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.domain.models.values.ItemName;
-import com.example.roommate.dtos.forms.LoginForm;
+import com.example.roommate.values.forms.BookDataForm;
+import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.forms.LoginForm;
 
 import java.util.UUID;
 

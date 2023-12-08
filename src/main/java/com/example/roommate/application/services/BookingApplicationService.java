@@ -1,15 +1,15 @@
-package com.example.roommate.applicationServices;
+package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
-import com.example.roommate.domain.models.entities.Booking;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.application.data.BookingApplicationData;
+import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.dtos.forms.BookDataForm;
+import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.interfaces.entities.IRoom;
 
 import java.util.Collection;
@@ -35,7 +35,7 @@ public class BookingApplicationService {
 
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        bookEntryDomainService.addBocking(new Booking(UUID.fromString(form.roomID()), form.Monday19()));
+        bookEntryDomainService.addBocking(new BookingApplicationData(UUID.fromString(form.roomID()), form.Monday19()));
     }
 
     public List<IRoom> findRoomsWithItems(List<ItemName> items) {

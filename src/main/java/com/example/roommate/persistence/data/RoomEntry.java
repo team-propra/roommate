@@ -1,7 +1,7 @@
 package com.example.roommate.persistence.data;
 
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 
 import java.util.List;
 import java.util.UUID;

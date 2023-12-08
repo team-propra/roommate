@@ -7,6 +7,8 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
+import static com.example.roommate.architectureDeclaration.Layers.*;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(packages = "com.example.roommate")
@@ -23,4 +25,14 @@ public class UncategorizedRulesTest {
             .resideInAPackage("..interfaces..")
             .should()
             .beInterfaces();
+
+
+    @ArchTest
+    static ArchRule applicationDataMustImplementInterfacesAndBeRecord = classes()
+            .that()
+            .resideInAPackage("..application.data..")
+            .should()
+            .beRecords()
+            .andShould() // implement interfaces from the interfaces package
+            .implement(resideInAPackage("..interfaces.entities.."));
 }
