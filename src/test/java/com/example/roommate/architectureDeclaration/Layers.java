@@ -19,7 +19,7 @@ public class Layers {
     
     public static final Architectures.LayeredArchitecture all = layeredArchitecture().consideringAllDependencies()
                     .layer(CONTROLLERS).definedBy("com.example.roommate.controller..")
-                    .layer(APPLICATION_SERVICES).definedBy("com.example.roommate.applicationServices..")
+                    .layer(APPLICATION_SERVICES).definedBy("com.example.roommate.application.services..")
                     .layer(PERSISTENCE).definedBy("com.example.roommate.persistence..")
                     .layer(DOMAIN).definedBy("com.example.roommate.domain..")
                     .layer(DOMAIN_MODELS).definedBy("com.example.roommate.domain.models..")

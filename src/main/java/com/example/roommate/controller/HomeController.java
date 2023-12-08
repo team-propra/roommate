@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.applicationServices.BookingApplicationService;
+import com.example.roommate.application.services.BookingApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

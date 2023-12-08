@@ -7,7 +7,7 @@ import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
-import com.example.roommate.applicationServices.BookingApplicationService;
+import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

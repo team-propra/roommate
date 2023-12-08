@@ -1,4 +1,4 @@
-package com.example.roommate.applicationServices;
+package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.values.forms.LoginForm;
