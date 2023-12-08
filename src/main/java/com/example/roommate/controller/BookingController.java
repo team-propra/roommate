@@ -3,10 +3,9 @@ package com.example.roommate.controller;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.applicationServices.BookingApplicationService;
-import com.example.roommate.domain.services.RoomDomainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +24,9 @@ import java.util.stream.Collectors;
 public class BookingController {
 
     private final BookingApplicationService bookingApplicationService;
-    private final String[] emptyStringArray = new String[0];
 
     @Autowired
-    public BookingController(BookingApplicationService bookingApplicationService, RoomDomainService roomDomainService) {
+    public BookingController(BookingApplicationService bookingApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
     }
 

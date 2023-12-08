@@ -2,7 +2,7 @@ package com.example.roommate.applicationServices;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.models.entities.Booking;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.NotFoundRepositoryException;

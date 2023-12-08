@@ -5,7 +5,7 @@ import com.example.roommate.domain.models.entities.Admin;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.User;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.DisplayName;

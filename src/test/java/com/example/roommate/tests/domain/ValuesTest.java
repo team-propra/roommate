@@ -2,7 +2,7 @@ package com.example.roommate.tests.domain;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.dtos.forms.BookDataForm;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
