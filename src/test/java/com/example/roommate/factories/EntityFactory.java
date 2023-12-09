@@ -5,7 +5,6 @@ import com.example.roommate.domain.models.entities.Admin;
 import com.example.roommate.domain.models.entities.Booking;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.User;
-import com.example.roommate.dtos.forms.BookDataForm;
 
 import java.util.UUID;
 
