@@ -5,8 +5,8 @@ import com.example.roommate.domain.services.BookEntryDomainService;
 import com.example.roommate.persistence.repositories.BookEntryRepository;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
-import com.example.roommate.applicationServices.BookingApplicationService;
-import com.example.roommate.applicationServices.LoginApplicationService;
+import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.application.services.LoginApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 
 @Factory

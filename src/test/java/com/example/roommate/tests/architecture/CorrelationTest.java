@@ -13,7 +13,7 @@ import static com.example.roommate.utility.archUnit.Correlations.interfaceCorrel
 
 
 @TestClass
-public class AnnotationPackageNameTypeCorrelationTest {
+public class CorrelationTest {
     @TestFactory
     public Stream<DynamicTest> domainServices(){
         return classCorrelations("..roommate.domain.services.." ,DomainService.class, ArchConditions.haveSimpleNameEndingWith("DomainService"));
@@ -21,7 +21,12 @@ public class AnnotationPackageNameTypeCorrelationTest {
 
     @TestFactory
     public Stream<DynamicTest> applicationServices(){
-        return classCorrelations("..roommate.applicationServices..", ApplicationService.class, ArchConditions.haveSimpleNameEndingWith("ApplicationService"));
+        return classCorrelations("..roommate.application.services..", ApplicationService.class, ArchConditions.haveSimpleNameEndingWith("ApplicationService"));
+    }
+
+    @TestFactory
+    public Stream<DynamicTest> applicationDats(){
+        return classCorrelations("..roommate.application.data..", ApplicationData.class, ArchConditions.haveSimpleNameEndingWith("ApplicationData"));
     }
 
     @TestFactory

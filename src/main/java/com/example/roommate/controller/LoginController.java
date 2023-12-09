@@ -1,7 +1,7 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dtos.forms.LoginForm;
-import com.example.roommate.applicationServices.LoginApplicationService;
+import com.example.roommate.values.forms.LoginForm;
+import com.example.roommate.application.services.LoginApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

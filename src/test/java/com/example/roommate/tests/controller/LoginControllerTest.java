@@ -2,8 +2,8 @@ package com.example.roommate.tests.controller;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.controller.LoginController;
-import com.example.roommate.dtos.forms.LoginForm;
-import com.example.roommate.applicationServices.LoginApplicationService;
+import com.example.roommate.values.forms.LoginForm;
+import com.example.roommate.application.services.LoginApplicationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

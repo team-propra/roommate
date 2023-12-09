@@ -1,7 +1,7 @@
 package com.example.roommate.interfaces.repositories;
 
 import com.example.roommate.annotations.RepositoryInterface;
-import com.example.roommate.domain.models.values.ItemName;
+import com.example.roommate.values.domain.ItemName;
 
 import java.util.List;
 
