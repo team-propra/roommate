@@ -1,6 +1,7 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.domain.models.entities.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domain.ItemName;
@@ -14,10 +15,10 @@ public class ValuesFactory {
 
     public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
     public static BookDataForm createBookDataForm() {
-        return new BookDataForm(id.toString(), true);
+        return new BookDataForm(id.toString(), 60, new BookingDays());
     }
-    public static BookDataForm createInvalidBookDataForm() {
-        return new BookDataForm(id.toString(), false);
+    public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
+        return new BookDataForm(id.toString(), 60,new BookingDays());
     }
 
     public static ItemName createItemName() {

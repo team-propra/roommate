@@ -35,7 +35,7 @@ public class BookingApplicationService {
 
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        bookEntryDomainService.addBocking(new BookingApplicationData(UUID.fromString(form.roomID()), form.Monday19()));
+        bookEntryDomainService.addBocking(new BookingApplicationData(UUID.fromString(form.roomID()), form.bookingDays()));
     }
 
     public List<IRoom> findRoomsWithItems(List<ItemName> items) {
