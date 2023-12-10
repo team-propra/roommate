@@ -1,6 +1,7 @@
 package com.example.roommate.tests.data;
 
 import com.example.roommate.data.BookingEntry;
+import com.example.roommate.domain.models.entities.BookingDays;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,8 @@ public class BookEntryTest {
     @Test
     @DisplayName("Can create BookEntry")
     public void test_01() {
-        BookingEntry entry = new BookingEntry(null, true);
-        assertThat(entry.Monday19()).isTrue();
+        BookingEntry entry = new BookingEntry(null, new BookingDays());
+        //assertThat(entry.Monday19()).isTrue();
+        assertThat(entry.bookingDays()).isInstanceOf(BookingDays.class);
     }
 }

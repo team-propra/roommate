@@ -28,6 +28,8 @@ public class BookEntryService {
       /*  if (!bookDataEntry.validateBookingCoorectness())
             throw new GeneralDomainException();*/
         bookEntryRepository.addBookEntry(new BookingEntry(UUID.fromString(form.roomID()), form.bookingDays()));
+
+
     }
 
     

@@ -9,10 +9,10 @@
 
 <script>
     function renameParent(parent) {
-        if(parent.value.includes('_X'))
-            parent.value = parent.value.replace('_X', '')
+        if(parent.value.includes('-X'))
+            parent.value = parent.value.replace('-X', '')
         else
-            parent.value = parent.value + '_X'
+            parent.value = parent.value + '-X'
     }
     
 </script>
@@ -60,8 +60,11 @@
 <!--                          // console.log('test');-->
 <!--                          // e.parent.children[0].value = e.parent.children[0].value+'_X'-->
 <!--                      }">-->
-                      <input type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      <input th:unless="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      <input th:if="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+
                   </div>
+                  <input type="hidden" name="stepSize" th:value="${frame.stepSize()}">
               </td>
           </tr>
       </tbody>

@@ -27,7 +27,7 @@ class RoomServiceTest {
 
     @Test
     @DisplayName("testing the addRoom function")
-    void test_1() {
+    void test_1() { //Problem: RoomEnrty.CalenderDay's are Objects, not comparable values like Strings or UUDI's
         
 
         Room room = new Room(roomID, "101");

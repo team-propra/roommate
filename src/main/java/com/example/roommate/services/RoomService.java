@@ -1,6 +1,7 @@
 package com.example.roommate.services;
 
 import com.example.roommate.data.RoomEntry;
+import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.ItemRepository;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.values.ItemName;
@@ -15,12 +16,26 @@ import java.util.UUID;
 //mediate between Repository, domain; map forms to domain-objects/data
 public class RoomService {
 
-    RoomRepository roomRepository;
+    public RoomRepository roomRepository;
     ItemRepository itemRepository;
 
     public RoomService(RoomRepository roomRepository, ItemRepository itemRepository) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
+    }
+
+    public void addBooking(BookDataForm bookDataForm) throws Exception{
+        RoomEntry room = roomRepository.findRoomByID(UUID.fromString(bookDataForm.roomID()));
+
+        int stepSize = bookDataForm.bookingDays().stepsize;
+
+        room.monday().addBooking(bookDataForm.bookingDays().mondayBookings, stepSize);
+        room.tuesday().addBooking(bookDataForm.bookingDays().tuesdayBookings,stepSize);
+        room.wednesday().addBooking(bookDataForm.bookingDays().wednesdayBookings, stepSize);
+        room.thursday().addBooking(bookDataForm.bookingDays().thursdayBookings, stepSize);
+        room.friday().addBooking(bookDataForm.bookingDays().fridayBookings, stepSize);
+        room.saturday().addBooking(bookDataForm.bookingDays().saturdayBookings, stepSize);
+        room.sunday().addBooking(bookDataForm.bookingDays().sundayBookings, stepSize);
     }
 
     public void addRoom(Room room) {

@@ -1,6 +1,8 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.values.CalendarDay;
 import com.example.roommate.tests.domain.exceptions.GeneralDomainException;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.persistence.exceptions.NotFoundRepositoryException;
@@ -66,7 +68,27 @@ public class BookingController {
             //Frames
             int times = 24;
             int days = 7;
-            int stepSize = 30;
+            int stepSize = 60;
+
+            RoomEntry roomEntry = roomService.roomRepository.findRoomByID(roomID);
+            List<Boolean> convertedMonday = roomEntry.monday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedTuesday = roomEntry.tuesday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedWednesday = roomEntry.wednesday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedThursday = roomEntry.thursday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedFriday = roomEntry.friday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedSaturday = roomEntry.saturday().convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedSunday = roomEntry.sunday().convertToSpecificStepSize(stepSize);
+
+
+            List<List<Boolean>> reservedSlots = new ArrayList<>();
+            reservedSlots.add(convertedMonday);
+            reservedSlots.add(convertedTuesday);
+            reservedSlots.add(convertedWednesday);
+            reservedSlots.add(convertedThursday);
+            reservedSlots.add(convertedFriday);
+            reservedSlots.add(convertedSaturday);
+            reservedSlots.add(convertedSunday);
+            model.addAttribute("reservedSlots", reservedSlots);
             List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
             List<String> timeLabels = new ArrayList<>();
             generateTimeLabels(days, times,stepSize, timeLabels);
@@ -97,7 +119,7 @@ public class BookingController {
         String result = "";
 
         LocalTime customTime = LocalTime.of(0, 0);
-        for(int i = 0;i < (times* 60 / stepSize);i++){
+        for(int i = 0;i < (times * 60 / stepSize);i++){
             result = String.format("%s - %s", customTime, customTime.plusMinutes(stepSize));
             customTime = customTime.plusMinutes(stepSize);
              timeLabels.add(result);
@@ -138,18 +160,56 @@ public class BookingController {
 
         for (String checkedDay : checkedDays) {
 
-            if(checkedDay.contains("_X"))
+            if(checkedDay.contains("-X")) {
+                String[] daytime = checkedDay.split("-");
+                System.out.println("Zeile: " + daytime[0]);
+                System.out.println("Tag: " + daytime[1]);
                 System.out.println("Checked day " + checkedDay);
+
+                int timeIndex = Integer.parseInt(daytime[0]);
+                int day = Integer.parseInt(daytime[1]);//0=monday, 1=tuesday...
+                switch(day){
+                    case 0:
+                        form.bookingDays().mondayBookings.add(timeIndex, true);
+                        break;
+                    case 1:
+                        form.bookingDays().tuesdayBookings.add(timeIndex, true);
+                        break;
+                    case 2:
+                        form.bookingDays().wednesdayBookings.add(timeIndex, true);
+                        break;
+                    case 3:
+                        form.bookingDays().thursdayBookings.add(timeIndex, true);
+                        break;
+                    case 4:
+                        form.bookingDays().fridayBookings.add(timeIndex, true);
+                        break;
+                    case 5:
+                        form.bookingDays().saturdayBookings.add(timeIndex, true);
+                        break;
+                    case 6:
+                        form.bookingDays().sundayBookings.add(timeIndex, true);
+                        break;
+
+                }
+            }
         }
+       // System.out.println("Stepsize: " + form.stepSize());
+       // System.out.println("Stepsize von Bookingdays: " + form.bookingDays().stepsize);
+       // System.out.println("Inhalt von mondaylist " + form.bookingDays().mondayBookings.toString());
+       // System.out.println("größe von mondaylist " + form.bookingDays().mondayBookings.size());
 //        System.out.println("groesse: " + checkedDays.size());
         //view.setStatusCode(HttpStatus.CREATED);
 
         try {
             bookEntryService.addBookEntry(form);
+            roomService.addBooking(form);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return new ModelAndView("redirect:/home");
     }

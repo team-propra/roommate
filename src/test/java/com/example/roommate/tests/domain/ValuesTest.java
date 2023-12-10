@@ -1,5 +1,6 @@
 package com.example.roommate.tests.domain;
 
+import com.example.roommate.domain.models.entities.BookingDays;
 import com.example.roommate.dtos.forms.BookDataForm;
 import com.example.roommate.domain.models.values.ItemName;
 import com.example.roommate.dtos.forms.LoginForm;
@@ -23,7 +24,7 @@ public class ValuesTest {
     @Test
     @Disabled
     void testCreateBookDataFormWithNullUUID() {
-        assertThatThrownBy(() -> new BookDataForm(null, true))
+        assertThatThrownBy(() -> new BookDataForm(null, 60, new BookingDays()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
