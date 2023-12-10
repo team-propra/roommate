@@ -52,6 +52,10 @@ public class BookingApplicationService {
         return roomDomainService.getRooms();
     }
 
+    public void addRoom(IRoom room) {
+        roomDomainService.addRoom(room);
+    }
+
     public IRoom findRoomByID(UUID roomID) throws NotFoundException{
         try {
             return roomDomainService.findRoomByID(roomID);

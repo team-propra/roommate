@@ -1,6 +1,7 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.values.forms.LoginForm;
@@ -31,4 +32,8 @@ public class ValuesFactory {
     public static LoginForm createLoginData() {
         return new LoginForm("user", "password");
     }
+
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14");}
+
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber);}
 }
