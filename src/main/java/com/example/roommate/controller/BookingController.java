@@ -134,7 +134,7 @@ public class BookingController {
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/");
     }
 
 

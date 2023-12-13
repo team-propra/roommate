@@ -25,7 +25,7 @@ public class  HomeControllerTest {
     @DisplayName("A GET-Request on /home returns a status 200 and displays the home.html")
     @Test
     public void test_01() throws Exception {
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"));
 

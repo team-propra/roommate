@@ -44,7 +44,7 @@ public class PostBookTest {
         mvc.perform(post("/book")
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
-                .andExpect(redirectedUrl("/home"));
+                .andExpect(redirectedUrl("/"));
     }
 
     //future integration test
@@ -59,11 +59,11 @@ public class PostBookTest {
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                 .andReturn();
-        MvcResult getResult = mvc.perform(get("/home"))
+        MvcResult getResult = mvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertThat(postResult.getResponse().getHeader("location")).contains("/home");
+        assertThat(postResult.getResponse().getHeader("location")).contains("/");
         String html = getResult.getResponse().getContentAsString();
         assertThat(html).contains("%s".formatted(roomID));
     }
