@@ -16,7 +16,7 @@ import java.util.UUID;
 //mediate between Repository, domain; map forms to domain-objects/data
 public class RoomDomainService {
 
-    IRoomRepository roomRepository;
+    public IRoomRepository roomRepository;
     IItemRepository itemRepository;
 
     public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository) {

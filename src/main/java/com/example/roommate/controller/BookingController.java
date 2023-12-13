@@ -1,5 +1,7 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
@@ -64,15 +66,23 @@ public class BookingController {
             int times = 24;
             int days = 7;
             int stepSize = 60;
+            Room roomEntry = (Room) bookingApplicationService.roomDomainService.roomRepository.findRoomByID(roomID);//new?
+            List<Boolean> convertedMonday = roomEntry.monday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedTuesday = roomEntry.tuesday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedWednesday = roomEntry.wednesday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedThursday = roomEntry.thursday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedFriday = roomEntry.friday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedSaturday = roomEntry.saturday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedSunday = roomEntry.sunday.convertToSpecificStepSize(stepSize);
 
-            RoomEntry roomEntry = roomService.roomRepository.findRoomByID(roomID);
-            List<Boolean> convertedMonday = roomEntry.monday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedTuesday = roomEntry.tuesday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedWednesday = roomEntry.wednesday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedThursday = roomEntry.thursday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedFriday = roomEntry.friday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedSaturday = roomEntry.saturday().convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedSunday = roomEntry.sunday().convertToSpecificStepSize(stepSize);
+//            RoomEntry roomEntry = roomService.roomRepository.findRoomByID(roomID);//old
+//            List<Boolean> convertedMonday = roomEntry.monday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedTuesday = roomEntry.tuesday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedWednesday = roomEntry.wednesday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedThursday = roomEntry.thursday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedFriday = roomEntry.friday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedSaturday = roomEntry.saturday().convertToSpecificStepSize(stepSize);
+//            List<Boolean> convertedSunday = roomEntry.sunday().convertToSpecificStepSize(stepSize);
 
 
             List<List<Boolean>> reservedSlots = new ArrayList<>();
@@ -102,6 +112,8 @@ public class BookingController {
             ModelAndView modelAndView = new ModelAndView("not-found");
             modelAndView.setStatus(HttpStatus.NOT_FOUND);
             return modelAndView;
+        } catch (NotFoundRepositoryException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class BookingApplicationService {
     
     BookEntryDomainService bookEntryDomainService;
-    RoomDomainService roomDomainService;
+    public RoomDomainService roomDomainService;
 
     public BookingApplicationService(BookEntryDomainService bookEntryDomainService, RoomDomainService roomDomainService) {
         this.bookEntryDomainService = bookEntryDomainService;
