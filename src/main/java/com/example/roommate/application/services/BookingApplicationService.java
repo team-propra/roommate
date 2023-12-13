@@ -33,6 +33,11 @@ public class BookingApplicationService {
         return bookEntryDomainService.getBookEntries();
     }
 
+
+
+    public void convertRoomCalendarDaysTo2dMatrix(){
+
+    }
     public void addBookEntry(BookDataForm form) throws GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
         bookEntryDomainService.addBocking(new BookingApplicationData(UUID.fromString(form.roomID()), form.bookingDays()));

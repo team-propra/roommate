@@ -66,7 +66,8 @@ public class BookingController {
             int times = 24;
             int days = 7;
             int stepSize = 60;
-            Room roomEntry = (Room) bookingApplicationService.roomDomainService.roomRepository.findRoomByID(roomID);//new?
+            Room roomEntry = (Room) bookingApplicationService.roomDomainService.roomRepository.findRoomByID(roomID);
+
             List<Boolean> convertedMonday = roomEntry.monday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedTuesday = roomEntry.tuesday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedWednesday = roomEntry.wednesday.convertToSpecificStepSize(stepSize);
@@ -210,6 +211,7 @@ public class BookingController {
 
         try {
             bookingApplicationService.addBookEntry(form);
+            bookingApplicationService.roomDomainService.addBooking(form);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);

@@ -2,6 +2,7 @@ package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.domain.models.entities.Booking;
+import com.example.roommate.domain.models.entities.BookingDays;
 import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.repositories.IBookEntryRepository;
@@ -22,7 +23,7 @@ public class BookEntryDomainService {
     
     
     public void addBocking(IBooking booking) throws GeneralDomainException {
-        Booking bookingEntity = new Booking(booking.getRoomID(), booking.getMonday19());
+        Booking bookingEntity = new Booking(booking.getRoomID(), new BookingDays());
 
         if (!bookingEntity.validateBookingCoorectness())
             throw new GeneralDomainException();
