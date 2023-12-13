@@ -1,7 +1,7 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
-import com.example.roommate.domain.models.entities.BookingDays;
+import com.example.roommate.values.domain.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domain.ItemName;

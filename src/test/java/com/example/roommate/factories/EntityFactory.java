@@ -2,6 +2,7 @@ package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
 import com.example.roommate.domain.models.entities.*;
+import com.example.roommate.values.domain.BookingDays;
 
 import java.util.UUID;
 

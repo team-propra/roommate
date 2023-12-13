@@ -66,15 +66,16 @@ public class BookingController {
             int times = 24;
             int days = 7;
             int stepSize = 60;
-            Room roomEntry = (Room) bookingApplicationService.roomDomainService.roomRepository.findRoomByID(roomID);
+            //Room roomEntry = (Room) bookingApplicationService.roomDomainService.roomRepository.findRoomByID(roomID);
+            List<List<Boolean>> reservedSlots = bookingApplicationService.roomDomainService.convertRoomCalendarDaysTo2dMatrix(roomID, stepSize);
 
-            List<Boolean> convertedMonday = roomEntry.monday.convertToSpecificStepSize(stepSize);
+          /*  List<Boolean> convertedMonday = roomEntry.monday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedTuesday = roomEntry.tuesday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedWednesday = roomEntry.wednesday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedThursday = roomEntry.thursday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedFriday = roomEntry.friday.convertToSpecificStepSize(stepSize);
             List<Boolean> convertedSaturday = roomEntry.saturday.convertToSpecificStepSize(stepSize);
-            List<Boolean> convertedSunday = roomEntry.sunday.convertToSpecificStepSize(stepSize);
+            List<Boolean> convertedSunday = roomEntry.sunday.convertToSpecificStepSize(stepSize);*/
 
 //            RoomEntry roomEntry = roomService.roomRepository.findRoomByID(roomID);//old
 //            List<Boolean> convertedMonday = roomEntry.monday().convertToSpecificStepSize(stepSize);
@@ -86,14 +87,15 @@ public class BookingController {
 //            List<Boolean> convertedSunday = roomEntry.sunday().convertToSpecificStepSize(stepSize);
 
 
-            List<List<Boolean>> reservedSlots = new ArrayList<>();
+            /*List<List<Boolean>> reservedSlots = new ArrayList<>();
             reservedSlots.add(convertedMonday);
             reservedSlots.add(convertedTuesday);
             reservedSlots.add(convertedWednesday);
             reservedSlots.add(convertedThursday);
             reservedSlots.add(convertedFriday);
             reservedSlots.add(convertedSaturday);
-            reservedSlots.add(convertedSunday);
+            reservedSlots.add(convertedSunday);*/
+
             model.addAttribute("reservedSlots", reservedSlots);
             List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
             List<String> timeLabels = new ArrayList<>();
@@ -166,7 +168,9 @@ public class BookingController {
         }
         System.out.println(form);
 
-        for (String checkedDay : checkedDays) {
+        BookDataForm addedBookingsForm = bookingApplicationService.roomDomainService.addBookingsToForm(checkedDays, form);
+
+        /*for (String checkedDay : checkedDays) {
 
             if(checkedDay.contains("-X")) {
                 String[] daytime = checkedDay.split("-");
@@ -201,7 +205,7 @@ public class BookingController {
 
                 }
             }
-        }
+        }*/
        // System.out.println("Stepsize: " + form.stepSize());
        // System.out.println("Stepsize von Bookingdays: " + form.bookingDays().stepsize);
        // System.out.println("Inhalt von mondaylist " + form.bookingDays().mondayBookings.toString());
@@ -211,7 +215,8 @@ public class BookingController {
 
         try {
             bookingApplicationService.addBookEntry(form);
-            bookingApplicationService.roomDomainService.addBooking(form);
+            //bookingApplicationService.roomDomainService.addBooking(form);
+            bookingApplicationService.roomDomainService.addBooking(addedBookingsForm);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);

@@ -15,7 +15,7 @@ public class Layers {
     public static final String DOMAIN_VALUES = "DomainValues";
     public static final String DOMAIN_SERVICES = "DomainServices";
     public static final String TESTS = "Tests";
-    public static final String FORMS = "DTOs";
+    public static final String FORMS = "Forms";
     public static final String FACTORIES = "Factory";
     
     public static final Architectures.LayeredArchitecture all = layeredArchitecture().consideringAllDependencies()

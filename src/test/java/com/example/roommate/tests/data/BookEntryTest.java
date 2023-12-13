@@ -1,9 +1,5 @@
 package com.example.roommate.tests.data;
 
-import com.example.roommate.domain.models.entities.BookingDays;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookEntryTest {

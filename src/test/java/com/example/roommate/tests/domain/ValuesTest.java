@@ -1,7 +1,7 @@
 package com.example.roommate.tests.domain;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.domain.models.entities.BookingDays;
+import com.example.roommate.values.domain.BookingDays;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.values.forms.LoginForm;

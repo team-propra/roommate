@@ -1,19 +1,16 @@
 package com.example.roommate.tests.services;
 
-import com.example.roommate.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
 
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;

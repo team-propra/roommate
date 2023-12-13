@@ -2,6 +2,7 @@ package com.example.roommate.domain.models.entities;
 
 import java.util.List;
 import com.example.roommate.interfaces.entities.IBooking;
+import com.example.roommate.values.domain.BookingDays;
 
 import java.util.UUID;
 import java.util.stream.Stream;

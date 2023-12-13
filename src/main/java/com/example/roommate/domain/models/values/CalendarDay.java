@@ -6,30 +6,6 @@ import java.util.List;
 
 public class CalendarDay {
 
-    public static void main(String[] args){
-    /*    CalendarDay calendarDay = new CalendarDay();
-        int listsize = (24 * 60) / 15;
-        List<Boolean> liste = new ArrayList<>(Collections.nCopies(listsize, false));
-        liste.add(0,true);
-        liste.add(2, true);
-        calendarDay.addBooking(liste, 15);
-        System.out.println(calendarDay.bookedMinutes.toString());*/
-
-        CalendarDay calendarDay = new CalendarDay();
-        int listsize = (24 * 60) / 15;
-        List<Boolean> liste = new ArrayList<>(Collections.nCopies(listsize, false));
-        liste.add(0,true);
-        liste.add(91, true);
-        calendarDay.addBooking(liste, 15);
-        System.out.println("groesse nach addbooking: " + calendarDay.bookedMinutes.size());
-        System.out.println(calendarDay.bookedMinutes.toString());
-        List<Boolean>  stepSizeList = calendarDay.convertToSpecificStepSize(60);
-        System.out.println(stepSizeList.toString());
-
-    }
-
-
-
     public List<Boolean> bookedMinutes = new ArrayList<>(Collections.nCopies(1440, false));//1 entry = 1 minute; 1440 = 1day
 
     public List<Boolean> convertToSpecificStepSize(int stepSize){
