@@ -1,12 +1,14 @@
 package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
+import com.example.roommate.data.RoomEntry;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.values.domain.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.values.forms.BookDataForm;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +33,20 @@ public class RoomDomainService {
         room2.addItem(new ItemName("Table"));
         roomRepository.add(room1);
         roomRepository.add(room2);
+    }
+
+    public void addBooking(BookDataForm bookDataForm) throws Exception{
+        Room room = (Room) roomRepository.findRoomByID(UUID.fromString(bookDataForm.roomID()));
+
+        int stepSize = bookDataForm.bookingDays().stepsize;
+
+        room.monday.addBooking(bookDataForm.bookingDays().mondayBookings, stepSize);
+        room.tuesday.addBooking(bookDataForm.bookingDays().tuesdayBookings,stepSize);
+        room.wednesday.addBooking(bookDataForm.bookingDays().wednesdayBookings, stepSize);
+        room.thursday.addBooking(bookDataForm.bookingDays().thursdayBookings, stepSize);
+        room.friday.addBooking(bookDataForm.bookingDays().fridayBookings, stepSize);
+        room.saturday.addBooking(bookDataForm.bookingDays().saturdayBookings, stepSize);
+        room.sunday.addBooking(bookDataForm.bookingDays().sundayBookings, stepSize);
     }
 
     public void addRoom(IRoom room) {
