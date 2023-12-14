@@ -22,7 +22,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'jakarta.validation:jakarta.validation-api'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.thymeleaf:thymeleaf'
     testImplementation 'ognl:ognl'
     testImplementation 'com.tngtech.archunit:archunit-junit5-engine:1.2.1'

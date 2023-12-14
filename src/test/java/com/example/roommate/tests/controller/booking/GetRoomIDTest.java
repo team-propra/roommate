@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,6 +33,7 @@ public class GetRoomIDTest {
 
     @Test
     @DisplayName("GET /room/{ID} with mocked service successfully yields roomDetails.html")
+    @WithMockUser(username = "user", password = "1234", roles = {})
     void test_1() throws Exception {
         UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomId,"test");

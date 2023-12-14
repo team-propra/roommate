@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,6 +33,7 @@ public class GetRoomTest {
     RoomDomainService roomDomainService;
     @Test
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
+    @WithMockUser(username = "user", password = "1234", roles = {})
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
@@ -46,7 +48,7 @@ public class GetRoomTest {
 
     @Test
     @DisplayName("GET /room/{id} successfully yields NotFound and the not-found view whenever the room doesnt exist")
-    public void test_2() throws Exception {
+    @WithMockUser(username = "user", password = "1234", roles = {})public void test_2() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room goodRoom = new Room(roomID,"test-room-123");
         

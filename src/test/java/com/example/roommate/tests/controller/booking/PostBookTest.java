@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -37,8 +38,9 @@ public class PostBookTest {
 
 
 
-    @DisplayName("POST /book redirects to /home")
+    @DisplayName("POST /book redirects to our home")
     @Test
+    @WithMockUser(username = "user", password = "1234", roles = {})
     void test_1() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         mvc.perform(post("/book")
@@ -70,7 +72,7 @@ public class PostBookTest {
 
     @Test
     @DisplayName("POST /book redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
-
+    @WithMockUser(username = "user", password = "1234", roles = {})
     public void test_3() throws Exception {
         BookDataForm wrongForm = new BookDataForm(null,true);
 
@@ -87,7 +89,7 @@ public class PostBookTest {
     @Test
     @DisplayName("POST /book returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
-
+    @WithMockUser(username = "user", password = "1234", roles = {})
     public void test_4() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);

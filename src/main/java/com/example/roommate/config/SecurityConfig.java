@@ -17,14 +17,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity chainBuilder) throws Exception {
-        chainBuilder.authorizeHttpRequests(
-                        configurer -> configurer
-                                .requestMatchers("/", "/login").permitAll()
-                                .anyRequest().authenticated()
-                ).formLogin(AbstractAuthenticationFilterConfigurer::permitAll);
+        chainBuilder
+                .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers("/login").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(loginConfigurer -> loginConfigurer
+                        .defaultSuccessUrl("/", true)
+                        .permitAll());
 
         return chainBuilder.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
