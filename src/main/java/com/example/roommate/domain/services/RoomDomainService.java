@@ -119,6 +119,9 @@ public class RoomDomainService {
     }
 
     public static BookingDays createBookingDays(int stepSize){
+        if(stepSize == 0)
+            return new BookingDays();
+        else
         return new BookingDays(stepSize);
     }
 

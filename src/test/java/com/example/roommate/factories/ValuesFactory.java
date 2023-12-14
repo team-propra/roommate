@@ -15,10 +15,10 @@ public class ValuesFactory {
 
     public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
     public static BookDataForm createBookDataForm() {
-        return new BookDataForm(id.toString(), 60, new BookingDays());
+        return new BookDataForm(id.toString(), 0, new BookingDays());
     }
     public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
-        return new BookDataForm(id.toString(), 60,new BookingDays());
+        return new BookDataForm(id.toString(), 60,new BookingDays(24));
     }
 
     public static ItemName createItemName() {

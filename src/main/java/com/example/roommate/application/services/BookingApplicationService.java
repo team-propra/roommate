@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @ApplicationService
 public class BookingApplicationService {
     
-    BookEntryDomainService bookEntryDomainService;
+    public BookEntryDomainService bookEntryDomainService;
     public RoomDomainService roomDomainService;
 
     public BookingApplicationService(BookEntryDomainService bookEntryDomainService, RoomDomainService roomDomainService) {

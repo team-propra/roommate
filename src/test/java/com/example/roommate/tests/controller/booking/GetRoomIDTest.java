@@ -50,7 +50,7 @@ public class GetRoomIDTest {
         RoomDomainService roomDomainService1 = new RoomDomainService(roomRepository, itemRepository);
 
         bookingApplicationService.roomDomainService = roomDomainService1;
-        
+
         when(bookingApplicationService.findRoomByID(roomId)).thenReturn(room);
         when(roomRepository.findRoomByID(roomId)).thenReturn(room);
         MvcResult result = mvc.perform(get("/room/{ID}", roomId.toString()))

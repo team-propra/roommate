@@ -15,6 +15,8 @@ public class BookingDays {
    public List<Boolean> sundayBookings;
 
       public BookingDays(int stepsize){
+
+
          this.stepsize = stepsize;
          int listsize = (24 * 60) / stepsize;
          this.mondayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
@@ -34,4 +36,8 @@ public class BookingDays {
       this.saturdayBookings = new ArrayList<>(Collections.nCopies(24, true));
       this.sundayBookings = new ArrayList<>(Collections.nCopies(24, true));
    }
+
+
+
+
 }

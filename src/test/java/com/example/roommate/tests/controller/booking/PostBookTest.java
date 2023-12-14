@@ -19,9 +19,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.example.roommate.values.domain.BookingDays;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -43,6 +46,8 @@ public class PostBookTest {
      RoomRepository roomRepository;
 
 
+
+
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
     BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60,new BookingDays(60));
@@ -50,11 +55,13 @@ public class PostBookTest {
     @DisplayName("POST /book redirects to /home")
     @Test
     void test_1() throws Exception {
-       // BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+        //BookDataForm bookDataForm = mock(BookDataForm.class);
         //RoomRepository r = Mockito.mock(RoomRepository.class);
+        entryService.roomDomainService = roomDomainService;
 
         roomRepository.add(new RoomEntry(roomID, "randomroomnumber"));
         //when(r.findRoomByID(roomID)).thenReturn(new RoomEntry(roomID, "randomroomnumber"));
+        when(roomDomainService.addBookingsToForm(new ArrayList<>(), bookDataForm)).thenReturn(bookDataForm);
         mvc.perform(post("/book")
                         .param("roomID", roomID.toString())
                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
