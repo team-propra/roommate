@@ -37,11 +37,11 @@ public class PostBookTest {
 
 
 
-    @DisplayName("POST /book redirects to /home")
+    @DisplayName("POST /rooms redirects to /home")
     @Test
     void test_1() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
-        mvc.perform(post("/book")
+        mvc.perform(post("/rooms")
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                 .andExpect(redirectedUrl("/home"));
@@ -55,7 +55,7 @@ public class PostBookTest {
     void test_2() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
 
-        MvcResult postResult = mvc.perform(post("/book")
+        MvcResult postResult = mvc.perform(post("/rooms")
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                 .andReturn();
@@ -69,12 +69,12 @@ public class PostBookTest {
     }
 
     @Test
-    @DisplayName("POST /book redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
+    @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
 
     public void test_3() throws Exception {
         BookDataForm wrongForm = new BookDataForm(null,true);
 
-        mvc.perform(post("/book")
+        mvc.perform(post("/rooms")
                 .param("roomID", "null")
                 .param("Monday19", Boolean.toString(wrongForm.Monday19())))
                 .andExpect(status().is3xxRedirection())
@@ -85,7 +85,7 @@ public class PostBookTest {
 
     //
     @Test
-    @DisplayName("POST /book returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
+    @DisplayName("POST /rooms returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
 
     public void test_4() throws Exception {
@@ -93,7 +93,7 @@ public class PostBookTest {
         //entryService = mock(BookEntryService.class);
         Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
 
-        mvc.perform(post("/book")
+        mvc.perform(post("/rooms")
                         //.param("form", bookDataForm.toString()))
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
