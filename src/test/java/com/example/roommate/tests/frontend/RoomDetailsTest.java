@@ -1,7 +1,7 @@
 package com.example.roommate.tests.frontend;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.controller.BookingController;
+import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.utility.thymeleaf.TestModel;
 import com.example.roommate.utility.thymeleaf.ThymeleafTestEngine;
@@ -30,7 +30,7 @@ public class RoomDetailsTest {
         model.addAttribute("room", room);
 
         //stepSize needs to be >= 1
-        BookingController.DayTimeFrame dummyDayTimeFrame = new BookingController.DayTimeFrame(0,0,1,new ArrayList<>(),new ArrayList<>());
+        RoomController.DayTimeFrame dummyDayTimeFrame = new RoomController.DayTimeFrame(0,0,1,new ArrayList<>(),new ArrayList<>());
         model.addAttribute("frame",dummyDayTimeFrame);
         String render = thymeleafTestEngine.render("roomDetails.html",model);
 

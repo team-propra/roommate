@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.controller.BookingController.DayTimeFrame;
+import com.example.roommate.controller.RoomController.DayTimeFrame;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
