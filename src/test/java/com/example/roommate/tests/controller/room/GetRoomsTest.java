@@ -1,5 +1,6 @@
 package com.example.roommate.tests.controller.room;
 
+import com.example.roommate.annotations.TestClass;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @WebMvcTest
+@TestClass
 public class GetRoomsTest {
 
     @Autowired
