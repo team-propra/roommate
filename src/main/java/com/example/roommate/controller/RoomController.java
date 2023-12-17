@@ -137,6 +137,10 @@ public class RoomController {
         return new ModelAndView("redirect:/home");
     }
 
+    @GetMapping("/rooms/add")
+    public String addRooms() {
+        return "addRooms";
+    }
 
 }
 
