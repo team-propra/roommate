@@ -2,12 +2,12 @@ package com.example.roommate.tests.controller;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.controller.HomeController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +25,7 @@ public class  HomeControllerTest {
 
     @DisplayName("A GET-Request on /home returns a status 200 and displays the home.html")
     @Test
-    @WithMockUser(username = "user", password = "1234", roles = {})
+    @WithCustomMockUser
     public void test_01() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())

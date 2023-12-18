@@ -3,6 +3,7 @@ package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -12,7 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.example.roommate.annotations.WithCustomMockUser;
 @WebMvcTest
 @TestClass
 public class PostBookTest {
@@ -38,12 +40,13 @@ public class PostBookTest {
 
 
 
-    @DisplayName("POST /rooms redirects to /home")
+    @DisplayName("POST /rooms redirects to /")
     @Test
-    @WithMockUser(username = "user", password = "1234", roles = {})
+    @WithCustomMockUser
     void test_1() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+        BookDataForm bookDataForm = ValuesFactory.createBookDataForm();
         mvc.perform(post("/rooms")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                 .andExpect(redirectedUrl("/"));
@@ -72,15 +75,16 @@ public class PostBookTest {
 
     @Test
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
-    @WithMockUser(username = "user", password = "1234", roles = {})
+    @WithCustomMockUser
     public void test_3() throws Exception {
         BookDataForm wrongForm = new BookDataForm(null,true);
 
         mvc.perform(post("/rooms")
-                .param("roomID", "null")
-                .param("Monday19", Boolean.toString(wrongForm.Monday19())))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/room/*")) ;
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .param("roomID", "null")
+                        .param("Monday19", Boolean.toString(wrongForm.Monday19())))
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrlPattern("/room/*")) ;
 
     }
 
@@ -89,7 +93,7 @@ public class PostBookTest {
     @Test
     @DisplayName("POST /rooms returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
-    @WithMockUser(username = "user", password = "1234", roles = {})
+    @WithCustomMockUser
     public void test_4() throws Exception {
         BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);
@@ -97,6 +101,7 @@ public class PostBookTest {
 
         mvc.perform(post("/rooms")
                         //.param("form", bookDataForm.toString()))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
                         .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                 .andExpect(view().name("bad-request"))

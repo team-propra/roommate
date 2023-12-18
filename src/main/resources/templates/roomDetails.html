@@ -13,7 +13,7 @@
   </div>
 
 
-  <form method="post" action="/rooms">
+  <form method="post" th:action="@{/rooms}">
     <input type="hidden" name="roomID" th:value="*{roomID}">
 
     <table class="table">
