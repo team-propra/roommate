@@ -23,17 +23,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-public class BookingController {
+public class RoomController {
 
     private final BookingApplicationService bookingApplicationService;
 
     @Autowired
-    public BookingController(BookingApplicationService bookingApplicationService) {
+    public RoomController(BookingApplicationService bookingApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
     }
 
-    // http://localhost:8080/book?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
-    @GetMapping("/book")
+    // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
+    @GetMapping("/rooms")
     public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
         if (datum == null) datum = "2024-01-01";
         if (uhrzeit == null) uhrzeit = "08:00";
@@ -48,7 +48,7 @@ public class BookingController {
         model.addAttribute("items", bookingApplicationService.getItems());
         model.addAttribute("gegenstaende", gegenstaende);
         model.addAttribute("rooms", bookingApplicationService.findRoomsWithItems(selectedItemsList)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
-        return "book";
+        return "rooms";
     }
 
 
@@ -117,7 +117,7 @@ public class BookingController {
     }
 
 
-    @PostMapping("/book")
+    @PostMapping("/rooms")
     public ModelAndView addBooking(@Valid BookDataForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             String id = form.roomID();
@@ -139,6 +139,10 @@ public class BookingController {
         return new ModelAndView("redirect:/");
     }
 
+    @GetMapping("/rooms/add")
+    public String addRooms() {
+        return "addRooms";
+    }
 
 }
 

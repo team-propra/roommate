@@ -23,9 +23,9 @@ public class GetBookTest {
     @WithMockUser(username = "user", password = "1234", roles = {})
     void test_3()throws Exception{
 
-        mvc.perform(get("/book"))
+        mvc.perform(get("/rooms"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("book"));
+                .andExpect(view().name("rooms"));
     }
 
 
