@@ -1,5 +1,6 @@
 package com.example.roommate.tests.services;
 
+import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Room;
 
 import com.example.roommate.domain.services.RoomDomainService;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
+@TestClass
 class RoomServiceTest {
 
     RoomRepository roomRepository = new RoomRepository();
@@ -22,7 +24,6 @@ class RoomServiceTest {
     RoomDomainService roomService = ServiceFactory.createRoomService(roomRepository, itemRepository);
 
     UUID roomID = UUID.fromString("f2bf727f-249c-482b-b3ee-11eb2659cb7e");
-    UUID differentRoomID = UUID.fromString("6d5bbffd-96eb-4475-9095-5f6ba653f118");
 
     @Test
     @DisplayName("testing the addRoom function")
