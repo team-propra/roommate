@@ -4,7 +4,6 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.values.domain.BookingDays;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domain.ItemName;
-import com.example.roommate.values.forms.LoginForm;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -35,13 +34,6 @@ public class ValuesTest {
     void test_3() {
         ItemName item = ValuesFactory.createItemName();
         assertThat(item).isInstanceOf(ItemName.class);
-    }
-
-    @DisplayName("can create LoginData")
-    @Test
-    void test_4() {
-        LoginForm loginForm = ValuesFactory.createLoginData();
-        assertThat(loginForm).isInstanceOf(LoginForm.class);
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,21 @@ public class GetBookTest {
 
     @Test
     @DisplayName("A Get-Request on /book returns home.html")
+    @WithCustomMockUser
     void test_3()throws Exception{
 
-        mvc.perform(get("/book"))
+        mvc.perform(get("/rooms"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("book"));
+                .andExpect(view().name("rooms"));
     }
 
 
     //vorerst noch keine Parametervalidierung, da evtl. neues Form-Objekt oder andere Informationen übergeben werden
     @Test
     @DisplayName("A GET-request on /book with the query parameters date and time stores them in the model")
+    @WithCustomMockUser
     void test_04() throws Exception{
-        mvc.perform(get("/book")
+        mvc.perform(get("/rooms")
                 .param("date", "08.07.2014")
                 .param("time", "14:30"))
                 .andExpect(model().attributeExists("date", "time"));

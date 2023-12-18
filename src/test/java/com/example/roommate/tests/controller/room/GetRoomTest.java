@@ -2,6 +2,7 @@ package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.domain.services.RoomDomainService;
@@ -40,6 +41,7 @@ public class GetRoomTest {
     RoomDomainService roomDomainService;
     @Test
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
+    @WithCustomMockUser
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
@@ -61,6 +63,7 @@ public class GetRoomTest {
 
     @Test
     @DisplayName("GET /room/{id} successfully yields NotFound and the not-found view whenever the room doesnt exist")
+    @WithCustomMockUser
     public void test_2() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room goodRoom = new Room(roomID,"test-room-123");
