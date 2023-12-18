@@ -1,6 +1,7 @@
 package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.services.RoomDomainService;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ public class GetRoomIDTest {
 
     @Test
     @DisplayName("GET /room/{ID} with mocked service successfully yields roomDetails.html")
+    @WithCustomMockUser
     void test_1() throws Exception {
         UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomId,"test");

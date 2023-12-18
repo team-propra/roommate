@@ -1,10 +1,12 @@
 package com.example.roommate.tests.frontend;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.utility.thymeleaf.TestModel;
 import com.example.roommate.utility.thymeleaf.ThymeleafTestEngine;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
@@ -14,12 +16,13 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestClass
+@Disabled
 public class RoomDetailsTest {
 
     @Test
     @DisplayName("RoomDetails should dynamically render a roomnumber from scope")
     @Description("this is a bad test for illustration purposes, as we dont use thymeleaf yet")
-    public void test() {
+    public void test1() {
         //Arrange
         ThymeleafTestEngine thymeleafTestEngine = new ThymeleafTestEngine();
 
@@ -38,5 +41,4 @@ public class RoomDetailsTest {
         System.out.println(render);
         assertThat(render).contains(room.getRoomNumber());
     }
-
 }

@@ -2,6 +2,7 @@ package com.example.roommate.tests.controller;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.controller.HomeController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,9 @@ public class  HomeControllerTest {
 
     @DisplayName("A GET-Request on /home returns a status 200 and displays the home.html")
     @Test
+    @WithCustomMockUser
     public void test_01() throws Exception {
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"));
 

@@ -7,6 +7,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 public class ThymeleafTestEngine {
+
     public String render(String file, TestModel model){
         TemplateEngine templateEngine = new SpringTemplateEngine();
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -21,6 +22,6 @@ public class ThymeleafTestEngine {
     public String render(String file){
         return render(file,new TestModel());
     }
-    
-    
+
+
 }

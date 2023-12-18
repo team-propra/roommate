@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestClass
 public class ThymleafTestEngineTest {
-    
     @Test
     @DisplayName("ThymeleafTestEngine correctly inserts the model")
     public void test(){
