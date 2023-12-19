@@ -13,6 +13,7 @@ import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.interfaces.entities.IRoom;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 @ApplicationService
 public class BookingApplicationService {
     
-    public BookEntryDomainService bookEntryDomainService;
-    public RoomDomainService roomDomainService;
+    BookEntryDomainService bookEntryDomainService;
+    RoomDomainService roomDomainService;
 
     public BookingApplicationService(BookEntryDomainService bookEntryDomainService, RoomDomainService roomDomainService) {
         this.bookEntryDomainService = bookEntryDomainService;
@@ -41,7 +42,7 @@ public class BookingApplicationService {
 
     public List<IRoom> findRoomsWithItems(List<ItemName> items) {
             return roomDomainService.getRooms().stream()
-                    .filter(room -> room.getItemNames().containsAll(items))
+                    .filter(room -> new HashSet<>(room.getItemNames()).containsAll(items))
                     .collect(Collectors.toList());
 }
 

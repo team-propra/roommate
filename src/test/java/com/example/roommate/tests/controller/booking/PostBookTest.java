@@ -2,11 +2,11 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.values.domain.CalendarDays;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
-import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -21,12 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import com.example.roommate.values.domain.BookingDays;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,7 +44,7 @@ public class PostBookTest {
     RoomDomainService roomDomainService;
 
     @MockBean
-     RoomRepository roomRepository;
+    RoomRepository roomRepository;
 
 
 
@@ -59,13 +57,10 @@ public class PostBookTest {
     @Test
     @WithCustomMockUser
     void test_1() throws Exception {
-        //BookDataForm bookDataForm = mock(BookDataForm.class);
+        BookDataForm bookDataForm = mock(BookDataForm.class);
         //RoomRepository r = Mockito.mock(RoomRepository.class);
-        entryService.roomDomainService = roomDomainService;
-
-        roomRepository.add(new RoomEntry(roomID, "randomroomnumber"));
-        //when(r.findRoomByID(roomID)).thenReturn(new RoomEntry(roomID, "randomroomnumber"));
-        when(roomDomainService.addBookingsToForm(new ArrayList<>(), bookDataForm)).thenReturn(bookDataForm);
+        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", new CalendarDays()));
+//        when(roomDomainService.addBookingsToForm(new ArrayList<>(), bookDataForm)).thenReturn(bookDataForm);
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())

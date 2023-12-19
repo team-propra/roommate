@@ -1,6 +1,7 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.values.domain.CalendarDays;
 import com.example.roommate.values.domain.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
@@ -28,7 +29,7 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14");}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14",new CalendarDays());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber);}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,new CalendarDays());}
 }

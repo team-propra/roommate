@@ -53,7 +53,7 @@ class RoomDomainServiceTest {
         roomDomainService.removeRoom(room);
 
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber());
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
         assertThat(roomRepository.findAll()).doesNotContain(roomEntry);
     }
 

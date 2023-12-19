@@ -33,7 +33,7 @@ class RoomServiceTest {
         Room room = new Room(roomID, "101");
         roomService.addRoom(room);
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber());
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(roomEntry.roomID());
     }
 

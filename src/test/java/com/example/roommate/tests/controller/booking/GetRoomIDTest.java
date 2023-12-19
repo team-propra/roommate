@@ -5,7 +5,6 @@ import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +37,9 @@ public class GetRoomIDTest {
 
     @MockBean
     BookingApplicationService bookingApplicationService;
+
+    @MockBean
+    ItemRepository itemRepository;
     
     
 
@@ -48,11 +49,6 @@ public class GetRoomIDTest {
     void test_1() throws Exception {
         UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomId,"test");
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        RoomDomainService roomDomainService1 = new RoomDomainService(roomRepository, itemRepository);
-
-        bookingApplicationService.roomDomainService = roomDomainService1;
-
         when(bookingApplicationService.findRoomByID(roomId)).thenReturn(room);
         when(roomRepository.findRoomByID(roomId)).thenReturn(room);
         MvcResult result = mvc.perform(get("/room/{ID}", roomId.toString()))

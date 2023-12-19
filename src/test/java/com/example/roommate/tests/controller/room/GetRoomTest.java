@@ -4,7 +4,6 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.repositories.ItemRepository;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,18 +37,18 @@ public class GetRoomTest {
     
     @MockBean
     RoomDomainService roomDomainService;
+
+    @MockBean
+    RoomRepository roomRepository;
+    @MockBean
+    ItemRepository itemRepository;
     @Test
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
     @WithCustomMockUser
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
-        RoomRepository roomRepository = mock(RoomRepository.class);
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        RoomDomainService roomDomainService1 = new RoomDomainService(roomRepository, itemRepository);
-
-        bookingApplicationService.roomDomainService = roomDomainService1;
-        when(roomRepository.findRoomByID(roomID)).thenReturn(room);
+//        when(roomRepository.findRoomByID(roomID)).thenReturn(room); why?, its provided by the app service already
        // when(roomDomainService.findRoomByID(roomID)).thenReturn(room);
         when(bookingApplicationService.findRoomByID(roomID)).thenReturn(room);
         
@@ -66,23 +64,11 @@ public class GetRoomTest {
     @WithCustomMockUser
     public void test_2() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
-        Room goodRoom = new Room(roomID,"test-room-123");
 
-        RoomRepository roomRepository = mock(RoomRepository.class);
-        ItemRepository itemRepository = mock(ItemRepository.class);
-        RoomDomainService roomDomainService1 = new RoomDomainService(roomRepository, itemRepository);
-
-        bookingApplicationService.roomDomainService = roomDomainService1;
         when(bookingApplicationService.findRoomByID(roomID)).thenThrow(new NotFoundException());
-        //when(roomRepository.findRoomByID(roomID)).thenReturn(goodRoom);
-        //when(roomDomainService.findRoomByID(goodRoom.getRoomID())).thenThrow(new NotFoundRepositoryException());
-        //when(bookingApplicationService.findRoomByID(roomID)).thenReturn(goodRoom);
-        
         mvc.perform(get("/room/{id}",roomID.toString()))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("not-found"));
-                
-        
 
     }
 }

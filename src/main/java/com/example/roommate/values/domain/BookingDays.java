@@ -45,5 +45,4 @@ public class BookingDays {
          return new BookingDays(stepSize);
    }
 
-
 }

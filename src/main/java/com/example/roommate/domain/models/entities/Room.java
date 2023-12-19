@@ -1,7 +1,7 @@
 package com.example.roommate.domain.models.entities;
 
 
-import com.example.roommate.domain.models.values.CalendarDay;
+import com.example.roommate.values.domain.CalendarDays;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domain.ItemName;
 
@@ -15,26 +15,15 @@ public class Room implements IRoom {
     private final UUID roomID;
     private final String roomnumber;
 
-    public CalendarDay monday;//will be replaced by an actual calendar day, prob. using java.time.LocalDate for this, maybe somth. like: List<LocalDate,CalendarDay>
-    public CalendarDay tuesday;
-    public CalendarDay wednesday;
-    public CalendarDay thursday;
-    public CalendarDay friday;
-    public CalendarDay saturday;
-    public CalendarDay sunday;
+    public CalendarDays calendarDays;
+    
 
     private final List<ItemName> itemNameList = new ArrayList<>();
 
     public Room(UUID roomID, String roomnumber) {
         this.roomID = roomID;
         this.roomnumber = roomnumber;
-        this.monday = new CalendarDay();
-        this.tuesday = new CalendarDay();
-        this.wednesday = new CalendarDay();
-        this.thursday = new CalendarDay();
-        this.friday = new CalendarDay();
-        this.saturday = new CalendarDay();
-        this.sunday = new CalendarDay();
+        this.calendarDays = new CalendarDays();
     }
 
     public UUID getRoomID() {
@@ -68,5 +57,10 @@ public class Room implements IRoom {
 
     public List<ItemName> getItemNames() {
         return itemNameList;
+    }
+
+    @Override
+    public CalendarDays getCalendarDays() {
+        return calendarDays;
     }
 }
