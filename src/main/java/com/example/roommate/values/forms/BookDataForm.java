@@ -12,7 +12,7 @@ public record BookDataForm(@IsValidUUID String roomID, /*@AssertTrue*/int stepSi
         //if(roomID == null) throw new IllegalArgumentException(); Collision with test "POST /book redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)"
         this.roomID = roomID;
         this.stepSize = stepSize;
-        this.bookingDays = RoomDomainService.createBookingDays(stepSize);
+        this.bookingDays = BookingDays.createBookingDays(stepSize);
        // this.bookingDays = new BookingDays(newBookingDays);
         //this.bookingDays = new BookingDays(stepSize);
     }
@@ -21,6 +21,8 @@ public record BookDataForm(@IsValidUUID String roomID, /*@AssertTrue*/int stepSi
         this(roomID, stepSize, null);
 
     }*/
+
+    
 
 
 }

@@ -15,7 +15,7 @@ public class EntityFactory {
     }
 
     public static Booking createBookingEntity() {
-        return new Booking(id, new BookingDays());
+        return new Booking(id, BookingDays.createBookingDays(0));
     }
 
     public static Room createRoom() {

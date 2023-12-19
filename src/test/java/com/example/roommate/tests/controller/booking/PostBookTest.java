@@ -53,7 +53,7 @@ public class PostBookTest {
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
-    BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60,new BookingDays(60));
+    BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60,BookingDays.createBookingDays(60));
 
     @DisplayName("POST /rooms redirects to /")
     @Test
@@ -100,7 +100,7 @@ public class PostBookTest {
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
     @WithCustomMockUser
     public void test_3() throws Exception {
-        BookDataForm wrongForm = new BookDataForm(null,60, new BookingDays(60));
+        BookDataForm wrongForm = new BookDataForm(null,60, BookingDays.createBookingDays(60));
 
         mvc.perform(post("/rooms")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

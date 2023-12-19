@@ -118,12 +118,7 @@ public class RoomDomainService {
         roomRepository.add(room);
     }
 
-    public static BookingDays createBookingDays(int stepSize){
-        if(stepSize == 0)
-            return new BookingDays();
-        else
-        return new BookingDays(stepSize);
-    }
+    
 
     public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
 

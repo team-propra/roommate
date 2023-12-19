@@ -14,7 +14,7 @@ public class BookingDays {
    public List<Boolean> saturdayBookings;
    public List<Boolean> sundayBookings;
 
-      public BookingDays(int stepsize){
+      BookingDays(int stepsize){
 
 
          this.stepsize = stepsize;
@@ -27,7 +27,7 @@ public class BookingDays {
          this.saturdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
          this.sundayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
       }
-   public BookingDays(){
+   BookingDays(){
       this.mondayBookings = new ArrayList<>(Collections.nCopies(24, true));
       this.tuesdayBookings = new ArrayList<>(Collections.nCopies(24, true));
       this.wednesdayBookings = new ArrayList<>(Collections.nCopies(24, true));
@@ -38,6 +38,12 @@ public class BookingDays {
    }
 
 
+   public static BookingDays createBookingDays(int stepSize){
+      if(stepSize == 0)
+         return new BookingDays();
+      else
+         return new BookingDays(stepSize);
+   }
 
 
 }
