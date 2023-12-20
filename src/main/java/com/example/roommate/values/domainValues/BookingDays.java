@@ -1,4 +1,4 @@
-package com.example.roommate.values.domain;
+package com.example.roommate.values.domainValues;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ public class BookingDays {
    public List<Boolean> saturdayBookings;
    public List<Boolean> sundayBookings;
 
-      BookingDays(int stepsize){
+      public BookingDays(int stepsize){
 
 
          this.stepsize = stepsize;
@@ -39,10 +39,13 @@ public class BookingDays {
 
 
    public static BookingDays createBookingDays(int stepSize){
+      BookingDays bookingDays;
       if(stepSize == 0)
-         return new BookingDays();
+         bookingDays = new BookingDays();
       else
-         return new BookingDays(stepSize);
+         bookingDays = new BookingDays(stepSize);
+      
+      return bookingDays;
    }
 
 }

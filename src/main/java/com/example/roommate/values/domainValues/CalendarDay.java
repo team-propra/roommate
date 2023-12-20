@@ -1,4 +1,4 @@
-package com.example.roommate.values.domain;
+package com.example.roommate.values.domainValues;
 
 import java.util.ArrayList;
 import java.util.Collections;

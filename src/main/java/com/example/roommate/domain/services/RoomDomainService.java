@@ -5,7 +5,7 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 
 import java.util.Collection;

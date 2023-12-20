@@ -26,7 +26,7 @@ public class Layers {
                     .layer(DOMAIN).definedBy("com.example.roommate.domain..")
                     .layer(DOMAIN_MODELS).definedBy("com.example.roommate.domain.models..")
                     .layer(DOMAIN_ENTITIES).definedBy("com.example.roommate.domain.models.entities..")
-                    .layer(DOMAIN_VALUES).definedBy("com.example.roommate.values.domain..")
+                    .layer(DOMAIN_VALUES).definedBy("com.example.roommate.values.domainValues..")
                     .layer(DOMAIN_SERVICES).definedBy("com.example.roommate.domain.services..")
                     .layer(TESTS).definedBy("com.example.roommate.tests..")
                     .layer(FORMS).definedBy("com.example.roommate.values.forms..")

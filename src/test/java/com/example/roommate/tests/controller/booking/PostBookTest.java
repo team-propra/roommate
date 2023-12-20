@@ -2,7 +2,7 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.values.domain.CalendarDays;
+import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.persistence.data.RoomEntry;
@@ -19,12 +19,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import com.example.roommate.values.domain.BookingDays;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,16 +49,13 @@ public class PostBookTest {
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
-    BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60,BookingDays.createBookingDays(60));
+    BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60);
 
     @DisplayName("POST /rooms redirects to /")
     @Test
     @WithCustomMockUser
     void test_1() throws Exception {
-        BookDataForm bookDataForm = mock(BookDataForm.class);
-        //RoomRepository r = Mockito.mock(RoomRepository.class);
         roomRepository.add(new RoomEntry(roomID, "randomroomnumber", new CalendarDays()));
-//        when(roomDomainService.addBookingsToForm(new ArrayList<>(), bookDataForm)).thenReturn(bookDataForm);
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
@@ -95,7 +90,6 @@ public class PostBookTest {
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
     @WithCustomMockUser
     public void test_3() throws Exception {
-        BookDataForm wrongForm = new BookDataForm(null,60, BookingDays.createBookingDays(60));
 
         mvc.perform(post("/rooms")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

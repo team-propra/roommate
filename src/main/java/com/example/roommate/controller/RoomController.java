@@ -1,10 +1,11 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.values.domain.CalendarDays;
+import com.example.roommate.values.domainValues.IntermediateBookDataForm;
+import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import jakarta.validation.Valid;
@@ -118,7 +119,7 @@ public class RoomController {
             , BindingResult bindingResult
             , RedirectAttributes redirectAttributes
             ,@RequestParam(value="cell", defaultValue = "false")List<String> checkedDays
-//             @RequestParam(value="box", defaultValue = "false")List<String> boxes
+//             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
     ) {
 
 
@@ -130,10 +131,10 @@ public class RoomController {
         }
         System.out.println(form);
 
-        BookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
+        IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
 
         try {
-            bookingApplicationService.addBookEntry(form);
+            bookingApplicationService.addBookEntry(addedBookingsForm);
 //            bookingApplicationService.roomDomainService.addBooking(addedBookingsForm);
         } catch (GeneralDomainException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");

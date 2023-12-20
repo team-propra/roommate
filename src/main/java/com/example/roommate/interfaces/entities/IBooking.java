@@ -1,7 +1,7 @@
 package com.example.roommate.interfaces.entities;
 
 import com.example.roommate.annotations.Interface;
-import com.example.roommate.values.domain.BookingDays;
+import com.example.roommate.values.domainValues.BookingDays;
 
 import java.util.UUID;
 
