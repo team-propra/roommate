@@ -2,7 +2,7 @@ package com.example.roommate.tests.domain;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.values.forms.BookDataForm;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ public class ValuesTest {
     @DisplayName("can create BookDataForm")
     @Test
     void test_1() {
-        BookDataForm bookDataForm = ValuesFactory.createBookDataForm();
+        BookDataForm bookDataForm = ValuesFactory.createValidBookDataForm();
         assertThat(bookDataForm).isInstanceOf(BookDataForm.class);
     }
 
@@ -24,7 +24,7 @@ public class ValuesTest {
     @Test
     @Disabled
     void testCreateBookDataFormWithNullUUID() {
-        assertThatThrownBy(() -> new BookDataForm(null, true))
+        assertThatThrownBy(() -> new BookDataForm(null, 60))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

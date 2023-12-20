@@ -5,7 +5,7 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.UUID;
 //mediate between Repository, domain; map forms to domain-objects/data
 public class RoomDomainService {
 
-    IRoomRepository roomRepository;
+    public IRoomRepository roomRepository;
     IItemRepository itemRepository;
 
     public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository) {
@@ -33,9 +33,15 @@ public class RoomDomainService {
         roomRepository.add(room2);
     }
 
+    
+
+    
+
     public void addRoom(IRoom room) {
         roomRepository.add(room);
     }
+
+    
 
     public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
 

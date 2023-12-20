@@ -1,9 +1,12 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.values.domainValues.IntermediateBookDataForm;
+import com.example.roommate.values.domainValues.CalendarDays;
+import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.UUID;
 
@@ -12,11 +15,23 @@ public class ValuesFactory {
 
 
     public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
-    public static BookDataForm createBookDataForm() {
-        return new BookDataForm(id.toString(), true);
+    public static BookDataForm createValidBookDataForm() {
+        return new BookDataForm(id.toString(), 1);
     }
-    public static BookDataForm createInvalidBookDataForm() {
-        return new BookDataForm(id.toString(), false);
+    public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
+        return new BookDataForm(id.toString(), 60);
+    }
+
+    public static IntermediateBookDataForm createValidIntermediateBookDataForm() {
+        BookDataForm validBookDataForm = createValidBookDataForm();
+        BookingDays valid = BookingDays.createBookingDays(validBookDataForm.stepSize());
+        valid.mondayBookings.add(true);
+        return new IntermediateBookDataForm(validBookDataForm,valid);
+    }
+    public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() {
+        BookDataForm validBookDataForm = createInvalidBookDataForm();
+        BookingDays invalid = BookingDays.createBookingDays(-99999);
+        return new IntermediateBookDataForm(validBookDataForm,invalid);
     }
 
     public static ItemName createItemName() {
@@ -27,7 +42,9 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14");}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14",new CalendarDays());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber);}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,new CalendarDays());}
+    
+    
 }

@@ -1,10 +1,8 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
-import com.example.roommate.domain.models.entities.Admin;
-import com.example.roommate.domain.models.entities.Booking;
-import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.models.entities.User;
+import com.example.roommate.domain.models.entities.*;
+import com.example.roommate.values.domainValues.BookingDays;
 
 import java.util.UUID;
 
@@ -17,7 +15,7 @@ public class EntityFactory {
     }
 
     public static Booking createBookingEntity() {
-        return new Booking(id, true);
+        return new Booking(id, BookingDays.createBookingDays(0));
     }
 
     public static Room createRoom() {

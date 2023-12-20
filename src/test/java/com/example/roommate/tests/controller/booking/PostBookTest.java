@@ -2,8 +2,11 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.values.domainValues.CalendarDays;
+import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.factories.ValuesFactory;
+import com.example.roommate.persistence.data.RoomEntry;
+import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -35,20 +38,29 @@ public class PostBookTest {
     @MockBean
     BookingApplicationService entryService;
 
+    @MockBean
+    RoomDomainService roomDomainService;
+
+    @MockBean
+    RoomRepository roomRepository;
+
+
+
 
     UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
-
+    BookDataForm bookDataForm = new BookDataForm(roomID.toString(),60);
 
     @DisplayName("POST /rooms redirects to /")
     @Test
     @WithCustomMockUser
     void test_1() throws Exception {
-        BookDataForm bookDataForm = ValuesFactory.createBookDataForm();
+        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", new CalendarDays()));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
-                        .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                       // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                        .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(redirectedUrl("/"));
     }
 
@@ -58,11 +70,12 @@ public class PostBookTest {
     @DisplayName("Booking Details appear on the homepage after submiting the booking form")
     @Test
     void test_2() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+     //   BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
 
         MvcResult postResult = mvc.perform(post("/rooms")
                         .param("roomID", roomID.toString())
-                        .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                       // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                        .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andReturn();
         MvcResult getResult = mvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -77,14 +90,14 @@ public class PostBookTest {
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
     @WithCustomMockUser
     public void test_3() throws Exception {
-        BookDataForm wrongForm = new BookDataForm(null,true);
 
         mvc.perform(post("/rooms")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .param("roomID", "null")
-                        .param("Monday19", Boolean.toString(wrongForm.Monday19())))
-                        .andExpect(status().is3xxRedirection())
-                        .andExpect(redirectedUrlPattern("/room/*")) ;
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("roomID", "null")
+               // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
+                .param("stepSize", String.valueOf(bookDataForm.stepSize())))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/room/*")) ;
 
     }
 
@@ -95,15 +108,17 @@ public class PostBookTest {
             "throws GeneralDomainException")
     @WithCustomMockUser
     public void test_4() throws Exception {
-        BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+      //  BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);
-        Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
+        //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
+        Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(Mockito.any());
 
         mvc.perform(post("/rooms")
-                        //.param("form", bookDataForm.toString()))
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .param("roomID", roomID.toString())
-                        .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                       // .param("form", bookDataForm.toString()))
+                          .param("roomID", roomID.toString())
+                        //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(view().name("bad-request"))
                 .andExpect(status().is(400));
     }

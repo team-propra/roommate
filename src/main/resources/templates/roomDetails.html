@@ -6,6 +6,16 @@
     <title th:text="*{roomNumber}" >-1</title>
 </head>
 <body>
+
+<script>
+    function renameParent(parent) {
+        if(parent.value.includes('-X'))
+            parent.value = parent.value.replace('-X', '')
+        else
+            parent.value = parent.value + '-X'
+    }
+
+</script>
   <h1>Details zu Raum <span th:text="*{roomNumber}">-1</span> </h1>
 
   <div th:if="${formValidationErrorText}">
@@ -14,7 +24,8 @@
 
 
   <form method="post" th:action="@{/rooms}">
-    <input type="hidden" name="roomID" th:value="*{roomID}">
+      <input type="hidden" name="roomID" th:value="*{roomID}">
+      <input type="hidden" name="stepSize" th:value="${frame.stepSize()}">
 
     <table class="table">
       <thead class="table-header">
@@ -44,7 +55,16 @@
               <td> <span th:text="${frame.timeLabels()[time]}">19:00</span> </td>
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
 
-              <input  type="checkbox" name="Monday19">
+                  <div>
+                      <input  type="hidden" name="cell" th:value="${time + '-' + day}">
+<!--                      <input type="checkbox" name="box" onchange="(e)=>{-->
+<!--                          // console.log('test');-->
+<!--                          // e.parent.children[0].value = e.parent.children[0].value+'_X'-->
+<!--                      }">-->
+                      <input th:unless="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      <input th:if="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+
+                  </div>
               </td>
           </tr>
       </tbody>

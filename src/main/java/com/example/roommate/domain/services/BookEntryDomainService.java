@@ -22,9 +22,9 @@ public class BookEntryDomainService {
     
     
     public void addBocking(IBooking booking) throws GeneralDomainException {
-        Booking bookingEntity = new Booking(booking.getRoomID(), booking.getMonday19());
+        Booking bookingEntity = new Booking(booking.getRoomID(), booking.getBookingDays());
 
-        if (!bookingEntity.validateBookingCoorectness())
+        if (!bookingEntity.validateBookingCorrectness())
             throw new GeneralDomainException();
         bookEntryRepository.addBookEntry(bookingEntity);
     }

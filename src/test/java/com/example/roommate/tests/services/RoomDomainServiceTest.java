@@ -4,7 +4,7 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.persistence.repositories.ItemRepository;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
@@ -53,7 +53,7 @@ class RoomDomainServiceTest {
         roomDomainService.removeRoom(room);
 
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber());
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
         assertThat(roomRepository.findAll()).doesNotContain(roomEntry);
     }
 

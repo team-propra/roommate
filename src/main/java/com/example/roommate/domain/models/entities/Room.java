@@ -1,8 +1,9 @@
 package com.example.roommate.domain.models.entities;
 
 
+import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.values.domain.ItemName;
+import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,15 @@ public class Room implements IRoom {
     private final UUID roomID;
     private final String roomnumber;
 
+    public CalendarDays calendarDays;
+    
+
     private final List<ItemName> itemNameList = new ArrayList<>();
 
     public Room(UUID roomID, String roomnumber) {
         this.roomID = roomID;
         this.roomnumber = roomnumber;
+        this.calendarDays = new CalendarDays();
     }
 
     public UUID getRoomID() {
@@ -52,5 +57,10 @@ public class Room implements IRoom {
 
     public List<ItemName> getItemNames() {
         return itemNameList;
+    }
+
+    @Override
+    public CalendarDays getCalendarDays() {
+        return calendarDays;
     }
 }
