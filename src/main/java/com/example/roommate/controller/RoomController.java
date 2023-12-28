@@ -47,7 +47,7 @@ public class RoomController {
         model.addAttribute("time", uhrzeit);
         model.addAttribute("items", bookingApplicationService.getItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findRoomsWithItems(selectedItemsList)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
+        model.addAttribute("rooms", bookingApplicationService.findRoomsWithItems(selectedItemsList));
         return "rooms";
     }
 

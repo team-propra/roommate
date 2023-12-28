@@ -63,4 +63,9 @@ public class Room implements IRoom {
     public CalendarDays getCalendarDays() {
         return calendarDays;
     }
+
+    @Override
+    public String toString() {
+        return "Room " + roomnumber + " contains =" + itemNameList;
+    }
 }
