@@ -30,4 +30,9 @@ public record RoomEntry(UUID roomID, String roomnumber, CalendarDays calendarDay
         return calendarDays;
     }
 
+    @Override
+    public boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit) {
+        return false;
+    }
+
 }

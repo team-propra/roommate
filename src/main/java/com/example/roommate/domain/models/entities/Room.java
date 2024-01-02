@@ -1,10 +1,13 @@
 package com.example.roommate.domain.models.entities;
 
 
+import com.example.roommate.values.domainValues.CalendarDay;
 import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +66,28 @@ public class Room implements IRoom {
     public CalendarDays getCalendarDays() {
         return calendarDays;
     }
+
+    @Override
+    public boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit) {
+        // Use Reflection
+        Class<?> calendarDaysClass = CalendarDays.class;
+        try {
+            Method method = calendarDaysClass.getMethod(weekday);
+            Object result = method.invoke(this.calendarDays);
+
+            if (result instanceof CalendarDay) {
+                CalendarDay day = (CalendarDay) result;
+                return day.isAvailable(startUhrzeit, endUhrzeit);
+            }
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
+
 
     @Override
     public String toString() {

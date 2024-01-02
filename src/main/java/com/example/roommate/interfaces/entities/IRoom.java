@@ -14,4 +14,6 @@ public interface IRoom {
     List<ItemName> getItemNames();
 
     CalendarDays getCalendarDays();
+
+    boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit);
 }
