@@ -9,7 +9,7 @@
 <h1>Homepage</h1>
 <a href="/rooms">Arbeitsplatz buchen</a>
 <h2>Buchungen</h2>
-<div id="links" th:if="${forms}">
+<div id="links" th:if="${bookings}">
     <table class="table" >
         <thead>
         <tr>
@@ -18,12 +18,15 @@
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="form:${forms}">
+        <tr th:each="room:${rooms}">
             <td>
-                <span th:text="${form.roomID}"> 123 </span>
+                <span th:text="${room.roomNumber}"> 123 </span>
             </td>
             <td>
-                <span th:text="${form.roomID}"> Küche </span>
+                <div th:each="item:${room.itemNames}">
+                    <span th:text="${item}"> Küche </span>
+                </div>
+
             </td>
         </tr>
         </tbody>

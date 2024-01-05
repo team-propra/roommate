@@ -1,10 +1,16 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.exceptions.applicationService.NotFoundException;
+import com.example.roommate.interfaces.entities.IBooking;
+import com.example.roommate.interfaces.entities.IRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Collection;
+import java.util.List;
 
 
 @Controller()
@@ -17,7 +23,17 @@ public class HomeController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("forms", bookingApplicationService.getBookEntries());
+        Collection<IBooking> bookEntries = bookingApplicationService.getBookEntries();
+        List<IRoom> rooms = bookEntries.stream().map(b -> {
+            try {
+                return bookingApplicationService.findRoomByID(b.getRoomID());
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }).toList();
+        model.addAttribute("bookings", bookEntries);
+        model.addAttribute("rooms", rooms);
         return "home";
+
     }
 }
