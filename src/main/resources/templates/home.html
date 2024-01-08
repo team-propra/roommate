@@ -23,8 +23,8 @@
                 <span th:text="${room.roomNumber}"> 123 </span>
             </td>
             <td>
-                <div th:each="item:${room.itemNames}">
-                    <span th:text="${item}"> Küche </span>
+                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNames}">
+                    <span > Küche </span>
                 </div>
 
             </td>
