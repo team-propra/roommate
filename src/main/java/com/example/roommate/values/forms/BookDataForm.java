@@ -55,7 +55,6 @@ public record BookDataForm(@IsValidUUID String roomID, int stepSize){
         }
         return new IntermediateBookDataForm(bookDataForm,bookingDays);
     }
-    
 
 
 }

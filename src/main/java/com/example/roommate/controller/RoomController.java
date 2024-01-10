@@ -115,23 +115,23 @@ public class RoomController {
 
 
     @PostMapping("/rooms")
-    public ModelAndView addBooking(@Valid BookDataForm form
+    public ModelAndView addBooking(@RequestParam(name="roomId") String roomId
+            ,@RequestParam(value="cell", defaultValue = "false")List<String> checkedDays
+            , @RequestParam(name="stepSize") int stepSize
             , BindingResult bindingResult
             , RedirectAttributes redirectAttributes
-            ,@RequestParam(value="cell", defaultValue = "false")List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
     ) {
 
-
+        System.out.println("In Controller:" + roomId);
         if(bindingResult.hasErrors()) {
-            String id = form.roomID();
+            String id = roomId;
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));
         }
-        System.out.println(form);
 
-        IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
+        IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, new BookDataForm(roomId, stepSize));
 
         try {
             bookingApplicationService.addBookEntry(addedBookingsForm);
