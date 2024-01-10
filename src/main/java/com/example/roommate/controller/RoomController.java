@@ -59,13 +59,14 @@ public class RoomController {
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
-            model.addAttribute("room", roomByID);
+
             
             //Frames
             int times = 24;
             int days = 7;
             int stepSize = 60;
             List<List<Boolean>> reservedSlots = CalendarDays.convertRoomCalendarDaysTo2dMatrix(roomByID.getCalendarDays(), stepSize);
+            System.out.println("reservedSlots: " + reservedSlots);
 
             model.addAttribute("reservedSlots", reservedSlots);
             List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
@@ -81,6 +82,8 @@ public class RoomController {
 
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
+
+            model.addAttribute("room", roomByID);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
