@@ -66,15 +66,12 @@ public class RoomController {
             int days = 7;
             int stepSize = 60;
             List<List<Boolean>> reservedSlots = CalendarDays.convertRoomCalendarDaysTo2dMatrix(roomByID.getCalendarDays(), stepSize);
-            System.out.println("reservedSlots: " + reservedSlots);
 
             model.addAttribute("reservedSlots", reservedSlots);
             List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
             List<String> timeLabels = new ArrayList<>();
             generateTimeLabels(times,stepSize, timeLabels);
 
-            System.out.println(dayLabels.size());
-            System.out.println(timeLabels.size());
             DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels);
             model.addAttribute("frame",dayTimeFrame);
 
@@ -132,7 +129,6 @@ public class RoomController {
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));
         }
-        System.out.println(form);
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
 

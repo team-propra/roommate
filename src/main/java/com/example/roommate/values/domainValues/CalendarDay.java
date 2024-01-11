@@ -10,16 +10,13 @@ public class CalendarDay {
 
     public List<Boolean> convertToSpecificStepSize(int stepSize){
         int newSize = bookedMinutes.size() / stepSize;
-        System.out.println(newSize);
         List<Boolean> newBookedMinutes = new ArrayList<>(Collections.nCopies(newSize, false));
 
             for(int i = 0;i < bookedMinutes.size();i++){
                 if(bookedMinutes.get(i) && !newBookedMinutes.get(i / stepSize)){
                     newBookedMinutes.set(i / stepSize, true);
-                    System.out.println("adde an index: " + i /stepSize + " true");
                 }
             }
-        System.out.println(newBookedMinutes.size());
             return newBookedMinutes;
     }
 }
