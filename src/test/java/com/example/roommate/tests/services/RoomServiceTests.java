@@ -1,6 +1,7 @@
 package com.example.roommate.tests.services;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.models.entities.Room;
 
 import com.example.roommate.domain.services.RoomDomainService;
@@ -31,7 +32,7 @@ class RoomServiceTest {
         
 
         Room room = new Room(roomID, "101");
-        roomService.addRoom(room);
+        roomService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
 
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(roomEntry.roomID());

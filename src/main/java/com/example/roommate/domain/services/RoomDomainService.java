@@ -38,16 +38,14 @@ public class RoomDomainService {
 
     
 
-    public void addRoom(IRoom room) {
-        roomRepository.add(room);
-    }
+
 
     public void addRoom(RoomApplicationData roomApplicationData){
         roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
     }
     
 
-    public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
+    public void removeRoom(RoomApplicationData room) {roomRepository.remove(room.roomID());}
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
