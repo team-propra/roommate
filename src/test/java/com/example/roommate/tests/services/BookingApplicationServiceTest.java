@@ -9,6 +9,7 @@ import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +26,11 @@ public class BookingApplicationServiceTest {
 
     @DisplayName("BookDataForm can be added to BookEntryService")
     @Test
-    void test_1() throws GeneralDomainException {
+    void test_1() throws GeneralDomainException, Exception {
+        RoomRepository roomRepository = new RoomRepository();
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
+        IntermediateBookDataForm validIntermediateBookDataForm = ValuesFactory.createValidIntermediateBookDataForm();
+
         bookingApplicationService.addBookEntry(ValuesFactory.createValidIntermediateBookDataForm());
 
         UUID id = ValuesFactory.id;
