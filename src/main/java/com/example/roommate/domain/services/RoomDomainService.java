@@ -29,6 +29,7 @@ public class RoomDomainService {
         room1.addItem(new ItemName("Chair"));
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
         room2.addItem(new ItemName("Table"));
+        room2.addItem(new ItemName("Desk"));
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
