@@ -1,6 +1,7 @@
 package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithCustomMockAdmin;
 import com.example.roommate.annotations.WithCustomMockUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class GetRoomsTest {
 
     @Test
     @DisplayName("GET /rooms contains button that would direct to /rooms/add")
-    @WithCustomMockUser
+    @WithCustomMockAdmin
     public void test_01() throws Exception {
 
         MvcResult result =
