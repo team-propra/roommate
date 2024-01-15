@@ -23,7 +23,7 @@ public class EntityFactory {
     }
 
     public static Booking createBookingEntity() {
-        return new Booking(id, BookingDays.createBookingDays(60));
+        return new Booking(id, BookingDays.createBookingDays(0));//must be zero if bookingDays should be set to true
     }
 
     public static Room createRoom() {
