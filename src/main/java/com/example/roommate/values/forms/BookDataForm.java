@@ -29,25 +29,25 @@ public record BookDataForm(@IsValidUUID String roomID, int stepSize){
                 int day = Integer.parseInt(daytime[1]);//0=monday, 1=tuesday...
                 switch(day){
                     case 0:
-                        bookingDays.mondayBookings.add(timeIndex, true);
+                        bookingDays.mondayBookings.set(timeIndex, true);
                         break;
                     case 1:
-                        bookingDays.tuesdayBookings.add(timeIndex, true);
+                        bookingDays.tuesdayBookings.set(timeIndex, true);
                         break;
                     case 2:
-                        bookingDays.wednesdayBookings.add(timeIndex, true);
+                        bookingDays.wednesdayBookings.set(timeIndex, true);
                         break;
                     case 3:
-                        bookingDays.thursdayBookings.add(timeIndex, true);
+                        bookingDays.thursdayBookings.set(timeIndex, true);
                         break;
                     case 4:
-                        bookingDays.fridayBookings.add(timeIndex, true);
+                        bookingDays.fridayBookings.set(timeIndex, true);
                         break;
                     case 5:
-                        bookingDays.saturdayBookings.add(timeIndex, true);
+                        bookingDays.saturdayBookings.set(timeIndex, true);
                         break;
                     case 6:
-                        bookingDays.sundayBookings.add(timeIndex, true);
+                        bookingDays.sundayBookings.set(timeIndex, true);
                         break;
 
                 }

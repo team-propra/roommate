@@ -1,6 +1,7 @@
 package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -37,13 +38,14 @@ public class RoomDomainService {
 
     
 
-    public void addRoom(IRoom room) {
-        roomRepository.add(room);
-    }
 
+
+    public void addRoom(RoomApplicationData roomApplicationData){
+        roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
+    }
     
 
-    public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
+    public void removeRoom(RoomApplicationData room) {roomRepository.remove(room.roomID());}
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()

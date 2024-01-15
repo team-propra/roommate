@@ -2,6 +2,7 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.BookingApplicationData;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.domain.services.BookEntryDomainService;
@@ -55,7 +56,7 @@ public class BookingApplicationService {
     }
 
     public void addRoom(IRoom room) {
-        roomDomainService.addRoom(room);
+        roomDomainService.addRoom(new RoomApplicationData(room.getRoomID(), room.getRoomNumber()));
     }
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundException{

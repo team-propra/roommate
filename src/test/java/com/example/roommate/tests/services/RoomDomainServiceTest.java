@@ -1,6 +1,7 @@
 package com.example.roommate.tests.services;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
@@ -31,29 +32,29 @@ class RoomDomainServiceTest {
 
     UUID roomID = UUID.fromString("f2bf727f-249c-482b-b3ee-11eb2659cb7e");
     UUID differentRoomID = UUID.fromString("6d5bbffd-96eb-4475-9095-5f6ba653f118");
+    RoomApplicationData room = new RoomApplicationData(roomID, "101");
+    RoomApplicationData differentRoom = new RoomApplicationData(differentRoomID, "102");
 
     @Test
     @DisplayName("testing the addRoom function")
     void test_1() {
         
 
-        Room room = new Room(roomID, "101");
         roomDomainService.addRoom(room);
 
-        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.getRoomID());
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.roomID());
     }
 
     @Test
     @DisplayName("testing the removeRoom function")
     void test_2_1() {
 
-        Room room = new Room(roomID, "102");
         roomDomainService.addRoom(room);
 
         roomDomainService.removeRoom(room);
 
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
+        RoomEntry roomEntry = new RoomEntry(room.roomID(), room.roomNumber(), null);
         assertThat(roomRepository.findAll()).doesNotContain(roomEntry);
     }
 
@@ -62,14 +63,13 @@ class RoomDomainServiceTest {
     void test_2_2() {
         
 
-        Room room = new Room(roomID, "102");
-        Room differentRoom = new Room(differentRoomID, "102");
+
 
         roomDomainService.addRoom(room);
 
         roomDomainService.removeRoom(differentRoom);
 
-        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.getRoomID());
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.roomID());
     }
 
     @Test
@@ -91,19 +91,18 @@ class RoomDomainServiceTest {
     @Test
     @DisplayName("testing the findRoomByID function")
     void test_4_1() throws NotFoundRepositoryException {
-        Room room = new Room(roomID, "105");
         roomDomainService.addRoom(room);
 
-        assertThatCode(()-> roomDomainService.findRoomByID(room.getRoomID()))
+        assertThatCode(()-> roomDomainService.findRoomByID(room.roomID()))
                 .doesNotThrowAnyException();
-        assertThat(roomDomainService.findRoomByID(room.getRoomID())).isEqualTo(room);
+        IRoom roomByID = roomDomainService.findRoomByID(room.roomID());
+        assertThat(new RoomApplicationData(roomByID.getRoomID(), roomByID.getRoomNumber())).isEqualTo(room);
     }
 
     @Test
     @DisplayName("testing the findRoomByID function when there is no room there")
     void test_4_2() {
 
-        Room room = new Room(roomID, "105");
         roomDomainService.addRoom(room);
 
         assertThatThrownBy(()-> roomDomainService.findRoomByID(differentRoomID)).isInstanceOf(NotFoundRepositoryException.class);
@@ -126,7 +125,7 @@ class RoomDomainServiceTest {
         Room room = new Room(roomID, "106");
 
         roomDomainService.saveAll(List.of(room));
-        roomDomainService.addRoom(room);
+        roomDomainService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
 
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).containsOnlyOnce(room.getRoomID());
     }
