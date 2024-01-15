@@ -1,6 +1,7 @@
 package com.example.roommate.interfaces.repositories;
 
 import com.example.roommate.annotations.RepositoryInterface;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 

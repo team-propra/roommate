@@ -5,6 +5,14 @@
     <title>add Room</title>
 </head>
 <body>
+    <form method="post" th:action="@{/rooms/add}">
+        <label for="roomNumber">Raumnummer</label>
+        <input name="roomNumber" id="roomNumber" type="text"/>
+
+        <input type="submit">Raum</input>
+    </form>
+
+  <a href="/rooms">Zurück zur Raumbuchungsübersicht</a>
 
 </body>
 </html>
