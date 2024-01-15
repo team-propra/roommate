@@ -50,8 +50,8 @@
     </tr>
     </tbody>
 </table>
-
-<!--<a href="/rooms/add" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Räume hinzufügen</a>-->
-<a href="/rooms/add">Raum hinzufügen</a>
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/rooms/add">Räume hinzufügen</a>
+</div>
 </body>
 </html>
