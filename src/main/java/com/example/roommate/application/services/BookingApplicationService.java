@@ -63,26 +63,10 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findRoomsWith(List<ItemName> items, String datum, String startUhrzeit, String endUhrzeit) {
-        String weekday = getWeekday(datum);
+    public List<IRoom> findRoomsWith(List<ItemName> items) {
         return roomDomainService.getRooms().stream()
                 .filter(room -> room.getItemNames().containsAll(items))
-                .filter(room -> room.isAvailable(weekday, startUhrzeit, endUhrzeit)) // an Datum ist Zeitraum frei
+                //.filter(room -> room.isAvailable(weekday, startUhrzeit, endUhrzeit)) // an Datum ist Zeitraum frei
                 .collect(Collectors.toList());
-    }
-
-    public static String getWeekday(String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try {
-            LocalDate date = LocalDate.parse(dateString, formatter);
-            DayOfWeek dayOfWeek = date.getDayOfWeek();
-            //Convert DayOfWeek enum to a string representation and make it lower case (e.g. "monday")
-            String weekday = dayOfWeek.toString().toLowerCase();
-            return weekday;
-        } catch (Exception e) {
-            System.err.println("Error parsing date: " + e.getMessage());
-            return null;
-        }
     }
 }
