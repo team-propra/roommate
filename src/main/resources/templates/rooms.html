@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,6 +56,8 @@
     </tr>
     </tbody>
 </table>
-<a href="/rooms/add">Räume hinzufügen</a>
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/rooms/add">Räume hinzufügen</a>
+</div>
 </body>
 </html>

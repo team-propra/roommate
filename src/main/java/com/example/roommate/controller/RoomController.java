@@ -1,5 +1,7 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.annotations.AdminOnly;
+import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
@@ -8,6 +10,7 @@ import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.values.forms.RoomDataForm;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,17 +30,20 @@ public class RoomController {
 
     private final BookingApplicationService bookingApplicationService;
 
+    private final AdminApplicationService adminApplicationService;
+
     @Autowired
-    public RoomController(BookingApplicationService bookingApplicationService) {
+    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
+        this.adminApplicationService = adminApplicationService;
     }
 
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/rooms")
-    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String startUhrzeit, @RequestParam(required = false) String endUhrzeit, Model model) {
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
+        //boolean isAdmin = userRoles.contains("ADMIN");
         if (datum == null) datum = "2024-01-01";
-        if (startUhrzeit == null) startUhrzeit = "08:00";
-        if (endUhrzeit == null) endUhrzeit = "15:30";
+        if (uhrzeit == null) uhrzeit = "08:00";
         if (gegenstaende == null) gegenstaende = new ArrayList<>();
 
         List<ItemName> selectedItemsList = gegenstaende.stream()
@@ -45,50 +51,61 @@ public class RoomController {
                 .collect(Collectors.toList());
 
         model.addAttribute("date", datum);
-        model.addAttribute("startUhrzeit", startUhrzeit);
-        model.addAttribute("endUhrzeit", endUhrzeit);
+        model.addAttribute("time", uhrzeit);
         model.addAttribute("items", bookingApplicationService.getItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findRoomsWith(selectedItemsList, datum, startUhrzeit, endUhrzeit));
+        model.addAttribute("rooms", bookingApplicationService.findRoomsWithItems(selectedItemsList)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "rooms";
     }
 
+    @AdminOnly
+    @GetMapping("/rooms/add")
+    public String addRoomForm() {
+        return "addRooms";
+    }
 
-
-
+    @AdminOnly
+    @PostMapping("/rooms/add")
+    public String addRoom(RoomDataForm roomDataForm){
+        adminApplicationService.addRoom(roomDataForm);
+        return "addRooms";
+    }
 
     @GetMapping("/room/{roomID}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
-            model.addAttribute("room", roomByID);
-            
+
+
             //Frames
             int times = 24;
             int days = 7;
             int stepSize = 60;
             List<List<Boolean>> reservedSlots = CalendarDays.convertRoomCalendarDaysTo2dMatrix(roomByID.getCalendarDays(), stepSize);
+            System.out.println("reservedSlots: " + reservedSlots);
 
             model.addAttribute("reservedSlots", reservedSlots);
-            List<String> dayLabels = List.of("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
+            List<String> dayLabels = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
             List<String> timeLabels = new ArrayList<>();
-            generateTimeLabels(times,stepSize, timeLabels);
+            generateTimeLabels(times, stepSize, timeLabels);
 
-            //System.out.println(dayLabels.size());
-            //System.out.println(timeLabels.size());
-            DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels);
-            model.addAttribute("frame",dayTimeFrame);
+            System.out.println(dayLabels.size());
+            System.out.println(timeLabels.size());
+            DayTimeFrame dayTimeFrame = new DayTimeFrame(days, times, stepSize, dayLabels, timeLabels);
+            model.addAttribute("frame", dayTimeFrame);
 
 //
 
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
+
+            model.addAttribute("room", roomByID);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
             modelAndView.setStatus(HttpStatus.NOT_FOUND);
             return modelAndView;
-        } 
+        }
     }
 
     private static void generateTimeLabels(int times, int stepSize, List<String> timeLabels) {
@@ -99,14 +116,14 @@ public class RoomController {
         }*/
         String result;
         LocalTime customTime = LocalTime.of(0, 0);
-        for(int i = 0;i < (times * 60 / stepSize);i++){
+        for (int i = 0; i < (times * 60 / stepSize); i++) {
             result = String.format("%s - %s", customTime, customTime.plusMinutes(stepSize));
             customTime = customTime.plusMinutes(stepSize);
-             timeLabels.add(result);
+            timeLabels.add(result);
         }
     }
 
-    public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels,List<String> timeLabels){
+    public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels) {
         public DayTimeFrame {
             if (dayLabels.size() != days)
                 throw new RuntimeException();
@@ -120,12 +137,12 @@ public class RoomController {
     public ModelAndView addBooking(@Valid BookDataForm form
             , BindingResult bindingResult
             , RedirectAttributes redirectAttributes
-            ,@RequestParam(value="cell", defaultValue = "false")List<String> checkedDays
+            , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
     ) {
 
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             String id = form.roomID();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
@@ -148,10 +165,5 @@ public class RoomController {
         return new ModelAndView("redirect:/");
     }
 
-    @GetMapping("/rooms/add")
-    public String addRooms() {
-        return "addRooms";
-    }
 
 }
-
