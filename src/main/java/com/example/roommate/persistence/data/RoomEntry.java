@@ -1,13 +1,13 @@
 package com.example.roommate.persistence.data;
 
-import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.List;
 import java.util.UUID;
 
-public record RoomEntry(UUID roomID, String roomnumber, CalendarDays calendarDays) implements IRoom {
+public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> bookedTimeframes) implements IRoom {
 
     
     @Override
@@ -26,8 +26,8 @@ public record RoomEntry(UUID roomID, String roomnumber, CalendarDays calendarDay
     }
 
     @Override
-    public CalendarDays getCalendarDays() {
-        return calendarDays;
+    public List<BookedTimeframe> getBookedTimeframes() {
+        return bookedTimeframes;
     }
 
 }
