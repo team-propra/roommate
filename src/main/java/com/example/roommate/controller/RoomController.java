@@ -88,13 +88,6 @@ public class RoomController {
     }
 
 
-    
-    
- 
-    
-    
-
-
     @PostMapping("/rooms")
     public ModelAndView addBooking(@Valid BookDataForm form
             , BindingResult bindingResult

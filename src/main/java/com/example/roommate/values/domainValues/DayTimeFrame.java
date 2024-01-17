@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
-    public DayTimeFrame {
-        if (dayLabels.size() != days)
-            throw new RuntimeException();
-    }
     public static DayTimeFrame from(List<BookedTimeframe> bookedTimeframes){
         //Frames
         int times = 23;
@@ -18,6 +14,11 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
         List<String> dayLabels = generateDayLabels();
         List<String> timeLabels = generateTimeLabels(times, stepSize);
         List<List<Boolean>> reserved = bookedTimeframesToWeek2dMatrix(bookedTimeframes, stepSize, times);
+
+
+        if (dayLabels.size() != days)
+            throw new RuntimeException();
+
         return new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels,reserved);
     }
     private static List<String> generateDayLabels() {
