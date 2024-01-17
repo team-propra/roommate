@@ -2,12 +2,12 @@ package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
-import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.util.List;
 import java.util.UUID;
 
 @Factory
@@ -42,9 +42,9 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14",new CalendarDays());}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14", List.of());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,new CalendarDays());}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,List.of());}
     
     
 }

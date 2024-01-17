@@ -2,12 +2,10 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
-import com.example.roommate.values.domainValues.IntermediateBookDataForm;
-import com.example.roommate.values.domainValues.CalendarDays;
+import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
-import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
@@ -20,8 +18,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.Duration;
 import java.time.LocalTime;
 
+import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,22 +76,8 @@ public class RoomController {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
 
-
-            //Frames
-            int times = 24;
-            int days = 7;
-            int stepSize = 60;
-            List<List<Boolean>> reservedSlots = CalendarDays.convertRoomCalendarDaysTo2dMatrix(roomByID.getCalendarDays(), stepSize);
-
-            model.addAttribute("reservedSlots", reservedSlots);
-            List<String> dayLabels = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-            List<String> timeLabels = new ArrayList<>();
-            generateTimeLabels(times, stepSize, timeLabels);
-
-            DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels);
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
-
-//
 
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
@@ -104,29 +91,12 @@ public class RoomController {
         }
     }
 
-    private static void generateTimeLabels(int times, int stepSize, List<String> timeLabels) {
-        /*for (int day = 0; day < days; day++) {
-            for (int time = 0; time < times; time++) {
-                timeLabels.add(String.format("%d:%d",day,time));
-            }
-        }*/
-        String result;
-        LocalTime customTime = LocalTime.of(0, 0);
-        for (int i = 0; i < (times * 60 / stepSize); i++) {
-            result = String.format("%s - %s", customTime, customTime.plusMinutes(stepSize));
-            customTime = customTime.plusMinutes(stepSize);
-            timeLabels.add(result);
-        }
-    }
 
-    public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels) {
-        public DayTimeFrame {
-            if (dayLabels.size() != days)
-                throw new RuntimeException();
-            //   if(timeLabels.size() != times*days)
-            //       throw new RuntimeException();
-        }
-    }
+    
+    
+ 
+    
+    
 
 
     @PostMapping("/rooms")
@@ -149,8 +119,7 @@ public class RoomController {
 
         try {
             bookingApplicationService.addBookEntry(addedBookingsForm);
-//            bookingApplicationService.roomDomainService.addBooking(addedBookingsForm);
-        } catch (GeneralDomainException e) {
+        } catch (GeneralDomainException | NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;

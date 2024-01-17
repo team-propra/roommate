@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="room, iterStat :${rooms}">
+        <tr th:each="room:${rooms}">
             <td>
                 <span th:text="${room.roomNumber}"> 123 </span>
             </td>
@@ -31,7 +31,7 @@
             </td>
             <td>
                 <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
-                <pre th:text="${timeframes.get(iterStat.index)}">
+                <pre th:text="${room.reservedTime()}">
                     <span > Zeitraum </span>
                 </pre>
 

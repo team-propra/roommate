@@ -1,10 +1,13 @@
 package com.example.roommate.domain.models.entities;
 
 
-import com.example.roommate.values.domainValues.CalendarDays;
+import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,16 +17,12 @@ public class Room implements IRoom {
 
     private final UUID roomID;
     private final String roomNumber;
-
-    public CalendarDays calendarDays;
-    
-
+    private final List<BookedTimeframe> bookedPeriods = new ArrayList<>();
     private final List<ItemName> itemNameList = new ArrayList<>();
 
     public Room(UUID roomID, String roomNumber) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.calendarDays = new CalendarDays();
     }
 
     public UUID getRoomID() {
@@ -60,7 +59,24 @@ public class Room implements IRoom {
     }
 
     @Override
-    public CalendarDays getCalendarDays() {
-        return calendarDays;
+    public List<BookedTimeframe> getBookedTimeframes() {
+        return bookedPeriods;
+    }
+    
+    private static boolean isOverlap(Period periodToCheck, List<Period> periods) {
+        // Example usage with LocalDateTime
+        LocalDateTime startDateTimeToCheck = LocalDateTime.now().plus(periodToCheck);
+        LocalDateTime endDateTimeToCheck = LocalDateTime.now();
+
+        for (Period existingPeriod : periods) {
+            LocalDateTime startDateTime = LocalDateTime.now().plus(existingPeriod);
+            LocalDateTime endDateTime = LocalDateTime.now();
+
+            // Check if the date ranges overlap
+            if (startDateTimeToCheck.isBefore(endDateTime) && endDateTimeToCheck.isAfter(startDateTime)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

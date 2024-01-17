@@ -37,13 +37,6 @@
         </tr>
       </thead>
       <tbody>
-<!-- old       <tr th:each="time: ${#numbers.sequence(0, (frame.times())*(frame.stepSize())-1,1)}" th:remove="all-but-first">-->
-<!--          <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first"><label>-->
-<!--            <span th:text="${frame.dayLabels()[day]}">Monday</span> <span th:text="${frame.timeLabels()[time]}">19:00</span>-->
-<!--            <input  type="checkbox" name="Monday19">-->
-<!--          </label></td>-->
-<!--        </tr>-->
-
           <tr>
               <td></td>
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
@@ -57,12 +50,8 @@
 
                   <div>
                       <input  type="hidden" name="cell" th:value="${time + '-' + day}">
-<!--                      <input type="checkbox" name="box" onchange="(e)=>{-->
-<!--                          // console.log('test');-->
-<!--                          // e.parent.children[0].value = e.parent.children[0].value+'_X'-->
-<!--                      }">-->
-                      <input th:unless="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
-                      <input th:if="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+                      <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
 
                   </div>
               </td>

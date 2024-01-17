@@ -53,29 +53,29 @@ public class  HomeControllerTest {
 
     }
 
-    @Test
-    @DisplayName("Home Seite zeigt bei vorhandenen Bookings die korrekten RaumIDs und Austattungen an")
-    @WithCustomMockUser
-    @Disabled
-    public void test_02() throws Exception {
-        List<IRoom> rooms = EntityFactory.createRoomsWithItems();
-        Collection<IBooking> bookings = EntityFactory.createMockedBookings();
-
-        when(bookingApplicationService.getBookEntries()).thenReturn(bookings);
-
-        MvcResult mvcResult = mockMvc.perform(get("/"))
-                //.andExpect(view().name("home"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String html = mvcResult.getResponse().getContentAsString();
-        System.out.println("hmtl Antwort: " + html);
-        assertThat(html).contains("desk");
-        assertThat(html).contains("12");
-        assertThat(html).contains("13");
-        assertThat(html).contains("chair");
-        assertThat(html).contains("table");
-    }
+//    @Test
+//    @DisplayName("Home Seite zeigt bei vorhandenen Bookings die korrekten RaumIDs und Austattungen an")
+//    @WithCustomMockUser
+//    @Disabled
+//    public void test_02() throws Exception {
+//        List<IRoom> rooms = EntityFactory.createRoomsWithItems();
+//        Collection<IBooking> bookings = EntityFactory.createMockedBookings();
+//
+//        when(bookingApplicationService.getBookEntries()).thenReturn(bookings);
+//
+//        MvcResult mvcResult = mockMvc.perform(get("/"))
+//                //.andExpect(view().name("home"))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        String html = mvcResult.getResponse().getContentAsString();
+//        System.out.println("hmtl Antwort: " + html);
+//        assertThat(html).contains("desk");
+//        assertThat(html).contains("12");
+//        assertThat(html).contains("13");
+//        assertThat(html).contains("chair");
+//        assertThat(html).contains("table");
+//    }
 
 
 

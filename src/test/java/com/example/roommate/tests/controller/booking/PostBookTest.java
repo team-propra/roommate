@@ -2,8 +2,9 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.domain.services.RoomDomainService;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
@@ -20,6 +21,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +57,7 @@ public class PostBookTest {
     @Test
     @WithCustomMockUser
     void test_1() throws Exception {
-        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", new CalendarDays()));
+        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
@@ -111,7 +113,7 @@ public class PostBookTest {
       //  BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);
         //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
-        Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(Mockito.any());
+        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any());
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())

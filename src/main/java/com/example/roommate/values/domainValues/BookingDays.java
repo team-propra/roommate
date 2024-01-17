@@ -1,12 +1,16 @@
 package com.example.roommate.values.domainValues;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class BookingDays {
    public int stepsize;
+   
    public List<Boolean> mondayBookings;
    public List<Boolean> tuesdayBookings;
    public List<Boolean> wednesdayBookings;
@@ -50,93 +54,43 @@ public class BookingDays {
    }
 
 
-   public String convertToString(){
-
-         List<List<Boolean>> allBookingDays = new ArrayList<>();
-         allBookingDays.add(mondayBookings);
-         allBookingDays.add(tuesdayBookings);
-         allBookingDays.add(wednesdayBookings);
-         allBookingDays.add(thursdayBookings);
-         allBookingDays.add(fridayBookings);
-         allBookingDays.add(saturdayBookings);
-         allBookingDays.add(sundayBookings);
+   
 
 
-      String outpout = "";
-      int count = 0;
-      int j = 0;
-      for(List<Boolean> bookingList : allBookingDays){
-         boolean bookingHappened = bookingList.stream().anyMatch(a -> a == true);
-         if(bookingHappened == false){
-            j++;
-            continue;
-         }
-         switch(j){
-            case 0:
-               outpout = outpout + "Montag[";
-               break;
-            case 1:
-               outpout =  outpout + "Dienstag[";
-               break;
-            case 2:
-               outpout = outpout + "Mittwoch[";
-               break;
-            case 3:
-               outpout = outpout + "Donnerstag[";
-               break;
-            case 4:
-               outpout = outpout + "Freitag[";
-               break;
-            case 5:
-               outpout = outpout + "Samstag[";
-               break;
-            case 6:
-               outpout = outpout + "Sonntag[";
-               break;
-         }
-
-         j++;
-
-         boolean ersterDurchlauf =  true;
-         for (int i = 0; i < bookingList.size(); i++) {
-            LocalTime customTime = LocalTime.of(0, 0);
-            count = 0;
-
-            if (bookingList.get(i) == true){
-
-               if (bookingList.get(i+1) == true){
-                  i++;
-                  while (bookingList.get(i) == true){
-                    count++;
-                    i++;
-                  }
-
-                  if(ersterDurchlauf){
-                     outpout = outpout + String.format("%s - %s", customTime.plusMinutes(stepsize * (i-count-1)), customTime.plusMinutes(stepsize * (i-count-1) + stepsize +(count * stepsize)));
-
-                  }
-                  else{
-                     outpout = outpout + String.format(", %s - %s", customTime.plusMinutes(stepsize * (i - count - 1)), customTime.plusMinutes(stepsize * (i - count - 1) + stepsize + (count * stepsize)));
-                  }
-                  ersterDurchlauf = false;
-                  continue;
-               }
-               if(ersterDurchlauf){
-                  outpout = outpout + String.format("%s - %s", customTime.plusMinutes(stepsize * i), customTime.plusMinutes(stepsize * i + stepsize +(count * stepsize)));
-
-               }
-               else {
-                  outpout = outpout + String.format(", %s - %s", customTime.plusMinutes(stepsize * i), customTime.plusMinutes(stepsize * i + stepsize + (count * stepsize)));
-               }
-               ersterDurchlauf = false;
-               continue;
-            }
-
-         }
-         outpout = outpout + "] \n";
-         System.out.println();
-      }
-      return  outpout;
+   public List<BookedTimeframe> toBookedTimeframes(){
+      List<BookedTimeframe> bookedTimeframes = new ArrayList<>();
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.MONDAY,mondayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.TUESDAY,tuesdayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.WEDNESDAY,wednesdayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.THURSDAY,thursdayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.FRIDAY,fridayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SATURDAY,saturdayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SUNDAY,sundayBookings);
+      return bookedTimeframes;
    }
 
+   private void addBookedTimeFrames(List<BookedTimeframe> output, DayOfWeek dayOfWeek, List<Boolean> slots){
+      int continuousSlots = 0;
+      for (int i = 0; i < slots.size(); i++) {
+         if(slots.get(i)) {
+            continuousSlots++;
+            continue;
+         }
+         //start time
+         int firstContinuousSlotIndex = i - continuousSlots;
+         int passedMinutesAtStart = stepsize*firstContinuousSlotIndex;
+         int passedSecondsAtStart = passedMinutesAtStart * 60;
+         
+         //end time
+         int passedMinutesAtEnd = stepsize*i;
+         int passedSecondsAtEnd = passedMinutesAtEnd * 60;
+         
+         //duration
+         int durationInSeconds = passedSecondsAtEnd-passedSecondsAtStart;
+                 
+                 
+         output.add(new BookedTimeframe(dayOfWeek,LocalTime.ofSecondOfDay(passedSecondsAtStart), Duration.ofSeconds(durationInSeconds)));
+         continuousSlots = 0;
+      }
+   }
 }

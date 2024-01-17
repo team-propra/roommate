@@ -22,10 +22,6 @@ public class EntityFactory {
         return new Admin();
     }
 
-    public static Booking createBookingEntity() {
-        return new Booking(id, BookingDays.createBookingDays(0));//must be zero if bookingDays should be set to true
-    }
-
     public static Room createRoom() {
         return new Room(id, "12");
     }
@@ -37,14 +33,6 @@ public class EntityFactory {
         room2.addItem(new ItemName("Table"));
         room2.addItem(new ItemName("Desk"));
         return List.of(room1, room2);
-    }
-
-    public static Collection<IBooking> createMockedBookings() {
-        Booking booking = mock(Booking.class);
-        when(booking.getRoomID()).
-                thenReturn(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a")).
-                thenReturn(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"));
-        return List.of(booking);
     }
 
     public static User createUser() {
