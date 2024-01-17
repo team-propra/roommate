@@ -41,7 +41,6 @@ public class RoomController {
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/rooms")
     public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
-        //boolean isAdmin = userRoles.contains("ADMIN");
         if (datum == null) datum = "2024-01-01";
         if (uhrzeit == null) uhrzeit = "08:00";
         if (gegenstaende == null) gegenstaende = new ArrayList<>();
@@ -82,17 +81,14 @@ public class RoomController {
             int days = 7;
             int stepSize = 60;
             List<List<Boolean>> reservedSlots = CalendarDays.convertRoomCalendarDaysTo2dMatrix(roomByID.getCalendarDays(), stepSize);
-            System.out.println("reservedSlots: " + reservedSlots);
 
             model.addAttribute("reservedSlots", reservedSlots);
             List<String> dayLabels = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
             List<String> timeLabels = new ArrayList<>();
             generateTimeLabels(times, stepSize, timeLabels);
 
-            System.out.println(dayLabels.size());
-            System.out.println(timeLabels.size());
-            DayTimeFrame dayTimeFrame = new DayTimeFrame(days, times, stepSize, dayLabels, timeLabels);
-            model.addAttribute("frame", dayTimeFrame);
+            DayTimeFrame dayTimeFrame = new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels);
+            model.addAttribute("frame",dayTimeFrame);
 
 //
 
@@ -148,7 +144,6 @@ public class RoomController {
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));
         }
-        System.out.println(form);
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
 

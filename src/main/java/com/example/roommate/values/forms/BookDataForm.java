@@ -21,9 +21,6 @@ public record BookDataForm(@IsValidUUID String roomID, int stepSize){
 
             if(checkedDay.contains("-X")) {
                 String[] daytime = checkedDay.split("-");
-                System.out.println("Zeile: " + daytime[0]);
-                System.out.println("Tag: " + daytime[1]);
-                System.out.println("Checked day " + checkedDay);
 
                 int timeIndex = Integer.parseInt(daytime[0]);
                 int day = Integer.parseInt(daytime[1]);//0=monday, 1=tuesday...
