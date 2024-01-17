@@ -22,4 +22,16 @@ public class CalendarDay {
         System.out.println(newBookedMinutes.size());
             return newBookedMinutes;
     }
+
+    public void addBooking(List<Boolean> bookinglist, int stepSize){
+
+        for(int i = 0;i < bookinglist.size();i++){
+            if(bookinglist.get(i) == true){
+                for(int j = 0;j < stepSize;j++){
+                    bookedMinutes.set((i * stepSize) + j, true);
+                }
+            }
+        }
+
+    }
 }

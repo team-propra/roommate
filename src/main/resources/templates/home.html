@@ -15,10 +15,11 @@
         <tr>
             <th>Raum</th>
             <th>Austattung</th>
+            <th>Zeitraum</th>
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="room:${rooms}">
+        <tr th:each="room, iterStat :${rooms}">
             <td>
                 <span th:text="${room.roomNumber}"> 123 </span>
             </td>
@@ -26,6 +27,13 @@
                 <div th:text="${itemName.type()}" th:each="itemName:${room.itemNames}">
                     <span > Küche </span>
                 </div>
+
+            </td>
+            <td>
+                <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
+                <pre th:text="${timeframes.get(iterStat.index)}">
+                    <span > Zeitraum </span>
+                </pre>
 
             </td>
         </tr>

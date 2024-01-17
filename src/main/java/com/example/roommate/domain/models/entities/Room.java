@@ -13,16 +13,16 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomnumber;
+    private final String roomNumber;
 
     public CalendarDays calendarDays;
     
 
     private final List<ItemName> itemNameList = new ArrayList<>();
 
-    public Room(UUID roomID, String roomnumber) {
+    public Room(UUID roomID, String roomNumber) {
         this.roomID = roomID;
-        this.roomnumber = roomnumber;
+        this.roomNumber = roomNumber;
         this.calendarDays = new CalendarDays();
     }
 
@@ -31,7 +31,7 @@ public class Room implements IRoom {
     }
 
     public String getRoomNumber() {
-        return roomnumber;
+        return roomNumber;
     }
 
     @Override
@@ -39,12 +39,12 @@ public class Room implements IRoom {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(roomID, room.roomID) && Objects.equals(roomnumber, room.roomnumber);
+        return Objects.equals(roomID, room.roomID) && Objects.equals(roomNumber, room.roomNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomID, roomnumber);
+        return Objects.hash(roomID, roomNumber);
     }
 
     public void addItem(ItemName item) {

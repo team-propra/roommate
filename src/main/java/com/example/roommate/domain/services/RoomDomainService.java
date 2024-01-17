@@ -6,8 +6,10 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.values.forms.BookDataForm;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,12 +32,29 @@ public class RoomDomainService {
         room1.addItem(new ItemName("Chair"));
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
         room2.addItem(new ItemName("Table"));
+        room2.addItem(new ItemName("Desk"));
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
 
-    
 
+    public void addBooking(IntermediateBookDataForm form, UUID uuid) throws Exception{
+       // Room room = (Room) roomRepository.findRoomByID(UUID.fromString(form.bookDataForm().roomID()));
+
+        Room room = (Room) roomRepository.findRoomByID(uuid);
+
+        int stepSize = form.bookingDays().stepsize;
+
+        room.calendarDays.monday().addBooking(form.bookingDays().mondayBookings, stepSize);
+        room.calendarDays.tuesday().addBooking(form.bookingDays().tuesdayBookings,stepSize);
+        room.calendarDays.wednesday().addBooking(form.bookingDays().wednesdayBookings, stepSize);
+        room.calendarDays.thursday().addBooking(form.bookingDays().thursdayBookings, stepSize);
+        room.calendarDays.friday().addBooking(form.bookingDays().fridayBookings, stepSize);
+        room.calendarDays.saturday().addBooking(form.bookingDays().saturdayBookings, stepSize);
+        room.calendarDays.sunday().addBooking(form.bookingDays().sundayBookings, stepSize);
+
+
+    }
     
 
 
@@ -56,7 +75,8 @@ public class RoomDomainService {
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
             IRoom roomByID = roomRepository.findRoomByID(roomID);
-            return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
+            return roomByID;
+           // return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }
