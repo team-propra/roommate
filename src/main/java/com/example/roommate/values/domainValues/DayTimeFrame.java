@@ -52,8 +52,8 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
         for (int step = 0; step < times; step++) {
             int startMinutes = step * stepSize;
             int endMinutes = step * stepSize + stepSize;
-            LocalTime startTime = LocalTime.ofSecondOfDay(startMinutes* 60);
-            LocalTime endTime = LocalTime.ofSecondOfDay(endMinutes* 60);
+            LocalTime startTime = LocalTime.ofSecondOfDay(startMinutes* 60L);
+            LocalTime endTime = LocalTime.ofSecondOfDay(endMinutes* 60L);
             boolean blocked = bookedTimeframes.stream().anyMatch(x -> hasOverlap(startTime, endTime, x));
             slots.add(blocked);
         }
@@ -71,37 +71,24 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
         List<List<Boolean>> allBookingDays = reserved();
 
         String outpout = "";
-        int count = 0;
+        int count;
         int j = 0;
         for(List<Boolean> bookingList : allBookingDays){
-            boolean bookingHappened = bookingList.stream().anyMatch(a -> a == true);
-            if(bookingHappened == false){
+            boolean bookingHappened = bookingList.stream().anyMatch(a -> a);
+            if(!bookingHappened){
                 j++;
                 continue;
             }
-            switch(j){
-                case 0:
-                    outpout = outpout + "Montag[";
-                    break;
-                case 1:
-                    outpout =  outpout + "Dienstag[";
-                    break;
-                case 2:
-                    outpout = outpout + "Mittwoch[";
-                    break;
-                case 3:
-                    outpout = outpout + "Donnerstag[";
-                    break;
-                case 4:
-                    outpout = outpout + "Freitag[";
-                    break;
-                case 5:
-                    outpout = outpout + "Samstag[";
-                    break;
-                case 6:
-                    outpout = outpout + "Sonntag[";
-                    break;
-            }
+            outpout = switch (j) {
+                case 0 -> outpout + "Montag[";
+                case 1 -> outpout + "Dienstag[";
+                case 2 -> outpout + "Mittwoch[";
+                case 3 -> outpout + "Donnerstag[";
+                case 4 -> outpout + "Freitag[";
+                case 5 -> outpout + "Samstag[";
+                case 6 -> outpout + "Sonntag[";
+                default -> outpout;
+            };
 
             j++;
 
@@ -110,31 +97,31 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
                 LocalTime customTime = LocalTime.of(0, 0);
                 count = 0;
 
-                if (bookingList.get(i) == true){
+                if (bookingList.get(i)){
 
-                    if (bookingList.get(i+1) == true){
+                    if (bookingList.get(i + 1)){
                         i++;
-                        while (bookingList.get(i) == true){
+                        while (bookingList.get(i)){
                             count++;
                             i++;
                         }
 
                         if(ersterDurchlauf){
-                            outpout = outpout + String.format("%s - %s", customTime.plusMinutes(stepSize * (i-count-1)), customTime.plusMinutes(stepSize * (i-count-1) + stepSize +(count * stepSize)));
+                            outpout = outpout + String.format("%s - %s", customTime.plusMinutes((long) stepSize * (i-count-1)), customTime.plusMinutes((long) stepSize * (i-count-1) + stepSize +((long) count * stepSize)));
 
                         }
                         else{
-                            outpout = outpout + String.format(", %s - %s", customTime.plusMinutes(stepSize * (i - count - 1)), customTime.plusMinutes(stepSize * (i - count - 1) + stepSize + (count * stepSize)));
+                            outpout = outpout + String.format(", %s - %s", customTime.plusMinutes((long) stepSize * (i - count - 1)), customTime.plusMinutes((long) stepSize * (i - count - 1) + stepSize + ((long) count * stepSize)));
                         }
                         ersterDurchlauf = false;
                         continue;
                     }
                     if(ersterDurchlauf){
-                        outpout = outpout + String.format("%s - %s", customTime.plusMinutes(stepSize * i), customTime.plusMinutes(stepSize * i + stepSize +(count * stepSize)));
+                        outpout = outpout + String.format("%s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize +(count * stepSize)));
 
                     }
                     else {
-                        outpout = outpout + String.format(", %s - %s", customTime.plusMinutes(stepSize * i), customTime.plusMinutes(stepSize * i + stepSize + (count * stepSize)));
+                        outpout = outpout + String.format(", %s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize + (count * stepSize)));
                     }
                     ersterDurchlauf = false;
                     continue;

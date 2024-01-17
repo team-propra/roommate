@@ -60,9 +60,7 @@ public class RoomDomainService {
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
-            IRoom roomByID = roomRepository.findRoomByID(roomID);
-            return roomByID;
-           // return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
+            return roomRepository.findRoomByID(roomID);
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }

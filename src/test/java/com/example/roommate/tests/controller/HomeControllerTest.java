@@ -6,12 +6,6 @@ import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.controller.HomeController;
 
-import com.example.roommate.factories.EntityFactory;
-
-import com.example.roommate.interfaces.entities.IBooking;
-import com.example.roommate.interfaces.entities.IRoom;
-
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 
 

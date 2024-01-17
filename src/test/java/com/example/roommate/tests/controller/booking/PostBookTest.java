@@ -3,9 +3,7 @@ package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
-import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.forms.BookDataForm;

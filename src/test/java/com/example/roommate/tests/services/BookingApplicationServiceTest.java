@@ -3,7 +3,6 @@ package com.example.roommate.tests.services;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 
 @TestClass
 public class BookingApplicationServiceTest {

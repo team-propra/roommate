@@ -22,12 +22,6 @@ public class ValuesFactory {
         return new BookDataForm(id.toString(), 60);
     }
 
-    public static IntermediateBookDataForm createValidIntermediateBookDataForm() {
-        BookDataForm validBookDataForm = createValidBookDataForm();
-        BookingDays valid = BookingDays.createBookingDays(validBookDataForm.stepSize());
-        valid.mondayBookings.add(true);
-        return new IntermediateBookDataForm(validBookDataForm,valid);
-    }
     public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() {
         BookDataForm validBookDataForm = createInvalidBookDataForm();
         BookingDays invalid = BookingDays.createBookingDays(-99999);

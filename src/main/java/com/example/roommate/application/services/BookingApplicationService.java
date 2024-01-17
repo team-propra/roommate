@@ -4,18 +4,13 @@ import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
-import com.example.roommate.interfaces.entities.IBooking;
 import com.example.roommate.interfaces.entities.IRoom;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
