@@ -1,10 +1,12 @@
 package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 
@@ -29,21 +31,26 @@ public class RoomDomainService {
         room1.addItem(new ItemName("Chair"));
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
         room2.addItem(new ItemName("Table"));
+        room2.addItem(new ItemName("Desk"));
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
 
-    
 
-    
-
-    public void addRoom(IRoom room) {
-        roomRepository.add(room);
+    public void addBooking(BookedTimeframe bookedTimeframe, UUID roomID) throws NotFoundRepositoryException {
+        IRoom roomByID = roomRepository.findRoomByID(roomID);
+        roomByID.getBookedTimeframes().add(bookedTimeframe);
     }
-
     
 
-    public void removeRoom(IRoom room) {roomRepository.remove(room.getRoomID());}
+
+
+    public void addRoom(RoomApplicationData roomApplicationData){
+        roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
+    }
+    
+
+    public void removeRoom(RoomApplicationData room) {roomRepository.remove(room.roomID());}
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
@@ -53,8 +60,7 @@ public class RoomDomainService {
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
-            IRoom roomByID = roomRepository.findRoomByID(roomID);
-            return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
+            return roomRepository.findRoomByID(roomID);
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }

@@ -1,6 +1,7 @@
 package com.example.roommate.tests.services;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.models.entities.Room;
 
 import com.example.roommate.domain.services.RoomDomainService;
@@ -12,6 +13,7 @@ import com.example.roommate.persistence.repositories.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
@@ -31,9 +33,9 @@ class RoomServiceTest {
         
 
         Room room = new Room(roomID, "101");
-        roomService.addRoom(room);
+        roomService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), room.getCalendarDays());
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), List.of());
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(roomEntry.roomID());
     }
 

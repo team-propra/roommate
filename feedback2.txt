@@ -1,0 +1,2 @@
+- Passt unsere Integration von Keymaster mit dem Dockerfile (in Woche13 wurde erwähnt,
+wir sollen das SCS wie in Woche09 umsetzen)?
