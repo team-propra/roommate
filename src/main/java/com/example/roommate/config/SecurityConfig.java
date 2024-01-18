@@ -14,28 +14,10 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity chainBuilder) throws Exception {
         chainBuilder
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers("/login", "/").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())
-                /*.formLogin(loginConfigurer -> loginConfigurer
-                        .defaultSuccessUrl("/", true)
-                        .permitAll())
-
-                 */
-                //.formLogin(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults());
 
         return chainBuilder.build();
     }
-
-    /*
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(new User("user", "{noop}1234", List.of()));
-        return manager;
-    }
-
-     */
-
-
 }
