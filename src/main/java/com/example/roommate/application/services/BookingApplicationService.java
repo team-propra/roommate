@@ -13,7 +13,9 @@ import com.example.roommate.interfaces.entities.IRoom;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 @ApplicationService
 public class BookingApplicationService {
 
@@ -61,7 +63,14 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findRoomsWith(List<ItemName> items) {
+    public List<IRoom> findRoomsWith(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+        LocalDate date = LocalDate.parse(dateString);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime startTime = LocalTime.parse(startTimeString, timeFormatter);
+        LocalTime endTime = LocalTime.parse(endTimeString, timeFormatter);
+
+
+
         return roomDomainService.getRooms().stream()
                 .filter(room -> room.getItemNames().containsAll(items))
                 //.filter(room -> room.isAvailable(weekday, startUhrzeit, endUhrzeit)) // an Datum ist Zeitraum frei

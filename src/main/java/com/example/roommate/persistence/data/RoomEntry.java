@@ -30,7 +30,6 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
         return bookedTimeframes;
     }
 
-    @Override
     public boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit) {
         return false;
     }
