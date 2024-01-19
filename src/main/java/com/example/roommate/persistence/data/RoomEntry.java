@@ -30,8 +30,8 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
         return bookedTimeframes;
     }
 
-    public boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit) {
-        return false;
+    @Override
+    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
+        return bookedTimeframes.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
     }
-
 }

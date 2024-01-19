@@ -60,4 +60,10 @@ public class Room implements IRoom {
         return bookedPeriods;
     }
 
+    @Override
+    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
+        return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
+    }
+
+
 }

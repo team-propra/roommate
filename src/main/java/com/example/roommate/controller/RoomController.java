@@ -43,7 +43,6 @@ public class RoomController {
         if (endUhrzeit == null) endUhrzeit = "16:00";
         if (gegenstaende == null) gegenstaende = new ArrayList<>();
 
-        System.out.println(startUhrzeit + endUhrzeit);
         List<ItemName> selectedItemsList = gegenstaende.stream()
                 .map(ItemName::new)
                 .collect(Collectors.toList());

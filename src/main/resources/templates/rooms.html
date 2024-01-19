@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             <label for="gegenstaende">Gegenstände im Raum</label>
-            <select multiple id="gegenstaende" name="gegenstaende" class="form-control" required>
+            <select multiple id="gegenstaende" name="gegenstaende" class="form-control">
                 <option th:each="item : ${items}" th:value="${item.type}" th:text="${item.type}" th:selected="${gegenstaende != null and gegenstaende.contains(item.type)}"></option>
             </select>
         </div>

@@ -2,7 +2,6 @@ package com.example.roommate.persistence.repositories;
 
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
-import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
