@@ -6,6 +6,7 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 
@@ -31,6 +32,8 @@ public class RoomDomainService {
         room1.addItem(chair);
 
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
+        room2.addItem(new ItemName("Table"));
+        room2.addItem(new ItemName("Desk"));
         ItemName table = new ItemName("Table");
         room2.addItem(table);
 
@@ -38,9 +41,12 @@ public class RoomDomainService {
         roomRepository.add(room2);
     }
 
-    
 
-    
+    public void addBooking(BookedTimeframe bookedTimeframe, UUID roomID) throws NotFoundRepositoryException {
+        IRoom roomByID = roomRepository.findRoomByID(roomID);
+        roomByID.getBookedTimeframes().add(bookedTimeframe);
+    }
+
 
 
 
@@ -53,19 +59,13 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> {
-                            Room room = new Room(iroom.getRoomID(), iroom.getRoomNumber());
-                            room.addItem(iroom.getItemNames());
-                            return (IRoom) room;
-                        }
-                )
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber()))
                 .toList();
     }
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         try {
-            IRoom roomByID = roomRepository.findRoomByID(roomID);
-            return new Room(roomByID.getRoomID(), roomByID.getRoomNumber());
+            return roomRepository.findRoomByID(roomID);
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundRepositoryException();
         }

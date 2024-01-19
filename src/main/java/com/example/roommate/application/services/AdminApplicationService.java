@@ -3,7 +3,6 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.forms.RoomDataForm;
 
 import java.util.UUID;

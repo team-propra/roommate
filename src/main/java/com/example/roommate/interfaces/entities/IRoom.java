@@ -1,7 +1,7 @@
 package com.example.roommate.interfaces.entities;
 
 import com.example.roommate.annotations.Interface;
-import com.example.roommate.values.domainValues.CalendarDays;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.List;
@@ -13,7 +13,5 @@ public interface IRoom {
     String getRoomNumber();
     List<ItemName> getItemNames();
 
-    CalendarDays getCalendarDays();
-
-    boolean isAvailable(String weekday, String startUhrzeit, String endUhrzeit);
+    List<BookedTimeframe> getBookedTimeframes();
 }

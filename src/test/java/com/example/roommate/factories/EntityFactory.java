@@ -2,9 +2,12 @@ package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
 import com.example.roommate.domain.models.entities.*;
-import com.example.roommate.values.domainValues.BookingDays;
+import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.domainValues.ItemName;
 
+import java.util.List;
 import java.util.UUID;
+
 
 @Factory
 public class EntityFactory {
@@ -12,10 +15,6 @@ public class EntityFactory {
 
     public static Admin createAdmin() {
         return new Admin();
-    }
-
-    public static Booking createBookingEntity() {
-        return new Booking(id, BookingDays.createBookingDays(0));
     }
 
     public static Room createRoom() {
