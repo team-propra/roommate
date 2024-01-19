@@ -7,5 +7,5 @@ WORKDIR $APP_HOME
 # Copy the keymaster.jar from the project root to the Docker image
 COPY $JAR_NAME $APP_HOME/build/libs/
 
-EXPOSE 8080
+EXPOSE 3000
 ENTRYPOINT exec java -jar $APP_HOME/build/libs/$JAR_NAME
