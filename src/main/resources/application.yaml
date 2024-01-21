@@ -9,3 +9,10 @@ spring:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
             scope: read:public_repo
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: 1234
+    driver-class-name: org.postgresql.Driver

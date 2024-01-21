@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'ognl:ognl'
     testImplementation 'com.tngtech.archunit:archunit-junit5-engine:1.2.1'
 
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql:42.7.1'
 }
 
 tasks.named('test') {
