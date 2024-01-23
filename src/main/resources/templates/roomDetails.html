@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${room}">
+<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title th:text="*{roomNumber}" >-1</title>
+    <style>
+        .tag-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .tag {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,6 +32,38 @@
   <div th:if="${formValidationErrorText}">
     <div th:text="${formValidationErrorText}">ErrorText</div>
   </div>
+
+<ul class="tag-list">
+    <li th:each="tag : ${itemNames}" class="tag">
+        <div sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{/items/delete}" method="post">
+                <input type="hidden" name="tagName" th:value="${tag}" />
+                <span th:text="${tag}"></span>
+                <button type="submit">X</button>
+            </form>
+        </div>
+    </li>
+</ul>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{'/rooms' + ${getRoomID} + '/createItem/' + ${itemName}}" method="post">
+        <labe for="createItem">Neuen Gegenstand hinzufügen:</labe>
+        <input id="createItem" type="text">
+        <input type="submit">
+    </form>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{'/rooms' + ${getRoomID} + '/addItem/' + ${itemName}}" method="post">
+        <div class="form-group">
+            <label for="gegenstaende">Gegenstände im Raum</label>
+            <select multiple id="gegenstaende" name="gegenstaende" class="form-control" required onchange="this.form.submit()">
+                <option th:each="item : ${items}" th:value="${item.type}" th:text="${item.type}" th:selected="${gegenstaende != null and gegenstaende.contains(item.type)}"></option>
+            </select>
+        </div>
+        <input type="submit" style="display: none;">
+    </form>
+</div>
 
 
   <form method="post" th:action="@{/rooms}">

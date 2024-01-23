@@ -119,4 +119,26 @@ public class RoomController {
     }
 
 
+    @AdminOnly
+    @PostMapping("/room/{roomID}/addItem/{itemName}")
+    public String addItem(@PathVariable UUID roomID, @PathVariable String itemName) {
+        // add Item to room repo
+        // change the gegenstände model attribute so that only not selceted items are displayed
+        return "addRooms";
+    }
+
+    @AdminOnly
+    @PostMapping("/room/{roomID}/createItem/{itemName}")
+    public String createItem(@PathVariable UUID roomID, @PathVariable String itemName) {
+        // create Item
+        // add Item to repo and room
+        return "addRooms";
+    }
+
+    @AdminOnly
+    @PostMapping("/room/{roomID}/deleteItem/{itemName}")
+    public String addItemForm(@PathVariable UUID roomID, @PathVariable String itemName) {
+        // remove item form room
+        return "addRooms";
+    }
 }
