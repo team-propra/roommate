@@ -56,20 +56,25 @@ public class RoomRepository implements IRoomRepository {
         return result;
     }
 
-
-
-    public IRoom convertRoomDTO(RoomDTO roomDTO){
-
-        return null;
-    }
     @Override
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
-        return null;
+        RoomDTO room = roomDAO.findByRoomID(roomID);
+        if(room == null)
+            throw new NotFoundRepositoryException();
+        List<String> itemToRoomMaps = itemToRoomDAO.findByRoomID(roomID).stream().map(ItemToRoomDTO::itemName).toList();
+        List<ItemName> byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
+                .map(ItemDTO::toItemName)
+                .toList();
+        List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomID(roomID).stream()
+                .map(BookedTimeframeDTO::toBookedTimeFrame)
+                .toList();
+        return new RoomOOP(roomID,room.roomNumber(),byItemNames,timeframes);
     }
 
     @Override
-    public void remove(UUID room) {
-
+    public void remove(UUID roomID) {
+        roomDAO.deleteById(roomID);
+        // TODO delete reference in ItemToRoom using Database Cascade on delete constraint
     }
 
     @Override
