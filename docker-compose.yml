@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  roommate:
+    build:
+      context: .
+      dockerfile: Dockerfile.RoomMate
+    image: team-propra/roommate:v1
+    ports:
+      - "8080:8080"
+  
+  
+  keymaster:
+    build:
+      context: .
+      dockerfile: Dockerfile.KeyMaster
+    image: team-propra/keymaster:v1
+    ports:
+      - "3000:3000"

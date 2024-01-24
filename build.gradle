@@ -1,15 +1,20 @@
 plugins {
-    id 'java'
+    id 'application'
     id 'org.springframework.boot' version '3.1.4'
     id 'io.spring.dependency-management' version '1.1.3'
     id 'jacoco'
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = 'prod'
 
 java {
     sourceCompatibility = '21'
+}
+
+application {
+    // Specify the main class for your application
+    mainClassName = 'com.example.roommate.RoomMateApplication'
 }
 
 repositories {
@@ -23,6 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'jakarta.validation:jakarta.validation-api'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    //  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
