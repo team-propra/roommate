@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @RepositoryInterface
 public interface IRoomRepository {
-    List<IRoom> findAll();
+    List<? extends IRoom> findAll();
     IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException;
     void remove(UUID room);
     void add(IRoom room);
-    void saveAll(List<IRoom> rooms);
+    void saveAll(List<? extends IRoom> rooms);
 }

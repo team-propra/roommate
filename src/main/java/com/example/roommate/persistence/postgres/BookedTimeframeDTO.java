@@ -7,5 +7,5 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public record BookedTimeframeDTO(@Id UUID uuid, DayOfWeek day, LocalTime startTime, Duration duration) {
+public record BookedTimeframeDTO(@Id UUID uuid, DayOfWeek day, LocalTime startTime, Duration duration, UUID roomID) {
 }
