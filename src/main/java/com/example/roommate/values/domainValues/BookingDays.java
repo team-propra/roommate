@@ -75,21 +75,24 @@ public class BookingDays {
             continuousSlots++;
             continue;
          }
-         //start time
-         int firstContinuousSlotIndex = i - continuousSlots;
-         int passedMinutesAtStart = stepsize*firstContinuousSlotIndex;
-         int passedSecondsAtStart = passedMinutesAtStart * 60;
-         
-         //end time
-         int passedMinutesAtEnd = stepsize*i;
-         int passedSecondsAtEnd = passedMinutesAtEnd * 60;
-         
-         //duration
-         int durationInSeconds = passedSecondsAtEnd-passedSecondsAtStart;
-                 
-                 
-         output.add(new BookedTimeframe(dayOfWeek,LocalTime.ofSecondOfDay(passedSecondsAtStart), Duration.ofSeconds(durationInSeconds)));
-         continuousSlots = 0;
+         if(continuousSlots != 0) // found some continuous slots
+         {
+            //start time
+            int firstContinuousSlotIndex = i - continuousSlots;
+            int passedMinutesAtStart = stepsize*firstContinuousSlotIndex;
+            int passedSecondsAtStart = passedMinutesAtStart * 60;
+
+            //end time
+            int passedMinutesAtEnd = stepsize*i;
+            int passedSecondsAtEnd = passedMinutesAtEnd * 60;
+
+            //duration
+            int durationInSeconds = passedSecondsAtEnd-passedSecondsAtStart;
+
+
+            output.add(new BookedTimeframe(dayOfWeek,LocalTime.ofSecondOfDay(passedSecondsAtStart), Duration.ofSeconds(durationInSeconds)));
+            continuousSlots = 0;
+         }
       }
    }
 }
