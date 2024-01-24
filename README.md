@@ -14,7 +14,7 @@ In case you're using IntelliJ, you may follow these steps:
 - Go to RunConfigurations > Edit (top right)
 - Edit the Spring Boot Configuration for this project
 - ModifyOptions > EnvironmentVariables
-- Enter the following string (replacing *** with your values) `CLIENT_SECRET=***;CLIENT_TOKEN=***`
+- Enter the following string (replacing *** with your values) `CLIENT_ID=***;CLIENT_SECRET=***`
 
 Now you will be able to run the application properly with OAuth login :)
 ## Current-branch
