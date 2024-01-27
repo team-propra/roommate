@@ -10,6 +10,7 @@ import com.example.roommate.values.domainValues.ItemName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class RoomRepository implements IRoomRepository {
     RoomDAO roomDAO;
@@ -79,11 +80,24 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void add(IRoom room) {
-
+        RoomDTO dto = addRoom(room);
+        roomDAO.save(dto);
+    }
+    
+    private RoomDTO addRoom(IRoom room){
+        List<ItemName> itemNames = room.getItemNames();
+        itemNames.forEach(x->{
+            itemToRoomDAO.save(new ItemToRoomDTO(UUID.randomUUID(),x.type(),room.getRoomID()));
+        });
+        room.getBookedTimeframes().forEach(x->{
+            bookedTimeFrameDAO.save(new BookedTimeframeDTO(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
+        });
+        return new RoomDTO(room.getRoomID(),room.getRoomNumber());
     }
 
     @Override
     public void saveAll(List<? extends IRoom> rooms) {
-
+        List<RoomDTO> roomList = rooms.stream().map(this::addRoom).toList();
+        roomDAO.saveAll(roomList);
     }
 }

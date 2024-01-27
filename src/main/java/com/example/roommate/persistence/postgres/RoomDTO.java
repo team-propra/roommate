@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 import java.util.UUID;
 
-public record RoomDTO(UUID roomID, String roomNumber, List<ItemDTO> itemList, List<BookedTimeframe> bookedTimeframeList){
+public record RoomDTO(UUID roomID, String roomNumber){
 
-    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
 }
