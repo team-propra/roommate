@@ -34,9 +34,9 @@
   </div>
 
 <ul class="tag-list">
-    <li th:each="tag : ${itemNames}" class="tag">
+    <li th:each="itemName : ${getItemNames}" class="tag">
         <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{/items/delete}" method="post">
+            <form th:action="@{'/rooms' + ${getRoomID} + '/delete/' + ${itemName}}" method="post">
                 <input type="hidden" name="tagName" th:value="${tag}" />
                 <span th:text="${tag}"></span>
                 <button type="submit">X</button>
