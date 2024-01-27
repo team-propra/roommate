@@ -1,10 +1,12 @@
 package com.example.roommate.persistence.postgres;
 
 
+import com.example.roommate.annotations.Interface;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface RoomDAO extends CrudRepository<RoomDTO, UUID> {
+@Interface
+public interface IRoomDAO extends CrudRepository<RoomDTO, UUID> {
     RoomDTO findByRoomID(UUID roomID);
 }

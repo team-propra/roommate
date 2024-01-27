@@ -6,22 +6,25 @@ import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
+@Repository
+@Profile("!test")
 public class RoomRepository implements IRoomRepository {
-    RoomDAO roomDAO;
+    IRoomDAO roomDAO;
 
-    ItemDAO itemDAO;
+    IItemDAO itemDAO;
 
-    BookedTimeFrameDAO bookedTimeFrameDAO;
+    IBookedTimeFrameDAO bookedTimeFrameDAO;
 
-    ItemToRoomDAO itemToRoomDAO;
+    IItemToRoomDAO itemToRoomDAO;
 
-    public RoomRepository(RoomDAO roomDAO, ItemDAO itemDAO, BookedTimeFrameDAO bookedTimeFrameDAO, ItemToRoomDAO itemToRoomDAO) {
+    public RoomRepository(IRoomDAO roomDAO, IItemDAO itemDAO, IBookedTimeFrameDAO bookedTimeFrameDAO, IItemToRoomDAO itemToRoomDAO) {
         this.roomDAO = roomDAO;
         this.itemDAO = itemDAO;
         this.bookedTimeFrameDAO = bookedTimeFrameDAO;

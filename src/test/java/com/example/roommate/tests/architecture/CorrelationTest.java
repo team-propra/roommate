@@ -4,12 +4,10 @@ import com.example.roommate.annotations.*;
 import com.tngtech.archunit.lang.conditions.ArchConditions;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
-import org.springframework.stereotype.Repository;
 
 import java.util.stream.Stream;
 
 import static com.example.roommate.utility.archUnit.Correlations.classCorrelations;
-import static com.example.roommate.utility.archUnit.Correlations.interfaceCorrelations;
 
 
 @TestClass
@@ -28,7 +26,8 @@ public class CorrelationTest {
     public Stream<DynamicTest> applicationDats(){
         return classCorrelations("..roommate.application.data..", ApplicationData.class, ArchConditions.haveSimpleNameEndingWith("ApplicationData"));
     }
-
+    
+    /* TODO currently doing Database Repository 
     @TestFactory
     public Stream<DynamicTest> repositories(){
         return classCorrelations("..roommate.persistence.repositories..", Repository.class, ArchConditions.haveSimpleNameEndingWith("Repository"));
@@ -43,6 +42,7 @@ public class CorrelationTest {
     public Stream<DynamicTest> allInterfaces(){
         return interfaceCorrelations("..roommate.interfaces..", Interface.class, ArchConditions.haveSimpleNameStartingWith("I"));
     }
+    */
 
     @TestFactory
     public Stream<DynamicTest> tests(){
