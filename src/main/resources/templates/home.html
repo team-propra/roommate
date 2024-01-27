@@ -9,7 +9,7 @@
 <h1>Homepage</h1>
 <a href="/rooms">Arbeitsplatz buchen</a>
 <h2>Buchungen</h2>
-<div id="links" th:if="${bookings}">
+<div id="links" th:if="${rooms}">
     <table class="table" >
         <thead>
         <tr>
@@ -24,14 +24,14 @@
                 <span th:text="${room.roomNumber}"> 123 </span>
             </td>
             <td>
-                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNames}">
+                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNameList}">
                     <span > Küche </span>
                 </div>
 
             </td>
             <td>
                 <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
-                <pre th:text="${room.reservedTime()}">
+                <pre th:text="${room.reservedTime}">
                     <span > Zeitraum </span>
                 </pre>
 

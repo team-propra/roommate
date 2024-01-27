@@ -1,0 +1,11 @@
+# Build Runtime Image stage
+FROM openjdk:21
+ENV JAR_NAME="keymaster.jar"
+ENV APP_HOME=/usr/app
+WORKDIR $APP_HOME
+
+# Copy the keymaster.jar from the project root to the Docker image
+COPY $JAR_NAME $APP_HOME/build/libs/
+
+EXPOSE 3000
+ENTRYPOINT exec java -jar $APP_HOME/build/libs/$JAR_NAME
