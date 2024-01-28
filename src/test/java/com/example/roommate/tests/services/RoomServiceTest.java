@@ -43,7 +43,7 @@ class RoomServiceTest {
     @DisplayName("testing the removeRoom function")
     void test_2_1() {
 
-        Room room = new Room(roomID, "102");
+        Room room = new Room(id, "102");
         roomService.addRoom(room);
 
         roomService.removeRoom(room);
@@ -58,7 +58,7 @@ class RoomServiceTest {
     void test_2_2() {
         
 
-        Room room = new Room(roomID, "102");
+        Room room = new Room(id, "102");
         Room differentRoom = new Room(differentRoomID, "102");
 
         roomService.addRoom(room);
@@ -72,7 +72,7 @@ class RoomServiceTest {
     @Test
     @DisplayName("testing the getRooms function")
     void test_3() {
-        Room room1 = new Room(roomID, "103");
+        Room room1 = new Room(id, "103");
         Room room2 = new Room(differentRoomID, "104");
         ArrayList<Room> rooms = new ArrayList<>();
         rooms.add(room1);
@@ -88,7 +88,7 @@ class RoomServiceTest {
     @Test
     @DisplayName("testing the findRoomByID function")
     void test_4_1() throws NotFoundRepositoryException {
-        Room room = new Room(roomID, "105");
+        Room room = new Room(id, "105");
         roomService.addRoom(room);
 
         assertThatCode(()->roomService.findRoomByID(room.getRoomID()))
@@ -100,7 +100,7 @@ class RoomServiceTest {
     @DisplayName("testing the findRoomByID function when there is no room there")
     void test_4_2() {
 
-        Room room = new Room(roomID, "105");
+        Room room = new Room(id, "105");
         roomService.addRoom(room);
 
         assertThatThrownBy(()->roomService.findRoomByID(differentRoomID)).isInstanceOf(NotFoundRepositoryException.class);
@@ -109,7 +109,7 @@ class RoomServiceTest {
     @Test
     @DisplayName("testing the saveAll function")
     void test_5() {
-        Room room1 = new Room(roomID, "106");
+        Room room1 = new Room(id, "106");
         Room room2 = new Room(differentRoomID, "107");
 
         roomService.saveAll(List.of(room1, room2));
@@ -120,7 +120,7 @@ class RoomServiceTest {
     @DisplayName("Adding a room that is already in the List does not change it")
     @Test
     void test_6() {
-        Room room = new Room(roomID, "106");
+        Room room = new Room(id, "106");
 
         roomService.saveAll(List.of(room));
         roomService.addRoom(room);

@@ -58,7 +58,7 @@ public class PostBookTest {
         roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .param("roomID", roomID.toString())
+                        .param("id", roomID.toString())
                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(redirectedUrl("/"));
@@ -70,10 +70,10 @@ public class PostBookTest {
     @DisplayName("Booking Details appear on the homepage after submiting the booking form")
     @Test
     void test_2() throws Exception {
-     //   BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+     //   BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
 
         MvcResult postResult = mvc.perform(post("/rooms")
-                        .param("roomID", roomID.toString())
+                        .param("id", roomID.toString())
                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andReturn();
@@ -93,7 +93,7 @@ public class PostBookTest {
 
         mvc.perform(post("/rooms")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .param("roomID", "null")
+                .param("id", "null")
                // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
                 .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(status().is3xxRedirection())
@@ -108,7 +108,7 @@ public class PostBookTest {
             "throws GeneralDomainException")
     @WithCustomMockUser
     public void test_4() throws Exception {
-      //  BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
+      //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
         //entryService = mock(BookEntryService.class);
         //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
         Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any());
@@ -116,7 +116,7 @@ public class PostBookTest {
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                        // .param("form", bookDataForm.toString()))
-                          .param("roomID", roomID.toString())
+                          .param("id", roomID.toString())
                         //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                          .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(view().name("bad-request"))

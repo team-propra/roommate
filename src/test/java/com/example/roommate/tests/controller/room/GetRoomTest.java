@@ -48,8 +48,8 @@ public class GetRoomTest {
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
-//        when(roomRepository.findRoomByID(roomID)).thenReturn(room); why?, its provided by the app service already
-       // when(roomDomainService.findRoomByID(roomID)).thenReturn(room);
+//        when(roomRepository.findRoomByID(id)).thenReturn(room); why?, its provided by the app service already
+       // when(roomDomainService.findRoomByID(id)).thenReturn(room);
         when(bookingApplicationService.findRoomByID(roomID)).thenReturn(room);
         
         MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))

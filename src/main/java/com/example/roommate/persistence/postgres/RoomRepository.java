@@ -43,7 +43,7 @@ public class RoomRepository implements IRoomRepository {
         List<RoomOOP> result = new ArrayList<>();
         for (RoomDTO room : roomList) {
             List<ItemToRoomDTO> matchingMaps = itemToRoomList.stream()
-                    .filter(itemMapEntry -> itemMapEntry.roomID().equals(room.roomID()))
+                    .filter(itemMapEntry -> itemMapEntry.roomID().equals(room.id()))
                     .toList();
             List<ItemName> matchingItems = itemList.stream()
                     .filter(item->matchingMaps.stream().anyMatch(
@@ -52,10 +52,10 @@ public class RoomRepository implements IRoomRepository {
                     .map(item-> new ItemName(item.itemName()))
                     .toList();
             List<BookedTimeframe> bookedTimeframes = book.stream()
-                    .filter(timeframe -> timeframe.roomID() == room.roomID())
+                    .filter(timeframe -> timeframe.roomId() == room.id())
                     .map(timeframe-> new BookedTimeframe(timeframe.day(),timeframe.startTime(),timeframe.duration()))
                     .toList();
-            result.add(new RoomOOP(room.roomID(),room.roomNumber(),matchingItems,bookedTimeframes));
+            result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes));
         }
         return result;
     }

@@ -67,7 +67,7 @@ public class RoomController {
         return "addRooms";
     }
 
-    @GetMapping("/room/{roomID}")
+    @GetMapping("/room/{id}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);

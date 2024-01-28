@@ -1,12 +1,10 @@
 package com.example.roommate.persistence.postgres;
 
-import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.ItemName;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.List;
 import java.util.UUID;
-
-public record RoomDTO(UUID roomID, String roomNumber){
+@Table("room")
+public record RoomDTO( UUID id, String roomNumber){
 
 }
