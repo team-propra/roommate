@@ -6,5 +6,5 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.util.UUID;
 
 @Table("item_to_room")
-public record ItemToRoomDTO(@Id UUID id, String itemName, UUID roomID) {
+public record ItemToRoomDTO(@Id UUID id, String itemName, UUID roomId) {
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -43,7 +44,7 @@ public class RoomRepository implements IRoomRepository {
         List<RoomOOP> result = new ArrayList<>();
         for (RoomDTO room : roomList) {
             List<ItemToRoomDTO> matchingMaps = itemToRoomList.stream()
-                    .filter(itemMapEntry -> itemMapEntry.roomID().equals(room.id()))
+                    .filter(itemMapEntry -> itemMapEntry.roomId().equals(room.id()))
                     .toList();
             List<ItemName> matchingItems = itemList.stream()
                     .filter(item->matchingMaps.stream().anyMatch(
@@ -62,17 +63,17 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
-        RoomDTO room = roomDAO.findByRoomID(roomID);
-        if(room == null)
+        Optional<RoomDTO> room = roomDAO.findById(roomID);
+        if(room.isEmpty())
             throw new NotFoundRepositoryException();
-        List<String> itemToRoomMaps = itemToRoomDAO.findByRoomID(roomID).stream().map(ItemToRoomDTO::itemName).toList();
+        List<String> itemToRoomMaps = itemToRoomDAO.findByRoomId(roomID).stream().map(ItemToRoomDTO::itemName).toList();
         List<ItemName> byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
                 .map(ItemDTO::toItemName)
                 .toList();
-        List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomID(roomID).stream()
+        List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
-        return new RoomOOP(roomID,room.roomNumber(),byItemNames,timeframes);
+        return new RoomOOP(roomID,room.get().roomNumber(),byItemNames,timeframes);
     }
 
     @Override

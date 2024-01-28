@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Interface
 public interface IRoomDAO extends CrudRepository<RoomDTO, UUID> {
-    RoomDTO findByRoomID(UUID roomID);
+//    RoomDTO findByRoomId(UUID roomId);
 }

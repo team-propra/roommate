@@ -9,5 +9,5 @@ import java.util.UUID;
 @Interface
 public interface IItemToRoomDAO extends CrudRepository<ItemToRoomDTO, UUID> {
 
-    List<ItemToRoomDTO> findByRoomID(UUID roomID);
+    List<ItemToRoomDTO> findByRoomId(UUID roomID);
 }

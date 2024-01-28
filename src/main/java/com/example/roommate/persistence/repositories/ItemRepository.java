@@ -21,5 +21,10 @@ public class ItemRepository implements IItemRepository{
     public List<ItemName> getItems() {
         return itemList;
     }
+
+    @Override
+    public void addItem(ItemName itemName) {
+        itemList.add(itemName);
+    }
 }
 

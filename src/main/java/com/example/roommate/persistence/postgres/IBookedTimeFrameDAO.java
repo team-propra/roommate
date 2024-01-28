@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Interface
 public interface IBookedTimeFrameDAO extends CrudRepository<BookedTimeframeDTO, UUID> {
-    List<BookedTimeframeDTO> findByRoomID(UUID roomID);
+    List<BookedTimeframeDTO> findByRoomId(UUID roomID);
 }
