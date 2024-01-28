@@ -21,7 +21,7 @@ public class BookingApplicationService {
 
     public BookingApplicationService(RoomDomainService roomDomainService) {
         this.roomDomainService = roomDomainService;
-        roomDomainService.addDummieRooms();
+        //roomDomainService.addDummieRooms();
     }
 
     public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
