@@ -66,4 +66,8 @@ public class BookingApplicationService {
             throw new NotFoundException();
         }
     }
+
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        roomDomainService.removeItemFromRoom(roomID, itemName);
+    }
 }

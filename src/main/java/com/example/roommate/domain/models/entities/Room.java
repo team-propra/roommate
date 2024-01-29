@@ -69,4 +69,10 @@ public class Room implements IRoom {
         return bookedPeriods;
     }
 
+    @Override
+    public void removeItemName(String itemName) {
+        ItemName itemNameObject = new ItemName(itemName);
+        itemNameList.remove(itemNameObject);
+    }
+
 }

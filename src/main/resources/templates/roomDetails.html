@@ -37,7 +37,7 @@
     <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
         <span th:text="${itemName}"></span>
         <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/rooms' + ${room.getRoomID()} + '/delete/' + ${itemName}}" method="post">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/deleteItem/' + ${itemName}}" method="post">
                 <input type="hidden" name="tagName" th:value="${itemName}" />
                 <button type="submit">X</button>
             </form>
@@ -47,7 +47,7 @@
 
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/rooms' + ${room.getRoomID()} + '/createItem/' + ${newItem}}" method="post">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem/' + ${newItem}}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
         <input id="createItem" type="text" th:value="${newItem}" />
         <input type="submit">
@@ -55,7 +55,7 @@
 </div>
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/rooms/' + ${room.getRoomID()} + '/addItem/' + ${itemName}}" method="post">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${itemName}}" method="post">
         <div class="form-group">
             <label for="selectItems">Gegenstände hinzufügen</label>
             <select multiple id="selectItems" name="selectItems" class="form-control" required onchange="this.form.submit()">

@@ -75,4 +75,8 @@ public class RoomDomainService {
     }
 
 
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        IRoom room = roomRepository.findRoomByID(roomID);
+        room.removeItemName(itemName);
+    }
 }

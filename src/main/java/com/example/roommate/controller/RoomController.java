@@ -2,6 +2,7 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -128,10 +129,10 @@ public class RoomController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/addItem/{itemName}")
-    public String addItem(@PathVariable UUID roomID, @PathVariable String itemName) {
+    public String addItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) {
         // add Item to room repo
         // change the gegenstände model attribute so that only not selceted items are displayed
-        return "addRooms";
+        return "roomDetails";
     }
 
     @AdminOnly
@@ -139,13 +140,13 @@ public class RoomController {
     public String createItem(@PathVariable UUID roomID, @PathVariable String itemName) {
         // create Item
         // add Item to repo and room
-        return "addRooms";
+        return "roomDetails";
     }
 
     @AdminOnly
     @PostMapping("/room/{roomID}/deleteItem/{itemName}")
-    public String addItemForm(@PathVariable UUID roomID, @PathVariable String itemName) {
-        // remove item form room
-        return "addRooms";
+    public ModelAndView addItemForm(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.removeItemFromRoom(roomID, itemName);
+        return roomDetails(model, roomID);
     }
 }
