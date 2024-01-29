@@ -6,17 +6,17 @@ import java.time.LocalTime;
 
 public record BookedTimeframe(DayOfWeek day, LocalTime startTime, Duration duration) {
     public boolean intersects(BookedTimeframe other) {
-        if (this.day != other.day) {
+        if (!this.day.equals(other.day)) {
             return false;
         }
 
         LocalTime thisEndTime = this.startTime.plus(this.duration);
         LocalTime otherEndTime = other.startTime.plus(other.duration);
 
-        return exclusiveOr(thisEndTime.isBefore(other.startTime),otherEndTime.isBefore(this.startTime));
-    }
+        boolean x = thisEndTime.isBefore(other.startTime) || thisEndTime.equals(other.startTime);
+        boolean y = otherEndTime.isBefore(this.startTime) || otherEndTime.equals(this.startTime);
 
-    private boolean exclusiveOr(boolean x, boolean y) {
-        return (x || y) && !(x && y);
+
+        return !(x || y);
     }
 }

@@ -64,6 +64,10 @@ public class Room implements IRoom {
         return itemNameList;
     }
 
+    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
+        bookedPeriods.add(bookedTimeframe);
+    }
+
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
         return bookedPeriods;
