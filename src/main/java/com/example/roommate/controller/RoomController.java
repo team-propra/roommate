@@ -71,6 +71,11 @@ public class RoomController {
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
+            List<String> itemStringList = roomByID.getItemNames().stream().map(ItemName::toString).toList();
+            List<ItemName> filteredItems = bookingApplicationService.getItems()
+                    .stream()
+                    .filter(item -> !roomByID.getItemNames().contains(item))
+                    .collect(Collectors.toList());
 
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
@@ -79,6 +84,8 @@ public class RoomController {
             modelAndView.setStatus(HttpStatus.OK);
 
             model.addAttribute("room", roomByID);
+            model.addAttribute("itemStringList", itemStringList);
+            model.addAttribute("notSelcetedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");

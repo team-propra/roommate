@@ -34,36 +34,38 @@
   </div>
 
 <ul class="tag-list">
-    <li th:each="itemName : ${getItemNames}" class="tag">
+    <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
+        <span th:text="${itemName}"></span>
         <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/rooms' + ${getRoomID} + '/delete/' + ${itemName}}" method="post">
-                <input type="hidden" name="tagName" th:value="${tag}" />
-                <span th:text="${tag}"></span>
+            <form th:action="@{'/rooms' + ${room.getRoomID()} + '/delete/' + ${itemName}}" method="post">
+                <input type="hidden" name="tagName" th:value="${itemName}" />
                 <button type="submit">X</button>
             </form>
         </div>
     </li>
 </ul>
 
+
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/rooms' + ${getRoomID} + '/createItem/' + ${itemName}}" method="post">
-        <labe for="createItem">Neuen Gegenstand hinzufügen:</labe>
-        <input id="createItem" type="text">
+    <form th:action="@{'/rooms' + ${room.getRoomID()} + '/createItem/' + ${newItem}}" method="post">
+        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+        <input id="createItem" type="text" th:value="${newItem}" />
         <input type="submit">
     </form>
 </div>
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/rooms' + ${getRoomID} + '/addItem/' + ${itemName}}" method="post">
+    <form th:action="@{'/rooms/' + ${room.getRoomID()} + '/addItem/' + ${itemName}}" method="post">
         <div class="form-group">
-            <label for="gegenstaende">Gegenstände im Raum</label>
-            <select multiple id="gegenstaende" name="gegenstaende" class="form-control" required onchange="this.form.submit()">
-                <option th:each="item : ${items}" th:value="${item.type}" th:text="${item.type}" th:selected="${gegenstaende != null and gegenstaende.contains(item.type)}"></option>
+            <label for="selectItems">Gegenstände hinzufügen</label>
+            <select multiple id="selectItems" name="selectItems" class="form-control" required onchange="this.form.submit()">
+                <option th:each="item : ${notSelcetedItems}" th:value="${item.type}" th:text="${item.type}"></option>
             </select>
         </div>
         <input type="submit" style="display: none;">
     </form>
 </div>
+
 
 
   <form method="post" th:action="@{/rooms}">
