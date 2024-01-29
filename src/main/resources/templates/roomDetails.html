@@ -45,24 +45,24 @@
     </li>
 </ul>
 
+<div sec:authorize="hasRole('ADMIN')">
+    <label>Gegenstände hinzufügen</label>
+    <ul>
+        <li th:each="item : ${notSelcetedItems}">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${item}}" method="post">
+                <button type="submit">
+                    <span th:text="${item}"></span>
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
 
 <div sec:authorize="hasRole('ADMIN')">
     <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem/' + ${newItem}}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
         <input id="createItem" type="text" th:value="${newItem}" />
         <input type="submit">
-    </form>
-</div>
-
-<div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${itemName}}" method="post">
-        <div class="form-group">
-            <label for="selectItems">Gegenstände hinzufügen</label>
-            <select multiple id="selectItems" name="selectItems" class="form-control" required onchange="this.form.submit()">
-                <option th:each="item : ${notSelcetedItems}" th:value="${item.type}" th:text="${item.type}"></option>
-            </select>
-        </div>
-        <input type="submit" style="display: none;">
     </form>
 </div>
 

@@ -73,9 +73,10 @@ public class RoomController {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
             List<String> itemStringList = roomByID.getItemNames().stream().map(ItemName::toString).toList();
-            List<ItemName> filteredItems = bookingApplicationService.getItems()
+            List<String> filteredItems = bookingApplicationService.getItems()
                     .stream()
                     .filter(item -> !roomByID.getItemNames().contains(item))
+                    .map(ItemName::toString)
                     .collect(Collectors.toList());
 
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
@@ -129,10 +130,9 @@ public class RoomController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/addItem/{itemName}")
-    public String addItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) {
-        // add Item to room repo
-        // change the gegenstände model attribute so that only not selceted items are displayed
-        return "roomDetails";
+    public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.addItemToRoom(roomID, itemName);
+        return roomDetails(model, roomID);
     }
 
     @AdminOnly

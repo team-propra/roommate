@@ -36,4 +36,9 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
         //throw new GeneralDomainException();
     }
 
+    @Override
+    public void addItemName(String itemName) {
+        //throw new GeneralDomainException();
+    }
+
 }

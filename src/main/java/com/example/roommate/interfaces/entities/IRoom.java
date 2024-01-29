@@ -16,4 +16,6 @@ public interface IRoom {
     List<BookedTimeframe> getBookedTimeframes();
 
     void removeItemName(String itemName);
+
+    void addItemName(String itemName);
 }
