@@ -8,4 +8,6 @@ import java.util.List;
 @RepositoryInterface
 public interface IItemRepository {
     List<ItemName> getItems();
+
+    void addItem(String itemName);
 }

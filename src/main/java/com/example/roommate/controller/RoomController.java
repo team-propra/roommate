@@ -137,10 +137,10 @@ public class RoomController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/createItem/{itemName}")
-    public String createItem(@PathVariable UUID roomID, @PathVariable String itemName) {
-        // create Item
-        // add Item to repo and room
-        return "roomDetails";
+    public ModelAndView createItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.createItem(itemName);
+        //return addItem(model, roomID, itemName);
+        return roomDetails(model, roomID);
     }
 
     @AdminOnly

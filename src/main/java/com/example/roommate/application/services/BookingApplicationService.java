@@ -74,4 +74,8 @@ public class BookingApplicationService {
     public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         roomDomainService.addItemToRoom(roomID, itemName);
     }
+
+    public void createItem(String itemName) {
+        roomDomainService.createItem(itemName);
+    }
 }

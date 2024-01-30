@@ -84,4 +84,8 @@ public class RoomDomainService {
         IRoom room = roomRepository.findRoomByID(roomID);
         room.addItemName(itemName);
     }
+
+    public void createItem(String itemName) {
+        itemRepository.addItem(itemName);
+    }
 }
