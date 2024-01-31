@@ -99,9 +99,5 @@ public class RoomRepository implements IRoomRepository {
         return new RoomDTO(room.getRoomID(),room.getRoomNumber());
     }
 
-    @Override
-    public void saveAll(List<? extends IRoom> rooms) {
-        List<RoomDTO> roomList = rooms.stream().map(this::addRoom).toList();
-        roomDAO.saveAll(roomList);
-    }
+
 }

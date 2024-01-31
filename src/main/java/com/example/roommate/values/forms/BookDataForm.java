@@ -8,7 +8,7 @@ import com.example.roommate.validator.IsValidUUID;
 import java.util.List;
 
 
-public record BookDataForm(@IsValidUUID String roomID, int stepSize){
+public record BookDataForm(@IsValidUUID String id, int stepSize){
 
    
 

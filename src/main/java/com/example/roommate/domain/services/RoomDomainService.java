@@ -43,7 +43,7 @@ public class RoomDomainService {
     }
 
     @Transactional
-    private void addDummieRooms() {
+    public void addDummieRooms() {
         ItemName chair = new ItemName("Chair");
         ItemName table = new ItemName("Table");
         ItemName desk = new ItemName("Desk");
@@ -90,9 +90,6 @@ public class RoomDomainService {
         }
     }
 
-    public void saveAll(List<IRoom> rooms) {
-        roomRepository.saveAll(rooms);
-    }
 
     public List<ItemName> getItems() {
         return itemRepository.getItems();
