@@ -10,8 +10,8 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Table("booked_timeframe")
-public record BookedTimeframeDTO(@Id UUID id, DayOfWeek day, LocalTime startTime, Duration duration, UUID roomId) {
+public record BookedTimeframeDTO(@Id UUID id, DayOfWeek dayOfWeek, LocalTime localTime, Duration duration, UUID roomId) {
     public BookedTimeframe toBookedTimeFrame(){
-        return new BookedTimeframe(day(),startTime(),duration());
+        return new BookedTimeframe(dayOfWeek(), localTime(),duration());
     }
 }

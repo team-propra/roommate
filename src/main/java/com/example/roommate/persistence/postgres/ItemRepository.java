@@ -27,7 +27,7 @@ public class ItemRepository implements IItemRepository {
 
     @Override
     public void addItem(ItemName itemName) {
-        itemDAO.save(new ItemDTO(itemName.type()));
+        itemDAO.insert(itemName.type());
     }
 
 

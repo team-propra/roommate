@@ -54,7 +54,7 @@ public class RoomRepository implements IRoomRepository {
                     .toList();
             List<BookedTimeframe> bookedTimeframes = book.stream()
                     .filter(timeframe -> timeframe.roomId() == room.id())
-                    .map(timeframe-> new BookedTimeframe(timeframe.day(),timeframe.startTime(),timeframe.duration()))
+                    .map(timeframe-> new BookedTimeframe(timeframe.dayOfWeek(),timeframe.localTime(),timeframe.duration()))
                     .toList();
             result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes));
         }
@@ -84,20 +84,20 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void add(IRoom room) {
-        RoomDTO dto = addRoom(room);
-        roomDAO.save(dto);
+
+        List<ItemName> itemNames = room.getItemNames();
+        System.out.println(room.getRoomID());
+//        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
+        roomDAO.insert(room.getRoomID(), room.getRoomNumber());
+        room.getBookedTimeframes().forEach(x->{
+            bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID());
+        });
+        itemNames.forEach(x->{
+            itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID());
+        });
     }
     
-    private RoomDTO addRoom(IRoom room){
-        List<ItemName> itemNames = room.getItemNames();
-        itemNames.forEach(x->{
-            itemToRoomDAO.save(new ItemToRoomDTO(UUID.randomUUID(),x.type(),room.getRoomID()));
-        });
-        room.getBookedTimeframes().forEach(x->{
-            bookedTimeFrameDAO.save(new BookedTimeframeDTO(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
-        });
-        return new RoomDTO(room.getRoomID(),room.getRoomNumber());
-    }
+
 
 
 }

@@ -1,3 +1,6 @@
+logging:
+  level:
+    ROOT: TRACE
 spring:
   main:
     banner-mode: "off"
