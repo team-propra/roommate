@@ -59,9 +59,9 @@
 </div>
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem/' + ${newItem}}" method="post">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem'}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
-        <input id="createItem" type="text" th:value="${newItem}" />
+        <input id="createItem" type="text" name="newItem" required/>
         <input type="submit">
     </form>
 </div>
