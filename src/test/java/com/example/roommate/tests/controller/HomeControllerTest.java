@@ -2,7 +2,7 @@ package com.example.roommate.tests.controller;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithCustomMockUser;
+import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.controller.HomeController;
 
@@ -16,11 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 
-import java.util.Collection;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,7 +34,7 @@ public class  HomeControllerTest {
 
     @DisplayName("A GET-Request on / returns a status 200 and displays the home.html")
     @Test
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_01() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -48,7 +44,7 @@ public class  HomeControllerTest {
 
 //    @Test
 //    @DisplayName("Home Seite zeigt bei vorhandenen Bookings die korrekten RaumIDs und Austattungen an")
-//    @WithCustomMockUser
+//    @WithMockOAuth2User
 //    @Disabled
 //    public void test_02() throws Exception {
 //        List<IRoom> rooms = EntityFactory.createRoomsWithItems();
