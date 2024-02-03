@@ -36,7 +36,8 @@ public class GetBookTest {
     void test_04() throws Exception{
         mvc.perform(get("/rooms")
                 .param("date", "08.07.2014")
-                .param("time", "14:30"))
-                .andExpect(model().attributeExists("date", "time"));
+                .param("startTime", "14:30")
+                .param("endTime", "15:00"))
+                .andExpect(model().attributeExists("date", "startTime", "endTime"));
     }
 }

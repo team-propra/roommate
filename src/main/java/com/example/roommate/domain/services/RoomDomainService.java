@@ -28,10 +28,15 @@ public class RoomDomainService {
 
     public void addDummieRooms() {
         Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), "12");
-        room1.addItem(new ItemName("Chair"));
+        ItemName chair = new ItemName("Chair");
+        room1.addItem(chair);
+
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
         room2.addItem(new ItemName("Table"));
         room2.addItem(new ItemName("Desk"));
+        ItemName table = new ItemName("Table");
+        room2.addItem(table);
+
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
@@ -41,7 +46,7 @@ public class RoomDomainService {
         IRoom roomByID = roomRepository.findRoomByID(roomID);
         roomByID.getBookedTimeframes().add(bookedTimeframe);
     }
-    
+
 
 
 
