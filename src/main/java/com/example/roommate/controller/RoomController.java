@@ -144,7 +144,7 @@ public class RoomController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/deleteItem/{itemName}")
-    public ModelAndView addItemForm(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+    public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.removeItemFromRoom(roomID, itemName);
         return roomDetails(model, roomID);
     }
