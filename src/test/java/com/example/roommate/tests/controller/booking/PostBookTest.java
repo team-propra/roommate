@@ -2,6 +2,7 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.data.RoomEntry;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.example.roommate.annotations.WithCustomMockUser;
+
 @WebMvcTest
 @TestClass
 public class PostBookTest {
@@ -53,13 +54,12 @@ public class PostBookTest {
 
     @DisplayName("POST /rooms redirects to /")
     @Test
-    @WithCustomMockUser
+    @WithMockOAuth2User
     void test_1() throws Exception {
         roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("roomID", roomID.toString())
-                       // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(redirectedUrl("/"));
     }
@@ -88,7 +88,7 @@ public class PostBookTest {
 
     @Test
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_3() throws Exception {
 
         mvc.perform(post("/rooms")
@@ -106,7 +106,7 @@ public class PostBookTest {
     @Test
     @DisplayName("POST /rooms returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_4() throws Exception {
       //  BookDataForm bookDataForm = new BookDataForm(roomID.toString(),true);
         //entryService = mock(BookEntryService.class);
