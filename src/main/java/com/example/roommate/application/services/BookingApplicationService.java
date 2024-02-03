@@ -65,7 +65,7 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findRoomsWith(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<IRoom> findAvailabeRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
