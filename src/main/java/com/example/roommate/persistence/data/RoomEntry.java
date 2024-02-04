@@ -30,8 +30,6 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
         return bookedTimeframes;
     }
 
-    @Override
-    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
-        return bookedTimeframes.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
-    }
+    
+
 }

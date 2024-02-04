@@ -83,7 +83,7 @@ public class BookingApplicationService {
 
         return roomDomainService.getRooms().stream()
                 .filter(room -> room.getItemNames().containsAll(items))
-                .filter(room -> room.isAvailable(bookedTimeframe))
+                .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
                 .collect(Collectors.toList());
     }
 }

@@ -95,5 +95,11 @@ public class RoomDomainService {
         return itemRepository.getItems();
     }
 
+    public static boolean isRoomAvailable(IRoom room, BookedTimeframe bookedTimeframe){
+        return toRoom(room).isAvailable(bookedTimeframe);
+    }
 
+    private static Room toRoom(IRoom room){
+        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookedTimeframes().stream().toList(), room.getItemNames().stream().toList());
+    }
 }
