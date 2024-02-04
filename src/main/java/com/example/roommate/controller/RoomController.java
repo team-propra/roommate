@@ -69,10 +69,10 @@ public class RoomController {
         return "addRooms";
     }
 
-    @GetMapping("/room/{roomID}")
-    public ModelAndView roomDetails(Model model, @PathVariable UUID roomID) {
+    @GetMapping("/room/{id}")
+    public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
         try {
-            IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
+            IRoom roomByID = bookingApplicationService.findRoomByID(id);
 
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
@@ -100,7 +100,7 @@ public class RoomController {
 
 
         if (bindingResult.hasErrors()) {
-            String id = form.roomID();
+            UUID id = form.id();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));

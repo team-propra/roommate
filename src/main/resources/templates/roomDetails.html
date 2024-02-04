@@ -24,7 +24,7 @@
 
 
   <form method="post" th:action="@{/rooms}">
-      <input type="hidden" name="roomID" th:value="*{roomID}">
+      <input type="hidden" name="id" th:value="*{getRoomID()}">
       <input type="hidden" name="stepSize" th:value="${frame.stepSize()}">
 
     <table class="table">

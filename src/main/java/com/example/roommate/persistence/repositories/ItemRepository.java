@@ -2,12 +2,14 @@ package com.example.roommate.persistence.repositories;
 
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.values.domainValues.ItemName;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Profile("test")
 public class ItemRepository implements IItemRepository{
 
     List<ItemName> itemList = new ArrayList<>();
@@ -18,6 +20,11 @@ public class ItemRepository implements IItemRepository{
 
     public List<ItemName> getItems() {
         return itemList;
+    }
+
+    @Override
+    public void addItem(ItemName itemName) {
+        itemList.add(itemName);
     }
 }
 

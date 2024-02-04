@@ -20,10 +20,10 @@ public class ValuesFactory {
 
     public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
     public static BookDataForm createValidBookDataForm() {
-        return new BookDataForm(id.toString(), 1);
+        return new BookDataForm(id, 1);
     }
     public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
-        return new BookDataForm(id.toString(), 60);
+        return new BookDataForm(id, 60);
     }
 
     public static BookedTimeframe createBookedTimeframe(LocalTime startTime, Duration duration) {

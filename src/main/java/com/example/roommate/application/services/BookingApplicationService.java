@@ -10,6 +10,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import jakarta.annotation.PostConstruct;
 
 import java.time.Duration;
 import java.util.*;
@@ -25,12 +26,16 @@ public class BookingApplicationService {
 
     public BookingApplicationService(RoomDomainService roomDomainService) {
         this.roomDomainService = roomDomainService;
-        roomDomainService.addDummieRooms();
+
     }
 
+    @PostConstruct
+    public void initialize(){
+        roomDomainService.addDummyDummy();
+    }
     public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        UUID roomID = UUID.fromString(form.bookDataForm().roomID());
+        UUID roomID = form.bookDataForm().id();
 
         List<BookedTimeframe> bookedTimeframes = form.bookingDays().toBookedTimeframes();
         try{
@@ -78,7 +83,7 @@ public class BookingApplicationService {
 
         return roomDomainService.getRooms().stream()
                 .filter(room -> room.getItemNames().containsAll(items))
-                .filter(room -> room.isAvailable(bookedTimeframe))
+                .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
                 .collect(Collectors.toList());
     }
 }

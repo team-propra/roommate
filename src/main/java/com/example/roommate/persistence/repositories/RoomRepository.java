@@ -3,11 +3,14 @@ package com.example.roommate.persistence.repositories;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.values.domainValues.BookedTimeframe;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@Profile("test")
 public class RoomRepository implements IRoomRepository {
     private final List<IRoom> rooms;
     
@@ -46,7 +49,12 @@ public class RoomRepository implements IRoomRepository {
         rooms.add(room);
     }
 
-    public void saveAll(List<IRoom> rooms) {
+    @Override
+    public void addBooking(BookedTimeframe bookedTimeframe, IRoom room)  {
+        room.getBookedTimeframes().add(bookedTimeframe);
+    }
+
+    public void saveAll(List<? extends IRoom> rooms) {
         rooms.forEach(this::add);
     }
 }

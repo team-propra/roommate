@@ -15,5 +15,5 @@ public interface IRoom {
 
     List<BookedTimeframe> getBookedTimeframes();
 
-    boolean isAvailable(BookedTimeframe bookedTimeframe);
+
 }

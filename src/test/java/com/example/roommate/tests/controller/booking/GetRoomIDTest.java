@@ -50,7 +50,7 @@ public class GetRoomIDTest {
         UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomId,"test");
         when(bookingApplicationService.findRoomByID(roomId)).thenReturn(room);
-        when(roomRepository.findRoomByID(roomId)).thenReturn(room);
+
         MvcResult result = mvc.perform(get("/room/{ID}", roomId.toString()))
                 .andExpect(status().isOk())
                 .andReturn();
