@@ -11,7 +11,7 @@ import java.util.List;
 @Interface
 public interface IItemDAO extends CrudRepository<ItemDTO, String> {
     List<ItemDTO> findByItemName(String itemName);
-    @Query("SELECT * FROM items WHERE itemName IN (:itemNames)")
+    @Query("SELECT * FROM item WHERE item_name IN (:itemNames)")
     List<ItemDTO> findByItemNames(List<String> itemNames);
 
     @Query("INSERT INTO item (item_name) VALUES (:itemName)")

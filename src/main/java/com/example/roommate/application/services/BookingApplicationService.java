@@ -31,7 +31,7 @@ public class BookingApplicationService {
     }
     public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        UUID roomID = UUID.fromString(form.bookDataForm().id());
+        UUID roomID = form.bookDataForm().id();
 
         List<BookedTimeframe> bookedTimeframes = form.bookingDays().toBookedTimeframes();
         try{

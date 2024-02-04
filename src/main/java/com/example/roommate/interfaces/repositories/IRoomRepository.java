@@ -15,5 +15,6 @@ public interface IRoomRepository {
     IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException;
     void remove(UUID room);
     void add(IRoom room);
+    void update(IRoom room);
 
 }

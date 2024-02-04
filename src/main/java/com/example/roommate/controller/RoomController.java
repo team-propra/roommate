@@ -98,7 +98,7 @@ public class RoomController {
 
 
         if (bindingResult.hasErrors()) {
-            String id = form.id();
+            UUID id = form.id();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s".formatted(id));
