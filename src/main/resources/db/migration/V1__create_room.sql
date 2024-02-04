@@ -11,7 +11,7 @@ CREATE TABLE booked_timeframe (
     id UUID PRIMARY KEY,
     day_of_week VARCHAR(255) NOT NULL,
     local_time TIME NOT NULL,
-    duration INTERVAL NOT NULL,
+    duration CHARACTER VARYING NOT NULL,
     room_id UUID NOT NULL REFERENCES room(id)
 );
 

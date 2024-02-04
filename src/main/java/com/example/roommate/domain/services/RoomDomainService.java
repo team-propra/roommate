@@ -63,8 +63,7 @@ public class RoomDomainService {
 
     public void addBooking(BookedTimeframe bookedTimeframe, UUID roomID) throws NotFoundRepositoryException {
         IRoom roomByID = roomRepository.findRoomByID(roomID);
-        roomByID.getBookedTimeframes().add(bookedTimeframe);
-        roomRepository
+        roomRepository.addBooking(bookedTimeframe,roomByID);
     }
     
 

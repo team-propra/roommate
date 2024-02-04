@@ -3,6 +3,7 @@ package com.example.roommate.persistence.repositories;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +47,11 @@ public class RoomRepository implements IRoomRepository {
             }
         }
         rooms.add(room);
+    }
+
+    @Override
+    public void addBooking(BookedTimeframe bookedTimeframe, IRoom room)  {
+        room.getBookedTimeframes().add(bookedTimeframe);
     }
 
     public void saveAll(List<? extends IRoom> rooms) {

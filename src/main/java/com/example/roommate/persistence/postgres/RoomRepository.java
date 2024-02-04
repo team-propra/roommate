@@ -1,5 +1,6 @@
 package com.example.roommate.persistence.postgres;
 
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -96,8 +97,11 @@ public class RoomRepository implements IRoomRepository {
             itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID());
         });
     }
-    
 
+    @Override
+    public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
+        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
+    }
 
 
 }
