@@ -1,8 +1,6 @@
 package com.example.roommate.tests.controller.room;
 
-import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithCustomMockAdmin;
-import com.example.roommate.annotations.WithCustomMockUser;
+import com.example.roommate.annotations.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ public class GetRoomsTest {
 
     @Test
     @DisplayName("GET /rooms contains button that would direct to /rooms/add")
-    @WithCustomMockAdmin
+    @WithMockOAuthAdmin
     public void test_01() throws Exception {
 
         MvcResult result =

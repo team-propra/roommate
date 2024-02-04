@@ -37,9 +37,10 @@ public class RoomController {
 
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/rooms")
-    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String uhrzeit, Model model) {
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String startUhrzeit, @RequestParam(required = false) String endUhrzeit, Model model) {
         if (datum == null) datum = "2024-01-01";
-        if (uhrzeit == null) uhrzeit = "08:00";
+        if (startUhrzeit == null) startUhrzeit = "08:00";
+        if (endUhrzeit == null) endUhrzeit = "16:00";
         if (gegenstaende == null) gegenstaende = new ArrayList<>();
 
         List<ItemName> selectedItemsList = gegenstaende.stream()
@@ -47,10 +48,11 @@ public class RoomController {
                 .collect(Collectors.toList());
 
         model.addAttribute("date", datum);
-        model.addAttribute("time", uhrzeit);
+        model.addAttribute("startTime", startUhrzeit);
+        model.addAttribute("endTime", endUhrzeit);
         model.addAttribute("items", bookingApplicationService.getItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findRoomsWithItems(selectedItemsList)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
+        model.addAttribute("rooms", bookingApplicationService.findAvailabeRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "rooms";
     }
 

@@ -64,9 +64,19 @@ public class Room implements IRoom {
         return itemNameList;
     }
 
+    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
+        bookedPeriods.add(bookedTimeframe);
+    }
+
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
         return bookedPeriods;
     }
+
+    @Override
+    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
+        return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
+    }
+
 
 }

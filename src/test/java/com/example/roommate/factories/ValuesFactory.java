@@ -1,12 +1,16 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +24,10 @@ public class ValuesFactory {
     }
     public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
         return new BookDataForm(id, 60);
+    }
+
+    public static BookedTimeframe createBookedTimeframe(LocalTime startTime, Duration duration) {
+        return new BookedTimeframe(DayOfWeek.MONDAY, startTime, duration);
     }
 
     public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() {
