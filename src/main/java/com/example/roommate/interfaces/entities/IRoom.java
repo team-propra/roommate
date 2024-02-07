@@ -14,6 +14,7 @@ public interface IRoom {
     List<ItemName> getItemNames();
 
     List<BookedTimeframe> getBookedTimeframes();
+    List<? extends IWorkspace> getWorkspaces();
 
 
 }

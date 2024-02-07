@@ -3,6 +3,7 @@ package com.example.roommate.domain.services;
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
@@ -11,7 +12,6 @@ import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -78,7 +78,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getItemNames()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getItemNames(),iroom.getWorkspaces()))
                 .toList();
     }
 
@@ -100,6 +100,9 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookedTimeframes().stream().toList(), room.getItemNames().stream().toList());
+        List<BookedTimeframe> timeframes = room.getBookedTimeframes().stream().toList();
+        List<ItemName> items = room.getItemNames().stream().toList();
+        List<? extends IWorkspace> workspaces = room.getWorkspaces().stream().toList();
+        return new Room(room.getRoomID(), room.getRoomNumber(),timeframes, items, workspaces);
     }
 }

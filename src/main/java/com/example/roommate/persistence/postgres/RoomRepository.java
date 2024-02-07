@@ -56,7 +56,7 @@ public class RoomRepository implements IRoomRepository {
                     .filter(timeframe -> timeframe.roomId().equals(room.id()))
                     .map(timeframe-> new BookedTimeframe(timeframe.dayOfWeek(),timeframe.localTime(),timeframe.duration()))
                     .toList();
-            result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes));
+            result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes,room.what are we gonna put here?));
         }
         return result;
     }

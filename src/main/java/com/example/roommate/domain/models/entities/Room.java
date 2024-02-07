@@ -2,6 +2,7 @@ package com.example.roommate.domain.models.entities;
 
 
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
@@ -16,20 +17,21 @@ public class Room implements IRoom {
     private final String roomNumber;
     private final List<BookedTimeframe> bookedPeriods;
     private final List<ItemName> itemNameList;
-
-    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
+    private final List<Workspace> workspaces;
+    
+    
+    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList,List<? extends IWorkspace> workspaces) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.bookedPeriods = bookedPeriods;
         this.itemNameList = itemNameList;
+        this.workspaces = workspaces.stream().map(x->new Workspace(x.getId(),x.getWorkspaceNumber(),x.getItems())).toList();
     }
 
     public Room(UUID roomID, String roomNumber) {
-        this.roomID = roomID;
-        this.roomNumber = roomNumber;
-        this.bookedPeriods = new ArrayList<>();
-        this.itemNameList = new ArrayList<>();
+        this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
     }
+    
 
     public UUID getRoomID() {
         return roomID;
@@ -38,6 +40,8 @@ public class Room implements IRoom {
     public String getRoomNumber() {
         return roomNumber;
     }
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -71,6 +75,11 @@ public class Room implements IRoom {
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
         return bookedPeriods;
+    }
+
+    @Override
+    public List<Workspace> getWorkspaces() {
+        return workspaces.stream().toList(); // TODO consistency /immutability
     }
 
 
