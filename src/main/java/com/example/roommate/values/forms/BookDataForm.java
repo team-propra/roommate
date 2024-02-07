@@ -6,9 +6,10 @@ import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.validator.IsValidUUID;
 
 import java.util.List;
+import java.util.UUID;
 
 
-public record BookDataForm(@IsValidUUID String roomID, int stepSize){
+public record BookDataForm(UUID id, int stepSize){
 
    
 

@@ -9,6 +9,10 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,18 +24,38 @@ public class RoomDomainService {
 
     public IRoomRepository roomRepository;
     IItemRepository itemRepository;
+    RoomDomainService self;
 
     public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
+        this.self = this;
+    }
+    @Autowired
+    public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository, @Lazy RoomDomainService self) {
+        this.roomRepository = roomRepository;
+        this.itemRepository = itemRepository;
+        this.self = self;
     }
 
+    public void addDummyDummy(){
+        self.addDummieRooms();
+    }
+
+    @Transactional
     public void addDummieRooms() {
+        ItemName chair = new ItemName("Chair");
+        ItemName table = new ItemName("Table");
+        ItemName desk = new ItemName("Desk");
+
+        itemRepository.addItem(chair);
+        itemRepository.addItem(table);
+        itemRepository.addItem(desk);
         Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), "12");
-        room1.addItem(new ItemName("Chair"));
+        room1.addItem(chair);
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
-        room2.addItem(new ItemName("Table"));
-        room2.addItem(new ItemName("Desk"));
+        room2.addItem(table);
+        room2.addItem(desk);
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
@@ -39,9 +63,9 @@ public class RoomDomainService {
 
     public void addBooking(BookedTimeframe bookedTimeframe, UUID roomID) throws NotFoundRepositoryException {
         IRoom roomByID = roomRepository.findRoomByID(roomID);
-        roomByID.getBookedTimeframes().add(bookedTimeframe);
+        roomRepository.addBooking(bookedTimeframe,roomByID);
     }
-    
+
 
 
 
@@ -66,15 +90,18 @@ public class RoomDomainService {
         }
     }
 
-    public void saveAll(List<IRoom> rooms) {
-        roomRepository.saveAll(rooms);
-    }
 
     public List<ItemName> getItems() {
         return itemRepository.getItems();
     }
 
+    public static boolean isRoomAvailable(IRoom room, BookedTimeframe bookedTimeframe){
+        return toRoom(room).isAvailable(bookedTimeframe);
+    }
 
+    private static Room toRoom(IRoom room){
+        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookedTimeframes().stream().toList(), room.getItemNames().stream().toList());
+    }
     public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom room = roomRepository.findRoomByID(roomID);
         room.removeItemName(itemName);

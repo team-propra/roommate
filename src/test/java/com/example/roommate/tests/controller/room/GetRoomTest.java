@@ -1,8 +1,8 @@
 package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.annotations.TestClass;
+import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.application.services.BookingApplicationService;
-import com.example.roommate.annotations.WithCustomMockUser;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
@@ -44,12 +44,12 @@ public class GetRoomTest {
     ItemRepository itemRepository;
     @Test
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_1() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
         Room room = new Room(roomID,"test");
-//        when(roomRepository.findRoomByID(roomID)).thenReturn(room); why?, its provided by the app service already
-       // when(roomDomainService.findRoomByID(roomID)).thenReturn(room);
+//        when(roomRepository.findRoomByID(id)).thenReturn(room); why?, its provided by the app service already
+       // when(roomDomainService.findRoomByID(id)).thenReturn(room);
         when(bookingApplicationService.findRoomByID(roomID)).thenReturn(room);
         
         MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))
@@ -61,7 +61,7 @@ public class GetRoomTest {
 
     @Test
     @DisplayName("GET /room/{id} successfully yields NotFound and the not-found view whenever the room doesnt exist")
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_2() throws Exception {
         UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
 
