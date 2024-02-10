@@ -1,6 +1,5 @@
 package com.example.roommate.persistence.data;
 
-import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
@@ -27,7 +26,7 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
     }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
+    public List<BookedTimeframe> getBookdTimeframes() {
         return bookedTimeframes;
     }
 

@@ -11,7 +11,6 @@ import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -67,8 +66,6 @@ public class RoomDomainService {
     }
 
 
-
-
     public void addRoom(RoomApplicationData roomApplicationData){
         roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
     }
@@ -78,7 +75,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getItemNames()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookdTimeframes(),iroom.getItemNames()))
                 .toList();
     }
 
@@ -100,19 +97,22 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookedTimeframes().stream().toList(), room.getItemNames().stream().toList());
+        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookdTimeframes().stream().toList(), room.getItemNames().stream().toList());
     }
     public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        IRoom room = roomRepository.findRoomByID(roomID);
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
         room.removeItemName(itemName);
     }
 
     public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        IRoom room = roomRepository.findRoomByID(roomID);
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
         room.addItemName(itemName);
     }
 
     public void createItem(String itemName) {
-        itemRepository.addItem(itemName);
+        ItemName item = new ItemName(itemName);
+        itemRepository.addItem(item);
     }
 }

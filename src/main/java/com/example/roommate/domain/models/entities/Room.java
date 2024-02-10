@@ -69,7 +69,7 @@ public class Room implements IRoom {
     }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
+    public List<BookedTimeframe> getBookdTimeframes() {
         return bookedPeriods;
     }
 
@@ -79,13 +79,10 @@ public class Room implements IRoom {
     }
 
 
-    @Override
     public void removeItemName(String itemName) {
         ItemName itemNameObject = new ItemName(itemName);
         itemNameList.remove(itemNameObject);
     }
-
-    @Override
     public void addItemName(String itemName) {
         ItemName itemNameObject = new ItemName(itemName);
         itemNameList.add(itemNameObject);

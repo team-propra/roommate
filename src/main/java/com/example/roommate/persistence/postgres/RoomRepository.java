@@ -1,6 +1,5 @@
 package com.example.roommate.persistence.postgres;
 
-import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -90,7 +89,7 @@ public class RoomRepository implements IRoomRepository {
         System.out.println(room.getRoomID());
 //        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
         roomDAO.insert(room.getRoomID(), room.getRoomNumber());
-        room.getBookedTimeframes().forEach(x->{
+        room.getBookdTimeframes().forEach(x->{
             bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID());
         });
         itemNames.forEach(x->{

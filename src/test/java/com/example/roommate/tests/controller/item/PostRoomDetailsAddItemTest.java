@@ -1,7 +1,11 @@
 package com.example.roommate.tests.controller.item;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithCustomMockUser;
+import com.example.roommate.annotations.WithMockOAuthAdmin;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.factories.EntityFactory;
+import com.example.roommate.factories.ValuesFactory;
+import com.example.roommate.values.domainValues.ItemName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @TestClass
-public class PostRoomDetailsAddItem {
+public class PostRoomDetailsAddItemTest {
 
 
     @Autowired
@@ -20,9 +24,13 @@ public class PostRoomDetailsAddItem {
 
     @Test
     @DisplayName("POST /room/{roomID}/addItem/{itemName} returns status code 200")
-    @WithCustomMockUser //Admin berechtigungen
+    @WithMockOAuthAdmin
     public void test_01() throws Exception {
-        // add Room
+        Room room = EntityFactory.createRoom();
+        // how do I insert that into the IRoomRepository
+        // I can add it to the applicationService or inject there a mocked DomainService
+        // but in the Room-Controller, the Application-Service is public final
+        ItemName itemName = ValuesFactory.createItemName();
         mvc.perform(get("/room/{roomID}/addItem/{itemName}"))
                 .andExpect(status().isOk());
     }
