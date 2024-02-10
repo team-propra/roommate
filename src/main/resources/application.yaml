@@ -1,6 +1,6 @@
 logging:
   level:
-    ROOT: WARN
+    ROOT: Debug
 spring:
   main:
     banner-mode: "off"

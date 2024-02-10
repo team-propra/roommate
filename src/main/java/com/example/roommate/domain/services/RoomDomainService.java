@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
@@ -97,8 +98,14 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookdTimeframes().stream().toList(), room.getItemNames().stream().toList());
+        return new Room(
+                room.getRoomID(),
+                room.getRoomNumber(),
+                room.getBookdTimeframes().stream().collect(Collectors.toList()),
+                room.getItemNames().stream().collect(Collectors.toList())
+        );
     }
+
     public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomID);
         Room room = RoomDomainService.toRoom(iRoom);
