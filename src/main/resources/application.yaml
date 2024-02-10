@@ -1,6 +1,4 @@
-logging:
-  level:
-    ROOT: WARN
+
 spring:
   main:
     banner-mode: "off"
@@ -15,7 +13,9 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    #url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://database:5432/postgres
+    #url: jdbc:postgresql://db:5432/postgres
     username: user
     password: 1234
     driver-class-name: org.postgresql.Driver
