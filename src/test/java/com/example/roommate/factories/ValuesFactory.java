@@ -4,7 +4,7 @@ import com.example.roommate.annotations.Factory;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.BookingDays;
-import com.example.roommate.persistence.data.RoomEntry;
+import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 

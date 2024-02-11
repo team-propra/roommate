@@ -1,4 +1,4 @@
-package com.example.roommate.persistence.repositories;
+package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -54,7 +54,4 @@ public class RoomRepository implements IRoomRepository {
         room.getBookedTimeframes().add(bookedTimeframe);
     }
 
-    public void saveAll(List<? extends IRoom> rooms) {
-        rooms.forEach(this::add);
-    }
 }

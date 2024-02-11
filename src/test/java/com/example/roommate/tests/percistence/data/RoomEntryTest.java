@@ -2,7 +2,7 @@ package com.example.roommate.tests.percistence.data;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.factories.ValuesFactory;
-import com.example.roommate.persistence.data.RoomEntry;
+import com.example.roommate.persistence.ephemeral.RoomEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
