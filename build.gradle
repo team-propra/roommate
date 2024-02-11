@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.3'
     id 'jacoco'
     id "org.flywaydb.flyway" version "10.0.0"
+    id "com.github.spotbugs" version "6.0.5"
 }
 
 group = 'com.example'
@@ -12,6 +13,19 @@ version = 'prod'
 java {
     sourceCompatibility = '21'
 }
+
+
+spotbugs {
+    effort = com.github.spotbugs.snom.Effort.MAX
+}
+
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
 
 application {
     // Specify the main class for your application
@@ -34,6 +48,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.flywaydb:flyway-core'
 
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
