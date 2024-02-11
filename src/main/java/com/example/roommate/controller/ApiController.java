@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,11 +19,12 @@ public class ApiController {
     }
 
     @GetMapping("/api/access")
-    public String getKeysAndRooms() {
+    public List<TestRecord> getKeysAndRooms() {
+        System.out.println("Ja, wurde neu gebaut!");
         //String roomID = bookingApplicationService.getRooms() ...
         UUID id = UUID.randomUUID();
-        UUID keyId = UUID.randomUUID();
+        UUID keyId = UUID.fromString("9ef200d5-8d44-4a98-9650-85668d01cf8c");
 
-        return "{key:%s,room:%s}".formatted(keyId.toString(), id.toString());
+        return List.of(new TestRecord( id, keyId));
     }
 }
