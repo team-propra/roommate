@@ -61,7 +61,7 @@ public class Room implements IRoom {
     }
 
     public List<ItemName> getItemNames() {
-        return itemNameList;
+        return itemNameList.stream().toList();
     }
 
     public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
@@ -70,7 +70,7 @@ public class Room implements IRoom {
 
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
-        return bookedPeriods;
+        return bookedPeriods.stream().toList();
     }
 
 
