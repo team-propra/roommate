@@ -25,26 +25,40 @@ public class RoomRepository implements IRoomRepository {
 
     IItemToRoomDAO itemToRoomDAO;
 
-    public RoomRepository(IRoomDAO roomDAO, IItemDAO itemDAO, IBookedTimeFrameDAO bookedTimeFrameDAO, IItemToRoomDAO itemToRoomDAO) {
+    IItemToWorkspaceDAO itemToWorkspaceDAO;
+
+    IWorkspaceDAO workspaceDAO;
+
+    public RoomRepository(IRoomDAO roomDAO, IItemDAO itemDAO, IBookedTimeFrameDAO bookedTimeFrameDAO, IItemToRoomDAO itemToRoomDAO, IItemToWorkspaceDAO itemToWorkspaceDAO, IWorkspaceDAO workspaceDAO) {
         this.roomDAO = roomDAO;
         this.itemDAO = itemDAO;
         this.bookedTimeFrameDAO = bookedTimeFrameDAO;
         this.itemToRoomDAO = itemToRoomDAO;
+        this.itemToWorkspaceDAO = itemToWorkspaceDAO;
+        this.workspaceDAO = workspaceDAO;
     }
 
     @Override
     public List<? extends IRoom> findAll() {
         // Query
         Iterable<RoomDTO> roomList = roomDAO.findAll();
-        List<ItemToRoomDTO> itemToRoomList = IterableSupport.toList(itemToRoomDAO.findAll());
+        List<ItemToWorkspaceDTO> itemToWorkspaceList = IterableSupport.toList(itemToWorkspaceDAO.findAll());
+        List<WorkspacesDTO> workspacesList = IterableSupport.toList(workspaceDAO.findAll());
         List<ItemDTO> itemList = IterableSupport.toList(itemDAO.findAll());
         List<BookedTimeframeDTO> book = IterableSupport.toList(bookedTimeFrameDAO.findAll());
 
         // Map
         List<RoomOOP> result = new ArrayList<>();
         for (RoomDTO room : roomList) {
-            List<ItemToRoomDTO> matchingMaps = itemToRoomList.stream()
+            List<ItemToRoomDTO> matchingMaps = itemToWorkspaceList.stream()
                     .filter(itemMapEntry -> itemMapEntry.roomId().equals(room.id()))
+                    .toList();
+            List<WorkspacesDTO> matchingWorkspaces = workspacesList.stream()
+                    .filter(workspace -> workspace.roomId().equals(room.id()))
+                    .toList();
+            //TODO nested for loop over matchingWorkspaces, over ItemToWorkspacesDTOs etc.
+            List<ItemToWorkspaceDTO> matchingItemToWorkspaces = itemToWorkspaceList.stream()
+                    .filter(itemMapEntry -> itemMapEntry..equals(room.id()))
                     .toList();
             List<ItemName> matchingItems = itemList.stream()
                     .filter(item->matchingMaps.stream().anyMatch(
