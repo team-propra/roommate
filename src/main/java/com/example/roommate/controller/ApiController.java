@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.values.forms.KeyMasterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,12 +20,12 @@ public class ApiController {
     }
 
     @GetMapping("/api/access")
-    public List<TestRecord> getKeysAndRooms() {
+    public List<KeyMasterForm> getKeysAndRooms() {
         System.out.println("Ja, wurde neu gebaut!");
         //String roomID = bookingApplicationService.getRooms() ...
         UUID id = UUID.randomUUID();
         UUID keyId = UUID.fromString("9ef200d5-8d44-4a98-9650-85668d01cf8c");
 
-        return List.of(new TestRecord( id, keyId));
+        return List.of(new KeyMasterForm( id, keyId));
     }
 }
