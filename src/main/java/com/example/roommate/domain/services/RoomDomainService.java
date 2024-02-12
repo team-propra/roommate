@@ -106,16 +106,28 @@ public class RoomDomainService {
         );
     }
 
-    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+    @Transactional
+    public void _removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomID);
         Room room = RoomDomainService.toRoom(iRoom);
         room.removeItemName(itemName);
+        roomRepository.removeItem(itemName, iRoom);
     }
 
-    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._removeItemFromRoom(roomID, itemName);
+    }
+
+    @Transactional
+    public void _addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomID);
         Room room = RoomDomainService.toRoom(iRoom);
         room.addItemName(itemName);
+        roomRepository.addItem(itemName, iRoom);
+    }
+
+    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._addItemToRoom(roomID, itemName);
     }
 
     public void createItem(String itemName) {

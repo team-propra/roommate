@@ -84,8 +84,8 @@ public class Room implements IRoom {
         itemNameList.remove(itemNameObject);
     }
     public void addItemName(String itemName) {
-        ItemName itemNameObject = new ItemName(itemName);
-        itemNameList.add(itemNameObject);
+        ItemName item = new ItemName(itemName);
+        itemNameList.add(item);
     }
 
 }

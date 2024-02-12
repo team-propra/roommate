@@ -19,4 +19,7 @@ public interface IRoomRepository {
     void add(IRoom room);
     void addBooking(BookedTimeframe bookedTimeframe, IRoom  room) throws NotFoundRepositoryException;
 
+    void addItem(String itemName, IRoom iRoom);
+
+    void removeItem(String itemName, IRoom iRoom);
 }

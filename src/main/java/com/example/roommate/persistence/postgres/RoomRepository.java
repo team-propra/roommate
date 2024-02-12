@@ -102,5 +102,15 @@ public class RoomRepository implements IRoomRepository {
         bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
     }
 
+    @Override
+    public void addItem(String itemName, IRoom iRoom) {
+        itemToRoomDAO.insert(UUID.randomUUID(),itemName,iRoom.getRoomID());
+    }
+
+    @Override
+    public void removeItem(String itemName, IRoom iRoom) {
+        itemToRoomDAO.delete(itemName, iRoom.getRoomID());
+    }
+
 
 }
