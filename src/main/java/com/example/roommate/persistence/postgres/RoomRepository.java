@@ -50,7 +50,7 @@ public class RoomRepository implements IRoomRepository {
                     .map(item-> new ItemName(item.itemName()))
                     .toList();
             List<BookedTimeframe> bookedTimeframes = book.stream()
-                    .filter(timeframe -> timeframe.roomId() == room.id())
+                    .filter(timeframe -> timeframe.roomId().equals(room.id()))
                     .map(timeframe-> new BookedTimeframe(timeframe.dayOfWeek(),timeframe.localTime(),timeframe.duration()))
                     .toList();
             result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes));
