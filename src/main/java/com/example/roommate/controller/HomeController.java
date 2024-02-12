@@ -1,5 +1,6 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.domainValues.DayTimeFrame;
 import com.example.roommate.values.models.RoomHomeModel;
@@ -27,5 +28,11 @@ public class HomeController {
                 .toList();
         model.addAttribute("rooms", roomModels);
         return "home";
+    }
+
+    @AdminOnly
+    @GetMapping("/edit")
+    public String adminPage() {
+        return "adminEdit";
     }
 }
