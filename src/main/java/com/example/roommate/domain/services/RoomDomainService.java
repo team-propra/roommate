@@ -110,8 +110,9 @@ public class RoomDomainService {
     public void _removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomID);
         Room room = RoomDomainService.toRoom(iRoom);
-        room.removeItemName(itemName);
-        roomRepository.removeItem(itemName, iRoom);
+        ItemName item = new ItemName(itemName);
+        room.removeItemName(item);
+        roomRepository.removeItem(item, iRoom);
     }
 
     public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
@@ -122,8 +123,9 @@ public class RoomDomainService {
     public void _addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomID);
         Room room = RoomDomainService.toRoom(iRoom);
-        room.addItemName(itemName);
-        roomRepository.addItem(itemName, iRoom);
+        ItemName item = new ItemName(itemName);
+        room.addItemName(item);
+        roomRepository.addItem(item, iRoom);
     }
 
     public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {

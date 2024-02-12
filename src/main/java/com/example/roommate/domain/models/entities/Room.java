@@ -79,13 +79,11 @@ public class Room implements IRoom {
     }
 
 
-    public void removeItemName(String itemName) {
-        ItemName itemNameObject = new ItemName(itemName);
-        itemNameList.remove(itemNameObject);
+    public void removeItemName(ItemName itemName) {
+        itemNameList.remove(itemName);
     }
-    public void addItemName(String itemName) {
-        ItemName item = new ItemName(itemName);
-        itemNameList.add(item);
+    public void addItemName(ItemName itemName) {
+        itemNameList.add(itemName);
     }
 
 }

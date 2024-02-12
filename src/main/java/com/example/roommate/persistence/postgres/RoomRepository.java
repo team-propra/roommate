@@ -105,13 +105,13 @@ public class RoomRepository implements IRoomRepository {
     }
 
     @Override
-    public void addItem(String itemName, IRoom iRoom) {
-        itemToRoomDAO.insert(UUID.randomUUID(),itemName,iRoom.getRoomID());
+    public void addItem(ItemName itemName, IRoom iRoom) {
+        itemToRoomDAO.insert(UUID.randomUUID(),itemName.type(),iRoom.getRoomID());
     }
 
     @Override
-    public void removeItem(String itemName, IRoom iRoom) {
-        itemToRoomDAO.delete(itemName, iRoom.getRoomID());
+    public void removeItem(ItemName itemName, IRoom iRoom) {
+        itemToRoomDAO.delete(itemName.type(), iRoom.getRoomID());
     }
 
 

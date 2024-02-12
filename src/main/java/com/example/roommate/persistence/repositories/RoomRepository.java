@@ -56,13 +56,13 @@ public class RoomRepository implements IRoomRepository {
     }
 
     @Override
-    public void addItem(String itemName, IRoom iRoom) {
-        iRoom.getItemNames().add(new ItemName(itemName));
+    public void addItem(ItemName itemName, IRoom iRoom) {
+        iRoom.getItemNames().add(itemName);
     }
 
     @Override
-    public void removeItem(String itemName, IRoom iRoom) {
-        iRoom.getItemNames().remove(new ItemName(itemName));
+    public void removeItem(ItemName itemName, IRoom iRoom) {
+        iRoom.getItemNames().remove(itemName);
     }
 
     public void saveAll(List<? extends IRoom> rooms) {
