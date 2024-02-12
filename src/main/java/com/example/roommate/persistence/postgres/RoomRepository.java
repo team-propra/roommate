@@ -9,10 +9,7 @@ import com.example.roommate.values.domainValues.ItemName;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 @Profile("!test")
@@ -67,9 +64,14 @@ public class RoomRepository implements IRoomRepository {
         if(room.isEmpty())
             throw new NotFoundRepositoryException();
         List<String> itemToRoomMaps = itemToRoomDAO.findByRoomId(roomID).stream().map(ItemToRoomDTO::itemName).toList();
-        List<ItemName> byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
-                .map(ItemDTO::toItemName)
-                .toList();
+        List<ItemName> byItemNames;
+        if (!itemToRoomMaps.isEmpty()) {
+            byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
+                    .map(ItemDTO::toItemName)
+                    .toList();
+        } else {
+            byItemNames = Collections.emptyList();
+        }
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
