@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
@@ -101,8 +101,8 @@ public class RoomDomainService {
         return new Room(
                 room.getRoomID(),
                 room.getRoomNumber(),
-                room.getBookdTimeframes().stream().collect(Collectors.toList()),
-                room.getItemNames().stream().collect(Collectors.toList())
+                new ArrayList<>(room.getBookdTimeframes()),
+                new ArrayList<>(room.getItemNames())
         );
     }
 
@@ -130,8 +130,14 @@ public class RoomDomainService {
         self._addItemToRoom(roomID, itemName);
     }
 
-    public void createItem(String itemName) {
+    @Transactional
+    public void _createItem(String itemName) {
         ItemName item = new ItemName(itemName);
         itemRepository.addItem(item);
+
+    }
+
+    public void createItem(String itemName) {
+        self._createItem(itemName);
     }
 }
