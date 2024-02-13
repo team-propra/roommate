@@ -15,7 +15,10 @@ public class ItemRepository implements IItemRepository{
     List<ItemName> itemList = new ArrayList<>();
 
     public ItemRepository() {
-        itemList.addAll(List.of(new ItemName("Table"), new ItemName("HDMI Cable"), new ItemName("Desk"), new ItemName("Chair")));
+        itemList.add(new ItemName("Table"));
+        itemList.add(new ItemName("HDMI Cable"));
+        itemList.add(new ItemName("Desk"));
+        itemList.add(new ItemName("Chair"));
     }
 
     public List<ItemName> getItems() {

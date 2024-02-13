@@ -16,6 +16,10 @@ public interface IItemToRoomDAO extends CrudRepository<ItemToRoomDTO, UUID> {
 
     @Query("INSERT INTO item_to_room (id, item_name, room_id) VALUES (:id, :itemName, :roomId)")
     @Modifying
-    void insert( @Param("id")UUID id,@Param("itemName") String itemName,@Param("roomId") UUID roomId);
+    void insert(@Param("id")UUID id, @Param("itemName") String itemName, @Param("roomId") UUID roomId);
+
+    @Query("DELETE FROM item_to_room WHERE item_name = :itemName AND room_id = :roomId")
+    @Modifying
+    void delete(@Param("itemName") String itemName, @Param("roomId") UUID roomId);
 
 }

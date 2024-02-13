@@ -69,7 +69,7 @@ public class Room implements IRoom {
     }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
+    public List<BookedTimeframe> getBookdTimeframes() {
         return bookedPeriods;
     }
 
@@ -78,5 +78,12 @@ public class Room implements IRoom {
         return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
     }
 
+
+    public void removeItemName(ItemName itemName) {
+        itemNameList.remove(itemName);
+    }
+    public void addItemName(ItemName itemName) {
+        itemNameList.add(itemName);
+    }
 
 }
