@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Page</title>
+    <title>Admin Edit Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="container mt-5">
+    <h1 class="mb-4">Admin Edit Page</h1>
 
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Liste aller Items</h2>
+            <table class="table table-striped">
+                <tbody>
+                <tr th:each="item : ${itemList}">
+                    <td th:text="${item.type}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Liste aller Räume</h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Raumnummer</th>
+                    <th>Items in dem Raum</th>
+                    <th>Gebuchte Zeiten</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room : ${roomList}">
+                    <td th:text="${room.getRoomNumber}"></td>
+                    <td th:text="${room.getItemNames}"></td>
+                    <td th:text="${room.getBookdTimeframes}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form th:action="@{'/createItem'}" method="post">
+        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+        <input id="createItem" type="text" name="newItem" required/>
+        <input type="submit">
+    </form>
+</div>
 </body>
 </html>
