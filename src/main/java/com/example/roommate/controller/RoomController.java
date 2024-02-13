@@ -2,6 +2,7 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
+import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -73,14 +74,22 @@ public class RoomController {
     public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(id);
+            List<String> itemStringList = roomByID.getItemNames().stream().map(ItemName::toString).toList();
+            List<String> filteredItems = bookingApplicationService.getItems()
+                    .stream()
+                    .filter(item -> !roomByID.getItemNames().contains(item))
+                    .map(ItemName::toString)
+                    .collect(Collectors.toList());
 
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookdTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
             ModelAndView modelAndView = new ModelAndView("roomDetails");
             modelAndView.setStatus(HttpStatus.OK);
 
             model.addAttribute("room", roomByID);
+            model.addAttribute("itemStringList", itemStringList);
+            model.addAttribute("notSelcetedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
@@ -121,4 +130,24 @@ public class RoomController {
     }
 
 
+    @AdminOnly
+    @PostMapping("/room/{roomID}/addItem/{itemName}")
+    public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.addItemToRoom(roomID, itemName);
+        return roomDetails(model, roomID);
+    }
+
+    @AdminOnly
+    @PostMapping("/room/{roomID}/createItem")
+    public ModelAndView createItem(Model model, @PathVariable UUID roomID, @RequestParam String newItem) throws NotFoundRepositoryException {
+        bookingApplicationService.createItem(newItem);
+        return addItem(model, roomID, newItem);
+    }
+
+    @AdminOnly
+    @PostMapping("/room/{roomID}/deleteItem/{itemName}")
+    public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.removeItemFromRoom(roomID, itemName);
+        return roomDetails(model, roomID);
+    }
 }
