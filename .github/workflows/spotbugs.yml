@@ -30,4 +30,9 @@ jobs:
         with:
           arguments: spotbugsMain
         continue-on-error: true
-      - run: echo "build/reports/spotbugs/main" 
+      - run: cat build/reports/spotbugs/main.xml
+      - name: Archive SpotBugs HTML Report as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: spotbugs-report
+          path: build/reports/spotbugs/main.html
