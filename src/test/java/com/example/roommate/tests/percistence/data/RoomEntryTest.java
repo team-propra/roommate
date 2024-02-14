@@ -29,7 +29,7 @@ class RoomEntryTest {
         String expectedRoomNumber = "14";
         RoomEntry roomEntry = ValuesFactory.createRoomEntry(expectedRoomNumber);
 
-        assertThat(roomEntry.getRoomNumber()).isEqualTo(expectedRoomNumber);
+        assertThat(roomEntry.getRoomNumber().number()).isEqualTo(expectedRoomNumber);
     }
 
     @Test
@@ -37,7 +37,7 @@ class RoomEntryTest {
     void getItemNames() {
         RoomEntry roomEntry = ValuesFactory.createRoomEntry();
 
-        assertThatThrownBy(roomEntry::getItemNames).isInstanceOf(UnsupportedOperationException.class);
+        assertThatCode(() -> roomEntry.itemNames().forEach(System.out::println)).doesNotThrowAnyException();
     }
 }
 
