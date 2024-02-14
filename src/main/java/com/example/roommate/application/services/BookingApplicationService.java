@@ -11,6 +11,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.models.RoomBookingModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
 
@@ -73,7 +74,7 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<RoomBookingModel> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
@@ -87,6 +88,7 @@ public class BookingApplicationService {
         return roomDomainService.getRooms().stream()
                 .filter(room -> new HashSet<>(IterableSupport.toList(room.getItemNames())).containsAll(items))
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
+                .map(x->new RoomBookingModel(x.getRoomID(),x.getRoomNumber().number(),x.getItemNames()))
                 .collect(Collectors.toList());
     }
 
