@@ -28,7 +28,7 @@ public class RoomRepository implements IRoomRepository {
         rooms = new ArrayList<>();
     }
     
-    public void Overwrite(RoomEntry roomEntry) {
+    public void overwrite(RoomEntry roomEntry) {
         for(int i=0;i<rooms.size();++i){
             if(rooms.get(i).getRoomID().equals(roomEntry.getRoomID())){
                 rooms.set(i,roomEntry);
@@ -62,7 +62,7 @@ public class RoomRepository implements IRoomRepository {
         bookedTimeframes.add(bookedTimeframe);
         bookedTimeframes.addAll(IterableSupport.toList(room.getBookdTimeframes()));
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),bookedTimeframes,room.getItemNames());
-        Overwrite(roomEntry);
+        overwrite(roomEntry);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class RoomRepository implements IRoomRepository {
         itemNames.add(itemName);
         itemNames.addAll(IterableSupport.toList(room.getItemNames()));
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookdTimeframes(),itemNames);
-        Overwrite(roomEntry);
+        overwrite(roomEntry);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RoomRepository implements IRoomRepository {
         List<ItemName> oldItemsWithoutItemName = IterableSupport.toList(room.getItemNames()).stream().filter(x-> !x.type().equals(itemName.type())).toList();
         List<ItemName> itemNames = new ArrayList<>(oldItemsWithoutItemName);
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookdTimeframes(),itemNames);
-        Overwrite(roomEntry);
+        overwrite(roomEntry);
     }
 
 }
