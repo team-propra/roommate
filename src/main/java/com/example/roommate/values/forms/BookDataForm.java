@@ -16,8 +16,7 @@ public record BookDataForm(UUID id, int stepSize){
 
     public static IntermediateBookDataForm addBookingsToForm(Iterable<String> checkedDays, BookDataForm bookDataForm) throws ArgumentValidationException {
 
-        BookingDays bookingDays = new BookingDays(bookDataForm.stepSize);
-        bookingDays.initialize(checkedDays);
+        BookingDays bookingDays = BookingDays.from(bookDataForm.stepSize(),checkedDays);
         return new IntermediateBookDataForm(bookDataForm,bookingDays);
     }
     

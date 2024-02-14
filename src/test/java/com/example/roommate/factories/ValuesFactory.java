@@ -1,6 +1,7 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
+import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
@@ -27,9 +28,9 @@ public class ValuesFactory {
         return new BookedTimeframe(DayOfWeek.MONDAY, startTime, duration);
     }
 
-    public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() {
+    public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() throws ArgumentValidationException {
         BookDataForm validBookDataForm = createInvalidBookDataForm();
-        BookingDays invalid = BookingDays.createBookingDays(-99999);
+        BookingDays invalid = BookingDays.from(-99999,List.of());
         return new IntermediateBookDataForm(validBookDataForm,invalid);
     }
 

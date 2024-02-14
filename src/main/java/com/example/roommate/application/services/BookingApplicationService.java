@@ -41,7 +41,7 @@ public class BookingApplicationService {
         if(form == null) throw new IllegalArgumentException();
         UUID roomID = form.bookDataForm().id();
 
-        List<BookedTimeframe> bookedTimeframes = form.bookingDays().toBookedTimeframes();
+        List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
                 roomDomainService.addBooking(bookedTimeframe,roomID);
