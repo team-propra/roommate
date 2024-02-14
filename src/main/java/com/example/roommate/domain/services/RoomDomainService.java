@@ -11,6 +11,7 @@ import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.values.domainValues.RoomNumber;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +22,10 @@ import java.util.UUID;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
+@SuppressFBWarnings(value="EI2", justification="Repositories are properly injected, @Lazy self is required for transactions")
 public class RoomDomainService {
 
-    public IRoomRepository roomRepository;
+    IRoomRepository roomRepository;
     IItemRepository itemRepository;
     RoomDomainService self;
 

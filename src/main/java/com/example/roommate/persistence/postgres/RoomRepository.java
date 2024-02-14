@@ -7,6 +7,7 @@ import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.values.domainValues.RoomNumber;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Repository
 @Profile("!test")
+@SuppressFBWarnings(value="EI2", justification="DAO injection required for database interaction")
 public class RoomRepository implements IRoomRepository {
     IRoomDAO roomDAO;
 
