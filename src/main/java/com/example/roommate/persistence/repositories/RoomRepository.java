@@ -25,7 +25,7 @@ public class RoomRepository implements IRoomRepository {
     }
 
     public List<IRoom> findAll(){
-        return rooms;
+        return rooms.stream().toList();
     }
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
