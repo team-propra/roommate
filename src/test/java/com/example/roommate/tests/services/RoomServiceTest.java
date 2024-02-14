@@ -7,9 +7,9 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.repositories.ItemRepository;
-import com.example.roommate.persistence.repositories.RoomRepository;
+import com.example.roommate.persistence.ephemeral.RoomEntry;
+import com.example.roommate.persistence.ephemeral.ItemRepository;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

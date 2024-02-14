@@ -1,4 +1,4 @@
-package com.example.roommate.persistence.data;
+package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.BookedTimeframe;

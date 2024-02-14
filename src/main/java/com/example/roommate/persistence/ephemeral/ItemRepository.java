@@ -1,4 +1,4 @@
-package com.example.roommate.persistence.repositories;
+package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.values.domainValues.ItemName;

@@ -26,23 +26,6 @@ public class CorrelationTest {
     public Stream<DynamicTest> applicationDats(){
         return classCorrelations("..roommate.application.data..", ApplicationData.class, ArchConditions.haveSimpleNameEndingWith("ApplicationData"));
     }
-    
-    /* TODO currently doing Database Repository 
-    @TestFactory
-    public Stream<DynamicTest> repositories(){
-        return classCorrelations("..roommate.persistence.repositories..", Repository.class, ArchConditions.haveSimpleNameEndingWith("Repository"));
-    }
-
-    @TestFactory
-    public Stream<DynamicTest> repositoryInterfaces(){
-        return interfaceCorrelations("..roommate.interfaces.repositories..", RepositoryInterface.class, ArchConditions.and(ArchConditions.haveSimpleNameEndingWith("Repository"),ArchConditions.haveSimpleNameStartingWith("I")));
-    }
-
-    @TestFactory
-    public Stream<DynamicTest> allInterfaces(){
-        return interfaceCorrelations("..roommate.interfaces..", Interface.class, ArchConditions.haveSimpleNameStartingWith("I"));
-    }
-    */
 
     @TestFactory
     public Stream<DynamicTest> tests(){
