@@ -35,7 +35,7 @@ class RoomServiceTest {
         Room room = new Room(roomID, "101");
         roomService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), List.of());
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), List.of(), List.of());
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(roomEntry.roomID());
     }
 

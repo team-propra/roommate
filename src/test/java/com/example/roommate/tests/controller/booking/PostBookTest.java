@@ -5,6 +5,7 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
+import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.forms.BookDataForm;
@@ -48,7 +49,7 @@ public class PostBookTest {
 
 
 
-    UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
+    UUID roomID = ValuesFactory.id;
 
     BookDataForm bookDataForm = new BookDataForm(roomID,60);
 
@@ -56,7 +57,7 @@ public class PostBookTest {
     @Test
     @WithMockOAuth2User
     void test_1() throws Exception {
-        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
+        roomRepository.add(ValuesFactory.createRoomEntry());
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("id", roomID.toString())

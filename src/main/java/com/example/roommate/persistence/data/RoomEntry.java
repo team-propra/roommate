@@ -22,12 +22,7 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
     }
 
     @Override
-    public List<ItemName> getItemNames() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<BookedTimeframe> getBookdTimeframes() {
+    public List<BookedTimeframe> getBookedTimeframes() {
         return bookedTimeframes;
     }
 

@@ -11,8 +11,6 @@ import java.util.UUID;
 public interface IRoom {
     UUID getRoomID();
     String getRoomNumber();
-    List<ItemName> getItemNames();
-
     List<BookedTimeframe> getBookedTimeframes();
     List<? extends IWorkspace> getWorkspaces();
 

@@ -1,7 +1,9 @@
 package com.example.roommate.persistence.postgres;
 
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
@@ -47,27 +49,42 @@ public class RoomRepository implements IRoomRepository {
         // Map
         List<RoomOOP> result = new ArrayList<>();
         for (RoomDTO room : roomList) {
+            /*
             List<ItemToRoomDTO> matchingMaps = itemToWorkspaceList.stream()
                     .filter(itemMapEntry -> itemMapEntry.roomId().equals(room.id()))
                     .toList();
+
+             */
+            List<BookedTimeframe> bookedTimeframes = book.stream()
+                    .filter(timeframe -> timeframe.roomId().equals(room.id()))
+                    .map(timeframe -> new BookedTimeframe(timeframe.dayOfWeek(), timeframe.localTime(), timeframe.duration()))
+                    .toList();
+
             List<WorkspacesDTO> matchingWorkspaces = workspacesList.stream()
                     .filter(workspace -> workspace.roomId().equals(room.id()))
                     .toList();
-            //TODO nested for loop over matchingWorkspaces, over ItemToWorkspacesDTOs etc.
-            List<ItemToWorkspaceDTO> matchingItemToWorkspaces = itemToWorkspaceList.stream()
-                    .filter(itemMapEntry -> itemMapEntry..equals(room.id()))
-                    .toList();
-            List<ItemName> matchingItems = itemList.stream()
-                    .filter(item->matchingMaps.stream().anyMatch(
-                        map-> map.itemName().equals(item.itemName())
-                    ))
-                    .map(item-> new ItemName(item.itemName()))
-                    .toList();
-            List<BookedTimeframe> bookedTimeframes = book.stream()
-                    .filter(timeframe -> timeframe.roomId().equals(room.id()))
-                    .map(timeframe-> new BookedTimeframe(timeframe.dayOfWeek(),timeframe.localTime(),timeframe.duration()))
-                    .toList();
-            result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes,room.what are we gonna put here?));
+
+            List<ItemName> matchingItems = new ArrayList<>();
+            List<IWorkspace> workspaces = new ArrayList<>();
+
+            for (WorkspacesDTO workspace : matchingWorkspaces) {
+                List<ItemToWorkspaceDTO> matchingItemToWorkspaces = itemToWorkspaceList.stream()
+                        .filter(itemMapEntry -> itemMapEntry.workspaceId().equals(workspace.id()))
+                        .toList();
+
+                for (ItemToWorkspaceDTO itemToWorkspace : matchingItemToWorkspaces) {
+                    matchingItems = itemList.stream()
+                            .filter(item -> matchingItemToWorkspaces.stream().anyMatch(
+                                    map -> map.itemName().equals(item.itemName())
+                            ))
+                            .map(item -> new ItemName(item.itemName()))
+                            .toList();
+
+                    workspaces.add(new Workspace(workspace.id(), workspace.workspaceNumber(), matchingItems));
+                }
+            }
+
+            result.add(new RoomOOP(room.id(), room.roomNumber(), bookedTimeframes, workspaces));
         }
         return result;
     }
@@ -75,7 +92,7 @@ public class RoomRepository implements IRoomRepository {
     @Override
     public IRoom findRoomByID(UUID roomID) throws NotFoundRepositoryException {
         Optional<RoomDTO> room = roomDAO.findById(roomID);
-        if(room.isEmpty())
+        if (room.isEmpty())
             throw new NotFoundRepositoryException();
         List<String> itemToRoomMaps = itemToRoomDAO.findByRoomId(roomID).stream().map(ItemToRoomDTO::itemName).toList();
         List<ItemName> byItemNames;
@@ -89,7 +106,8 @@ public class RoomRepository implements IRoomRepository {
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
-        return new RoomOOP(roomID,room.get().roomNumber(),byItemNames,timeframes);
+        //return new RoomOOP(roomID, room.get().roomNumber(), byItemNames, timeframes);
+        return (IRoom) new RuntimeException();
     }
 
     @Override
@@ -105,17 +123,17 @@ public class RoomRepository implements IRoomRepository {
         System.out.println(room.getRoomID());
 //        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
         roomDAO.insert(room.getRoomID(), room.getRoomNumber());
-        room.getBookdTimeframes().forEach(x->{
-            bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID());
+        room.getBookedTimeframes().forEach(x -> {
+            bookedTimeFrameDAO.insert(UUID.randomUUID(), x.day(), x.startTime(), x.duration(), room.getRoomID());
         });
-        itemNames.forEach(x->{
-            itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID());
+        itemNames.forEach(x -> {
+            itemToRoomDAO.insert(UUID.randomUUID(), x.type(), room.getRoomID());
         });
     }
 
     @Override
     public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
-        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
+        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), room.getRoomID());
     }
 
     @Override

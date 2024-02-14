@@ -22,8 +22,8 @@ public class HomeController {
     @GetMapping()
     public String index(Model model) {
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
-                .filter(x-> !x.getBookdTimeframes().isEmpty())
-                .map(x -> new RoomHomeModel(x.getRoomID(), x.getRoomNumber(), x.getItemNames(), DayTimeFrame.from(x.getBookdTimeframes()).convertToString()))
+                .filter(x-> !x.getBookedTimeframes().isEmpty())
+                .map(x -> new RoomHomeModel(x.getRoomID(), x.getRoomNumber(), DayTimeFrame.from(x.getBookedTimeframes()).convertToString(), x.getWorkspaces()))
                 .toList();
         model.addAttribute("rooms", roomModels);
         return "home";

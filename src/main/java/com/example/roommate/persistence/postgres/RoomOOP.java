@@ -8,7 +8,8 @@ import com.example.roommate.values.domainValues.ItemName;
 import java.util.List;
 import java.util.UUID;
 
-public record RoomOOP(UUID uuid, String roomNumber, List<ItemName> itemList, List<BookedTimeframe> bookedTimeframeList, List<IWorkspace> workspaces) implements IRoom {
+public record RoomOOP(UUID uuid, String roomNumber, List<BookedTimeframe> bookedTimeframeList,
+                      List<IWorkspace> workspaces) implements IRoom {
 
     @Override
     public UUID getRoomID() {
@@ -20,13 +21,9 @@ public record RoomOOP(UUID uuid, String roomNumber, List<ItemName> itemList, Lis
         return roomNumber;
     }
 
-    @Override
-    public List<ItemName> getItemNames() {
-        return itemList;
-    }
 
     @Override
-    public List<BookedTimeframe> getBookdTimeframes() {
+    public List<BookedTimeframe> getBookedTimeframes() {
         return bookedTimeframeList;
     }
 

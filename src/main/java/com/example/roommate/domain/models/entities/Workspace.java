@@ -21,4 +21,14 @@ public record Workspace(UUID id, int workspaceNumber, List<ItemName> items) impl
     public List<ItemName> getItems() {
         return items.stream().toList();
     }
+
+    public void removeItem(ItemName item) {
+        //ToDo persistence implementation missing
+        throw new RuntimeException();
+    }
+
+    public void addItem(ItemName item) {
+        //ToDo persistence implementation missing
+        throw new RuntimeException();
+    }
 }

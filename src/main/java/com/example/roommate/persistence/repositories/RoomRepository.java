@@ -52,7 +52,7 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void addBooking(BookedTimeframe bookedTimeframe, IRoom room)  {
-        room.getBookdTimeframes().add(bookedTimeframe);
+        room.getBookedTimeframes().add(bookedTimeframe);
     }
 
     @Override

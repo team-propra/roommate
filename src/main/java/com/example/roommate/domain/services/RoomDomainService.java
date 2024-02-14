@@ -2,6 +2,7 @@ package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IItemRepository;
@@ -53,10 +54,9 @@ public class RoomDomainService {
         itemRepository.addItem(table);
         itemRepository.addItem(desk);
         Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), "12");
-        room1.addItem(chair);
+
         Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
-        room2.addItem(table);
-        room2.addItem(desk);
+
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
@@ -77,7 +77,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getItemNames(),iroom.getWorkspaces()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getWorkspaces()))
                 .toList();
     }
 
@@ -104,35 +104,50 @@ public class RoomDomainService {
                 room.getRoomID(),
                 room.getRoomNumber(),
                 new ArrayList<>(room.getBookedTimeframes()),
-                new ArrayList<>(room.getItemNames()),
                 workspaces
         );
     }
 
-    @Transactional
-    public void _removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        IRoom iRoom = roomRepository.findRoomByID(roomID);
-        Room room = RoomDomainService.toRoom(iRoom);
-        ItemName item = new ItemName(itemName);
-        room.removeItemName(item);
-        roomRepository.removeItem(item, iRoom);
-    }
-
-    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        self._removeItemFromRoom(roomID, itemName);
+    private static Workspace toWorkspace(IWorkspace iWorkspace){
+        return new Workspace(iWorkspace.getId(), iWorkspace.getWorkspaceNumber(), iWorkspace.getItems());
     }
 
     @Transactional
-    public void _addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        IRoom iRoom = roomRepository.findRoomByID(roomID);
-        Room room = RoomDomainService.toRoom(iRoom);
+    public void _removeItemFromWorkspace(UUID workspaceId, String itemName, UUID roomId) throws NotFoundRepositoryException {
+        Workspace workspace = getWorkspace(workspaceId, roomId);
         ItemName item = new ItemName(itemName);
-        room.addItemName(item);
-        roomRepository.addItem(item, iRoom);
+        workspace.removeItem(item);
+        roomRepository.removeItem(item, workspace);
     }
 
-    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        self._addItemToRoom(roomID, itemName);
+    private Workspace getWorkspace(UUID workspaceId, UUID roomId) throws NotFoundRepositoryException {
+        IRoom iRoom = roomRepository.findRoomByID(roomId);
+        List<Workspace> list = iRoom.getWorkspaces().stream()
+                .filter(w -> w.getId().equals(workspaceId))
+                .map(RoomDomainService::toWorkspace)
+                .toList();
+
+        if(list.size() != 1) {
+            throw new NotFoundRepositoryException();
+        }
+        return list.getFirst();
+    }
+
+    public void removeItemFromWorkspace(UUID workspaceId, String itemName, UUID roomId) throws NotFoundRepositoryException {
+        self._removeItemFromWorkspace(workspaceId, itemName, roomId);
+    }
+
+    @Transactional
+    public void _addItemToWorkspace(UUID workspaceId, String itemName, UUID roomId) throws NotFoundRepositoryException {
+        Workspace workspace = getWorkspace(workspaceId, roomId);
+
+        ItemName item = new ItemName(itemName);
+        workspace.addItem(item);
+        roomRepository.addItem(item, workspace);
+    }
+
+    public void addItemToWorkspace(UUID workspaceId, String itemName, UUID roomId) throws NotFoundRepositoryException {
+        self._addItemToWorkspace(workspaceId, itemName, roomId);
     }
 
     @Transactional

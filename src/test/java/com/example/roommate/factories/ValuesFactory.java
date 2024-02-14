@@ -44,9 +44,9 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14", List.of());}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14", List.of(), List.of());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,List.of());}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,List.of(), List.of());}
     
     
 }

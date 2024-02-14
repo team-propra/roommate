@@ -81,7 +81,7 @@ public class RoomController {
                     .map(ItemName::toString)
                     .collect(Collectors.toList());
 
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookdTimeframes());
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
             ModelAndView modelAndView = new ModelAndView("roomDetails");
