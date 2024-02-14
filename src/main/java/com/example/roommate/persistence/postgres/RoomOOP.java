@@ -27,6 +27,6 @@ public record RoomOOP(UUID uuid, String roomNumber, Iterable<ItemName> itemList,
 
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
-        return IterableSupport.toList(bookedTimeframes);
+        return IterableSupport.toList(bookedTimeframes);    
     }
 }
