@@ -10,27 +10,65 @@ import java.util.List;
 public class BookingDays {
    public int stepsize;
    
-   public List<Boolean> mondayBookings;
-   public List<Boolean> tuesdayBookings;
-   public List<Boolean> wednesdayBookings;
-   public List<Boolean> thursdayBookings;
-   public List<Boolean> fridayBookings;
-   public List<Boolean> saturdayBookings;
-   public List<Boolean> sundayBookings;
+   List<Boolean> mondayBookings;
+   List<Boolean> tuesdayBookings;
+   List<Boolean> wednesdayBookings;
+   List<Boolean> thursdayBookings;
+   List<Boolean> fridayBookings;
+   List<Boolean> saturdayBookings;
+   List<Boolean> sundayBookings;
 
-      public BookingDays(int stepsize){
+   public BookingDays(int stepsize, Iterable<String> checkedDays){
 
 
-         this.stepsize = stepsize;
-         int listsize = (24 * 60) / stepsize;
-         this.mondayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.tuesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.wednesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.thursdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.fridayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.saturdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-         this.sundayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      }
+      this.stepsize = stepsize;
+      int listsize = (24 * 60) / stepsize;
+      this.mondayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.tuesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.wednesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.thursdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.fridayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.saturdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.sundayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+
+      Initialize(checkedDays);
+   }
+   
+   void Initialize(Iterable<String> from){
+      for (String checkedDay : from) {
+
+         if(checkedDay.contains("-X")) {
+            String[] daytime = checkedDay.split("-");
+
+            int timeIndex = Integer.parseInt(daytime[0]);
+            int day = Integer.parseInt(daytime[1]);//0=monday, 1=tuesday...
+            switch(day){
+               case 0:
+                  mondayBookings.set(timeIndex, true);
+                  break;
+               case 1:
+                  tuesdayBookings.set(timeIndex, true);
+                  break;
+               case 2:
+                  wednesdayBookings.set(timeIndex, true);
+                  break;
+               case 3:
+                  thursdayBookings.set(timeIndex, true);
+                  break;
+               case 4:
+                  fridayBookings.set(timeIndex, true);
+                  break;
+               case 5:
+                  saturdayBookings.set(timeIndex, true);
+                  break;
+               case 6:
+                  sundayBookings.set(timeIndex, true);
+                  break;
+
+            }
+         }
+      }   
+   }
    BookingDays(){
       this.mondayBookings = new ArrayList<>(Collections.nCopies(24, true));
       this.tuesdayBookings = new ArrayList<>(Collections.nCopies(24, true));
@@ -42,12 +80,12 @@ public class BookingDays {
    }
 
 
-   public static BookingDays createBookingDays(int stepSize){
+   public static BookingDays createBookingDays(int stepSize, Iterable<String> checkedDays){
       BookingDays bookingDays;
       if(stepSize == 0)
          bookingDays = new BookingDays();
       else
-         bookingDays = new BookingDays(stepSize);
+         bookingDays = new BookingDays(stepSize, checkedDays);
       
       return bookingDays;
    }
