@@ -3,13 +3,16 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.models.RoomBookingModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
 
 import java.time.Duration;
@@ -20,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 @ApplicationService
+@SuppressFBWarnings(value="EI2", justification="RoomDomainService is properly injected")
 public class BookingApplicationService {
 
     RoomDomainService roomDomainService;
@@ -37,7 +41,7 @@ public class BookingApplicationService {
         if(form == null) throw new IllegalArgumentException();
         UUID roomID = form.bookDataForm().id();
 
-        List<BookedTimeframe> bookedTimeframes = form.bookingDays().toBookedTimeframes();
+        List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
                 roomDomainService.addBooking(bookedTimeframe,roomID);
@@ -70,7 +74,7 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findAvailabeRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<RoomBookingModel> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
@@ -82,8 +86,9 @@ public class BookingApplicationService {
         BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration);
 
         return roomDomainService.getRooms().stream()
-                .filter(room -> room.getItemNames().containsAll(items))
+                .filter(room -> new HashSet<>(IterableSupport.toList(room.getItemNames())).containsAll(items))
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
+                .map(x->new RoomBookingModel(x.getRoomID(),x.getRoomNumber().number(),x.getItemNames()))
                 .collect(Collectors.toList());
     }
 

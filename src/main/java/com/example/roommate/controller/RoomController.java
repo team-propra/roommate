@@ -2,7 +2,9 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.ArgumentValidationException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -10,6 +12,7 @@ import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
 public class RoomController {
 
     private final BookingApplicationService bookingApplicationService;
@@ -53,7 +57,7 @@ public class RoomController {
         model.addAttribute("endTime", endUhrzeit);
         model.addAttribute("items", bookingApplicationService.getItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findAvailabeRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
+        model.addAttribute("rooms", bookingApplicationService.findAvailableRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "rooms";
     }
 
@@ -74,10 +78,14 @@ public class RoomController {
     public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(id);
-            List<String> itemStringList = roomByID.getItemNames().stream().map(ItemName::toString).toList();
+            List<String> itemStringList = IterableSupport.toList(roomByID.getItemNames())
+                    .stream()
+                    .map(ItemName::toString)
+                    .toList();
+            List<ItemName> items = IterableSupport.toList(roomByID.getItemNames());
             List<String> filteredItems = bookingApplicationService.getItems()
                     .stream()
-                    .filter(item -> !roomByID.getItemNames().contains(item))
+                    .filter(item -> !items.contains(item))
                     .map(ItemName::toString)
                     .collect(Collectors.toList());
 
@@ -105,7 +113,7 @@ public class RoomController {
             , RedirectAttributes redirectAttributes
             , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
-    ) {
+    ) throws ArgumentValidationException {
 
 
         if (bindingResult.hasErrors()) {

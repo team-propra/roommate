@@ -6,23 +6,26 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
+import com.example.roommate.values.domainValues.RoomNumber;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
+@SuppressFBWarnings(value="EI2", justification="Repositories are properly injected, @Lazy self is required for transactions")
 public class RoomDomainService {
 
-    public IRoomRepository roomRepository;
+    IRoomRepository roomRepository;
     IItemRepository itemRepository;
     RoomDomainService self;
 
@@ -51,9 +54,9 @@ public class RoomDomainService {
         itemRepository.addItem(chair);
         itemRepository.addItem(table);
         itemRepository.addItem(desk);
-        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), "12");
+        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), new RoomNumber("12"));
         room1.addItem(chair);
-        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), "13");
+        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), new RoomNumber("13"));
         room2.addItem(table);
         room2.addItem(desk);
         roomRepository.add(room1);
@@ -76,7 +79,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookdTimeframes(),iroom.getItemNames()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),IterableSupport.toList(iroom.getBookdTimeframes()),IterableSupport.toList(iroom.getItemNames())))
                 .toList();
     }
 
@@ -101,8 +104,8 @@ public class RoomDomainService {
         return new Room(
                 room.getRoomID(),
                 room.getRoomNumber(),
-                new ArrayList<>(room.getBookdTimeframes()),
-                new ArrayList<>(room.getItemNames())
+                IterableSupport.toList(room.getBookdTimeframes()),
+                IterableSupport.toList(room.getItemNames())
         );
     }
 

@@ -3,6 +3,7 @@ package com.example.roommate.tests.services;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
@@ -22,7 +23,7 @@ public class BookingApplicationServiceTest {
 
     @DisplayName("adding a invalid bookDataForm results in a GeneralDomainException")
     @Test
-    void test_2() {
+    void test_2() throws ArgumentValidationException {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
         IntermediateBookDataForm invalidBookDataForm = ValuesFactory.createInvalidIntermediateBookDataForm();
 

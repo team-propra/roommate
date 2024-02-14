@@ -22,7 +22,7 @@ public class ItemRepository implements IItemRepository{
     }
 
     public List<ItemName> getItems() {
-        return itemList;
+        return itemList.stream().toList();
     }
 
     @Override
