@@ -15,7 +15,8 @@ public record BookDataForm(UUID id, int stepSize){
 
     public static IntermediateBookDataForm addBookingsToForm(Iterable<String> checkedDays, BookDataForm bookDataForm){
 
-        BookingDays bookingDays = new BookingDays(bookDataForm.stepSize, checkedDays);
+        BookingDays bookingDays = new BookingDays(bookDataForm.stepSize);
+        bookingDays.Initialize(checkedDays);
         return new IntermediateBookDataForm(bookDataForm,bookingDays);
     }
     

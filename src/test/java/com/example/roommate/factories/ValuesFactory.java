@@ -29,7 +29,7 @@ public class ValuesFactory {
 
     public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() {
         BookDataForm validBookDataForm = createInvalidBookDataForm();
-        BookingDays invalid = BookingDays.createBookingDays(-99999,List.of());
+        BookingDays invalid = BookingDays.createBookingDays(-99999);
         return new IntermediateBookDataForm(validBookDataForm,invalid);
     }
 

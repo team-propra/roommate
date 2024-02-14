@@ -18,7 +18,7 @@ public class BookingDays {
    List<Boolean> saturdayBookings;
    List<Boolean> sundayBookings;
 
-   public BookingDays(int stepSize, Iterable<String> checkedDays){
+   public BookingDays(int stepSize){
 
 
       this.stepsize = stepSize;
@@ -31,10 +31,9 @@ public class BookingDays {
       this.saturdayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
       this.sundayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
 
-      Initialize(checkedDays);
    }
    
-   void Initialize(Iterable<String> from){
+   public void Initialize(Iterable<String> from){
       for (String checkedDay : from) {
 
          if(checkedDay.contains("-X")) {
@@ -80,12 +79,12 @@ public class BookingDays {
    }
 
 
-   public static BookingDays createBookingDays(int stepSize, Iterable<String> checkedDays){
+   public static BookingDays createBookingDays(int stepSize){
       BookingDays bookingDays;
       if(stepSize == 0)
          bookingDays = new BookingDays();
       else
-         bookingDays = new BookingDays(stepSize, checkedDays);
+         bookingDays = new BookingDays(stepSize);
       
       return bookingDays;
    }
