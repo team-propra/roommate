@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
+public record DayTimeFrame(int days, int times, int stepSize, Iterable<String> dayLabels, Iterable<String> timeLabels, Iterable<List<Boolean>> reserved) {
     public static DayTimeFrame from(List<BookedTimeframe> bookedTimeframes){
         //Frames
         int times = 23;
@@ -69,7 +69,7 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
 
     public String convertToString(){
 
-        List<List<Boolean>> allBookingDays = reserved();
+        Iterable<List<Boolean>> allBookingDays = reserved();
 
         String outpout = "";
         int count;
