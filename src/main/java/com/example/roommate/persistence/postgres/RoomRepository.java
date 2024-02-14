@@ -9,10 +9,7 @@ import com.example.roommate.values.domainValues.ItemName;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 @Profile("!test")
@@ -81,9 +78,14 @@ public class RoomRepository implements IRoomRepository {
         if(room.isEmpty())
             throw new NotFoundRepositoryException();
         List<String> itemToRoomMaps = itemToRoomDAO.findByRoomId(roomID).stream().map(ItemToRoomDTO::itemName).toList();
-        List<ItemName> byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
-                .map(ItemDTO::toItemName)
-                .toList();
+        List<ItemName> byItemNames;
+        if (!itemToRoomMaps.isEmpty()) {
+            byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
+                    .map(ItemDTO::toItemName)
+                    .toList();
+        } else {
+            byItemNames = Collections.emptyList();
+        }
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
@@ -103,7 +105,7 @@ public class RoomRepository implements IRoomRepository {
         System.out.println(room.getRoomID());
 //        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
         roomDAO.insert(room.getRoomID(), room.getRoomNumber());
-        room.getBookedTimeframes().forEach(x->{
+        room.getBookdTimeframes().forEach(x->{
             bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID());
         });
         itemNames.forEach(x->{
@@ -114,6 +116,16 @@ public class RoomRepository implements IRoomRepository {
     @Override
     public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
         bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
+    }
+
+    @Override
+    public void addItem(ItemName itemName, IRoom iRoom) {
+        itemToRoomDAO.insert(UUID.randomUUID(),itemName.type(),iRoom.getRoomID());
+    }
+
+    @Override
+    public void removeItem(ItemName itemName, IRoom iRoom) {
+        itemToRoomDAO.delete(itemName.type(), iRoom.getRoomID());
     }
 
 

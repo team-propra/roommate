@@ -27,7 +27,7 @@ public record RoomEntry(UUID roomID, String roomnumber,List<BookedTimeframe> boo
     }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
+    public List<BookedTimeframe> getBookdTimeframes() {
         return bookedTimeframes;
     }
 

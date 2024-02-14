@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -67,8 +68,6 @@ public class RoomDomainService {
     }
 
 
-
-
     public void addRoom(RoomApplicationData roomApplicationData){
         roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
     }
@@ -100,9 +99,50 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        List<BookedTimeframe> timeframes = room.getBookedTimeframes().stream().toList();
-        List<ItemName> items = room.getItemNames().stream().toList();
         List<? extends IWorkspace> workspaces = room.getWorkspaces().stream().toList();
-        return new Room(room.getRoomID(), room.getRoomNumber(),timeframes, items, workspaces);
+        return new Room(
+                room.getRoomID(),
+                room.getRoomNumber(),
+                new ArrayList<>(room.getBookedTimeframes()),
+                new ArrayList<>(room.getItemNames()),
+                workspaces
+        );
+    }
+
+    @Transactional
+    public void _removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
+        ItemName item = new ItemName(itemName);
+        room.removeItemName(item);
+        roomRepository.removeItem(item, iRoom);
+    }
+
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._removeItemFromRoom(roomID, itemName);
+    }
+
+    @Transactional
+    public void _addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
+        ItemName item = new ItemName(itemName);
+        room.addItemName(item);
+        roomRepository.addItem(item, iRoom);
+    }
+
+    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._addItemToRoom(roomID, itemName);
+    }
+
+    @Transactional
+    public void _createItem(String itemName) {
+        ItemName item = new ItemName(itemName);
+        itemRepository.addItem(item);
+
+    }
+
+    public void createItem(String itemName) {
+        self._createItem(itemName);
     }
 }
