@@ -12,6 +12,7 @@ import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
 public class RoomController {
 
     private final BookingApplicationService bookingApplicationService;

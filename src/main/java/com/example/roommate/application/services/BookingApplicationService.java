@@ -11,6 +11,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
 
 import java.time.Duration;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 @ApplicationService
+@SuppressFBWarnings(value="EI2", justification="RoomDomainService is properly injected")
 public class BookingApplicationService {
 
     RoomDomainService roomDomainService;

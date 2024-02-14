@@ -4,6 +4,7 @@ import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.DayTimeFrame;
 import com.example.roommate.values.models.RoomHomeModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.List;
 
 
 @Controller()
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService is properly injected")
 public class HomeController {
     private final BookingApplicationService bookingApplicationService;
     @Autowired
