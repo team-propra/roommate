@@ -21,15 +21,12 @@ public class Room implements IRoom {
     public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.bookedPeriods = bookedPeriods;
-        this.itemNameList = itemNameList;
+        this.bookedPeriods = new ArrayList<>(bookedPeriods);
+        this.itemNameList = new ArrayList<>(itemNameList);
     }
 
     public Room(UUID roomID, RoomNumber roomNumber) {
-        this.roomID = roomID;
-        this.roomNumber = roomNumber;
-        this.bookedPeriods = new ArrayList<>();
-        this.itemNameList = new ArrayList<>();
+        this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>());
     }
 
     public UUID getRoomID() {
