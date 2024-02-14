@@ -11,9 +11,9 @@ import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -67,8 +67,6 @@ public class RoomDomainService {
     }
 
 
-
-
     public void addRoom(RoomApplicationData roomApplicationData){
         roomRepository.add(new Room(roomApplicationData.roomID(), roomApplicationData.roomNumber()));
     }
@@ -78,7 +76,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookedTimeframes(),iroom.getItemNames()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),iroom.getBookdTimeframes(),iroom.getItemNames()))
                 .toList();
     }
 
@@ -100,6 +98,48 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        return  new Room(room.getRoomID(), room.getRoomNumber(), room.getBookedTimeframes().stream().toList(), room.getItemNames().stream().toList());
+        return new Room(
+                room.getRoomID(),
+                room.getRoomNumber(),
+                new ArrayList<>(room.getBookdTimeframes()),
+                new ArrayList<>(room.getItemNames())
+        );
+    }
+
+    @Transactional
+    public void _removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
+        ItemName item = new ItemName(itemName);
+        room.removeItemName(item);
+        roomRepository.removeItem(item, iRoom);
+    }
+
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._removeItemFromRoom(roomID, itemName);
+    }
+
+    @Transactional
+    public void _addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        IRoom iRoom = roomRepository.findRoomByID(roomID);
+        Room room = RoomDomainService.toRoom(iRoom);
+        ItemName item = new ItemName(itemName);
+        room.addItemName(item);
+        roomRepository.addItem(item, iRoom);
+    }
+
+    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        self._addItemToRoom(roomID, itemName);
+    }
+
+    @Transactional
+    public void _createItem(String itemName) {
+        ItemName item = new ItemName(itemName);
+        itemRepository.addItem(item);
+
+    }
+
+    public void createItem(String itemName) {
+        self._createItem(itemName);
     }
 }

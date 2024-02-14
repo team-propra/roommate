@@ -79,4 +79,11 @@ public class Room implements IRoom {
     }
 
 
+    public void removeItemName(ItemName itemName) {
+        itemNameList.remove(itemName);
+    }
+    public void addItemName(ItemName itemName) {
+        itemNameList.add(itemName);
+    }
+
 }
