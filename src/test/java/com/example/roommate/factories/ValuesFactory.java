@@ -1,12 +1,9 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
-import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.IntermediateBookDataForm;
-import com.example.roommate.values.domainValues.BookingDays;
+import com.example.roommate.values.domainValues.*;
 import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
-import com.example.roommate.values.domainValues.ItemName;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -44,9 +41,9 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,"14", List.of());}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(id,new RoomNumber("14"), List.of(), List.of());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,roomnumber,List.of());}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,new RoomNumber(roomnumber),List.of(),List.of());}
     
     
 }

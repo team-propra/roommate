@@ -7,6 +7,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
+import com.example.roommate.values.domainValues.RoomNumber;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -56,7 +57,7 @@ public class PostBookTest {
     @Test
     @WithMockOAuth2User
     void test_1() throws Exception {
-        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
+        roomRepository.add(new RoomEntry(roomID, new RoomNumber("randomroomnumber"), List.of(), List.of()));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("id", roomID.toString())

@@ -4,11 +4,12 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.List;
 import java.util.UUID;
 
-public record RoomOOP(UUID uuid, String roomNumber, Iterable<ItemName> itemList, Iterable<BookedTimeframe> bookedTimeframes) implements IRoom {
+public record RoomOOP(UUID uuid, RoomNumber roomNumber, Iterable<ItemName> itemList, Iterable<BookedTimeframe> bookedTimeframes) implements IRoom {
 
     @Override
     public UUID getRoomID() {
@@ -16,7 +17,7 @@ public record RoomOOP(UUID uuid, String roomNumber, Iterable<ItemName> itemList,
     }
 
     @Override
-    public String getRoomNumber() {
+    public RoomNumber getRoomNumber() {
         return roomNumber;
     }
 

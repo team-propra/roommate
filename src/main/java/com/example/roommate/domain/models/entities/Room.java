@@ -4,6 +4,7 @@ package com.example.roommate.domain.models.entities;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +14,18 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomNumber;
+    private final RoomNumber roomNumber;
     private final List<BookedTimeframe> bookedPeriods;
     private final List<ItemName> itemNameList;
 
-    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
+    public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.bookedPeriods = bookedPeriods;
         this.itemNameList = itemNameList;
     }
 
-    public Room(UUID roomID, String roomNumber) {
+    public Room(UUID roomID, RoomNumber roomNumber) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.bookedPeriods = new ArrayList<>();
@@ -35,7 +36,7 @@ public class Room implements IRoom {
         return roomID;
     }
 
-    public String getRoomNumber() {
+    public RoomNumber getRoomNumber() {
         return roomNumber;
     }
 

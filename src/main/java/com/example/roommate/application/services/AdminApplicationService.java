@@ -3,6 +3,7 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.services.RoomDomainService;
+import com.example.roommate.values.domainValues.RoomNumber;
 import com.example.roommate.values.forms.RoomDataForm;
 
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class AdminApplicationService {
 
     public void addRoom(RoomDataForm roomDataForm){
         UUID uuid = UUID.randomUUID();
-        RoomApplicationData roomApplicationData = new RoomApplicationData(uuid, roomDataForm.roomNumber());
+        RoomApplicationData roomApplicationData = new RoomApplicationData(uuid, new RoomNumber(roomDataForm.roomNumber()));
         roomDomainService.addRoom(roomApplicationData);
     }
 }

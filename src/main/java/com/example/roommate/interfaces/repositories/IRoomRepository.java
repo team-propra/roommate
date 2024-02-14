@@ -18,7 +18,7 @@ public interface IRoomRepository {
     void add(IRoom room);
     void addBooking(BookedTimeframe bookedTimeframe, IRoom  room) throws NotFoundRepositoryException;
 
-    void addItem(ItemName itemName, IRoom iRoom);
+    void addItem(ItemName itemName, IRoom iRoom) throws NotFoundRepositoryException;
 
-    void removeItem(ItemName itemName, IRoom iRoom);
+    void removeItem(ItemName itemName, IRoom iRoom) throws NotFoundRepositoryException;
 }

@@ -3,6 +3,7 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.ItemName;
@@ -70,7 +71,7 @@ public class BookingApplicationService {
         }
     }
 
-    public List<IRoom> findAvailabeRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<IRoom> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
@@ -82,7 +83,7 @@ public class BookingApplicationService {
         BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration);
 
         return roomDomainService.getRooms().stream()
-                .filter(room -> room.getItemNames().containsAll(items))
+                .filter(room -> new HashSet<>(IterableSupport.toList(room.getItemNames())).containsAll(items))
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
                 .collect(Collectors.toList());
     }

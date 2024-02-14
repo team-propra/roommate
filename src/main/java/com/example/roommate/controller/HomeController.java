@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.DayTimeFrame;
 import com.example.roommate.values.models.RoomHomeModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class HomeController {
     @GetMapping()
     public String index(Model model) {
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
-                .filter(x-> !x.getBookdTimeframes().isEmpty())
-                .map(x -> new RoomHomeModel(x.getRoomID(), x.getRoomNumber(), x.getItemNames(), DayTimeFrame.from(x.getBookdTimeframes()).convertToString()))
+                .filter(x-> !IterableSupport.toList(x.getBookdTimeframes()).isEmpty())
+                .map(x -> new RoomHomeModel(x.getRoomID(), x.getRoomNumber().number(), IterableSupport.toList(x.getItemNames()), DayTimeFrame.from(x.getBookdTimeframes()).convertToString()))
                 .toList();
         model.addAttribute("rooms", roomModels);
         return "home";

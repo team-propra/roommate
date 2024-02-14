@@ -6,6 +6,7 @@ import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -53,7 +54,7 @@ public class RoomRepository implements IRoomRepository {
                     .filter(timeframe -> timeframe.roomId().equals(room.id()))
                     .map(timeframe-> new BookedTimeframe(timeframe.dayOfWeek(),timeframe.localTime(),timeframe.duration()))
                     .toList();
-            result.add(new RoomOOP(room.id(),room.roomNumber(),matchingItems,bookedTimeframes));
+            result.add(new RoomOOP(room.id(),new RoomNumber(room.roomNumber()),matchingItems,bookedTimeframes));
         }
         return result;
     }
@@ -75,7 +76,7 @@ public class RoomRepository implements IRoomRepository {
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
-        return new RoomOOP(roomID,room.get().roomNumber(),byItemNames,timeframes);
+        return new RoomOOP(roomID,new RoomNumber(room.get().roomNumber()),byItemNames,timeframes);
     }
 
     @Override
@@ -87,16 +88,12 @@ public class RoomRepository implements IRoomRepository {
     @Override
     public void add(IRoom room) {
 
-        List<ItemName> itemNames = room.getItemNames();
+        List<ItemName> itemNames = IterableSupport.toList(room.getItemNames());
         System.out.println(room.getRoomID());
 //        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
-        roomDAO.insert(room.getRoomID(), room.getRoomNumber());
-        room.getBookdTimeframes().forEach(x->{
-            bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID());
-        });
-        itemNames.forEach(x->{
-            itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID());
-        });
+        roomDAO.insert(room.getRoomID(), room.getRoomNumber().number());
+        room.getBookdTimeframes().forEach(x-> bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
+        itemNames.forEach(x-> itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID()));
     }
 
     @Override
