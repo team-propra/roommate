@@ -2,7 +2,8 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.ArgumentValidationException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
@@ -110,7 +111,7 @@ public class RoomController {
             , RedirectAttributes redirectAttributes
             , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
-    ) {
+    ) throws ArgumentValidationException {
 
 
         if (bindingResult.hasErrors()) {

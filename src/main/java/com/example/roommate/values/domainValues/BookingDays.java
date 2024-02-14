@@ -1,5 +1,7 @@
 package com.example.roommate.values.domainValues;
 
+import com.example.roommate.exceptions.ArgumentValidationException;
+
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -33,7 +35,7 @@ public class BookingDays {
 
    }
    
-   public void Initialize(Iterable<String> from){
+   public void initialize(Iterable<String> from) throws ArgumentValidationException {
       for (String checkedDay : from) {
 
          if(checkedDay.contains("-X")) {
@@ -63,6 +65,8 @@ public class BookingDays {
                case 6:
                   sundayBookings.set(timeIndex, true);
                   break;
+               default:
+                  throw new ArgumentValidationException(String.format("Unknown day: %d", day));
 
             }
          }

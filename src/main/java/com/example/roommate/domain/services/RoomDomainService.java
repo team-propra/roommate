@@ -9,7 +9,7 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.values.domainValues.RoomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

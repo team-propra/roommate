@@ -8,7 +8,7 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.persistence.ephemeral.ItemRepository;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ServiceFactory;
