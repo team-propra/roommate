@@ -5,6 +5,7 @@ import com.example.roommate.domain.models.entities.*;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class EntityFactory {
     }
 
     public static Room createRoom() {
-        return new Room(id, "12");
+        return new Room(id, "12", new ArrayList<>(), new ArrayList<>());
     }
 
     public static User createUser() {

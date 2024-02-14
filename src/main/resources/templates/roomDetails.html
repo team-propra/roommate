@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${room}">
+<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title th:text="*{roomNumber}" >-1</title>
+    <style>
+        .tag-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .tag {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,6 +32,40 @@
   <div th:if="${formValidationErrorText}">
     <div th:text="${formValidationErrorText}">ErrorText</div>
   </div>
+
+<ul class="tag-list">
+    <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
+        <span th:text="${itemName}"></span>
+        <div sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/deleteItem/' + ${itemName}}" method="post">
+                <input type="hidden" name="tagName" th:value="${itemName}" />
+                <button type="submit">X</button>
+            </form>
+        </div>
+    </li>
+</ul>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <label>Gegenstände hinzufügen</label>
+    <ul>
+        <li th:each="item : ${notSelcetedItems}">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${item}}" method="post">
+                <button type="submit">
+                    <span th:text="${item}"></span>
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem'}" method="post">
+        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+        <input id="createItem" type="text" name="newItem" required/>
+        <input type="submit">
+    </form>
+</div>
+
 
 
   <form method="post" th:action="@{/rooms}">
