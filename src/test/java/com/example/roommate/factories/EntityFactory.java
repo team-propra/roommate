@@ -2,10 +2,7 @@ package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
 import com.example.roommate.domain.models.entities.*;
-import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.values.domainValues.ItemName;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -14,7 +11,8 @@ public class EntityFactory {
     public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
 
     public static Admin createAdmin() {
-        return new Admin();
+        UUID keyId = UUID.fromString("fe060a0b-d410-44a2-901e-11148f986a72");
+        return new Admin(keyId, "TheAdminGuy");
     }
 
     public static Room createRoom() {
@@ -22,7 +20,8 @@ public class EntityFactory {
     }
 
     public static User createUser() {
-        return new User();
+        UUID keyId = UUID.fromString("77f11d9e-6894-402e-8b44-8e096fe91d39");
+        return new User(keyId, "TheUserGuy", "USER");
     }
 
 
