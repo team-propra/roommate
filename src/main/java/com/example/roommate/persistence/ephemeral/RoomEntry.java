@@ -1,4 +1,4 @@
-package com.example.roommate.persistence.data;
+package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.utility.IterableSupport;
@@ -27,10 +27,10 @@ public record RoomEntry(UUID roomID, String roomnumber, Iterable<BookedTimeframe
     }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
+    public List<BookedTimeframe> getBookdTimeframes() {
         return IterableSupport.toList(bookedTimeframes);
     }
 
-    
+
 
 }

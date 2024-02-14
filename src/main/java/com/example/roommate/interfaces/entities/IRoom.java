@@ -12,8 +12,5 @@ public interface IRoom {
     UUID getRoomID();
     String getRoomNumber();
     List<ItemName> getItemNames();
-
-    List<BookedTimeframe> getBookedTimeframes();
-
-
+    List<BookedTimeframe> getBookdTimeframes();
 }

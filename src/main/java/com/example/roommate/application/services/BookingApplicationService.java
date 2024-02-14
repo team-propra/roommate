@@ -86,4 +86,16 @@ public class BookingApplicationService {
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
                 .collect(Collectors.toList());
     }
+
+    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        roomDomainService.removeItemFromRoom(roomID, itemName);
+    }
+
+    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
+        roomDomainService.addItemToRoom(roomID, itemName);
+    }
+
+    public void createItem(String itemName) {
+        roomDomainService.createItem(itemName);
+    }
 }
