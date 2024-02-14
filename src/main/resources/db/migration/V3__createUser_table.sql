@@ -1,0 +1,5 @@
+CREATE TABLE user(
+    key_id UUID PRIMARY KEY,
+    role VARCHAR(20) NOT NULL,
+    handle VARCHAR(100) NOT NULL
+);
