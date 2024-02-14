@@ -21,7 +21,7 @@ spotbugs {
 
 spotbugsMain {
     reports {
-        xml.enabled = false
+        xml.enabled = true
         html.enabled = true
     }
 }
