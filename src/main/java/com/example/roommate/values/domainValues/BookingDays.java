@@ -18,18 +18,18 @@ public class BookingDays {
    List<Boolean> saturdayBookings;
    List<Boolean> sundayBookings;
 
-   public BookingDays(int stepsize, Iterable<String> checkedDays){
+   public BookingDays(int stepSize, Iterable<String> checkedDays){
 
 
-      this.stepsize = stepsize;
-      int listsize = (24 * 60) / stepsize;
-      this.mondayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.tuesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.wednesdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.thursdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.fridayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.saturdayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
-      this.sundayBookings = new ArrayList<>(Collections.nCopies(listsize, false));
+      this.stepsize = stepSize;
+      int listSize = (24 * 60) / stepSize;
+      this.mondayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.tuesdayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.wednesdayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.thursdayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.fridayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.saturdayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
+      this.sundayBookings = new ArrayList<>(Collections.nCopies(listSize, false));
 
       Initialize(checkedDays);
    }
