@@ -1,6 +1,7 @@
 package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.utility.IterableSupport;
@@ -60,25 +61,64 @@ public class RoomRepository implements IRoomRepository {
     public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
         List<BookedTimeframe> bookedTimeframes = new ArrayList<>();
         bookedTimeframes.add(bookedTimeframe);
-        bookedTimeframes.addAll(IterableSupport.toList(room.getBookdTimeframes()));
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),bookedTimeframes,room.getItemNames());
+        bookedTimeframes.addAll(IterableSupport.toList(room.getBookedTimeframes()));
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),bookedTimeframes,room.getWorkspaces());
         overwrite(roomEntry);
     }
 
     @Override
-    public void addItem(ItemName itemName, IRoom room) throws NotFoundRepositoryException {
+    public void addItem(ItemName itemName, IWorkspace workspace) throws NotFoundRepositoryException {
+        IRoom room = findRoomByWorkspace(workspace.getId());
+
         List<ItemName> itemNames = new ArrayList<>();
+        IterableSupport.toList(workspace.getItems()).stream()
+                .filter(x-> !x.type().equals(itemName.type()))
+                .forEach(itemNames::add);
         itemNames.add(itemName);
-        itemNames.addAll(IterableSupport.toList(room.getItemNames()));
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookdTimeframes(),itemNames);
+
+        List<IWorkspace> filteredWorkspaces = new ArrayList<>();
+        IterableSupport.toList(room.getWorkspaces())
+                .stream()
+                .filter(workspaceEntry->workspaceEntry.getId() != workspaceEntry.getId())
+                .forEach(filteredWorkspaces::add);
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames));
+
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookedTimeframes(),filteredWorkspaces);
         overwrite(roomEntry);
+    }
+    
+    
+    private IRoom findRoomByWorkspace(UUID workspaceId) throws NotFoundRepositoryException {
+        Optional<RoomEntry> first = rooms.stream()
+                .filter(roomEntry -> {
+                    List<? extends IWorkspace> list = IterableSupport.toList(roomEntry.workspaces()).stream()
+                            .filter(workspaceEntry -> workspaceEntry.getId() == workspaceId)
+                            .toList();
+                    return list.size() == 1;
+                })
+                .findFirst();
+        if(first.isEmpty())
+            throw new NotFoundRepositoryException();
+        return first.get();
     }
 
     @Override
-    public void removeItem(ItemName itemName, IRoom room) {
-        List<ItemName> oldItemsWithoutItemName = IterableSupport.toList(room.getItemNames()).stream().filter(x-> !x.type().equals(itemName.type())).toList();
+    public void removeItem(ItemName itemName, IWorkspace workspace) throws NotFoundRepositoryException {
+        IRoom room = findRoomByWorkspace(workspace.getId());
+
+        
+
+        List<ItemName> oldItemsWithoutItemName = IterableSupport.toList(workspace.getItems()).stream().filter(x-> !x.type().equals(itemName.type())).toList();
         List<ItemName> itemNames = new ArrayList<>(oldItemsWithoutItemName);
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookdTimeframes(),itemNames);
+        
+        List<IWorkspace> filteredWorkspaces = new ArrayList<>();
+        IterableSupport.toList(room.getWorkspaces())
+                .stream()
+                .filter(workspaceEntry->workspaceEntry.getId() != workspaceEntry.getId())
+                .forEach(filteredWorkspaces::add);
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames));
+        
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookedTimeframes(),filteredWorkspaces);
         overwrite(roomEntry);
     }
 
