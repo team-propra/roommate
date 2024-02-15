@@ -51,7 +51,7 @@ public class EntitiesTest {
 
         workspace.addItem(item);
 
-        assertThat(workspace.items()).containsExactly(item);
+        assertThat(workspace.getItems()).containsExactly(item);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class EntitiesTest {
 
         workspace.addItem(items);
 
-        assertThat(workspace.items()).containsExactlyElementsOf(items);
+        assertThat(workspace.getItems()).containsExactlyElementsOf(items);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class EntitiesTest {
         workspace.addItem(chair);
         workspace.addItem(desk);
 
-        List<ItemName> result = workspace.items();
+        List<ItemName> result = workspace.getItems();
 
         assertThat(result).containsExactly(chair, desk);
     }

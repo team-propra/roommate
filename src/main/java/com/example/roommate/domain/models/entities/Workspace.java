@@ -1,12 +1,24 @@
 package com.example.roommate.domain.models.entities;
 
 import com.example.roommate.interfaces.entities.IWorkspace;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.ItemName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public record Workspace(UUID id, int workspaceNumber, List<ItemName> items) implements IWorkspace {
+public class Workspace implements IWorkspace {
+
+    UUID id;
+    int workspaceNumber;
+    ArrayList<ItemName> items;
+    public Workspace(UUID id, int workspaceNumber, Iterable<ItemName> items) {
+        this.items = new ArrayList<>(IterableSupport.toList(items));
+        this.id = id;
+        this.workspaceNumber = workspaceNumber;
+    }
+
     @Override
     public UUID getId() {
         return id;
@@ -23,17 +35,14 @@ public record Workspace(UUID id, int workspaceNumber, List<ItemName> items) impl
     }
 
     public void removeItem(ItemName item) {
-        //ToDo persistence implementation missing
-        throw new RuntimeException();
+        items.remove(item);
     }
 
     public void addItem(ItemName item) {
-        //ToDo persistence implementation missing
-        throw new RuntimeException();
+        items.add(item);
     }
 
     public void addItem(Iterable<ItemName> items) {
-        //ToDo persistence implementation missing
-        throw new RuntimeException();
+        items.forEach(item->this.items.add(item));
     }
 }
