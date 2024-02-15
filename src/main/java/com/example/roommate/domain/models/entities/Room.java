@@ -1,9 +1,10 @@
 package com.example.roommate.domain.models.entities;
 
 
-import com.example.roommate.values.domainValues.CalendarDays;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +14,27 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomnumber;
+    private final RoomNumber roomNumber;
+    private final List<BookedTimeframe> bookedPeriods;
+    private final List<ItemName> itemNameList;
 
-    public CalendarDays calendarDays;
-    
-
-    private final List<ItemName> itemNameList = new ArrayList<>();
-
-    public Room(UUID roomID, String roomnumber) {
+    public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
         this.roomID = roomID;
-        this.roomnumber = roomnumber;
-        this.calendarDays = new CalendarDays();
+        this.roomNumber = roomNumber;
+        this.bookedPeriods = new ArrayList<>(bookedPeriods);
+        this.itemNameList = new ArrayList<>(itemNameList);
+    }
+
+    public Room(UUID roomID, RoomNumber roomNumber) {
+        this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>());
     }
 
     public UUID getRoomID() {
         return roomID;
     }
 
-    public String getRoomNumber() {
-        return roomnumber;
+    public RoomNumber getRoomNumber() {
+        return roomNumber;
     }
 
     @Override
@@ -39,12 +42,12 @@ public class Room implements IRoom {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(roomID, room.roomID) && Objects.equals(roomnumber, room.roomnumber);
+        return Objects.equals(roomID, room.roomID) && Objects.equals(roomNumber, room.roomNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomID, roomnumber);
+        return Objects.hash(roomID, roomNumber);
     }
 
     public void addItem(ItemName item) {
@@ -56,11 +59,29 @@ public class Room implements IRoom {
     }
 
     public List<ItemName> getItemNames() {
-        return itemNameList;
+        return itemNameList.stream().toList();
+    }
+
+    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
+        bookedPeriods.add(bookedTimeframe);
     }
 
     @Override
-    public CalendarDays getCalendarDays() {
-        return calendarDays;
+    public List<BookedTimeframe> getBookdTimeframes() {
+        return bookedPeriods.stream().toList();
     }
+
+
+    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
+        return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
+    }
+
+
+    public void removeItemName(ItemName itemName) {
+        itemNameList.remove(itemName);
+    }
+    public void addItemName(ItemName itemName) {
+        itemNameList.add(itemName);
+    }
+
 }

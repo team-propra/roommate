@@ -9,21 +9,32 @@
 <h1>Homepage</h1>
 <a href="/rooms">Arbeitsplatz buchen</a>
 <h2>Buchungen</h2>
-<div id="links" th:if="${forms}">
+<div id="links" th:if="${rooms}">
     <table class="table" >
         <thead>
         <tr>
             <th>Raum</th>
             <th>Austattung</th>
+            <th>Zeitraum</th>
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="form:${forms}">
+        <tr th:each="room:${rooms}">
             <td>
-                <span th:text="${form.roomID}"> 123 </span>
+                <span th:text="${room.roomNumber}"> 123 </span>
             </td>
             <td>
-                <span th:text="${form.roomID}"> Küche </span>
+                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNameList}">
+                    <span > Küche </span>
+                </div>
+
+            </td>
+            <td>
+                <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
+                <pre th:text="${room.reservedTime}">
+                    <span > Zeitraum </span>
+                </pre>
+
             </td>
         </tr>
         </tbody>

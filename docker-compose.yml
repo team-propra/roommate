@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  roommate:
+    build:
+      context: .
+      dockerfile: Dockerfile.RoomMate
+    image: team-propra/roommate:v1
+    ports:
+      - "8081:8081"
+  
+  
+  keymaster:
+    build:
+      context: .
+      dockerfile: Dockerfile.KeyMaster
+    image: team-propra/keymaster:v1
+    ports:
+      - "3000:3000"
+
+  database:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=user"
+      - "POSTGRES_PASSWORD=1234"
+
+
+

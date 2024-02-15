@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.room;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithCustomMockUser;
+import com.example.roommate.annotations.WithMockOAuth2User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class GetRoomsAddTest {
 
     @Test
     @DisplayName("GET /rooms/add returns status code 200")
-    @WithCustomMockUser
+    @WithMockOAuth2User
     public void test_01() throws Exception {
         mvc.perform(get("/rooms"))
                 .andExpect(status().isOk());

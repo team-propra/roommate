@@ -1,12 +1,12 @@
 package com.example.roommate.annotations;
 
-import com.example.roommate.validator.UUIDValidator;
-import jakarta.validation.Constraint;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.*;
 
 @Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@ActiveProfiles("test") //ensure test classes use ephemeral repositories
 public @interface TestClass {
 }

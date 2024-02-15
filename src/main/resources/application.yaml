@@ -1,0 +1,21 @@
+logging:
+  level:
+    ROOT: Warn
+spring:
+  main:
+    banner-mode: "off"
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope: read:public_repo
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: 1234
+    driver-class-name: org.postgresql.Driver

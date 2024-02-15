@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${room}">
+<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title th:text="*{roomNumber}" >-1</title>
+    <style>
+        .tag-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .tag {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -22,9 +33,43 @@
     <div th:text="${formValidationErrorText}">ErrorText</div>
   </div>
 
+<ul class="tag-list">
+    <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
+        <span th:text="${itemName}"></span>
+        <div sec:authorize="hasRole('ADMIN')">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/deleteItem/' + ${itemName}}" method="post">
+                <input type="hidden" name="tagName" th:value="${itemName}" />
+                <button type="submit">X</button>
+            </form>
+        </div>
+    </li>
+</ul>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <label>Gegenstände hinzufügen</label>
+    <ul>
+        <li th:each="item : ${notSelcetedItems}">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${item}}" method="post">
+                <button type="submit">
+                    <span th:text="${item}"></span>
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem'}" method="post">
+        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+        <input id="createItem" type="text" name="newItem" required/>
+        <input type="submit">
+    </form>
+</div>
+
+
 
   <form method="post" th:action="@{/rooms}">
-      <input type="hidden" name="roomID" th:value="*{roomID}">
+      <input type="hidden" name="id" th:value="*{getRoomID()}">
       <input type="hidden" name="stepSize" th:value="${frame.stepSize()}">
 
     <table class="table">
@@ -37,13 +82,6 @@
         </tr>
       </thead>
       <tbody>
-<!-- old       <tr th:each="time: ${#numbers.sequence(0, (frame.times())*(frame.stepSize())-1,1)}" th:remove="all-but-first">-->
-<!--          <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first"><label>-->
-<!--            <span th:text="${frame.dayLabels()[day]}">Monday</span> <span th:text="${frame.timeLabels()[time]}">19:00</span>-->
-<!--            <input  type="checkbox" name="Monday19">-->
-<!--          </label></td>-->
-<!--        </tr>-->
-
           <tr>
               <td></td>
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
@@ -57,12 +95,8 @@
 
                   <div>
                       <input  type="hidden" name="cell" th:value="${time + '-' + day}">
-<!--                      <input type="checkbox" name="box" onchange="(e)=>{-->
-<!--                          // console.log('test');-->
-<!--                          // e.parent.children[0].value = e.parent.children[0].value+'_X'-->
-<!--                      }">-->
-                      <input th:unless="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
-                      <input th:if="${reservedSlots.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+                      <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
 
                   </div>
               </td>
