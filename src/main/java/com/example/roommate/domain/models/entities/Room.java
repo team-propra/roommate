@@ -4,7 +4,6 @@ package com.example.roommate.domain.models.entities;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;

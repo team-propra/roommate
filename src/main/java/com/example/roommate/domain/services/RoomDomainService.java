@@ -7,7 +7,6 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
-import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
@@ -100,13 +99,12 @@ public class RoomDomainService {
     }
 
     private static Room toRoom(IRoom room){
-        List<? extends IWorkspace> workspaces = room.getWorkspaces().stream().toList();
+        List<? extends IWorkspace> workspaces = IterableSupport.toList(room.getWorkspaces()).stream().toList();
         return new Room(
                 room.getRoomID(),
                 room.getRoomNumber(),
-                IterableSupport.toList(room.getBookdTimeframes()),
-                IterableSupport.toList(room.getItemNames()),
-                IterableSupport.toList(room.getBookedTimeframes())
+                IterableSupport.toList(room.getBookedTimeframes()),
+                IterableSupport.toList(workspaces)
         );
     }
 
@@ -124,7 +122,7 @@ public class RoomDomainService {
 
     private Workspace getWorkspace(UUID workspaceId, UUID roomId) throws NotFoundRepositoryException {
         IRoom iRoom = roomRepository.findRoomByID(roomId);
-        List<Workspace> list = iRoom.getWorkspaces().stream()
+        List<Workspace> list = IterableSupport.toList(iRoom.getWorkspaces()).stream()
                 .filter(w -> w.getId().equals(workspaceId))
                 .map(RoomDomainService::toWorkspace)
                 .toList();

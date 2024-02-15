@@ -1,7 +1,6 @@
 package com.example.roommate.persistence.postgres;
 
 import com.example.roommate.domain.models.entities.Workspace;
-import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
@@ -68,7 +67,7 @@ public class RoomRepository implements IRoomRepository {
                     .filter(workspace -> workspace.roomId().equals(room.id()))
                     .toList();
 
-            List<ItemName> matchingItems = new ArrayList<>();
+            List<ItemName> matchingItems;
             List<IWorkspace> workspaces = new ArrayList<>();
 
             for (WorkspacesDTO workspace : matchingWorkspaces) {
