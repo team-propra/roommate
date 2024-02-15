@@ -2,6 +2,7 @@ package com.example.roommate.interfaces.repositories;
 
 import com.example.roommate.annotations.RepositoryInterface;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.BookedTimeframe;
@@ -19,7 +20,7 @@ public interface IRoomRepository {
     void add(IRoom room);
     void addBooking(BookedTimeframe bookedTimeframe, IRoom  room) throws NotFoundRepositoryException;
 
-    void addItem(ItemName itemName, IWorkspace iWorkspace);
+    void addItem(ItemName itemName, IWorkspace iWorkspace) throws NotFoundRepositoryException;
 
-    void removeItem(ItemName itemName, IWorkspace iWorkspace);
+    void removeItem(ItemName itemName, IWorkspace iWorkspace) throws NotFoundRepositoryException;
 }

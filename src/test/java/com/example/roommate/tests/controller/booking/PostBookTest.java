@@ -5,6 +5,9 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
+import com.example.roommate.persistence.ephemeral.RoomEntry;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
+import com.example.roommate.values.domainValues.RoomNumber;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
@@ -57,7 +60,7 @@ public class PostBookTest {
     @Test
     @WithMockOAuth2User
     void test_1() throws Exception {
-        roomRepository.add(ValuesFactory.createRoomEntry());
+        roomRepository.add(ValuesFactory.createRoomEntry("randomroomnumber"));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("id", roomID.toString())

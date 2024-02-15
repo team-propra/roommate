@@ -5,6 +5,7 @@ import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +15,18 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomNumber;
+    private final RoomNumber roomNumber;
     private final List<BookedTimeframe> bookedPeriods;
     private final List<Workspace> workspaces;
-    
-    
-    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods,List<? extends IWorkspace> workspaces) {
+
+    public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods,List<? extends IWorkspace> workspaces) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.bookedPeriods = bookedPeriods;
-
+        this.bookedPeriods = new ArrayList<>(bookedPeriods);
         this.workspaces = workspaces.stream().map(x->new Workspace(x.getId(),x.getWorkspaceNumber(),x.getItems())).toList();
     }
 
-    public Room(UUID roomID, String roomNumber) {
+    public Room(UUID roomID, RoomNumber roomNumber) {
         this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>());
     }
     
@@ -36,7 +35,7 @@ public class Room implements IRoom {
         return roomID;
     }
 
-    public String getRoomNumber() {
+    public RoomNumber getRoomNumber() {
         return roomNumber;
     }
     
@@ -61,7 +60,7 @@ public class Room implements IRoom {
 
     @Override
     public List<BookedTimeframe> getBookedTimeframes() {
-        return bookedPeriods;
+        return bookedPeriods.stream().toList();
     }
 
     @Override

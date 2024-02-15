@@ -2,12 +2,15 @@ package com.example.roommate.persistence.postgres;
 
 import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.exceptions.NotFoundRepositoryException;
+import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +18,7 @@ import java.util.*;
 
 @Repository
 @Profile("!test")
+@SuppressFBWarnings(value="EI2", justification="DAO injection required for database interaction")
 public class RoomRepository implements IRoomRepository {
     IRoomDAO roomDAO;
 
@@ -84,7 +88,7 @@ public class RoomRepository implements IRoomRepository {
                 }
             }
 
-            result.add(new RoomOOP(room.id(), room.roomNumber(), bookedTimeframes, workspaces));
+            result.add(new RoomOOP(room.id(), new RoomNumber(room.roomNumber()), bookedTimeframes, workspaces));
         }
         return result;
     }
@@ -106,7 +110,7 @@ public class RoomRepository implements IRoomRepository {
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
-        //return new RoomOOP(roomID, room.get().roomNumber(), byItemNames, timeframes);
+        //return new RoomOOP(roomID, new RoomNumber(room.get().roomNumber()), byItemNames, timeframes);
         return (IRoom) new RuntimeException();
     }
 
@@ -119,16 +123,12 @@ public class RoomRepository implements IRoomRepository {
     @Override
     public void add(IRoom room) {
 
-        List<ItemName> itemNames = room.getItemNames();
+        List<ItemName> itemNames = IterableSupport.toList(room.getItemNames());
         System.out.println(room.getRoomID());
 //        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
-        roomDAO.insert(room.getRoomID(), room.getRoomNumber());
-        room.getBookedTimeframes().forEach(x -> {
-            bookedTimeFrameDAO.insert(UUID.randomUUID(), x.day(), x.startTime(), x.duration(), room.getRoomID());
-        });
-        itemNames.forEach(x -> {
-            itemToRoomDAO.insert(UUID.randomUUID(), x.type(), room.getRoomID());
-        });
+        roomDAO.insert(room.getRoomID(), room.getRoomNumber().number());
+        room.getBookedTimeframes().forEach(x-> bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
+        itemNames.forEach(x-> itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID()));
     }
 
     @Override

@@ -7,9 +7,10 @@ import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.repositories.ItemRepository;
-import com.example.roommate.persistence.repositories.RoomRepository;
+import com.example.roommate.persistence.ephemeral.RoomEntry;
+import com.example.roommate.persistence.ephemeral.ItemRepository;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
+import com.example.roommate.values.domainValues.RoomNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,11 +33,12 @@ class RoomServiceTest {
     void test_1() { //Problem: RoomEnrty.CalenderDay's are Objects, not comparable values like Strings or UUDI's
         
 
-        Room room = new Room(roomID, "101");
+        Room room = new Room(roomID, new RoomNumber("101"));
         roomService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
 
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(), room.getRoomNumber(), List.of(), List.of());
-        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(roomEntry.roomID());
+        assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID))
+                .contains(roomEntry.roomID());
     }
 
    /* @Test //fixing tests by adding customAssertions
