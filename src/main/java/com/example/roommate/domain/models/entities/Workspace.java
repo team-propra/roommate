@@ -31,4 +31,9 @@ public record Workspace(UUID id, int workspaceNumber, List<ItemName> items) impl
         //ToDo persistence implementation missing
         throw new RuntimeException();
     }
+
+    public void addItem(Iterable<ItemName> items) {
+        //ToDo persistence implementation missing
+        throw new RuntimeException();
+    }
 }

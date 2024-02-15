@@ -5,12 +5,8 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
-import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
-import com.example.roommate.values.domainValues.RoomNumber;
 import com.example.roommate.factories.ValuesFactory;
-import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -24,7 +20,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;

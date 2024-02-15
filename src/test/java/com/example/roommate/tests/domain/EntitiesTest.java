@@ -4,6 +4,7 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Admin;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.User;
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.factories.EntityFactory;
@@ -43,37 +44,37 @@ public class EntitiesTest {
     }
 
     @Test
-    @DisplayName("add item to room")
+    @DisplayName("add item to workspace")
     void test_5() {
-        Room room = EntityFactory.createRoom();
+        Workspace workspace = EntityFactory.createWorkspace();
         ItemName item = ValuesFactory.createItemName("Chair");
 
-        room.addItem(item);
+        workspace.addItem(item);
 
-        assertThat(room.getItemNames()).containsExactly(item);
+        assertThat(workspace.items()).containsExactly(item);
     }
 
     @Test
-    @DisplayName("Add List of Items to a room")
+    @DisplayName("Add List of Items to a workspace")
     void test_6() {
-        Room room = EntityFactory.createRoom();
+        Workspace workspace = EntityFactory.createWorkspace();
         List<ItemName> items = List.of(ValuesFactory.createItemName("Desk"), ValuesFactory.createItemName("Chair"));
 
-        room.addItem(items);
+        workspace.addItem(items);
 
-        assertThat(room.getItemNames()).containsExactlyElementsOf(items);
+        assertThat(workspace.items()).containsExactlyElementsOf(items);
     }
 
     @Test
     @DisplayName("Get a List of items when getItems() is called")
     void test_7() {
-        Room room = EntityFactory.createRoom();
+        Workspace workspace = EntityFactory.createWorkspace();
         ItemName desk = ValuesFactory.createItemName("Desk");
         ItemName chair = ValuesFactory.createItemName("Chair");
-        room.addItem(chair);
-        room.addItem(desk);
+        workspace.addItem(chair);
+        workspace.addItem(desk);
 
-        List<ItemName> result = room.getItemNames();
+        List<ItemName> result = workspace.items();
 
         assertThat(result).containsExactly(chair, desk);
     }

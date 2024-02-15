@@ -2,6 +2,7 @@ package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
 import com.example.roommate.exceptions.ArgumentValidationException;
+import com.example.roommate.persistence.ephemeral.WorkspaceEntry;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.values.forms.BookDataForm;
@@ -45,6 +46,7 @@ public class ValuesFactory {
     public static RoomEntry createRoomEntry() { return new RoomEntry(id,new RoomNumber("14"), List.of(), List.of());}
 
     public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,new RoomNumber(roomnumber),List.of(),List.of());}
-    
-    
+
+
+    public static WorkspaceEntry createWorkspaceEntry() { return new WorkspaceEntry(id, 14, List.of()); }
 }
