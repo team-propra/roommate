@@ -133,23 +133,23 @@ public class RoomController {
 
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/addItem/{itemName}")
-    public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
-        bookingApplicationService.addItemToRoom(roomID, itemName);
+    @PostMapping("/room/{roomID}/{workspaceID}/addItem/{itemName}")
+    public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.addItemToRoom(workspaceID, itemName,roomID);
         return roomDetails(model, roomID);
     }
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/createItem")
-    public ModelAndView createItem(Model model, @PathVariable UUID roomID, @RequestParam String newItem) throws NotFoundRepositoryException {
+    @PostMapping("/room/{roomID}/{workspaceID}/createItem")
+    public ModelAndView createItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
         bookingApplicationService.createItem(newItem);
-        return addItem(model, roomID, newItem);
+        return addItem(model, roomID, workspaceID, newItem);
     }
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/deleteItem/{itemName}")
-    public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable String itemName) throws NotFoundRepositoryException {
-        bookingApplicationService.removeItemFromRoom(roomID, itemName);
+    @PostMapping("/room/{roomID}/{workspaceID}/deleteItem/{itemName}")
+    public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
+        bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
         return roomDetails(model, roomID);
     }
 }

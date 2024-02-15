@@ -18,7 +18,6 @@ import jakarta.annotation.PostConstruct;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
@@ -98,19 +97,24 @@ public class BookingApplicationService {
 
         BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration);
 
+        
         return roomDomainService.getRooms().stream()
-                .filter(room -> new HashSet<>(IterableSupport.toList(room.getItemNames())).containsAll(items))
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
-                .map(x->new RoomBookingModel(x.getRoomID(),x.getRoomNumber().number(),x.getItemNames()))
-                .collect(Collectors.toList());
+                .flatMap(room -> IterableSupport.toList(room.getWorkspaces()).stream()
+                    .map(workspace->
+                        new RoomBookingModel(room.getRoomID(),workspace.getId(),room.getRoomNumber().number(),workspace.getItems())
+                    )
+                )
+                .filter(rbm-> new HashSet<>(IterableSupport.toList(rbm.itemNameList())).containsAll(items))
+                .toList();
     }
 
-    public void removeItemFromRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        roomDomainService.removeItemFromWorkspace(roomID, itemName);
+    public void removeItemFromRoom(UUID workspaceID, String itemName, UUID roomID) throws NotFoundRepositoryException {
+        roomDomainService.removeItemFromWorkspace(workspaceID, itemName, roomID);
     }
 
-    public void addItemToRoom(UUID roomID, String itemName) throws NotFoundRepositoryException {
-        roomDomainService.addItemToWorkspace(roomID, itemName);
+    public void addItemToRoom(UUID workspaceID, String itemName, UUID roomID) throws NotFoundRepositoryException {
+        roomDomainService.addItemToWorkspace(workspaceID, itemName, roomID);
     }
 
     public void createItem(String itemName) {
