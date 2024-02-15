@@ -2,6 +2,7 @@ package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
@@ -77,7 +78,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(),IterableSupport.toList(iroom.getItemNames()),iroom.getWorkspaces()))
+                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(), IterableSupport.toList(iroom.getBookedTimeframes()),IterableSupport.toList(iroom.getWorkspaces())))
                 .toList();
     }
 
@@ -130,7 +131,7 @@ public class RoomDomainService {
         if(list.size() != 1) {
             throw new NotFoundRepositoryException();
         }
-        return list.getFirst();
+        return list.get(0);
     }
 
     public void removeItemFromWorkspace(UUID workspaceId, String itemName, UUID roomId) throws NotFoundRepositoryException {

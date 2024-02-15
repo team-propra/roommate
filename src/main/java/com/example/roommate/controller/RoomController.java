@@ -4,7 +4,6 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
-import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -55,7 +54,7 @@ public class RoomController {
         model.addAttribute("date", datum);
         model.addAttribute("startTime", startUhrzeit);
         model.addAttribute("endTime", endUhrzeit);
-        model.addAttribute("items", bookingApplicationService.getItems());
+        model.addAttribute("items", bookingApplicationService.allItems());
         model.addAttribute("gegenstaende", gegenstaende);
         model.addAttribute("rooms", bookingApplicationService.findAvailableRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
         return "rooms";
@@ -78,16 +77,11 @@ public class RoomController {
     public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
         try {
             IRoom roomByID = bookingApplicationService.findRoomByID(id);
-            List<String> itemStringList = IterableSupport.toList(roomByID.getItemNames())
+            List<String> itemsOfRoom = bookingApplicationService.getItemsOfRoom(id);
+            List<String> filteredItems = bookingApplicationService.allItems()
                     .stream()
-                    .map(ItemName::toString)
+                    .filter(item -> !itemsOfRoom.contains(item))
                     .toList();
-            List<ItemName> items = IterableSupport.toList(roomByID.getItemNames());
-            List<String> filteredItems = bookingApplicationService.getItems()
-                    .stream()
-                    .filter(item -> !items.contains(item))
-                    .map(ItemName::toString)
-                    .collect(Collectors.toList());
 
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
@@ -96,7 +90,7 @@ public class RoomController {
             modelAndView.setStatus(HttpStatus.OK);
 
             model.addAttribute("room", roomByID);
-            model.addAttribute("itemStringList", itemStringList);
+            model.addAttribute("itemStringList", itemsOfRoom);
             model.addAttribute("notSelcetedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {

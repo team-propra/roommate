@@ -3,6 +3,7 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
@@ -54,8 +55,9 @@ public class BookingApplicationService {
         }
     }
 
-    public Collection<ItemName> getItems() {
-        return roomDomainService.getItems();
+    public Collection<String> allItems() {
+        return roomDomainService.getItems().stream()
+                .map(ItemName::type).toList();
     }
 
     public Collection<IRoom> getRooms() {
@@ -72,6 +74,17 @@ public class BookingApplicationService {
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundException();
         }
+    }
+    
+    public List<String> getItemsOfRoom(UUID roomId) throws NotFoundException {
+        List<String> items = new ArrayList<>();
+        IRoom room = findRoomByID(roomId);
+        for (IWorkspace workspace : room.getWorkspaces()) {
+            workspace.getItems().stream()
+                    .map(ItemName::type)
+                    .forEach(items::add);
+        }
+        return items;
     }
 
     public List<RoomBookingModel> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
