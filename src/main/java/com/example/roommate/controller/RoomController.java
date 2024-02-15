@@ -80,7 +80,8 @@ public class RoomController {
             List<String> itemsOfRoom = bookingApplicationService.getItemsOfRoom(id);
             List<String> filteredItems = bookingApplicationService.allItems()
                     .stream()
-                    .filter(item -> !itemsOfRoom.contains(item))
+                    .map(ItemName::type)
+                    .filter(type -> !itemsOfRoom.contains(type))
                     .toList();
 
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());

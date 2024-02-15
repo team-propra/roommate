@@ -54,9 +54,8 @@ public class BookingApplicationService {
         }
     }
 
-    public Collection<String> allItems() {
-        return roomDomainService.getItems().stream()
-                .map(ItemName::type).toList();
+    public Collection<ItemName> allItems() {
+        return roomDomainService.getItems();
     }
 
     public Collection<IRoom> getRooms() {
