@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Profile("!test")
@@ -25,17 +26,14 @@ public class RoomRepository implements IRoomRepository {
 
     IBookedTimeFrameDAO bookedTimeFrameDAO;
 
-    IItemToRoomDAO itemToRoomDAO;
-
     IItemToWorkspaceDAO itemToWorkspaceDAO;
 
     IWorkspaceDAO workspaceDAO;
 
-    public RoomRepository(IRoomDAO roomDAO, IItemDAO itemDAO, IBookedTimeFrameDAO bookedTimeFrameDAO, IItemToRoomDAO itemToRoomDAO, IItemToWorkspaceDAO itemToWorkspaceDAO, IWorkspaceDAO workspaceDAO) {
+    public RoomRepository(IRoomDAO roomDAO, IItemDAO itemDAO, IBookedTimeFrameDAO bookedTimeFrameDAO, IItemToWorkspaceDAO itemToWorkspaceDAO, IWorkspaceDAO workspaceDAO) {
         this.roomDAO = roomDAO;
         this.itemDAO = itemDAO;
         this.bookedTimeFrameDAO = bookedTimeFrameDAO;
-        this.itemToRoomDAO = itemToRoomDAO;
         this.itemToWorkspaceDAO = itemToWorkspaceDAO;
         this.workspaceDAO = workspaceDAO;
     }
@@ -67,25 +65,8 @@ public class RoomRepository implements IRoomRepository {
                     .filter(workspace -> workspace.roomId().equals(room.id()))
                     .toList();
 
-            List<ItemName> matchingItems;
-            List<IWorkspace> workspaces = new ArrayList<>();
 
-            for (WorkspacesDTO workspace : matchingWorkspaces) {
-                List<ItemToWorkspaceDTO> matchingItemToWorkspaces = itemToWorkspaceList.stream()
-                        .filter(itemMapEntry -> itemMapEntry.workspaceId().equals(workspace.id()))
-                        .toList();
-
-                for (ItemToWorkspaceDTO itemToWorkspace : matchingItemToWorkspaces) {
-                    matchingItems = itemList.stream()
-                            .filter(item -> matchingItemToWorkspaces.stream().anyMatch(
-                                    map -> map.itemName().equals(item.itemName())
-                            ))
-                            .map(item -> new ItemName(item.itemName()))
-                            .toList();
-
-                    workspaces.add(new Workspace(workspace.id(), workspace.workspaceNumber(), matchingItems));
-                }
-            }
+            List<WorkspaceOOP> workspaces = matchingWorkspaces.stream().map(x->toWorkspace(x,itemToWorkspaceList,itemList)).toList();
 
             result.add(new RoomOOP(room.id(), new RoomNumber(room.roomNumber()), bookedTimeframes, workspaces));
         }
@@ -97,37 +78,48 @@ public class RoomRepository implements IRoomRepository {
         Optional<RoomDTO> room = roomDAO.findById(roomID);
         if (room.isEmpty())
             throw new NotFoundRepositoryException();
-        List<String> itemToRoomMaps = itemToRoomDAO.findByRoomId(roomID).stream().map(ItemToRoomDTO::itemName).toList();
-        List<ItemName> byItemNames;
-        if (!itemToRoomMaps.isEmpty()) {
-            byItemNames = itemDAO.findByItemNames(itemToRoomMaps).stream()
-                    .map(ItemDTO::toItemName)
-                    .toList();
-        } else {
-            byItemNames = Collections.emptyList();
-        }
         List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
-        //return new RoomOOP(roomID, new RoomNumber(room.get().roomNumber()), byItemNames, timeframes);
-        return (IRoom) new RuntimeException();
+        List<WorkspacesDTO> workspacesDTOS = IterableSupport.toList(workspaceDAO.findAll()).stream()
+                .filter(x -> x.roomId() == roomID)
+                .toList();
+        List<ItemToWorkspaceDTO> itemToWorkspaceDTOS = IterableSupport.toList(itemToWorkspaceDAO.findAll());
+        List<ItemDTO> itemDTOS = IterableSupport.toList(itemDAO.findAll());
+        List<WorkspaceOOP> workspaces = workspacesDTOS.stream().map(x->toWorkspace(x,itemToWorkspaceDTOS,itemDTOS)).toList(); 
+        return new RoomOOP(roomID, new RoomNumber(room.get().roomNumber()), timeframes, workspaces);
+    }
+    
+    private WorkspaceOOP toWorkspace(WorkspacesDTO workspacesDTO, List<ItemToWorkspaceDTO> itemToWorkspaceDTOS, List<ItemDTO> items){
+        List<ItemName> myItems = new ArrayList<>();
+        itemToWorkspaceDTOS.stream()
+                .filter(x -> x.workspaceId() == workspacesDTO.id())
+                .forEach(x->{
+                    items.stream()
+                        .map(ItemDTO::toItemName)
+                        .filter(item-> item.type().equals(x.itemName()))
+                        .forEach(myItems::add);
+                });
+        
+        return new WorkspaceOOP(workspacesDTO.id(),workspacesDTO.workspaceNumber(), myItems);
     }
 
     @Override
     public void remove(UUID roomID) {
         roomDAO.deleteById(roomID);
-        // TODO delete reference in ItemToRoom using Database Cascade on delete constraint
     }
 
     @Override
     public void add(IRoom room) {
-
-        List<ItemName> itemNames = IterableSupport.toList(room.getItemNames());
         System.out.println(room.getRoomID());
-//        roomDAO.save(new RoomDTO(room.getRoomID(), room.getRoomNumber()));
         roomDAO.insert(room.getRoomID(), room.getRoomNumber().number());
-        room.getBookedTimeframes().forEach(x-> bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
-        itemNames.forEach(x-> itemToRoomDAO.insert(UUID.randomUUID(),x.type(),room.getRoomID()));
+        room.getWorkspaces()
+                .forEach(workspace->{
+                    workspaceDAO.insert(workspace.getId(),workspace.getWorkspaceNumber(),room.getRoomID());
+                    workspace.getItems().forEach(item-> itemToWorkspaceDAO.insert(UUID.randomUUID(),item.type(),workspace.getId()));
+                });
+        room.getBookedTimeframes()
+                .forEach(x-> bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
     }
 
     @Override
@@ -136,13 +128,18 @@ public class RoomRepository implements IRoomRepository {
     }
 
     @Override
-    public void addItem(ItemName itemName, IRoom iRoom) {
-        itemToRoomDAO.insert(UUID.randomUUID(),itemName.type(),iRoom.getRoomID());
+    public void addItem(ItemName itemName, IWorkspace iWorkspace) {
+        itemToWorkspaceDAO.insert(UUID.randomUUID(),itemName.toString(),iWorkspace.getId());
     }
 
     @Override
-    public void removeItem(ItemName itemName, IRoom iRoom) {
-        itemToRoomDAO.delete(itemName.type(), iRoom.getRoomID());
+    public void removeItem(ItemName itemName, IWorkspace iWorkspace) throws NotFoundRepositoryException {
+        List<ItemToWorkspaceDTO> filtered = itemToWorkspaceDAO.findByWorkspaceId(iWorkspace.getId()).stream()
+                .filter(x-> x.itemName().equals(itemName.type()))
+                .toList();
+        if(filtered.size() != 1)
+            throw new NotFoundRepositoryException();
+        itemToWorkspaceDAO.delete(filtered.get(0));
     }
 
 
