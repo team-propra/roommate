@@ -4,6 +4,7 @@ import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.KeyMasterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,4 +29,15 @@ public class ApiController {
 
         return List.of(new KeyMasterForm( id, keyId));
     }
+
+
+
+    @PostMapping("/api/registration")
+    public String registerKey(String keyId) {
+        System.out.println(keyId);
+        return "<h1> %s </h1>".formatted(keyId);
+
+    }
+
+
 }
