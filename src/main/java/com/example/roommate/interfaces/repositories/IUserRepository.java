@@ -9,4 +9,8 @@ import java.util.UUID;
 @RepositoryInterface
 public interface IUserRepository {
     void addUser(IUser user);
+
+    void verifyUser(UUID keyId, String login);
+
+    IUser getUserByLogin(String login);
 }

@@ -11,15 +11,29 @@ import java.util.UUID;
 @Repository
 @Profile("!test")
 public class UserRepository implements IUserRepository {
-    UserDAO userDAO;
+    IUserDAO userDAO;
 
-    public UserRepository(UserDAO userDAO) {
+    public UserRepository(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     @Override
     public void addUser(IUser user) {
-        userDAO.insert(user.getKeyId(), user.getGitHubHandle(), user.getRole());
+        userDAO.insert(user.getKeyId(), user.getHandle(), user.getRole());
+    }
+
+    @Override
+    public void verifyUser(UUID keyId, String login) {
+        userDAO.verifyUser(keyId, login);
+    }
+
+    @Override
+    public IUser getUserByLogin(String login) {
+        UserDTO userDTO = userDAO.findByHandle(login);
+        if(userDTO == null) {
+            return null;
+        }
+        return new User(userDTO.keyId(), userDTO.handle(), userDTO.role());
     }
 
 

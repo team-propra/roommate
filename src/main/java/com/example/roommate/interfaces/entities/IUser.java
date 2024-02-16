@@ -1,11 +1,14 @@
 package com.example.roommate.interfaces.entities;
 
+import com.example.roommate.annotations.Interface;
+
 import java.util.UUID;
 
+@Interface
 public interface IUser {
     UUID getKeyId();
 
-    String getGitHubHandle();
+    String getHandle();
 
     String getRole();
 
