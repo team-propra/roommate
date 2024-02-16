@@ -1,6 +1,5 @@
 package com.example.roommate.persistence.postgres;
 
-import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 @Profile("!test")
@@ -82,7 +80,7 @@ public class RoomRepository implements IRoomRepository {
                 .map(BookedTimeframeDTO::toBookedTimeFrame)
                 .toList();
         List<WorkspacesDTO> workspacesDTOS = IterableSupport.toList(workspaceDAO.findAll()).stream()
-                .filter(x -> x.roomId() == roomID)
+                .filter(x -> x.roomId().equals(roomID))
                 .toList();
         List<ItemToWorkspaceDTO> itemToWorkspaceDTOS = IterableSupport.toList(itemToWorkspaceDAO.findAll());
         List<ItemDTO> itemDTOS = IterableSupport.toList(itemDAO.findAll());

@@ -26,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
@@ -52,7 +51,7 @@ public class RoomController {
 
         List<ItemName> selectedItemsList = gegenstaende.stream()
                 .map(ItemName::new)
-                .collect(Collectors.toList());
+                .toList();
 
         List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit);
         model.addAttribute("date", datum);
