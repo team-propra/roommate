@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
+import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
@@ -89,7 +90,7 @@ public class RoomController {
         }
     }
 
-
+    @VerifiedOnly
     @PostMapping("/rooms")
     public ModelAndView addBooking(@Valid BookDataForm form
             , BindingResult bindingResult
