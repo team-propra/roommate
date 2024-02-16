@@ -1,8 +1,14 @@
 logging:
   level:
-    ROOT: Warn
+    ROOT: WARN
     org.flywaydb: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.hibernate.SQL: DEBUG
 spring:
+  config:
+    activate:
+      on-profile: default  # Set this to 'docker' when running in Docker
+
   main:
     banner-mode: "off"
   security:
@@ -15,8 +21,30 @@ spring:
             scope: read:public_repo
 
   
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
   datasource:
-    url: jdbc:h2:mem:postgres
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432
+    username: user
+    password: 1234
+    driver-class-name: org.postgresql.Driver

@@ -5,9 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.RoomMate
+      always_build: true
     image: team-propra/roommate:v1
     ports:
       - "8081:8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
   
   
   keymaster:

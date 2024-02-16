@@ -36,6 +36,16 @@ repositories {
     mavenCentral()
 }
 
+tasks.register('runOtherSpringApp', Exec) {
+    exec {
+        executable 'java'
+        args '-jar keymaster.jar'
+        workingDir "${buildDir}/foo"
+        commandLine 'bash', '-c', "echo 'Hello world!'"
+    }
+}
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation('org.springframework.boot:spring-boot-starter-validation')
