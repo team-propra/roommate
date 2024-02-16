@@ -1,7 +1,8 @@
 package com.example.roommate.tests.controller.rooms;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithCustomMockUser;
+//import com.example.roommate.annotations.WithCustomMockUser;
+import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.factories.ValuesFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -35,16 +36,17 @@ public class PostRoomsTest {
 
     @Test
     @DisplayName("")
-    @WithCustomMockUser
+    @WithMockOAuth2User
+    //@WithCustomMockUser
     void test_1() throws Exception {
         List<String> checkedDays = List.of("0-0", "0-1");
         String roomId = ValuesFactory.id.toString();
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .param("roomID", roomId)
+                        .param("id", roomId)
                         .param("checkedDays", checkedDays.toString())
-                        .param("stepSize", "1"))
+                        .param("stepSize", "60"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(result -> {
                     ModelAndView modelAndView = result.getModelAndView();

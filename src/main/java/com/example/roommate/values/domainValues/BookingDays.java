@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 public record BookingDays(
         int stepSize,
@@ -32,7 +33,17 @@ public record BookingDays(
          new ArrayList<>(Collections.nCopies(listSize, false))
       );
    }
-   
+
+
+   public static boolean validateBookingCoorectness(BookingDays bookingDays) {
+      //At least one box is set to true
+      Stream<List<Boolean>> bookingStream = Stream.of(IterableSupport.toList(bookingDays.mondayBookings), IterableSupport.toList(bookingDays.tuesdayBookings), IterableSupport.toList(bookingDays.wednesdayBookings), IterableSupport.toList(bookingDays.thursdayBookings), IterableSupport.toList(bookingDays.fridayBookings), IterableSupport.toList(bookingDays.saturdayBookings), IterableSupport.toList(bookingDays.sundayBookings));
+      Stream<Boolean> combinedStream = bookingStream.flatMap(List::stream);
+      // stream.forEach(System.out::println);
+      return combinedStream.anyMatch(value -> value.equals(true));
+   }
+
+
    private BookingDays Initialize(Iterable<String> from) throws ArgumentValidationException {
       List<Boolean> mondayBookings = new ArrayList<>();
       List<Boolean> tuesdayBookings = new ArrayList<>();
