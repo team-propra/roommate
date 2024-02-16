@@ -56,8 +56,18 @@ public class RoomDomainService {
         itemRepository.addItem(chair);
         itemRepository.addItem(table);
         itemRepository.addItem(desk);
-        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), new RoomNumber("12"));
-        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), new RoomNumber("13"));
+        List<Workspace> room1Workspaces = List.of(
+                new Workspace(UUID.randomUUID(), 1, List.of(table, desk, chair)),
+                new Workspace(UUID.randomUUID(), 2, List.of(table)),
+                new Workspace(UUID.randomUUID(), 3, List.of(desk))
+        );
+
+        List<Workspace> room2Workspaces = List.of(
+                new Workspace(UUID.randomUUID(), 1, List.of(table)),
+                new Workspace(UUID.randomUUID(), 44, List.of(chair, desk))
+        );
+        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), new RoomNumber("13"), List.of(),room1Workspaces);
+        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), new RoomNumber("12"), List.of(),room2Workspaces);
         roomRepository.add(room1);
         roomRepository.add(room2);
     }

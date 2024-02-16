@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
+
 @ApplicationService
 @SuppressFBWarnings(value="EI2", justification="RoomDomainService is properly injected")
 public class BookingApplicationService {
@@ -96,14 +97,17 @@ public class BookingApplicationService {
 
         BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration);
 
-        
-        return roomDomainService.getRooms().stream()
+        Collection<IRoom> rooms = roomDomainService.getRooms();
+        List<IRoom> availableRooms = rooms.stream()
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
+                .toList();
+        List<RoomBookingModel> availableWorkspaces = availableRooms.stream()
                 .flatMap(room -> IterableSupport.toList(room.getWorkspaces()).stream()
-                    .map(workspace->
-                        new RoomBookingModel(room.getRoomID(),workspace.getId(), workspace.getWorkspaceNumber(),room.getRoomNumber().number(),workspace.getItems())
-                    )
-                )
+                        .map(workspace ->
+                                new RoomBookingModel(room.getRoomID(), workspace.getId(), workspace.getWorkspaceNumber(), room.getRoomNumber().number(), workspace.getItems())
+                        )
+                ).toList();
+        return availableWorkspaces.stream()
                 .filter(rbm-> new HashSet<>(IterableSupport.toList(rbm.itemNameList())).containsAll(items))
                 .toList();
     }
