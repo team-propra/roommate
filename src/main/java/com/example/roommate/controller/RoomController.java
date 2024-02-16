@@ -103,7 +103,7 @@ public class RoomController {
             model.addAttribute("room", room);
             model.addAttribute("workspace", workspace);
             model.addAttribute("itemStringList", itemsOfRoom);
-            model.addAttribute("notSelcetedItems", filteredItems);
+            model.addAttribute("notSelectedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
