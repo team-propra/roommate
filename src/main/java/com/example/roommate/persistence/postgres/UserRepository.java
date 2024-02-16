@@ -13,7 +13,7 @@ import java.util.UUID;
 public class UserRepository implements IUserRepository {
     UserDAO userDAO;
 
-    public UserRepository(UserDAO userDAO) s{
+    public UserRepository(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -22,20 +22,5 @@ public class UserRepository implements IUserRepository {
         userDAO.insert(user.getKeyId(), user.getGitHubHandle(), user.getRole());
     }
 
-    //ToDo Do we need these?
-    @Override
-    public UUID getKeyId() {
-
-    }
-
-    @Override
-    public String getGitHubHandle() {
-        return null;
-    }
-
-    @Override
-    public String getRole() {
-        return null;
-    }
 
 }

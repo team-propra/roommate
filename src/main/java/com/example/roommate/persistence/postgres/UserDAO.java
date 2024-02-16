@@ -8,7 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface UserDAO extends CrudRepository<UserDTO, UUID> {
-    @Query("INSERT INTO user (key_id, handle, role) VALUES (:keyId, :handle, :role)")
+    @Query("INSERT INTO users (key_id, handle, role) VALUES (:keyId, :handle, :role)")
     void insert(UUID keyId, String handle, String role);
+
+
 
 }

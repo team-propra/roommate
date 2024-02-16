@@ -8,8 +8,5 @@ import java.util.UUID;
 
 @RepositoryInterface
 public interface IUserRepository {
-    UUID getKeyId();
-    String getGitHubHandle();
-    String getRole();
     void addUser(IUser user);
 }
