@@ -11,6 +11,7 @@ import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
+import com.example.roommate.values.models.RoomBookingModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,13 @@ public class RoomController {
                 .map(ItemName::new)
                 .collect(Collectors.toList());
 
+        List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit);
         model.addAttribute("date", datum);
         model.addAttribute("startTime", startUhrzeit);
         model.addAttribute("endTime", endUhrzeit);
         model.addAttribute("items", bookingApplicationService.allItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findAvailableRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
+        model.addAttribute("roomBookingModels", availableWorkspacesWithItems);
         return "rooms";
     }
 

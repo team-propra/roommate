@@ -85,7 +85,7 @@ public class BookingApplicationService {
         return items;
     }
 
-    public List<RoomBookingModel> findAvailableRoomsWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<RoomBookingModel> findAvailableWorkspacesWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
@@ -101,7 +101,7 @@ public class BookingApplicationService {
                 .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
                 .flatMap(room -> IterableSupport.toList(room.getWorkspaces()).stream()
                     .map(workspace->
-                        new RoomBookingModel(room.getRoomID(),workspace.getId(),room.getRoomNumber().number(),workspace.getItems())
+                        new RoomBookingModel(room.getRoomID(),workspace.getId(), workspace.getWorkspaceNumber(),room.getRoomNumber().number(),workspace.getItems())
                     )
                 )
                 .filter(rbm-> new HashSet<>(IterableSupport.toList(rbm.itemNameList())).containsAll(items))
