@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 @TestClass
 public class MainTest {
     @Test
-    @Disabled // postgres database required so it always fails
     @DisplayName("Main can be run")
     public void test_1() {
         RoomMateApplication.main(new String[]{});
