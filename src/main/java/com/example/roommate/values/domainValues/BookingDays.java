@@ -44,14 +44,19 @@ public record BookingDays(
    }
 
 
-   private BookingDays Initialize(Iterable<String> from) throws ArgumentValidationException {
-      List<Boolean> mondayBookings = new ArrayList<>();
-      List<Boolean> tuesdayBookings = new ArrayList<>();
-      List<Boolean> wednesdayBookings = new ArrayList<>();
-      List<Boolean> thursdayBookings = new ArrayList<>();
-      List<Boolean> fridayBookings = new ArrayList<>();
-      List<Boolean> saturdayBookings = new ArrayList<>();
-      List<Boolean> sundayBookings = new ArrayList<>();
+   private BookingDays Initialize(Iterable<String> from, int listSize) throws ArgumentValidationException {
+      List<Boolean> mondayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> tuesdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> wednesdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> thursdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> fridayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> saturdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+      List<Boolean> sundayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
+    /*  for (String checkedDay2 : from
+           ) {
+         System.out.println("output  checkeddays: "+checkedDay2);
+      }*/
+
       for (String checkedDay : from) {
 
          if(checkedDay.contains("-X")) {
@@ -102,7 +107,8 @@ public record BookingDays(
 
    public static BookingDays from(int stepSize, Iterable<String> from) throws ArgumentValidationException {
       BookingDays bookingDays = new BookingDays((24 * 60) / stepSize,stepSize);
-      return bookingDays.Initialize(from);
+     // System.out.println("bookingdays output: " + bookingDays.Initialize(from, (24 * 60) / stepSize));
+      return bookingDays.Initialize(from, (24 * 60) / stepSize);
    }
 
 

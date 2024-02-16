@@ -61,6 +61,7 @@ public class PostBookTest {
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("id", roomID.toString())
+                        .param("cell", "0-1-X")//otherwise invalid
                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(redirectedUrl("/"));
@@ -119,6 +120,7 @@ public class PostBookTest {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                        // .param("form", bookDataForm.toString()))
                           .param("id", roomID.toString())
+                          .param("cell", "0-1-X")//otherwise invalid
                         //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                          .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(view().name("bad-request"))

@@ -40,20 +40,18 @@ public class BookingApplicationService {
     public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
         UUID roomID = form.bookDataForm().id();
-        System.out.println("workss");
 
         List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
-        System.out.println("works still" + bookedTimeframes);
 
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
                 roomDomainService.addBooking(bookedTimeframe,roomID);
             }
             if(bookedTimeframes.isEmpty())
-                System.out.println("generaldomainexception");
             throw new GeneralDomainException();
         }
         catch (NotFoundRepositoryException e){
+
             throw new NotFoundException();
         }
     }
