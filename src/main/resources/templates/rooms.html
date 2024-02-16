@@ -53,7 +53,7 @@
         <td th:text="${'Workspace ' + roomBookingModel.workspaceNumber}"></td>
         <td>Uhrzeit</td>
         <td>
-            <a th:href="@{/room/{roomId}(roomId=${roomBookingModel.roomID})/{workspaceId}(roomId=${roomBookingModel.workspaceID})}">Raum ansehen</a>
+            <a th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>
         </td>
     </tr>
     </tbody>

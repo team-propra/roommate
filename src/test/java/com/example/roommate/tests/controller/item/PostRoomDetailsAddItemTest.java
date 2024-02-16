@@ -56,7 +56,7 @@ public class PostRoomDetailsAddItemTest {
         String roomId = room.getRoomID().toString();
         String itemNameString = itemName.type();
 
-        mvc.perform(post("/room/{roomID}/addItem/{itemName}", roomId, itemNameString)
+        mvc.perform(post("/workspace/{roomID}/addItem/{itemName}", roomId, itemNameString)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                 )
                 .andExpect(status().isOk());

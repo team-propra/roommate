@@ -4,6 +4,8 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
+import com.example.roommate.interfaces.entities.IWorkspace;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -75,24 +77,31 @@ public class RoomController {
         return "addRooms";
     }
 
-    @GetMapping("/room/{id}")
-    public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
+    @GetMapping("/room/{roomId}/workspace/{workspaceId}")
+    public ModelAndView roomDetails(Model model, @PathVariable UUID roomId, @PathVariable UUID workspaceId) {
         try {
-            IRoom roomByID = bookingApplicationService.findRoomByID(id);
-            List<String> itemsOfRoom = bookingApplicationService.getItemsOfRoom(id);
+            IRoom room = bookingApplicationService.findRoomByID(roomId);
+            Optional<? extends IWorkspace> optionalWorkspace = IterableSupport.toList(room.getWorkspaces()).stream()
+                    .filter(x -> x.getId().equals(workspaceId))
+                    .findFirst();
+            if(optionalWorkspace.isEmpty())
+                throw new NotFoundException();
+            IWorkspace workspace = optionalWorkspace.get();
+            List<String> itemsOfRoom = bookingApplicationService.getItemsOfRoom(roomId);
             List<String> filteredItems = bookingApplicationService.allItems()
                     .stream()
                     .map(ItemName::type)
                     .filter(type -> !itemsOfRoom.contains(type))
                     .toList();
 
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(room.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
-            ModelAndView modelAndView = new ModelAndView("roomDetails");
+            ModelAndView modelAndView = new ModelAndView("workspaceDetails");
             modelAndView.setStatus(HttpStatus.OK);
 
-            model.addAttribute("room", roomByID);
+            model.addAttribute("room", room);
+            model.addAttribute("workspace", workspace);
             model.addAttribute("itemStringList", itemsOfRoom);
             model.addAttribute("notSelcetedItems", filteredItems);
             return modelAndView;
@@ -136,23 +145,23 @@ public class RoomController {
 
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/{workspaceID}/addItem/{itemName}")
+    @PostMapping("/workspace/{roomID}/{workspaceID}/addItem/{itemName}")
     public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.addItemToRoom(workspaceID, itemName,roomID);
-        return roomDetails(model, roomID);
+        return roomDetails(model, roomID,workspaceID);
     }
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/{workspaceID}/createItem")
+    @PostMapping("/workspace/{roomID}/{workspaceID}/createItem")
     public ModelAndView createItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
         bookingApplicationService.createItem(newItem);
         return addItem(model, roomID, workspaceID, newItem);
     }
 
     @AdminOnly
-    @PostMapping("/room/{roomID}/{workspaceID}/deleteItem/{itemName}")
+    @PostMapping("/workspace/{roomID}/{workspaceID}/deleteItem/{itemName}")
     public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
-        return roomDetails(model, roomID);
+        return roomDetails(model, roomID,workspaceID);
     }
 }
