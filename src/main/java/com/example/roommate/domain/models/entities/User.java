@@ -6,12 +6,12 @@ import java.util.UUID;
 
 public class User implements IUser {
     private UUID keyId;
-    private String gitHubHandle;
+    private String handle;
     private String role;
 
-    public User(UUID keyId, String gitHubHandle, String role) {
+    public User(UUID keyId, String handle, String role) {
         this.keyId = keyId;
-        this.gitHubHandle = gitHubHandle;
+        this.handle = handle;
         this.role = role;
     }
 
@@ -23,12 +23,12 @@ public class User implements IUser {
         this.keyId = keyId;
     }
 
-    public String getGitHubHandle() {
-        return gitHubHandle;
+    public String getHandle() {
+        return handle;
     }
 
-    public void setGitHubHandle(String gitHubHandle) {
-        this.gitHubHandle = gitHubHandle;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getRole() {

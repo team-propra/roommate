@@ -25,7 +25,7 @@
 <div>
     <iframe src="http://localhost:3000/" width="700" height="200"></iframe>
 
-    <form method="post" th:action="@{/api/registration}">
+    <form method="post" th:action="@{/registration}">
         <label for="keyID">keyID</label> <br>
         <input type="text" name="keyId" id="keyID" placeholder="ihre keyID">
         <button type="submit">Absenden</button>
@@ -37,6 +37,11 @@
         <button type="submit">Absenden</button>
     </form>
     !-->
+</div>
+
+<div th:if="${keyID}">
+    <p>Die Registrierung war erfolgreich!</p>
+    <th:href src="/">Weiter zur Raumbuchung</th:href>
 </div>
 
 </body>
