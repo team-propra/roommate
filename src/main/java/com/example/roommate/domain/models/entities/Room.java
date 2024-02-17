@@ -4,6 +4,7 @@ package com.example.roommate.domain.models.entities;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,29 +14,26 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomNumber;
+    private final RoomNumber roomNumber;
     private final List<BookedTimeframe> bookedPeriods;
     private final List<ItemName> itemNameList;
 
-    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
+    public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.bookedPeriods = bookedPeriods;
-        this.itemNameList = itemNameList;
+        this.bookedPeriods = new ArrayList<>(bookedPeriods);
+        this.itemNameList = new ArrayList<>(itemNameList);
     }
 
-    public Room(UUID roomID, String roomNumber) {
-        this.roomID = roomID;
-        this.roomNumber = roomNumber;
-        this.bookedPeriods = new ArrayList<>();
-        this.itemNameList = new ArrayList<>();
+    public Room(UUID roomID, RoomNumber roomNumber) {
+        this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>());
     }
 
     public UUID getRoomID() {
         return roomID;
     }
 
-    public String getRoomNumber() {
+    public RoomNumber getRoomNumber() {
         return roomNumber;
     }
 
@@ -61,7 +59,7 @@ public class Room implements IRoom {
     }
 
     public List<ItemName> getItemNames() {
-        return itemNameList;
+        return itemNameList.stream().toList();
     }
 
     public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
@@ -70,7 +68,7 @@ public class Room implements IRoom {
 
     @Override
     public List<BookedTimeframe> getBookdTimeframes() {
-        return bookedPeriods;
+        return bookedPeriods.stream().toList();
     }
 
 

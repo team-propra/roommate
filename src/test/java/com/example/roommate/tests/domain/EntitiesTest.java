@@ -31,7 +31,7 @@ public class EntitiesTest {
     @Test
     void test_3() {
         Room room = EntityFactory.createRoom();
-        String roomNumber = room.getRoomNumber();
+        String roomNumber = room.getRoomNumber().number();
         assertThat(roomNumber).isEqualTo("12");
     }
 
