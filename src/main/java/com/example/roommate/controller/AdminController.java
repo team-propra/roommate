@@ -4,6 +4,7 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.ItemName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller()
 public class AdminController {
@@ -34,9 +38,13 @@ public class AdminController {
     public String adminPage(Model model) {
         Collection<ItemName> itemList = bookingApplicationService.allItems();
         Collection<IRoom> roomList = bookingApplicationService.getRooms();
+        List<IWorkspace> workspaceList = roomList.stream()
+                .flatMap(room -> StreamSupport.stream(room.getWorkspaces().spliterator(), false))
+                .collect(Collectors.toList());
 
         model.addAttribute("itemList", itemList);
         model.addAttribute("roomList", roomList);
+        model.addAttribute("workspaceList", workspaceList);
         return "adminEdit";
     }
 

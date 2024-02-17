@@ -9,7 +9,6 @@
 <div class="container mt-5">
     <h1 class="mb-4">Admin Edit Page</h1>
 
-    <div class="row">
         <div class="col-md-6">
             <h2>Liste aller Items</h2>
             <table class="table table-striped">
@@ -21,31 +20,51 @@
             </table>
         </div>
 
+        <form th:action="@{'/createItem'}" method="post">
+            <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+            <input id="createItem" type="text" name="newItem" required/>
+            <input type="submit">
+        </form>
+
         <div class="col-md-6">
             <h2>Liste aller Räume</h2>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>Raumnummer</th>
-                    <th>Items in dem Raum</th>
-                    <th>Gebuchte Zeiten</th>
+                    <th>Arbeitsplätze</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="room : ${roomList}">
                     <td th:text="${room.getRoomNumber}"></td>
-                    <td th:text="${room.getItemNames}"></td>
-                    <td th:text="${room.getBookdTimeframes}"></td>
+                    <td th:text="${room.getWorkspaces}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
+    <div class="col-md-6">
+        <h2>Liste aller Arbeitsplätze</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Arbeitsplätzenummer</th>
+                <th>Items</th>
+                <th>Gebuchte Zeiten</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="workspace : ${workspaceList}">
+
+                <td th:text="${workspace.getWorkspaceNumber}"></td>
+                <td th:text="${workspace.getItems}"></td>
+                <td th:text="${workspace.getBookedTimeframes}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <form th:action="@{'/createItem'}" method="post">
-        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
-        <input id="createItem" type="text" name="newItem" required/>
-        <input type="submit">
-    </form>
+
 </div>
 </body>
 </html>
