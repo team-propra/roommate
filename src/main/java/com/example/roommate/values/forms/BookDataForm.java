@@ -8,7 +8,7 @@ import com.example.roommate.values.domainValues.BookingDays;
 import java.util.UUID;
 
 
-public record BookDataForm(UUID id, int stepSize){
+public record BookDataForm(UUID workspaceId, UUID roomId, int stepSize){
 
    
 
@@ -19,7 +19,6 @@ public record BookDataForm(UUID id, int stepSize){
         BookingDays bookingDays = BookingDays.from(bookDataForm.stepSize(),checkedDays);
         return new IntermediateBookDataForm(bookDataForm,bookingDays);
     }
-    
 
 
 }
