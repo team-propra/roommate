@@ -65,7 +65,7 @@ public class PostRoomsTest {
 
         //verify(bookingApplicationService, times(1)).addBookEntry(any());
 
-        mvc.perform(get("/room/{id}", room.getRoomID()))
+        mvc.perform(get("/room/{id}/workspace/{workspaceId}", room.getRoomID(), workspace.getId().toString()))
                 .andExpect(xpath("//input[@id='0-0' and @type='checkbox' and not(@checked='checked')]").exists())
                 .andExpect(xpath("//input[@id='0-1' and @type='checkbox' and @checked='checked']").exists())
                 .andExpect(xpath("//input[@id='0-2' and @type='checkbox' and not(@checked='checked')]").exists())
