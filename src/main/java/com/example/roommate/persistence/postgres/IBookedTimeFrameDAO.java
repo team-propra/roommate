@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Interface
 public interface IBookedTimeFrameDAO extends CrudRepository<BookedTimeframeDTO, UUID> {
-    @Query("INSERT INTO booked_timeframe (id, day_of_week,local_time,duration,room_id) VALUES (:id, :day, :startTime, :duration, :workspaceId)")
+    @Query("INSERT INTO booked_timeframe (id, day_of_week,local_time,duration,workspace_id) VALUES (:id, :day, :startTime, :duration, :workspaceId)")
     @Modifying
     void insert(@Param("id") UUID id,@Param("day") DayOfWeek day,@Param("startTime") LocalTime startTime,@Param("duration") Duration duration,@Param("workspaceId") UUID workspaceId);
 }
