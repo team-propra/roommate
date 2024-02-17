@@ -26,10 +26,13 @@ public class HomeController {
     public String index(Model model) {
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
                 .filter(x-> !IterableSupport.toList(x.getBookedTimeframes()).isEmpty())
-                .map(x -> new RoomHomeModel(x.getRoomID(), 
-                        x.getRoomNumber().number(),  
-                        DayTimeFrame.from(IterableSupport.toList(x.getBookedTimeframes())).convertToString(), 
-                        IterableSupport.toList(x.getWorkspaces())))
+                .flatMap(room->IterableSupport.toList(room.getWorkspaces()).stream()
+                        .map(workspace->new RoomHomeModel(room.getRoomID(),
+                                workspace.getId(),
+                                room.getRoomNumber(),
+                                workspace.getWorkspaceNumber(),
+                                DayTimeFrame.from(IterableSupport.toList(room.getBookedTimeframes())).convertToString()
+                        )))
                 .toList();
         model.addAttribute("rooms", roomModels);
         return "home";

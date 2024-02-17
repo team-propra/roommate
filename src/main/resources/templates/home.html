@@ -24,7 +24,7 @@
                 <span th:text="${room.roomNumber}"> 123 </span>
             </td>
             <td>
-                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNameList}">
+                <div th:text="${workspace.getWorkspaceNumber()}" th:each="workspace:${room.workspaces()}">
                     <span > Küche </span>
                 </div>
 
