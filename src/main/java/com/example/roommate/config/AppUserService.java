@@ -23,9 +23,9 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
         OAuth2User originalUser = defaultService.loadUser(userRequest);
         Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
         //@ToDo hier Berechtigung aus Datenbank lesen
-        if ("nighoge".equals(originalUser.getAttribute("login"))) {
+//        if ("nighoge".equals(originalUser.getAttribute("login"))) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
+//        }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
     }
 }

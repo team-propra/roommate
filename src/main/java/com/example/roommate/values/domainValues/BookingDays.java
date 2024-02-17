@@ -21,19 +21,14 @@ public record BookingDays(
         Iterable<Boolean> saturdayBookings,
         Iterable<Boolean> sundayBookings
 ) {
-   BookingDays(int listSize, int stepSize){
-      this(
-         stepSize,
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false))
-      );
+   
+   private static int getListSize(int stepSize){
+      return (24 * 60) / stepSize;
    }
-
+   private static ArrayList<Boolean> CreateListOfSize(int stepSize)
+   {
+      return new ArrayList<>(Collections.nCopies(getListSize(stepSize), false));
+   }
 
    public static boolean validateBookingCoorectness(BookingDays bookingDays) {
       //At least one box is set to true
@@ -42,21 +37,28 @@ public record BookingDays(
       // stream.forEach(System.out::println);
       return combinedStream.anyMatch(value -> value.equals(true));
    }
-
-
-   private BookingDays Initialize(Iterable<String> from, int listSize) throws ArgumentValidationException {
-      List<Boolean> mondayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> tuesdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> wednesdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> thursdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> fridayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> saturdayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-      List<Boolean> sundayBookings = new ArrayList<>((Collections.nCopies(listSize, false)));
-    /*  for (String checkedDay2 : from
-           ) {
-         System.out.println("output  checkeddays: "+checkedDay2);
-      }*/
-
+   BookingDays(int stepSize){
+      this(
+           stepSize,
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize)
+      );
+   }
+   
+   private BookingDays Initialize(Iterable<String> from) throws ArgumentValidationException {
+      
+      List<Boolean> mondayBookings = CreateListOfSize(stepSize);
+      List<Boolean> tuesdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> wednesdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> thursdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> fridayBookings = CreateListOfSize(stepSize);
+      List<Boolean> saturdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> sundayBookings = CreateListOfSize(stepSize);
       for (String checkedDay : from) {
 
          if(checkedDay.contains("-X")) {
@@ -106,9 +108,8 @@ public record BookingDays(
 
 
    public static BookingDays from(int stepSize, Iterable<String> from) throws ArgumentValidationException {
-      BookingDays bookingDays = new BookingDays((24 * 60) / stepSize,stepSize);
-     // System.out.println("bookingdays output: " + bookingDays.Initialize(from, (24 * 60) / stepSize));
-      return bookingDays.Initialize(from, (24 * 60) / stepSize);
+      BookingDays bookingDays = new BookingDays(stepSize);
+      return bookingDays.Initialize(from);
    }
 
 
