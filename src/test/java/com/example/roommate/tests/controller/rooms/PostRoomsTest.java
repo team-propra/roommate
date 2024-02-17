@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -65,8 +66,13 @@ public class PostRoomsTest {
         //verify(bookingApplicationService, times(1)).addBookEntry(any());
 
         mvc.perform(get("/room/{id}", room.getRoomID()))
-                //.andExpect(xpath("(//input[contains(@class,'checked')])[2]"));
-                .andExpect(xpath("//input[@type='hidden' and @name='cell' and @value='0-1']/following-sibling::input[@type='checkbox' and @name='box' and @class='checked']").exists());
+                .andExpect(xpath("//input[@id='0-0' and @type='checkbox' and not(@checked='checked')]").exists())
+                .andExpect(xpath("//input[@id='0-1' and @type='checkbox' and @checked='checked']").exists())
+                .andExpect(xpath("//input[@id='0-2' and @type='checkbox' and not(@checked='checked')]").exists())
+                .andExpect(xpath("//input[@id='0-3' and @type='checkbox' and not(@checked='checked')]").exists());
+        
+                // I get what is being checked here, but it's not readable, im sorry
+                //.andExpect(xpath("//input[@type='hidden' and @name='cell' and @value='0-1']/following-sibling/following-sibling::input[@type='checkbox' and @name='box' and @class='checked']").exists());
 
 
     }
