@@ -27,7 +27,7 @@
     }
 
 </script>
-  <h1>Details zu Raum: <span th:text="*{roomNumber}">-1</span>, Arbeitsplatz: <span th:text="${workspace.getWorkspaceNumber()}">-1</span></h1>
+  <h1>Details zu Raum: <span th:text="*{roomNumber.number()}">-1</span>, Arbeitsplatz: <span th:text="${workspace.getWorkspaceNumber()}">-1</span></h1>
 
   <div th:if="${formValidationErrorText}">
     <div th:text="${formValidationErrorText}">ErrorText</div>
@@ -95,8 +95,12 @@
 
                   <div>
                       <input  type="hidden" name="cell" th:value="${time + '-' + day}">
-                      <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
-                      <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+                      <label>
+                          <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                      </label>
+                      <label>
+                          <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+                      </label>
 
                   </div>
               </td>

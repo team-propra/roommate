@@ -20,27 +20,36 @@ public record BookingDays(
         Iterable<Boolean> saturdayBookings,
         Iterable<Boolean> sundayBookings
 ) {
-   BookingDays(int listSize, int stepSize){
+   
+   private static int getListSize(int stepSize){
+      return (24 * 60) / stepSize;
+   }
+   private static ArrayList<Boolean> CreateListOfSize(int stepSize)
+   {
+      return new ArrayList<>(Collections.nCopies(getListSize(stepSize), false));
+   }
+   BookingDays(int stepSize){
       this(
-         stepSize,
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false)),
-         new ArrayList<>(Collections.nCopies(listSize, false))
+           stepSize,
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize),
+           CreateListOfSize(stepSize)
       );
    }
    
    private BookingDays Initialize(Iterable<String> from) throws ArgumentValidationException {
-      List<Boolean> mondayBookings = new ArrayList<>();
-      List<Boolean> tuesdayBookings = new ArrayList<>();
-      List<Boolean> wednesdayBookings = new ArrayList<>();
-      List<Boolean> thursdayBookings = new ArrayList<>();
-      List<Boolean> fridayBookings = new ArrayList<>();
-      List<Boolean> saturdayBookings = new ArrayList<>();
-      List<Boolean> sundayBookings = new ArrayList<>();
+      
+      List<Boolean> mondayBookings = CreateListOfSize(stepSize);
+      List<Boolean> tuesdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> wednesdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> thursdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> fridayBookings = CreateListOfSize(stepSize);
+      List<Boolean> saturdayBookings = CreateListOfSize(stepSize);
+      List<Boolean> sundayBookings = CreateListOfSize(stepSize);
       for (String checkedDay : from) {
 
          if(checkedDay.contains("-X")) {
@@ -90,7 +99,7 @@ public record BookingDays(
 
 
    public static BookingDays from(int stepSize, Iterable<String> from) throws ArgumentValidationException {
-      BookingDays bookingDays = new BookingDays((24 * 60) / stepSize,stepSize);
+      BookingDays bookingDays = new BookingDays(stepSize);
       return bookingDays.Initialize(from);
    }
 
