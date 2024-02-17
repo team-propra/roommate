@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <title th:text="*{roomNumber}" >-1</title>
     <style>
         .tag-list {
@@ -63,16 +64,16 @@
     <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/createItem'}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
         <input id="createItem" type="text" name="newItem" required/>
-        <input type="submit">
+        <input type="submit"/>
     </form>
 </div>
 
 
 
   <form method="post" th:action="@{/rooms}">
-      <input type="hidden" name="roomId" th:value="*{getRoomID()}">
-      <input type="hidden" name="workspaceId" th:value="${workspace.getId()}">
-      <input type="hidden" name="stepSize" th:value="${frame.stepSize()}">
+      <input type="hidden" name="roomId" th:value="*{getRoomID()}"/>
+      <input type="hidden" name="workspaceId" th:value="${workspace.getId()}"/>
+      <input type="hidden" name="stepSize" th:value="${frame.stepSize()}"/>
 
     <table class="table">
       <thead class="table-header">
@@ -101,7 +102,7 @@
                           <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '\')'">
                       </label>
                       <label>
-                          <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '\')'" checked>
+                          <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" class="checked" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '\')'" checked="">
                       </label>
                   </div>
               </td>
@@ -109,7 +110,7 @@
       </tbody>
     </table>
 
-    <input type="submit">
+    <input type="submit"/>
   </form>
 </body>
 </html>

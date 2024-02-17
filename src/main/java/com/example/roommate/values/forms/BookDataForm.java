@@ -19,7 +19,6 @@ public record BookDataForm(UUID workspaceId, UUID roomId, int stepSize){
         BookingDays bookingDays = BookingDays.from(bookDataForm.stepSize(),checkedDays);
         return new IntermediateBookDataForm(bookDataForm,bookingDays);
     }
-    
 
 
 }
