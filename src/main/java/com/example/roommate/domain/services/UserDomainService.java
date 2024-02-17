@@ -26,7 +26,7 @@ public class UserDomainService {
         userRepository.addUser(new User(null, login,"USER"));
     }
 
-    public void verifyUser(UUID keyId, String login) {
-        userRepository.verifyUser(keyId, login);
+    public void registerKey(UUID keyId, String login) {
+        userRepository.registerKey(keyId, login);
     }
 }

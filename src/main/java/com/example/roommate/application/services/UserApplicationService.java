@@ -28,8 +28,8 @@ public class UserApplicationService {
         }
     }
 
-    public void verifyUser(UUID keyId, String login) {
-        userDomainService.verifyUser(keyId, login);
+    public void registerKey(UUID keyId, String login) {
+        userDomainService.registerKey(keyId, login);
     }
 
     public boolean userHasKey(String login) {

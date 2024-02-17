@@ -23,7 +23,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void verifyUser(UUID keyId, String login) {
+    public void registerKey(UUID keyId, String login) {
         userDAO.verifyUser(keyId, login);
     }
 
