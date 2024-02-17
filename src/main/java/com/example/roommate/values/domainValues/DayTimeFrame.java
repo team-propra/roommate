@@ -1,13 +1,14 @@
 package com.example.roommate.values.domainValues;
 
 import com.example.roommate.utility.IterableSupport;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//@SuppressFBWarnings("EI",)
+@SuppressFBWarnings(value = {"EI", "EI2"}, justification = "DayTimeFrame represents a part of an html contract")
 public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
     public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes){
         //Frames
