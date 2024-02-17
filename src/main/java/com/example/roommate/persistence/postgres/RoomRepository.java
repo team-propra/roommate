@@ -91,7 +91,7 @@ public class RoomRepository implements IRoomRepository {
     private WorkspaceOOP toWorkspace(WorkspacesDTO workspacesDTO, List<ItemToWorkspaceDTO> itemToWorkspaceDTOS, List<ItemDTO> items){
         List<ItemName> myItems = new ArrayList<>();
         itemToWorkspaceDTOS.stream()
-                .filter(x -> x.workspaceId() == workspacesDTO.id())
+                .filter(x -> x.workspaceId().equals(workspacesDTO.id()))
                 .forEach(x->{
                     items.stream()
                         .map(ItemDTO::toItemName)

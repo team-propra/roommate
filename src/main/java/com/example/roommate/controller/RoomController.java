@@ -144,21 +144,21 @@ public class RoomController {
 
 
     @AdminOnly
-    @PostMapping("/workspace/{roomID}/{workspaceID}/addItem/{itemName}")
+    @PostMapping("/room/{roomID}/workspace/{workspaceID}/addItem/{itemName}")
     public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.addItemToRoom(workspaceID, itemName,roomID);
         return roomDetails(model, roomID,workspaceID);
     }
 
     @AdminOnly
-    @PostMapping("/workspace/{roomID}/{workspaceID}/createItem")
+    @PostMapping("/room/{roomID}/workspace/{workspaceID}/createItem")
     public ModelAndView createItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
         bookingApplicationService.createItem(newItem);
         return addItem(model, roomID, workspaceID, newItem);
     }
 
     @AdminOnly
-    @PostMapping("/workspace/{roomID}/{workspaceID}/deleteItem/{itemName}")
+    @PostMapping("/room/{roomID}/workspace/{workspaceID}/removeItem/{itemName}")
     public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
         return roomDetails(model, roomID,workspaceID);

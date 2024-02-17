@@ -38,7 +38,7 @@
     <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
         <span th:text="${itemName}"></span>
         <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/room/' + ${room.getRoomID()} + '/deleteItem/' + ${itemName}}" method="post">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/removeItem/' + ${itemName}}" method="post">
                 <input type="hidden" name="tagName" th:value="${itemName}" />
                 <button type="submit">X</button>
             </form>
@@ -49,8 +49,8 @@
 <div sec:authorize="hasRole('ADMIN')">
     <label>Gegenstände hinzufügen</label>
     <ul>
-        <li th:each="item : ${notSelcetedItems}">
-            <form th:action="@{'/room/' + ${room.getRoomID()} + '/addItem/' + ${item}}" method="post">
+        <li th:each="item : ${notSelectedItems}">
+            <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/addItem/' + ${item}}" method="post">
                 <button type="submit">
                     <span th:text="${item}"></span>
                 </button>
@@ -60,7 +60,7 @@
 </div>
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/room/' + ${room.getRoomID()} + '/createItem'}" method="post">
+    <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/createItem'}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
         <input id="createItem" type="text" name="newItem" required/>
         <input type="submit">
