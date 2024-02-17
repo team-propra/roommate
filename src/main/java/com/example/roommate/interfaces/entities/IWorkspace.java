@@ -1,5 +1,6 @@
 package com.example.roommate.interfaces.entities;
 
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.List;
@@ -9,4 +10,5 @@ public interface IWorkspace {
     UUID getId();
     int getWorkspaceNumber();
     List<ItemName> getItems();
+    Iterable<BookedTimeframe> getBookedTimeframes();
 }

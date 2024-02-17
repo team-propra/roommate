@@ -28,7 +28,7 @@ class RoomDomainServiceTest {
     ItemRepository itemRepository = new ItemRepository();
     RoomDomainService roomDomainService = ServiceFactory.createRoomService(roomRepository, itemRepository);
 
-    UUID roomID = ValuesFactory.id;
+    UUID roomID = ValuesFactory.roomId;
     UUID differentRoomID = UUID.fromString("6d5bbffd-96eb-4475-9095-5f6ba653f118");
     RoomApplicationData room = new RoomApplicationData(roomID, new RoomNumber("101"));
     RoomApplicationData differentRoom = new RoomApplicationData(differentRoomID, new RoomNumber("102"));
@@ -52,7 +52,7 @@ class RoomDomainServiceTest {
         roomDomainService.removeRoom(room);
 
 
-        RoomEntry roomEntry = new RoomEntry(room.roomID(), room.roomNumber(), null, null);
+        RoomEntry roomEntry = new RoomEntry(room.roomID(), room.roomNumber(), null);
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).doesNotContain(roomEntry.getRoomID());
     }
 

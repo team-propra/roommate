@@ -8,7 +8,7 @@ import com.example.roommate.values.domainValues.BookingDays;
 import java.util.UUID;
 
 
-public record BookDataForm(UUID id, int stepSize){
+public record BookDataForm(UUID workspaceId, UUID roomId, int stepSize){
 
    
 

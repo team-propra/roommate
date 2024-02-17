@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 @TestClass
 class RoomEntryTest {
 
-    UUID id = ValuesFactory.id;
+    UUID id = ValuesFactory.roomId;
 
     @Test
     @DisplayName("Get Room ID Test")

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @DomainService
@@ -57,25 +58,30 @@ public class RoomDomainService {
         itemRepository.addItem(table);
         itemRepository.addItem(desk);
         List<Workspace> room1Workspaces = List.of(
-                new Workspace(UUID.randomUUID(), 1, List.of(table, desk, chair)),
-                new Workspace(UUID.randomUUID(), 2, List.of(table)),
-                new Workspace(UUID.randomUUID(), 3, List.of(desk))
+                new Workspace(UUID.randomUUID(), 1, List.of(table, desk, chair),List.of()),
+                new Workspace(UUID.randomUUID(), 2, List.of(table),List.of()),
+                new Workspace(UUID.randomUUID(), 3, List.of(desk),List.of())
         );
 
         List<Workspace> room2Workspaces = List.of(
-                new Workspace(UUID.randomUUID(), 1, List.of(table)),
-                new Workspace(UUID.randomUUID(), 44, List.of(chair, desk))
+                new Workspace(UUID.randomUUID(), 1, List.of(table),List.of()),
+                new Workspace(UUID.randomUUID(), 44, List.of(chair, desk),List.of())
         );
-        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), new RoomNumber("13"), List.of(),room1Workspaces);
-        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), new RoomNumber("12"), List.of(),room2Workspaces);
+        Room room2 = new Room(UUID.fromString("309d495f-036c-4b01-ab7e-8da2662bc75e"), new RoomNumber("13"),room1Workspaces);
+        Room room1 = new Room(UUID.fromString("4d666ac8-efff-40a9-80a5-df9b82439f5a"), new RoomNumber("12"),room2Workspaces);
         roomRepository.add(room1);
         roomRepository.add(room2);
     }
 
 
-    public void addBooking(BookedTimeframe bookedTimeframe, UUID roomID) throws NotFoundRepositoryException {
+    public void addBooking(BookedTimeframe bookedTimeframe, UUID workspaceId, UUID roomID) throws NotFoundRepositoryException {
         IRoom roomByID = roomRepository.findRoomByID(roomID);
-        roomRepository.addBooking(bookedTimeframe,roomByID);
+        Optional<? extends IWorkspace> first = IterableSupport.toList(roomByID.getWorkspaces()).stream()
+                .filter(x -> x.getId().equals(workspaceId))
+                .findFirst();
+        if(first.isEmpty())
+            throw new NotFoundRepositoryException();
+        roomRepository.addBooking(bookedTimeframe,first.get());
     }
 
 
@@ -88,7 +94,7 @@ public class RoomDomainService {
 
     public Collection<IRoom> getRooms() {
         return roomRepository.findAll().stream()
-                .map(iroom -> (IRoom) new Room(iroom.getRoomID(), iroom.getRoomNumber(), IterableSupport.toList(iroom.getBookedTimeframes()),IterableSupport.toList(iroom.getWorkspaces())))
+                .map(room -> (IRoom) new Room(room.getRoomID(), room.getRoomNumber(),IterableSupport.toList(room.getWorkspaces())))
                 .toList();
     }
 
@@ -105,8 +111,8 @@ public class RoomDomainService {
         return itemRepository.getItems();
     }
 
-    public static boolean isRoomAvailable(IRoom room, BookedTimeframe bookedTimeframe){
-        return toRoom(room).isAvailable(bookedTimeframe);
+    public static boolean isWorkspaceAvailable(IWorkspace workspace, BookedTimeframe bookedTimeframe){
+        return toWorkspace(workspace).isAvailable(bookedTimeframe);
     }
 
     private static Room toRoom(IRoom room){
@@ -114,13 +120,12 @@ public class RoomDomainService {
         return new Room(
                 room.getRoomID(),
                 room.getRoomNumber(),
-                IterableSupport.toList(room.getBookedTimeframes()),
                 IterableSupport.toList(workspaces)
         );
     }
 
-    private static Workspace toWorkspace(IWorkspace iWorkspace){
-        return new Workspace(iWorkspace.getId(), iWorkspace.getWorkspaceNumber(), iWorkspace.getItems());
+    private static Workspace toWorkspace(IWorkspace workspace){
+        return new Workspace(workspace.getId(),workspace.getWorkspaceNumber(),workspace.getItems(),workspace.getBookedTimeframes());
     }
 
     @Transactional

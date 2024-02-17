@@ -25,15 +25,17 @@ public class HomeController {
     @GetMapping()
     public String index(Model model) {
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
-                .filter(x-> !IterableSupport.toList(x.getBookedTimeframes()).isEmpty())
-                .flatMap(room->IterableSupport.toList(room.getWorkspaces()).stream()
-                        .map(workspace->new RoomHomeModel(room.getRoomID(),
-                                workspace.getId(),
-                                room.getRoomNumber(),
-                                workspace.getWorkspaceNumber(),
-                                DayTimeFrame.from(IterableSupport.toList(room.getBookedTimeframes())).convertToString(),
-                                workspace.getItems()
-                        )))
+                .flatMap(room->
+                    IterableSupport.toList(room.getWorkspaces()).stream()
+                            .filter(workspace -> !IterableSupport.toList(workspace.getBookedTimeframes()).isEmpty())
+                            .map(workspace -> new RoomHomeModel(room.getRoomID(),
+                                    workspace.getId(),
+                                    room.getRoomNumber(),
+                                    workspace.getWorkspaceNumber(),
+                                    DayTimeFrame.from(IterableSupport.toList(workspace.getBookedTimeframes())).convertToString(),
+                                    workspace.getItems()
+                            ))
+                )
                 .toList();
         model.addAttribute("homeModels", roomModels);
         return "home";

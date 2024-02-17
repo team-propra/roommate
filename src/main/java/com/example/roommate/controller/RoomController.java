@@ -93,7 +93,7 @@ public class RoomController {
                     .filter(type -> !itemsOfRoom.contains(type))
                     .toList();
 
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(room.getBookedTimeframes());
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
             ModelAndView modelAndView = new ModelAndView("workspaceDetails");
@@ -122,10 +122,11 @@ public class RoomController {
 
 
         if (bindingResult.hasErrors()) {
-            UUID id = form.id();
+            UUID roomId = form.roomId();
+            UUID workspaceId = form.workspaceId();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
-            return new ModelAndView("redirect:/room/%s".formatted(id));
+            return new ModelAndView("redirect:/room/%s/workspace/%s".formatted(roomId,workspaceId));
         }
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);

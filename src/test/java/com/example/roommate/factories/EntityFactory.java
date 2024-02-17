@@ -4,7 +4,6 @@ import com.example.roommate.annotations.Factory;
 import com.example.roommate.domain.models.entities.*;
 import com.example.roommate.values.domainValues.RoomNumber;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ public class EntityFactory {
     }
 
     public static Room createRoom() {
-        return new Room(id, new RoomNumber("12"), new ArrayList<>(), new ArrayList<>());
+        return new Room(id, new RoomNumber("12"), List.of());
     }
 
     public static User createUser() {
@@ -26,6 +25,6 @@ public class EntityFactory {
     }
 
 
-    public static Workspace createWorkspace() { return new Workspace(id, 14, List.of()); }
+    public static Workspace createWorkspace() { return new Workspace(id, 14, List.of(),List.of()); }
 }
 

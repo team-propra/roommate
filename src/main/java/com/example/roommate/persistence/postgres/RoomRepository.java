@@ -43,7 +43,7 @@ public class RoomRepository implements IRoomRepository {
         List<ItemToWorkspaceDTO> itemToWorkspaceList = IterableSupport.toList(itemToWorkspaceDAO.findAll());
         List<WorkspacesDTO> workspacesList = IterableSupport.toList(workspaceDAO.findAll());
         List<ItemDTO> itemList = IterableSupport.toList(itemDAO.findAll());
-        List<BookedTimeframeDTO> book = IterableSupport.toList(bookedTimeFrameDAO.findAll());
+        List<BookedTimeframeDTO> bookedTimeframeList = IterableSupport.toList(bookedTimeFrameDAO.findAll());
 
         // Map
         List<RoomOOP> result = new ArrayList<>();
@@ -54,19 +54,16 @@ public class RoomRepository implements IRoomRepository {
                     .toList();
 
              */
-            List<BookedTimeframe> bookedTimeframes = book.stream()
-                    .filter(timeframe -> timeframe.roomId().equals(room.id()))
-                    .map(timeframe -> new BookedTimeframe(timeframe.dayOfWeek(), timeframe.localTime(), timeframe.duration()))
-                    .toList();
+            
 
             List<WorkspacesDTO> matchingWorkspaces = workspacesList.stream()
                     .filter(workspace -> workspace.roomId().equals(room.id()))
                     .toList();
 
 
-            List<WorkspaceOOP> workspaces = matchingWorkspaces.stream().map(x->toWorkspace(x,itemToWorkspaceList,itemList)).toList();
+            List<WorkspaceOOP> workspaces = matchingWorkspaces.stream().map(x->toWorkspace(x,itemToWorkspaceList,itemList,bookedTimeframeList)).toList();
 
-            result.add(new RoomOOP(room.id(), new RoomNumber(room.roomNumber()), bookedTimeframes, workspaces));
+            result.add(new RoomOOP(room.id(), new RoomNumber(room.roomNumber()), workspaces));
         }
         return result;
     }
@@ -76,30 +73,35 @@ public class RoomRepository implements IRoomRepository {
         Optional<RoomDTO> room = roomDAO.findById(roomID);
         if (room.isEmpty())
             throw new NotFoundRepositoryException();
-        List<BookedTimeframe> timeframes = bookedTimeFrameDAO.findByRoomId(roomID).stream()
-                .map(BookedTimeframeDTO::toBookedTimeFrame)
+        List<BookedTimeframeDTO> timeframes = IterableSupport.toList(bookedTimeFrameDAO.findAll()).stream()
                 .toList();
         List<WorkspacesDTO> workspacesDTOS = IterableSupport.toList(workspaceDAO.findAll()).stream()
                 .filter(x -> x.roomId().equals(roomID))
                 .toList();
         List<ItemToWorkspaceDTO> itemToWorkspaceDTOS = IterableSupport.toList(itemToWorkspaceDAO.findAll());
         List<ItemDTO> itemDTOS = IterableSupport.toList(itemDAO.findAll());
-        List<WorkspaceOOP> workspaces = workspacesDTOS.stream().map(x->toWorkspace(x,itemToWorkspaceDTOS,itemDTOS)).toList(); 
-        return new RoomOOP(roomID, new RoomNumber(room.get().roomNumber()), timeframes, workspaces);
+        List<WorkspaceOOP> workspaces = workspacesDTOS.stream().map(x->toWorkspace(x,itemToWorkspaceDTOS,itemDTOS,timeframes)).toList(); 
+        return new RoomOOP(roomID, new RoomNumber(room.get().roomNumber()), workspaces);
     }
     
-    private WorkspaceOOP toWorkspace(WorkspacesDTO workspacesDTO, List<ItemToWorkspaceDTO> itemToWorkspaceDTOS, List<ItemDTO> items){
+    private WorkspaceOOP toWorkspace(WorkspacesDTO workspacesDTO, List<ItemToWorkspaceDTO> itemToWorkspaceDTOS, List<ItemDTO> items, List<BookedTimeframeDTO> bookedTimeframeDTOS){
         List<ItemName> myItems = new ArrayList<>();
+        List<BookedTimeframe> bookedTimeframes = new ArrayList<>(); 
+        
         itemToWorkspaceDTOS.stream()
                 .filter(x -> x.workspaceId().equals(workspacesDTO.id()))
-                .forEach(x->{
+                .forEach(workspace->{
                     items.stream()
                         .map(ItemDTO::toItemName)
-                        .filter(item-> item.type().equals(x.itemName()))
+                        .filter(item-> item.type().equals(workspace.itemName()))
                         .forEach(myItems::add);
+                    bookedTimeframeDTOS.stream()
+                        .filter(timeframe -> timeframe.workspaceId().equals(workspace.id()))
+                        .map(BookedTimeframeDTO::toBookedTimeFrame)
+                        .forEach(bookedTimeframes::add);
                 });
         
-        return new WorkspaceOOP(workspacesDTO.id(),workspacesDTO.workspaceNumber(), myItems);
+        return new WorkspaceOOP(workspacesDTO.id(),workspacesDTO.workspaceNumber(), myItems,bookedTimeframes);
     }
 
     @Override
@@ -115,14 +117,15 @@ public class RoomRepository implements IRoomRepository {
                 .forEach(workspace->{
                     workspaceDAO.insert(workspace.getId(),workspace.getWorkspaceNumber(),room.getRoomID());
                     workspace.getItems().forEach(item-> itemToWorkspaceDAO.insert(UUID.randomUUID(),item.type(),workspace.getId()));
+                    workspace.getBookedTimeframes().forEach(bookedTimeframe -> {
+                        bookedTimeFrameDAO.insert(UUID.randomUUID(),bookedTimeframe.day(),bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
+                    });
                 });
-        room.getBookedTimeframes()
-                .forEach(x-> bookedTimeFrameDAO.insert(UUID.randomUUID(),x.day(),x.startTime(),x.duration(),room.getRoomID()));
     }
 
     @Override
-    public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
-        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), room.getRoomID());
+    public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace room) {
+        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), room.getId());
     }
 
     @Override

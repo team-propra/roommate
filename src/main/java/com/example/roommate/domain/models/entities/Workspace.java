@@ -2,6 +2,7 @@ package com.example.roommate.domain.models.entities;
 
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
+import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ public class Workspace implements IWorkspace {
     UUID id;
     int workspaceNumber;
     ArrayList<ItemName> items;
-    public Workspace(UUID id, int workspaceNumber, Iterable<ItemName> items) {
+    ArrayList<BookedTimeframe> bookedTimeframes;
+    public Workspace(UUID id, int workspaceNumber, Iterable<ItemName> items, Iterable<BookedTimeframe> bookedTimeframes) {
         this.items = new ArrayList<>(IterableSupport.toList(items));
         this.id = id;
         this.workspaceNumber = workspaceNumber;
+        this.bookedTimeframes = new ArrayList<>(IterableSupport.toList(bookedTimeframes));
     }
 
     @Override
@@ -34,6 +37,11 @@ public class Workspace implements IWorkspace {
         return items.stream().toList();
     }
 
+    @Override
+    public Iterable<BookedTimeframe> getBookedTimeframes() {
+        return IterableSupport.toList(bookedTimeframes);
+    }
+
     public void removeItem(ItemName item) {
         items.remove(item);
     }
@@ -45,4 +53,12 @@ public class Workspace implements IWorkspace {
     public void addItem(Iterable<ItemName> items) {
         items.forEach(item->this.items.add(item));
     }
+    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
+        bookedTimeframes.add(bookedTimeframe);
+    }
+
+    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
+        return IterableSupport.toList(bookedTimeframes).stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
+    }
+    
 }

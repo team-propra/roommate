@@ -40,12 +40,13 @@ public class BookingApplicationService {
     }
     public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
-        UUID roomID = form.bookDataForm().id();
+        UUID workspaceId = form.bookDataForm().workspaceId();
+        UUID roomId = form.bookDataForm().roomId();
 
         List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
-                roomDomainService.addBooking(bookedTimeframe,roomID);
+                roomDomainService.addBooking(bookedTimeframe,workspaceId,roomId);
             }
             if(bookedTimeframes.isEmpty())
                 throw new GeneralDomainException();
@@ -99,7 +100,9 @@ public class BookingApplicationService {
 
         Collection<IRoom> rooms = roomDomainService.getRooms();
         List<IRoom> availableRooms = rooms.stream()
-                .filter(room -> RoomDomainService.isRoomAvailable(room, bookedTimeframe))
+                .filter(room -> IterableSupport.toList(room.getWorkspaces()).stream()
+                        .anyMatch(workspace->RoomDomainService.isWorkspaceAvailable(workspace, bookedTimeframe))
+                )
                 .toList();
         List<RoomBookingModel> availableWorkspaces = availableRooms.stream()
                 .flatMap(room -> IterableSupport.toList(room.getWorkspaces()).stream()

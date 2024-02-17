@@ -47,9 +47,10 @@ public class PostBookTest {
 
 
 
-    UUID roomID = ValuesFactory.id;
+    UUID roomID = ValuesFactory.roomId;
+    UUID workspaceId = ValuesFactory.roomId;
 
-    BookDataForm bookDataForm = new BookDataForm(roomID,60);
+    BookDataForm bookDataForm = new BookDataForm(workspaceId, roomID,60);
 
     @DisplayName("POST /rooms redirects to /")
     @Test
@@ -93,11 +94,12 @@ public class PostBookTest {
 
         mvc.perform(post("/rooms")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .param("id", "null")
+                .param("roomId", "null")
+                .param("workspaceId ", "null")
                // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
                 .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/room/*")) ;
+                .andExpect(redirectedUrlPattern("/room/*/workspace/*")) ;
 
     }
 

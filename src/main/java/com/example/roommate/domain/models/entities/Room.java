@@ -3,7 +3,6 @@ package com.example.roommate.domain.models.entities;
 
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
-import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
@@ -15,18 +14,16 @@ public class Room implements IRoom {
 
     private final UUID roomID;
     private final RoomNumber roomNumber;
-    private final List<BookedTimeframe> bookedPeriods;
     private final List<Workspace> workspaces;
 
-    public Room(UUID roomID, RoomNumber roomNumber, List<BookedTimeframe> bookedPeriods,List<? extends IWorkspace> workspaces) {
+    public Room(UUID roomID, RoomNumber roomNumber, List<? extends IWorkspace> workspaces) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.bookedPeriods = new ArrayList<>(bookedPeriods);
-        this.workspaces = workspaces.stream().map(x->new Workspace(x.getId(),x.getWorkspaceNumber(),x.getItems())).toList();
+        this.workspaces = workspaces.stream().map(x->new Workspace(x.getId(),x.getWorkspaceNumber(),x.getItems(),x.getBookedTimeframes())).toList();
     }
 
     public Room(UUID roomID, RoomNumber roomNumber) {
-        this(roomID,roomNumber,new ArrayList<>(),new ArrayList<>());
+        this(roomID,roomNumber,new ArrayList<>());
     }
     
 
@@ -53,14 +50,7 @@ public class Room implements IRoom {
         return Objects.hash(roomID, roomNumber);
     }
 
-    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
-        bookedPeriods.add(bookedTimeframe);
-    }
 
-    @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
-        return bookedPeriods.stream().toList();
-    }
 
     @Override
     public List<Workspace> getWorkspaces() {
@@ -68,8 +58,6 @@ public class Room implements IRoom {
     }
 
 
-    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
-        return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
-    }
+    
 
 }

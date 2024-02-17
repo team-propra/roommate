@@ -58,11 +58,21 @@ public class RoomRepository implements IRoomRepository {
     }
 
     @Override
-    public void addBooking(BookedTimeframe bookedTimeframe, IRoom room) {
+    public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace workspace) throws NotFoundRepositoryException {
+        IRoom room = findRoomByWorkspace(workspace.getId());
+        
         List<BookedTimeframe> bookedTimeframes = new ArrayList<>();
         bookedTimeframes.add(bookedTimeframe);
-        bookedTimeframes.addAll(IterableSupport.toList(room.getBookedTimeframes()));
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),bookedTimeframes,room.getWorkspaces());
+        bookedTimeframes.addAll(IterableSupport.toList(workspace.getBookedTimeframes()));
+
+        List<IWorkspace> filteredWorkspaces = new ArrayList<>();
+        IterableSupport.toList(room.getWorkspaces())
+                .stream()
+                .filter(workspaceEntry->workspaceEntry.getId().equals(workspace.getId()))
+                .forEach(filteredWorkspaces::add);
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),workspace.getItems(),bookedTimeframes));
+
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),filteredWorkspaces);
         overwrite(roomEntry);
     }
 
@@ -79,11 +89,11 @@ public class RoomRepository implements IRoomRepository {
         List<IWorkspace> filteredWorkspaces = new ArrayList<>();
         IterableSupport.toList(room.getWorkspaces())
                 .stream()
-                .filter(workspaceEntry->workspaceEntry.getId() != workspaceEntry.getId())
+                .filter(workspaceEntry->workspaceEntry.getId().equals(workspace.getId()))
                 .forEach(filteredWorkspaces::add);
-        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames));
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames, workspace.getBookedTimeframes()));
 
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookedTimeframes(),filteredWorkspaces);
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),filteredWorkspaces);
         overwrite(roomEntry);
     }
     
@@ -116,9 +126,9 @@ public class RoomRepository implements IRoomRepository {
                 .stream()
                 .filter(workspaceEntry->workspaceEntry.getId() != workspaceEntry.getId())
                 .forEach(filteredWorkspaces::add);
-        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames));
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames, workspace.getBookedTimeframes()));
         
-        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),room.getBookedTimeframes(),filteredWorkspaces);
+        RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),filteredWorkspaces);
         overwrite(roomEntry);
     }
 

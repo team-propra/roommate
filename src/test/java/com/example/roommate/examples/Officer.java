@@ -23,12 +23,12 @@ public class Officer {
     }
     public static Workspace Workspace(){
         // EntityBuilder
-        return new Workspace(WorkspaceID(), 1337, List.of(SuperExpensiveChair(), GlassDesk()));
+        return new Workspace(WorkspaceID(), 1337, List.of(SuperExpensiveChair(), GlassDesk()), List.of());
     }
     public static UUID RoomID(){
         return UUID.fromString("993e4888-9953-4a52-9d6c-3ab32ae43c7f");
     }
     public static Room Room(){
-        return new Room(RoomID(),new RoomNumber("office"), List.of(), List.of(Workspace()));
+        return new Room(RoomID(),new RoomNumber("office"), List.of(Workspace()));
     }
 }

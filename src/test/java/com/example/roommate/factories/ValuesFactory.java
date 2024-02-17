@@ -17,12 +17,13 @@ import java.util.UUID;
 public class ValuesFactory {
 
 
-    public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
+    public static UUID roomId = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
+    public static UUID workspaceId = UUID.fromString("30d2d8d5-ce75-499f-b1fe-904b5f55d2f0");
     public static BookDataForm createValidBookDataForm() {
-        return new BookDataForm(id, 1);
+        return new BookDataForm(workspaceId, roomId, 1);
     }
     public static BookDataForm createInvalidBookDataForm() {//doesnt match new BookDataForm
-        return new BookDataForm(id, 60);
+        return new BookDataForm(workspaceId, roomId, 60);
     }
 
     public static BookedTimeframe createBookedTimeframe(LocalTime startTime, Duration duration) {
@@ -43,10 +44,10 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(id,new RoomNumber("14"), List.of(), List.of());}
+    public static RoomEntry createRoomEntry() { return new RoomEntry(roomId,new RoomNumber("14"), List.of());}
 
-    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(id,new RoomNumber(roomnumber),List.of(),List.of());}
+    public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(roomId,new RoomNumber(roomnumber),List.of());}
 
 
-    public static WorkspaceEntry createWorkspaceEntry() { return new WorkspaceEntry(id, 14, List.of()); }
+    public static WorkspaceEntry createWorkspaceEntry() { return new WorkspaceEntry(roomId, 14, List.of(),List.of()); }
 }
