@@ -7,7 +7,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public record DayTimeFrame(int days, int times, int stepSize, Iterable<String> dayLabels, Iterable<String> timeLabels, Iterable<List<Boolean>> reserved) {
+//@SuppressFBWarnings("EI",)
+public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
     public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes){
         //Frames
         int times = 23;

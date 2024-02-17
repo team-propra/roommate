@@ -19,7 +19,8 @@
 <body>
 
 <script>
-    function renameParent(parent) {
+    function renameActualInputField(actualFieldId) {
+        const parent = document.getElementById(actualFieldId);
         if(parent.value.includes('-X'))
             parent.value = parent.value.replace('-X', '')
         else
@@ -94,14 +95,13 @@
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
 
                   <div>
-                      <input  type="hidden" name="cell" th:value="${time + '-' + day}">
+                      <input th:id="${time + '-' + day}" type="hidden" name="cell" th:value="${time + '-' + day}">
                       <label>
-                          <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0])">
+                          <input th:unless="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '\')'">
                       </label>
                       <label>
-                          <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" onchange="renameParent(this.parentElement.children[0] )" checked>
+                          <input th:if="${frame.reserved.get(day).get(time)}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '\')'" checked>
                       </label>
-
                   </div>
               </td>
           </tr>
