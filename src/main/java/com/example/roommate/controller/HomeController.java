@@ -31,10 +31,11 @@ public class HomeController {
                                 workspace.getId(),
                                 room.getRoomNumber(),
                                 workspace.getWorkspaceNumber(),
-                                DayTimeFrame.from(IterableSupport.toList(room.getBookedTimeframes())).convertToString()
+                                DayTimeFrame.from(IterableSupport.toList(room.getBookedTimeframes())).convertToString(),
+                                workspace.getItems()
                         )))
                 .toList();
-        model.addAttribute("rooms", roomModels);
+        model.addAttribute("homeModels", roomModels);
         return "home";
     }
 }
