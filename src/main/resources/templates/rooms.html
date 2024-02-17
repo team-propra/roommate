@@ -20,10 +20,10 @@
         <div class="form-group">
             <label>Uhrzeit</label>
             <div class="d-flex align-items-center">
-                <label class="mr-2">Von</label>
+                <label class="mr-2" for="startUhrzeit">Von</label>
                 <input type="time" id="startUhrzeit" name="startUhrzeit" class="form-control" required th:value="${startTime}">
 
-                <label class="mx-2">Bis</label>
+                <label class="mx-2" for="endUhrzeit">Bis</label>
                 <input type="time" id="endUhrzeit" name="endUhrzeit" class="form-control" required th:value="${endTime}">
             </div>
         </div>
@@ -41,17 +41,19 @@
 <table class="table">
     <thead class="table-header">
     <tr>
-        <th>ArbeitsplatzID</th>
+        <th>Raum</th>
+        <th>Workspace</th>
         <th>Datum/Uhrzeit</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="room : ${rooms}">
-        <td th:text="${'Raum ' + room.roomNumber}"></td>
+    <tr th:each="roomBookingModel : ${roomBookingModels}">
+        <td th:text="${'Raum ' + roomBookingModel.roomNumber}"></td>
+        <td th:text="${'Workspace ' + roomBookingModel.workspaceNumber}"></td>
         <td>Uhrzeit</td>
         <td>
-            <a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Raum ansehen</a>
+            <a th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>
         </td>
     </tr>
     </tbody>

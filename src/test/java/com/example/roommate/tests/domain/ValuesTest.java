@@ -24,7 +24,7 @@ public class ValuesTest {
     @Test
     @Disabled
     void testCreateBookDataFormWithNullUUID() {
-        assertThatThrownBy(() -> new BookDataForm(null, 60))
+        assertThatThrownBy(() -> new BookDataForm(null,null, 60))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

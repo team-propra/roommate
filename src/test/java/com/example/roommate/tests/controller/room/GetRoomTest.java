@@ -4,11 +4,12 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.domain.services.RoomDomainService;
+import com.example.roommate.examples.Officer;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.ephemeral.ItemRepository;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
-import com.example.roommate.values.domainValues.RoomNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -47,16 +46,15 @@ public class GetRoomTest {
     @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
     @WithMockOAuth2User
     public void test_1() throws Exception {
-        UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
-        Room room = new Room(roomID,new RoomNumber("test"));
-//        when(roomRepository.findRoomByID(id)).thenReturn(room); why?, its provided by the app service already
-       // when(roomDomainService.findRoomByID(id)).thenReturn(room);
-        when(bookingApplicationService.findRoomByID(roomID)).thenReturn(room);
+        Room office = Officer.Room();
+        Workspace officeWorkspace = Officer.Workspace();
+        when(bookingApplicationService.findRoomByID(office.getRoomID())).thenReturn(office);
         
-        MvcResult result = mvc.perform(get("/room/{id}",roomID.toString()))
+        MvcResult result = mvc.perform(get("/room/{roomId}/workspace/{workspaceId}",office.getRoomID(), officeWorkspace.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertThat(result.getResponse().getContentAsString()).contains(room.getRoomNumber().number());
+        assertThat(result.getResponse().getContentAsString()).contains(office.getRoomNumber().number());
+        assertThat(result.getResponse().getContentAsString()).contains(String.format("%d",officeWorkspace.getWorkspaceNumber()));
         
     }
 
@@ -64,10 +62,8 @@ public class GetRoomTest {
     @DisplayName("GET /room/{id} successfully yields NotFound and the not-found view whenever the room doesnt exist")
     @WithMockOAuth2User
     public void test_2() throws Exception {
-        UUID roomID = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
-
-        when(bookingApplicationService.findRoomByID(roomID)).thenThrow(new NotFoundException());
-        mvc.perform(get("/room/{id}",roomID.toString()))
+        when(bookingApplicationService.findRoomByID(Officer.RoomID())).thenThrow(new NotFoundException());
+        mvc.perform(get("/room/{roomId}/workspace/{workspaceId}",Officer.RoomID().toString(),Officer.WorkspaceID().toString()))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("not-found"));
 

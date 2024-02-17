@@ -4,6 +4,7 @@ package com.example.roommate.tests.services;
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.exceptions.ArgumentValidationException;
+import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
@@ -45,7 +46,7 @@ public class BookingApplicationServiceTest {
     }
     @DisplayName("getRooms() returns a Collection of Rooms")
     @Test
-    void test_4() {
+    void test_4() throws NotFoundException {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
         Room room = EntityFactory.createRoom();
 
