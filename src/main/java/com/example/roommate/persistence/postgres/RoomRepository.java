@@ -95,11 +95,12 @@ public class RoomRepository implements IRoomRepository {
                         .map(ItemDTO::toItemName)
                         .filter(item-> item.type().equals(workspace.itemName()))
                         .forEach(myItems::add);
-                    bookedTimeframeDTOS.stream()
-                        .filter(timeframe -> timeframe.workspaceId().equals(workspace.id()))
-                        .map(BookedTimeframeDTO::toBookedTimeFrame)
-                        .forEach(bookedTimeframes::add);
                 });
+
+        bookedTimeframeDTOS.stream()
+                .filter(timeframe -> timeframe.workspaceId().equals(workspacesDTO.id()))
+                .map(BookedTimeframeDTO::toBookedTimeFrame)
+                .forEach(bookedTimeframes::add);
         
         return new WorkspaceOOP(workspacesDTO.id(),workspacesDTO.workspaceNumber(), myItems,bookedTimeframes);
     }
@@ -124,8 +125,8 @@ public class RoomRepository implements IRoomRepository {
     }
 
     @Override
-    public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace room) {
-        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), room.getId());
+    public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace workspace) {
+        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), workspace.getId());
     }
 
     @Override
