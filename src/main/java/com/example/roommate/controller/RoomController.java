@@ -3,6 +3,7 @@ package com.example.roommate.controller;
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
+import com.example.roommate.application.services.KeyMasterService;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -30,11 +31,15 @@ public class RoomController {
 
     private final AdminApplicationService adminApplicationService;
 
+    private final KeyMasterService keyMasterService;
+
     @Autowired
-    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
+    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService, KeyMasterService keyMasterService) {
         this.bookingApplicationService = bookingApplicationService;
         this.adminApplicationService = adminApplicationService;
+        this.keyMasterService = keyMasterService;
     }
+
 
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
     @GetMapping("/rooms")

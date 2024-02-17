@@ -58,7 +58,7 @@ public class HomeController {
         String login = user.getAttribute("login");
         UUID keyID = UUID.fromString(keyId);
 
-        userApplicationService.verifyUser(keyID, login);
+        userApplicationService.registerKey(keyID, login);
         model.addAttribute("keyID", keyId);
         return "keyForm";
 

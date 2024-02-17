@@ -1,20 +1,23 @@
 package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
-import net.minidev.json.JSONArray;
 
+import com.example.roommate.domain.services.UserDomainService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @ApplicationService
 public class KeyMasterService {
+    UserDomainService userDomainService;
 
     @Scheduled(fixedDelay = 3000)
-    public void fetchEvents() {
-       JSONArray jsonArray = WebClient.create()
+    public void fetchKeys() {
+
+        List<KeyOwner> list = WebClient.create()
                 .get()
                 .uri(
                         uriBuilder -> uriBuilder
@@ -25,19 +28,14 @@ public class KeyMasterService {
                                 .build()
                 )
                 .retrieve()
-                .bodyToFlux(JSONArray.class)
-                .blockLast(Duration.of(8, ChronoUnit.SECONDS));
-
-        for (Object o : jsonArray) {
-            System.out.println(o);
+                .bodyToFlux(KeyOwner.class)
+                .collectList()
+                .block(Duration.of(8, ChronoUnit.SECONDS));
+        for (KeyOwner keyOwner: list
+             ) {
+            System.out.println(keyOwner.owner());
+            userDomainService.verifyUser(keyOwner.key(), keyOwner.owner());
         }
-
-       /*
-        for (BestellungAbgeschlossen event : events) {
-            processEvent(event);
-            lastSeen = event.sequenceNumber();
-        }
-
-        */
+       }
     }
-}
+

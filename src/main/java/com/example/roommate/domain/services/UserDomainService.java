@@ -29,4 +29,8 @@ public class UserDomainService {
     public void registerKey(UUID keyId, String login) {
         userRepository.registerKey(keyId, login);
     }
+
+    public void verifyUser(UUID key, String owner) {
+
+    }
 }
