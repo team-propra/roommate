@@ -3,6 +3,7 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 
 import com.example.roommate.domain.services.UserDomainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -13,6 +14,11 @@ import java.util.List;
 @ApplicationService
 public class KeyMasterService {
     UserDomainService userDomainService;
+
+    @Autowired
+    public KeyMasterService(UserDomainService userDomainService) {
+        this.userDomainService = userDomainService;
+    }
 
     @Scheduled(fixedDelay = 3000)
     public void fetchKeys() {

@@ -24,7 +24,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void registerKey(UUID keyId, String login) {
-        userDAO.verifyUser(keyId, login);
+        userDAO.registerKey(keyId, login);
     }
 
     @Override
@@ -34,6 +34,11 @@ public class UserRepository implements IUserRepository {
             return null;
         }
         return new User(userDTO.keyId(), userDTO.handle(), userDTO.role());
+    }
+
+    @Override
+    public void verifyUser(UUID key, String keymasterName) {
+        userDAO.verifyUser(key, keymasterName);
     }
 
 

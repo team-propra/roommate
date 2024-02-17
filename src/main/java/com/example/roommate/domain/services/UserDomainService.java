@@ -31,6 +31,6 @@ public class UserDomainService {
     }
 
     public void verifyUser(UUID key, String owner) {
-
+        userRepository.verifyUser(key, owner);
     }
 }

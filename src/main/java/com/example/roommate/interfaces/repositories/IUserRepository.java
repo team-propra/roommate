@@ -12,4 +12,6 @@ public interface IUserRepository {
     void registerKey(UUID keyId, String login);
 
     IUser getUserByLogin(String login);
+
+    void verifyUser(UUID key, String keymasterName);
 }

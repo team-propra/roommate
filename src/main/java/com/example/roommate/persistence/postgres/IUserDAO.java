@@ -1,6 +1,5 @@
 package com.example.roommate.persistence.postgres;
 
-import com.example.roommate.domain.models.entities.User;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,5 +16,9 @@ public interface IUserDAO extends CrudRepository<UserDTO, String> {
 
     @Query("UPDATE users SET key_id = (:keyId)  WHERE handle = (:login)")
     @Modifying
-    void verifyUser(@Param("keyId") UUID keyId, @Param("login") String login);
+    void registerKey(@Param("keyId") UUID keyId, @Param("login") String login);
+
+    @Query("UPDATE users SET keymaster_name = (:keyMasterName), role = 'VERIFIED_USER' WHERE key_id = (:key)")
+    @Modifying
+    void verifyUser(@Param("key")UUID key, @Param("keyMasterName") String keymasterName);
 }
