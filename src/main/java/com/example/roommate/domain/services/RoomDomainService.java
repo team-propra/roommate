@@ -176,4 +176,8 @@ public class RoomDomainService {
     public void createItem(String itemName) {
         self._createItem(itemName);
     }
+
+    public void addWorkspace(IRoom room, IWorkspace x) throws NotFoundRepositoryException {
+        roomRepository.addWorkspace(room, x);
+    }
 }

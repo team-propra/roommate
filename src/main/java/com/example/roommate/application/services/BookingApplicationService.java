@@ -50,7 +50,7 @@ public class BookingApplicationService {
                 roomDomainService.addBooking(bookedTimeframe,workspaceId,roomId);
             }
             if(bookedTimeframes.isEmpty())
-            throw new GeneralDomainException();
+                throw new GeneralDomainException();
         }
         catch (NotFoundRepositoryException e){
 
@@ -66,8 +66,16 @@ public class BookingApplicationService {
         return roomDomainService.getRooms();
     }
 
-    public void addRoom(IRoom room) {
+    public void addRoom(IRoom room) throws NotFoundException {
         roomDomainService.addRoom(new RoomApplicationData(room.getRoomID(), room.getRoomNumber()));
+        if(!IterableSupport.toList(room.getWorkspaces()).isEmpty())
+            for (IWorkspace workspace : room.getWorkspaces()) {
+                try {
+                    roomDomainService.addWorkspace(room, workspace);
+                } catch (NotFoundRepositoryException e) {
+                    throw new NotFoundException();
+                }
+            }
     }
 
     public IRoom findRoomByID(UUID roomID) throws NotFoundException{

@@ -144,5 +144,12 @@ public class RoomRepository implements IRoomRepository {
         itemToWorkspaceDAO.delete(filtered.get(0));
     }
 
+    @Override
+    public void addWorkspace(IRoom room, IWorkspace workspace) throws NotFoundRepositoryException {
+        workspaceDAO.insert(workspace.getId(),workspace.getWorkspaceNumber(),room.getRoomID());
+        workspace.getBookedTimeframes().forEach(bookedTimeframe -> addBooking(bookedTimeframe,workspace));
+        workspace.getItems().forEach(item -> addItem(item,workspace));
+    }
+
 
 }
