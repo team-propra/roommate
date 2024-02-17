@@ -115,8 +115,7 @@ public class RoomController {
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
     ) throws ArgumentValidationException {
 
-
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || !BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
             UUID id = form.id();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
@@ -124,6 +123,7 @@ public class RoomController {
         }
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
+
 
         try {
             bookingApplicationService.addBookEntry(addedBookingsForm);

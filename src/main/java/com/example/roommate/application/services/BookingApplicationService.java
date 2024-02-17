@@ -42,14 +42,16 @@ public class BookingApplicationService {
         UUID roomID = form.bookDataForm().id();
 
         List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
+
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
                 roomDomainService.addBooking(bookedTimeframe,roomID);
             }
             if(bookedTimeframes.isEmpty())
-                throw new GeneralDomainException();
+            throw new GeneralDomainException();
         }
         catch (NotFoundRepositoryException e){
+
             throw new NotFoundException();
         }
     }
