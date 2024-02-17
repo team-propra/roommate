@@ -1,5 +1,8 @@
 package com.example.roommate.config;
 
+import com.example.roommate.application.services.UserApplicationService;
+import com.example.roommate.domain.models.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -15,6 +18,12 @@ import java.util.Set;
 
 @Component
 public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+    UserApplicationService userApplicationService;
+
+    @Autowired
+    public AppUserService(UserApplicationService userApplicationService) {
+        this.userApplicationService = userApplicationService;
+    }
 
     private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
 
@@ -22,9 +31,17 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User originalUser = defaultService.loadUser(userRequest);
         Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
-        //@ToDo hier Berechtigung aus Datenbank lesen
-        if ("AhoiKrause".equals(originalUser.getAttribute("login"))) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        String login = originalUser.getAttribute("login");
+        String userRole;
+        User userByLogin = userApplicationService.getUserByLogin(login);
+        if (userByLogin != null) {
+            userRole = userByLogin.getRole();
+            if (userRole.equals("ADMIN")) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            } else if (userRole.equals("VERIFIED_USER")) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_VERIFIED_USER"));
+            }
         }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
     }
