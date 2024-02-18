@@ -36,6 +36,15 @@ repositories {
     mavenCentral()
 }
 
+tasks.register('keymaster', Exec) {
+    executable 'java'
+    args '-jar', "keymaster.jar"
+    workingDir "${projectDir}"
+    inputs.file("${projectDir}/keymaster.jar")
+    outputs.dir("${projectDir}")
+}
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation('org.springframework.boot:spring-boot-starter-validation')
@@ -56,7 +65,7 @@ dependencies {
     testImplementation 'ognl:ognl'
     testImplementation 'com.tngtech.archunit:archunit-junit5-engine:1.2.1'
 
-    runtimeOnly 'org.postgresql:postgresql:42.7.1'
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
