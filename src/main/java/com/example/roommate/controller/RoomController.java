@@ -42,7 +42,7 @@ public class RoomController {
 
 
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
-    @VerifiedOnly
+
     @GetMapping("/rooms")
     public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, @RequestParam(required = false) String datum, @RequestParam(required = false) String startUhrzeit, @RequestParam(required = false) String endUhrzeit, Model model) {
         if (datum == null) datum = "2024-01-01";
