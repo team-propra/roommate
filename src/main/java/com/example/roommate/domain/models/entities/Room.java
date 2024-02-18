@@ -57,7 +57,9 @@ public class Room implements IRoom {
         return workspaces.stream().toList(); // TODO consistency /immutability
     }
 
+    public void removeWorkspace(UUID workspaceID) {
+        workspaces.removeIf(w -> w.getId().equals(workspaceID));
+    }
 
-    
 
 }

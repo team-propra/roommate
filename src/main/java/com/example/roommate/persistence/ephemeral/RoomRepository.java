@@ -139,7 +139,7 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void removeWorkspace(UUID workspaceID, IRoom roomByID) {
-        // TODO
+        //TODO
     }
 
     private void _consistentAddWorkspace(IWorkspace workspace, UUID roomId) throws NotFoundRepositoryException {
