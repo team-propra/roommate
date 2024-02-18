@@ -12,4 +12,5 @@ public interface IUser {
 
     String getRole();
 
+    String getKeyMasterName();
 }

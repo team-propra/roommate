@@ -8,11 +8,16 @@ public class User implements IUser {
     private UUID keyId;
     private String handle;
     private String role;
+    private String keyMasterName;
 
     public User(UUID keyId, String handle, String role) {
         this.keyId = keyId;
         this.handle = handle;
         this.role = role;
+    }
+    public User(UUID keyId, String handle, String role, String keyMasterName) {
+        this(keyId, handle, role);
+        this.keyMasterName = keyMasterName;
     }
 
     public UUID getKeyId() {
@@ -33,6 +38,11 @@ public class User implements IUser {
 
     public String getRole() {
         return role;
+    }
+
+    @Override
+    public String getKeyMasterName() {
+        return keyMasterName;
     }
 
     public void setRole(String role) {
