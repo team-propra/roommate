@@ -27,7 +27,7 @@ public class ApiController {
 
     @GetMapping("/api/access")
     public List<KeyMasterForm> getKeysAndRooms() {
-        System.out.println("Ja, wurde neu gebaut!");
+
         //String roomID = bookingApplicationService.getRooms() ...
         UUID id = UUID.randomUUID();
         UUID keyId = UUID.fromString("9ef200d5-8d44-4a98-9650-85668d01cf8c");

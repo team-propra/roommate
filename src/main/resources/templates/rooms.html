@@ -51,7 +51,9 @@
         <td th:text="${'Raum ' + room.roomNumber}"></td>
         <td>Uhrzeit</td>
         <td>
-            <a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Raum ansehen</a>
+            <div sec:authorize="hasAnyRole('ADMIN', 'VERIFIED_USER')">
+                <a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Raum ansehen</a>
+            </div>
         </td>
     </tr>
     </tbody>
