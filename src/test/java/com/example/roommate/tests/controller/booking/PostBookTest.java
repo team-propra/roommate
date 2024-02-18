@@ -12,8 +12,6 @@ import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.factories.EntityFactory;
-import com.example.roommate.persistence.data.RoomEntry;
-import com.example.roommate.persistence.repositories.RoomRepository;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -124,7 +122,7 @@ public class PostBookTest {
         //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
         //entryService = mock(BookEntryService.class);
         //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
-        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any());
+        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any(), Mockito.anyString());
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())

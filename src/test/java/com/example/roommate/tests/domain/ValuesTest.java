@@ -47,7 +47,7 @@ public class ValuesTest {
         Iterable<String> checkedDays = List.of("0-0-X", "1-0-X", "2-0-X","1-3-X", "2-3-X");
         BookingDays bookingDays = BookingDays.from(60,checkedDays);
 
-        Iterable<BookedTimeframe> bookedTimeframes = bookingDays.toBookedTimeframes();
+        Iterable<BookedTimeframe> bookedTimeframes = bookingDays.toBookedTimeframes("SomeUser");
 
         DayTimeFrame dayTimeFrame =  DayTimeFrame.from(bookedTimeframes);
 

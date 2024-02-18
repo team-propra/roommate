@@ -116,19 +116,19 @@ public record BookingDays(
    
 
 
-   public Iterable<BookedTimeframe> toBookedTimeframes(){
+   public Iterable<BookedTimeframe> toBookedTimeframes(String userHanlde){
       List<BookedTimeframe> bookedTimeframes = new ArrayList<>();
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.MONDAY,mondayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.TUESDAY,tuesdayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.WEDNESDAY,wednesdayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.THURSDAY,thursdayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.FRIDAY,fridayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SATURDAY,saturdayBookings);
-      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SUNDAY,sundayBookings);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.MONDAY,mondayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.TUESDAY,tuesdayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.WEDNESDAY,wednesdayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.THURSDAY,thursdayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.FRIDAY,fridayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SATURDAY,saturdayBookings, userHanlde);
+      addBookedTimeFrames(bookedTimeframes,DayOfWeek.SUNDAY,sundayBookings, userHanlde);
       return bookedTimeframes;
    }
 
-   private void addBookedTimeFrames(List<BookedTimeframe> output, DayOfWeek dayOfWeek, Iterable<Boolean> slots){
+   private void addBookedTimeFrames(List<BookedTimeframe> output, DayOfWeek dayOfWeek, Iterable<Boolean> slots, String userHandle){
       List<Boolean> slotsList = IterableSupport.toList(slots);
       int continuousSlots = 0;
       for (int i = 0; i < slotsList.size(); i++) {
@@ -151,7 +151,7 @@ public record BookingDays(
             int durationInSeconds = passedSecondsAtEnd-passedSecondsAtStart;
 
 
-            output.add(new BookedTimeframe(dayOfWeek,LocalTime.ofSecondOfDay(passedSecondsAtStart), Duration.ofSeconds(durationInSeconds)));
+            output.add(new BookedTimeframe(dayOfWeek,LocalTime.ofSecondOfDay(passedSecondsAtStart), Duration.ofSeconds(durationInSeconds), userHandle));
             continuousSlots = 0;
          }
       }

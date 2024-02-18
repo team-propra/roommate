@@ -2,6 +2,7 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
@@ -12,6 +13,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.forms.KeyMasterForm;
 import com.example.roommate.values.models.RoomBookingModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
@@ -28,6 +30,7 @@ import java.time.DayOfWeek;
 public class BookingApplicationService {
 
     RoomDomainService roomDomainService;
+    UserDomainService userDomainService;
 
     public BookingApplicationService(RoomDomainService roomDomainService) {
         this.roomDomainService = roomDomainService;
@@ -38,12 +41,12 @@ public class BookingApplicationService {
     public void initialize(){
         roomDomainService.addDummyDummy();
     }
-    public void addBookEntry(IntermediateBookDataForm form) throws NotFoundException, GeneralDomainException {
+    public void addBookEntry(IntermediateBookDataForm form, String userHandle) throws NotFoundException, GeneralDomainException {
         if(form == null) throw new IllegalArgumentException();
         UUID workspaceId = form.bookDataForm().workspaceId();
         UUID roomId = form.bookDataForm().roomId();
 
-        List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes());
+        List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(form.bookingDays().toBookedTimeframes(userHandle));
 
         try{
             for (BookedTimeframe bookedTimeframe : bookedTimeframes) {
@@ -97,7 +100,7 @@ public class BookingApplicationService {
         return items;
     }
 
-    public List<RoomBookingModel> findAvailableWorkspacesWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString) {
+    public List<RoomBookingModel> findAvailableWorkspacesWithItems(List<ItemName> items, String dateString, String startTimeString, String endTimeString, String userHandle) {
         LocalDate date = LocalDate.parse(dateString);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
@@ -106,7 +109,7 @@ public class BookingApplicationService {
         LocalTime endTime = LocalTime.parse(endTimeString, timeFormatter);
         Duration duration = Duration.between(startTime, endTime);
 
-        BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration);
+        BookedTimeframe bookedTimeframe = new BookedTimeframe(dayOfWeek, startTime, duration, userHandle);
 
         Collection<IRoom> rooms = roomDomainService.getRooms();
         List<IRoom> availableRooms = rooms.stream()
@@ -135,5 +138,8 @@ public class BookingApplicationService {
 
     public void createItem(String itemName) {
         roomDomainService.createItem(itemName);
+    }
+    public Iterable<KeyMasterForm> getAssociatedBookEntries() {
+        return null;
     }
 }

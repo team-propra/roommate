@@ -12,7 +12,8 @@ CREATE TABLE booked_timeframe (
     day_of_week VARCHAR(255) NOT NULL,
     local_time TIME NOT NULL,
     duration CHARACTER VARYING NOT NULL,
-    room_id UUID NOT NULL REFERENCES room(id)
+    room_id UUID NOT NULL REFERENCES room(id),
+    user_handle VARCHAR(255) REFERENCES users(handle)
 );
 
 CREATE TABLE item_to_room (

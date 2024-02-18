@@ -4,6 +4,7 @@ import com.example.roommate.annotations.Factory;
 import com.example.roommate.domain.models.entities.*;
 import com.example.roommate.values.domainValues.RoomNumber;
 
+import java.util.List;
 import java.util.UUID;
 
 
