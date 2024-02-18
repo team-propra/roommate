@@ -1,7 +1,8 @@
-package com.example.roommate.config;
+package com.example.roommate.interceptors;
 
-import com.example.roommate.application.services.UserApplicationService;
-import com.example.roommate.domain.models.entities.User;
+import com.example.roommate.annotations.Interceptor;
+import com.example.roommate.interfaces.application.services.IAuthenticationApplicationService;
+import com.example.roommate.interfaces.entities.IUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,24 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
+@Interceptor
 public class VerifyAccessInterceptor implements HandlerInterceptor {
 
     // ...
-    UserApplicationService userApplicationService;
+    IAuthenticationApplicationService userApplicationService;
 
     @Autowired
-    public VerifyAccessInterceptor(UserApplicationService userApplicationService) {
+    public VerifyAccessInterceptor(IAuthenticationApplicationService userApplicationService) {
         this.userApplicationService = userApplicationService;
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -46,13 +47,13 @@ public class VerifyAccessInterceptor implements HandlerInterceptor {
         }
 
         //Object p = auth.getPrincipal();
-        OAuth2User user = (OAuth2User) auth.getPrincipal();;
+        OAuth2User user = (OAuth2User) auth.getPrincipal();
         String login = user.getAttribute("login");
 
         //System.out.println("principal:" + p);
         System.out.println("login: " + login);
 
-        User userFromDatabase = userApplicationService.getUserByLogin(login);
+        IUser userFromDatabase = userApplicationService.getUserByLogin(login);
         //getUserFromDatabase(auth.getName());
         if (userFromDatabase != null) {
             // add whatever authorities you want here

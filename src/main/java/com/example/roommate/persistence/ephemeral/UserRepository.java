@@ -1,6 +1,5 @@
 package com.example.roommate.persistence.ephemeral;
 
-import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.repositories.IUserRepository;
 import org.springframework.context.annotation.Profile;
@@ -13,10 +12,14 @@ import java.util.UUID;
 @Repository
 @Profile("test")
 public class UserRepository implements IUserRepository {
-    List<IUser> users = new ArrayList<>();
+    List<IUser> users;
 
     public UserRepository(List<IUser> users) {
         this.users = users;
+    }
+
+    public UserRepository() {
+        this(new ArrayList<>());
     }
 
     @Override
@@ -26,15 +29,14 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void registerKey(UUID keyId, String login) {
-        User user = new User(keyId, login, "USER");
+        IUser user = new UserEntry(keyId, login, "USER");
         users.add(user);
     }
 
     @Override
     public IUser getUserByLogin(String login) {
-        for (int i = 0; i < users.size(); i++) {
-            IUser u = users.get(i);
-            if(u.getHandle().equals(login)) {
+        for (IUser u : users) {
+            if (u.getHandle().equals(login)) {
                 return u;
             }
         }
@@ -46,17 +48,17 @@ public class UserRepository implements IUserRepository {
         for (int i = 0; i < users.size(); i++) {
             IUser u = users.get(i);
             if(u.getKeyId().equals(key)) {
-                User updatedUser = new User(u.getKeyId(),u.getHandle(),"VERIFIED_USER", keymasterName);
+                IUser updatedUser = new UserEntry(u.getKeyId(),u.getHandle(), "VERIFIED_USER",keymasterName);
                 users.set(i, updatedUser);
             }
         }
     }
 
     @Override
-    public List<User> getAllUser() {
-        List<User> result = new ArrayList<>();
-        for(IUser u : users) {
-            result.add(new User(u.getKeyId(), u.getHandle(), u.getRole()));
+    public List<? extends IUser> getAllUser() {
+        List<IUser> result = new ArrayList<>();
+        for(IUser user : users) {
+            result.add(new UserEntry(user.getKeyId(), user.getHandle(), user.getRole(), user.getKeyMasterName()));
         }
         return result;
     }

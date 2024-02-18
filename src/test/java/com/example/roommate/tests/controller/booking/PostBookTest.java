@@ -4,7 +4,7 @@ package com.example.roommate.tests.controller.booking;
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
-import com.example.roommate.application.services.KeyMasterService;
+import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
@@ -50,7 +50,7 @@ public class PostBookTest {
     RoomRepository roomRepository;
 
     @MockBean
-    KeyMasterService keyMasterService;
+    KeyMasterApplicationService keyMasterService;
 
     @MockBean
     UserDomainService userDomainService;

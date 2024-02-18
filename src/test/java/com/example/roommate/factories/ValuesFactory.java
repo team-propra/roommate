@@ -26,8 +26,11 @@ public class ValuesFactory {
         return new BookDataForm(workspaceId, roomId, 60);
     }
 
+    public static BookedTimeframe createBookedTimeframe(LocalTime startTime, Duration duration, String userHandle) {
+        return new BookedTimeframe(DayOfWeek.MONDAY, startTime, duration, userHandle);
+    }
     public static BookedTimeframe createBookedTimeframe(LocalTime startTime, Duration duration) {
-        return new BookedTimeframe(DayOfWeek.MONDAY, startTime, duration);
+        return new BookedTimeframe(DayOfWeek.MONDAY, startTime, duration, "default");
     }
 
     public static IntermediateBookDataForm createInvalidIntermediateBookDataForm() throws ArgumentValidationException {

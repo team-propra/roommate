@@ -35,7 +35,7 @@ public class UserDomainService {
         userRepository.verifyUser(key, owner);
     }
 
-    public List<User> getAllUser() {
+    public List<? extends IUser> getAllUser() {
         return userRepository.getAllUser();
     }
 }

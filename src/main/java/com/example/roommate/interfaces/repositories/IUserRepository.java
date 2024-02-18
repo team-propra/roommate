@@ -1,7 +1,6 @@
 package com.example.roommate.interfaces.repositories;
 
 import com.example.roommate.annotations.RepositoryInterface;
-import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.interfaces.entities.IUser;
 
 import java.util.List;
@@ -17,5 +16,5 @@ public interface IUserRepository {
 
     void verifyUser(UUID key, String keymasterName);
 
-    List<User> getAllUser();
+    List<? extends IUser> getAllUser();
 }

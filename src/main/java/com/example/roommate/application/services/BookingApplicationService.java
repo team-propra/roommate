@@ -2,8 +2,6 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
-import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IUser;
@@ -146,7 +144,7 @@ public class BookingApplicationService {
         roomDomainService.createItem(itemName);
     }
     public Iterable<KeyMasterForm> getAssociatedBookEntries() {
-        List<User> users = userDomainService.getAllUser();
+        List<? extends IUser> users = userDomainService.getAllUser();
         Collection<IRoom> rooms = roomDomainService.getRooms();
 
         List<KeyMasterForm> result;

@@ -3,7 +3,7 @@ package com.example.roommate.controller;
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
-import com.example.roommate.application.services.KeyMasterService;
+import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
@@ -39,13 +39,10 @@ public class RoomController {
 
     private final AdminApplicationService adminApplicationService;
 
-    private final KeyMasterService keyMasterService;
-
     @Autowired
-    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService, KeyMasterService keyMasterService) {
+    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
         this.adminApplicationService = adminApplicationService;
-        this.keyMasterService = keyMasterService;
     }
 
 

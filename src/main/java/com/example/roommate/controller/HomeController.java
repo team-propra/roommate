@@ -1,7 +1,7 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.application.services.AuthenticationApplicationService;
 import com.example.roommate.application.services.BookingApplicationService;
-import com.example.roommate.application.services.UserApplicationService;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.DayTimeFrame;
@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService is properly injected")
 public class HomeController {
     private final BookingApplicationService bookingApplicationService;
-    private final UserApplicationService userApplicationService;
+    private final AuthenticationApplicationService userApplicationService;
     @Autowired
-    public HomeController(BookingApplicationService bookingApplicationService, UserApplicationService userApplicationService) {
+    public HomeController(BookingApplicationService bookingApplicationService, AuthenticationApplicationService userApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
         this.userApplicationService = userApplicationService;
     }

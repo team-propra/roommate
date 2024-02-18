@@ -1,8 +1,9 @@
-package com.example.roommate.config;
+package com.example.roommate.application.services;
 
-import com.example.roommate.application.services.UserApplicationService;
-import com.example.roommate.domain.models.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.roommate.annotations.ApplicationService;
+import com.example.roommate.domain.services.UserDomainService;
+import com.example.roommate.interfaces.application.services.IAuthenticationApplicationService;
+import com.example.roommate.interfaces.entities.IUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -15,14 +16,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
-public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    UserApplicationService userApplicationService;
+@ApplicationService
+public class AuthenticationApplicationService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>, IAuthenticationApplicationService {
+    UserDomainService userDomainService;
 
-    @Autowired
-    public AppUserService(UserApplicationService userApplicationService) {
-        this.userApplicationService = userApplicationService;
+    public AuthenticationApplicationService(UserDomainService userDomainService) {
+        this.userDomainService = userDomainService;
     }
 
     private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
@@ -34,7 +36,7 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
 
         String login = originalUser.getAttribute("login");
         String userRole;
-        User userByLogin = userApplicationService.getUserByLogin(login);
+        IUser userByLogin = getUserByLogin(login);
         if (userByLogin != null) {
             userRole = userByLogin.getRole();
             if (userRole.equals("ADMIN")) {
@@ -44,5 +46,34 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
             }
         }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
+    }
+
+
+    
+    public IUser getUserByLogin(String login) {
+        return userDomainService.getUserByLogin(login);
+    }
+
+    public boolean isVerified(String login) {
+        if(getUserByLogin(login) == null) {
+            userDomainService.addUser(login);
+            return false;
+        }
+        else {
+            return getUserByLogin(login).getRole().equals("VERIFIED_USER");
+        }
+    }
+
+    public void registerKey(UUID keyId, String login) {
+        userDomainService.registerKey(keyId, login);
+    }
+
+    public boolean userHasKey(String login) {
+        if(userDomainService.getUserByLogin(login) == null) {
+            userDomainService.addUser(login);
+            return false;
+        }
+        IUser user = userDomainService.getUserByLogin(login);
+        return user.getKeyId() != null;
     }
 }

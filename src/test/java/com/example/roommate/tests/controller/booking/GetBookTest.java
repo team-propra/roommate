@@ -2,8 +2,7 @@ package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
-import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
-import com.example.roommate.application.services.KeyMasterService;
+import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.services.UserDomainService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GetBookTest {
 
     @MockBean
-    KeyMasterService keyMasterService;
+    KeyMasterApplicationService keyMasterService;
     @MockBean
     UserDomainService userDomainService;
 

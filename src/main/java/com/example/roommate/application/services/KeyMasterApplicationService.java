@@ -2,6 +2,7 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 
+import com.example.roommate.application.data.KeyOwnerApplicationData;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
@@ -15,12 +16,12 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationService
-public class KeyMasterService {
+public class KeyMasterApplicationService {
     UserDomainService userDomainService;
     RoomDomainService roomDomainService;
 
     @Autowired
-    public KeyMasterService(UserDomainService userDomainService, RoomDomainService roomDomainService) {
+    public KeyMasterApplicationService(UserDomainService userDomainService, RoomDomainService roomDomainService) {
         this.userDomainService = userDomainService;
         this.roomDomainService = roomDomainService;
     }
@@ -28,7 +29,7 @@ public class KeyMasterService {
     @Scheduled(fixedDelay = 3000)
     public void fetchKeys() {
 
-        List<KeyOwner> keyOwners = WebClient.create()
+        List<KeyOwnerApplicationData> keyOwners = WebClient.create()
                 .get()
                 .uri(
                         uriBuilder -> uriBuilder
@@ -39,11 +40,11 @@ public class KeyMasterService {
                                 .build()
                 )
                 .retrieve()
-                .bodyToFlux(KeyOwner.class)
+                .bodyToFlux(KeyOwnerApplicationData.class)
                 .collectList()
                 .block(Duration.of(8, ChronoUnit.SECONDS));
         if(keyOwners != null) {
-            for (KeyOwner keyOwner: keyOwners
+            for (KeyOwnerApplicationData keyOwner: keyOwners
             ) {
                 System.out.println(keyOwner.owner());
                 userDomainService.verifyUser(UUID.fromString(keyOwner.id()), keyOwner.owner());
