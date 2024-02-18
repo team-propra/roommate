@@ -29,5 +29,10 @@ public class ItemRepository implements IItemRepository{
     public void addItem(ItemName itemName) {
         itemList.add(itemName);
     }
+
+    @Override
+    public void removeItem(ItemName itemName) {
+        itemList.remove(itemName);
+    }
 }
 

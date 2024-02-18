@@ -136,4 +136,8 @@ public class BookingApplicationService {
     public void createItem(String itemName) {
         roomDomainService.createItem(itemName);
     }
+
+    public void removeItem(String itemName) {
+        roomDomainService.removeItem(itemName);
+    }
 }

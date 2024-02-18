@@ -180,4 +180,9 @@ public class RoomDomainService {
     public void addWorkspace(IRoom room, IWorkspace x) throws NotFoundRepositoryException {
         roomRepository.addWorkspace(room, x);
     }
+
+    public void removeItem(String itemName) {
+        ItemName item = new ItemName(itemName);
+        itemRepository.removeItem(item);
+    }
 }

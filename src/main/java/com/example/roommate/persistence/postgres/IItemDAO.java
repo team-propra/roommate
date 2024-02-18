@@ -17,4 +17,8 @@ public interface IItemDAO extends CrudRepository<ItemDTO, String> {
     @Query("INSERT INTO item (item_name) VALUES (:itemName)")
     @Modifying
     void insert(@Param("itemName") String itemName);
+
+    @Query("DELETE FROM item WHERE item_name = :itemName")
+    @Modifying
+    void delete(@Param("itemName") String itemName);
 }

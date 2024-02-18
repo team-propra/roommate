@@ -58,7 +58,7 @@ public class AdminController {
     @AdminOnly
     @PostMapping("/deleteItem/{itemName}")
     public String deleteItem(Model model, @PathVariable String itemName) {
-        //bookingApplicationService.removeItem(itemName); // have to iterate through all workspaces to maintian consistency
+        bookingApplicationService.removeItem(itemName); // have to iterate through all workspaces to maintian consistency
         return adminPage(model);
     }
 
@@ -67,8 +67,7 @@ public class AdminController {
     public ModelAndView addItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.addItemToRoom(workspaceID, itemName,roomID);
         String viewName = String.format("redirect:/room/%s/workspace/%s", roomID, workspaceID);
-        ModelAndView modelAndView = new ModelAndView(viewName);
-        return modelAndView;
+        return new ModelAndView(viewName);
     }
 
     @AdminOnly
@@ -83,7 +82,6 @@ public class AdminController {
     public ModelAndView deleteItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
         String viewName = String.format("redirect:/room/%s/workspace/%s", roomID, workspaceID);
-        ModelAndView modelAndView = new ModelAndView(viewName);
-        return modelAndView;
+        return new ModelAndView(viewName);
     }
 }
