@@ -3,9 +3,11 @@ package com.example.roommate.persistence.postgres;
 import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.repositories.IUserRepository;
+import com.example.roommate.utility.IterableSupport;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -39,6 +41,11 @@ public class UserRepository implements IUserRepository {
     @Override
     public void verifyUser(UUID key, String keymasterName) {
         userDAO.verifyUser(key, keymasterName);
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return IterableSupport.toList(userDAO.findAll()).stream().map(userDTO -> new User(userDTO.keyId(), userDTO.handle(), userDTO.role())).toList();
     }
 
 

@@ -6,6 +6,7 @@ import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.UUID;
 
 @DomainService
@@ -32,5 +33,9 @@ public class UserDomainService {
 
     public void verifyUser(UUID key, String owner) {
         userRepository.verifyUser(key, owner);
+    }
+
+    public List<User> getAllUser() {
+        return userRepository.getAllUser();
     }
 }
