@@ -9,4 +9,6 @@ import java.util.List;
 public interface IItemRepository {
     List<ItemName> getItems();
     void addItem(ItemName itemName);
+
+    void removeItem(ItemName itemName);
 }
