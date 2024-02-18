@@ -25,11 +25,13 @@
             </table>
         </div>
 
-        <form th:action="@{'/createItem'}" method="post">
-            <label for="createItem">Neuen Gegenstand hinzufügen:</label>
-            <input id="createItem" type="text" name="newItem" required/>
-            <input type="submit">
-        </form>
+        <div class="container">
+            <form th:action="@{'/createItem'}" method="post">
+                <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+                <input id="createItem" type="text" name="newItem" required/>
+                <input type="submit">
+            </form>
+        </div>
 
         <div class="col-md-6">
             <h2>Liste aller Räume</h2>
@@ -37,17 +39,22 @@
                 <thead>
                 <tr>
                     <th>Raumnummer</th>
-                    <th>Arbeitsplätze</th>
+                    <th>Link zum Raum</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="room : ${roomList}">
-                    <td th:text="${room.getRoomNumber}"></td>
-                    <!--<td><a th:href="/room/{room.}">Zum Raum</a></td> -->
+                    <td th:text="${room.getRoomNumber.number}"></td>
+                    <td><a th:href="@{/room/{roomId}(roomId=${room.getRoomID})}">Zum Raum</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
+    <div class="container">
+        <a href="/">Um Räume hinzuzufügen, bitte hier klicken</a>
+    </div>
 
 </div>
 </body>
