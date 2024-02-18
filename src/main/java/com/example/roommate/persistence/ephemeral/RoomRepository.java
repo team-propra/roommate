@@ -36,6 +36,7 @@ public class RoomRepository implements IRoomRepository {
                 return;
             }
         }
+
     }
 
     public List<? extends IRoom> findAll(){
@@ -60,7 +61,6 @@ public class RoomRepository implements IRoomRepository {
     @Override
     public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace workspace) throws NotFoundRepositoryException {
         IRoom room = findRoomByWorkspace(workspace.getId());
-        
         List<BookedTimeframe> bookedTimeframes = new ArrayList<>();
         bookedTimeframes.add(bookedTimeframe);
         bookedTimeframes.addAll(IterableSupport.toList(workspace.getBookedTimeframes()));
@@ -68,7 +68,8 @@ public class RoomRepository implements IRoomRepository {
         List<IWorkspace> filteredWorkspaces = new ArrayList<>();
         IterableSupport.toList(room.getWorkspaces())
                 .stream()
-                .filter(workspaceEntry->workspaceEntry.getId().equals(workspace.getId()))
+                //.filter(workspaceEntry->workspaceEntry.getId().equals(workspace.getId()))
+                .filter(workspaceEntry->!workspaceEntry.getId().equals(workspace.getId()))
                 .forEach(filteredWorkspaces::add);
         filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),workspace.getItems(),bookedTimeframes));
 
@@ -92,7 +93,6 @@ public class RoomRepository implements IRoomRepository {
                 .filter(workspaceEntry->workspaceEntry.getId().equals(workspace.getId()))
                 .forEach(filteredWorkspaces::add);
         filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),itemNames, workspace.getBookedTimeframes()));
-
         RoomEntry roomEntry = new RoomEntry(room.getRoomID(),room.getRoomNumber(),filteredWorkspaces);
         overwrite(roomEntry);
     }
@@ -136,18 +136,17 @@ public class RoomRepository implements IRoomRepository {
     public void addWorkspace(IRoom room, IWorkspace workspace) throws NotFoundRepositoryException {
         _consistentAddWorkspace(workspace,room.getRoomID());
     }
-    
+
     private void _consistentAddWorkspace(IWorkspace workspace, UUID roomId) throws NotFoundRepositoryException {
         IRoom actuallyStoredRoom = findRoomByID(roomId);
-        
+
         List<IWorkspace> filteredWorkspaces = new ArrayList<>();
         IterableSupport.toList(actuallyStoredRoom.getWorkspaces())
                 .stream()
-                .filter(workspaceEntry->workspaceEntry.getId() != workspaceEntry.getId())
+                .filter(workspaceEntry -> workspaceEntry.getId() != workspaceEntry.getId())//always false?
                 .forEach(filteredWorkspaces::add);
-        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(),workspace.getWorkspaceNumber(),workspace.getItems(), workspace.getBookedTimeframes()));
-
-        overwrite(new RoomEntry(actuallyStoredRoom.getRoomID(),actuallyStoredRoom.getRoomNumber(),filteredWorkspaces));
+        filteredWorkspaces.add(new WorkspaceEntry(workspace.getId(), workspace.getWorkspaceNumber(), workspace.getItems(), workspace.getBookedTimeframes()));
+        overwrite(new RoomEntry(actuallyStoredRoom.getRoomID(), actuallyStoredRoom.getRoomNumber(), filteredWorkspaces));
     }
 
 }
