@@ -2,6 +2,7 @@ package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.application.services.UserApplicationService;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.forms.KeyMasterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,9 +30,8 @@ public class ApiController {
     public List<KeyMasterForm> getKeysAndRooms() {
 
         //String roomID = bookingApplicationService.getRooms() ...
-        UUID id = UUID.randomUUID();
-        UUID keyId = UUID.fromString("9ef200d5-8d44-4a98-9650-85668d01cf8c");
+        Iterable<KeyMasterForm> associatedBookEntries = IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
 
-        return List.of(new KeyMasterForm( id, keyId));
+        return null;
     }
 }

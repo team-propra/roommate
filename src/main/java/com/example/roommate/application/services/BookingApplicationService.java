@@ -2,8 +2,11 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
@@ -17,6 +20,7 @@ import com.example.roommate.values.forms.KeyMasterForm;
 import com.example.roommate.values.models.RoomBookingModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.*;
@@ -32,8 +36,10 @@ public class BookingApplicationService {
     RoomDomainService roomDomainService;
     UserDomainService userDomainService;
 
-    public BookingApplicationService(RoomDomainService roomDomainService) {
+    @Autowired
+    public BookingApplicationService(RoomDomainService roomDomainService, UserDomainService userDomainService) {
         this.roomDomainService = roomDomainService;
+        this.userDomainService = userDomainService;
 
     }
 
@@ -140,6 +146,14 @@ public class BookingApplicationService {
         roomDomainService.createItem(itemName);
     }
     public Iterable<KeyMasterForm> getAssociatedBookEntries() {
+        List<User> users = userDomainService.getAllUser();
+        Collection<IRoom> rooms = roomDomainService.getRooms();
+
+        List<KeyMasterForm> result;
+        for(IRoom room : rooms) {
+
+        }
+        //ToDo Streams: Alle Räume, alle User durchgehen, und räume mit BookedTimeFrames.userHanlde.equals(user ....)
         return null;
     }
 }
