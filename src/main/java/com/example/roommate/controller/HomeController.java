@@ -32,7 +32,7 @@ public class HomeController {
         model.addAttribute("homeModels", roomModels);
         return "home";
     }
-    
+
     private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room){
         List<RoomHomeModel> list = IterableSupport.toList(room.getWorkspaces()).stream()
                 .filter(workspace -> !IterableSupport.toList(workspace.getBookedTimeframes()).isEmpty())

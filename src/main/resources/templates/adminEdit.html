@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Edit Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Admin Edit Page</h1>
+
+        <div class="col-md-6">
+            <h2>Liste aller Items</h2>
+            <table class="table table-striped">
+                <tbody>
+                <tr th:each="item : ${itemList}">
+                    <td>
+                        <form th:action="@{'/deleteItem/' + ${item.type}}" method="post">
+                        <input type="hidden" name="tagName" th:text="${item.type}" />
+                        <button type="submit">X</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <form th:action="@{'/createItem'}" method="post">
+            <label for="createItem">Neuen Gegenstand hinzufügen:</label>
+            <input id="createItem" type="text" name="newItem" required/>
+            <input type="submit">
+        </form>
+
+        <div class="col-md-6">
+            <h2>Liste aller Räume</h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Raumnummer</th>
+                    <th>Arbeitsplätze</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room : ${roomList}">
+                    <td th:text="${room.getRoomNumber}"></td>
+                    <!--<td><a th:href="/room/{room.}">Zum Raum</a></td> -->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+</div>
+</body>
+</html>

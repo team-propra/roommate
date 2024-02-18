@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -8,6 +8,9 @@
 <body>
 <h1>Homepage</h1>
 <a href="/rooms">Arbeitsplatz buchen</a>
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/edit">Bearbeiten von Arbeitsplätzen und Items</a>
+</div>
 <h2>Buchungen</h2>
 <div id="links" th:if="${homeModels}">
     <table class="table" >

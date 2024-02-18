@@ -3,7 +3,6 @@ package com.example.roommate.controller;
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
-import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
@@ -26,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
@@ -86,11 +86,11 @@ public class RoomController {
             if(optionalWorkspace.isEmpty())
                 throw new NotFoundException();
             IWorkspace workspace = optionalWorkspace.get();
-            List<String> itemsOfRoom = bookingApplicationService.getItemsOfRoom(roomId);
+            List<String> itemsOfWorkspace = workspace.getItems().stream().map(ItemName::type).collect(Collectors.toList());
             List<String> filteredItems = bookingApplicationService.allItems()
                     .stream()
                     .map(ItemName::type)
-                    .filter(type -> !itemsOfRoom.contains(type))
+                    .filter(type -> !itemsOfWorkspace.contains(type))
                     .toList();
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
@@ -100,7 +100,7 @@ public class RoomController {
 
             model.addAttribute("room", room);
             model.addAttribute("workspace", workspace);
-            model.addAttribute("itemStringList", itemsOfRoom);
+            model.addAttribute("itemStringList", itemsOfWorkspace);
             model.addAttribute("notSelectedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
@@ -140,27 +140,5 @@ public class RoomController {
             throw new RuntimeException(e);
         }
         return new ModelAndView("redirect:/");
-    }
-
-
-    @AdminOnly
-    @PostMapping("/room/{roomID}/workspace/{workspaceID}/addItem/{itemName}")
-    public ModelAndView addItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
-        bookingApplicationService.addItemToRoom(workspaceID, itemName,roomID);
-        return roomDetails(model, roomID,workspaceID);
-    }
-
-    @AdminOnly
-    @PostMapping("/room/{roomID}/workspace/{workspaceID}/createItem")
-    public ModelAndView createItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
-        bookingApplicationService.createItem(newItem);
-        return addItem(model, roomID, workspaceID, newItem);
-    }
-
-    @AdminOnly
-    @PostMapping("/room/{roomID}/workspace/{workspaceID}/removeItem/{itemName}")
-    public ModelAndView deleteItem(Model model, @PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
-        bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
-        return roomDetails(model, roomID,workspaceID);
     }
 }
