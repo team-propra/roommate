@@ -29,8 +29,8 @@ public class ApiController {
     public List<KeyMasterForm> getKeysAndRooms() {
 
         //String roomID = bookingApplicationService.getRooms() ...
-        Iterable<KeyMasterForm> associatedBookEntries = IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
+        return IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
 
-        return null;
+
     }
 }

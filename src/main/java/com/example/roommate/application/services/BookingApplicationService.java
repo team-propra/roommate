@@ -2,6 +2,7 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IUser;
@@ -147,11 +148,26 @@ public class BookingApplicationService {
         List<? extends IUser> users = userDomainService.getAllUser();
         Collection<IRoom> rooms = roomDomainService.getRooms();
 
-        List<KeyMasterForm> result;
-        for(IRoom room : rooms) {
+        List<KeyMasterForm> result = new ArrayList<>();
 
+        for(IUser user : users) {
+            if(user.getRole().equals("VERIFIED_USER")) {
+                UUID keyId = user.getKeyId();
+                String handle = user.getHandle();
+                for(IRoom room : rooms) {
+                    List<Workspace> workspaces = (List<Workspace>) IterableSupport.toList(room.getWorkspaces());
+                    for(Workspace w: workspaces) {
+                        List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(w.getBookedTimeframes());
+                        for(BookedTimeframe bookedTimeframe : bookedTimeframes)
+                            if(bookedTimeframe.userHandle().equals(handle)) {
+                                result.add(new KeyMasterForm(w.getId(), keyId));
+                            }
+                    }
+                }
+            }
         }
+
         //ToDo Streams: Alle Räume, alle User durchgehen, und räume mit BookedTimeFrames.userHanlde.equals(user ....)
-        return null;
+        return result;
     }
 }
