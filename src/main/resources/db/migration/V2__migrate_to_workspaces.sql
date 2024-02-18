@@ -16,5 +16,5 @@ CREATE TABLE item_to_workspace
 DROP TABLE item_to_room;
 
 ALTER TABLE booked_timeframe DROP room_id;
-ALTER TABLE booked_timeframe ADD workspace_id UUID NOT NULL REFERENCES workspace(id)
+ALTER TABLE booked_timeframe ADD workspace_id UUID NOT NULL REFERENCES workspace(id);
 
