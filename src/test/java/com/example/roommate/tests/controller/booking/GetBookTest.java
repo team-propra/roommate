@@ -19,25 +19,23 @@ public class GetBookTest {
     MockMvc mvc;
 
     @Test
-    @DisplayName("A Get-Request on /book returns home.html")
+    @DisplayName("A Get-Request on /rooms returns home.html")
     @WithMockOAuth2User
-    void test_3()throws Exception{
+    void test_3() throws Exception {
 
         mvc.perform(get("/rooms"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("rooms"));
     }
 
-
-    //vorerst noch keine Parametervalidierung, da evtl. neues Form-Objekt oder andere Informationen übergeben werden
     @Test
-    @DisplayName("A GET-request on /book with the query parameters date and time stores them in the model")
+    @DisplayName("A GET-request on /rooms with the query parameters date and time stores them in the model")
     @WithMockOAuth2User
-    void test_04() throws Exception{
+    void test_04() throws Exception {
         mvc.perform(get("/rooms")
-                .param("date", "08.07.2014")
-                .param("startTime", "14:30")
-                .param("endTime", "15:00"))
+                        .param("date", "08.07.2014")
+                        .param("startTime", "14:30")
+                        .param("endTime", "15:00"))
                 .andExpect(model().attributeExists("date", "startTime", "endTime"));
     }
 }
