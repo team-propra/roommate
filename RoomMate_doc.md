@@ -23,7 +23,6 @@ _picture: very serious stakeholder analysis. We aim to please these people._
 
 # System Scope and Context
 
-<div class="formalpara-title">
 
 ![Context image for Roommate](images/RoomMate_Context.PNG)
 _picture: Context Diagram for RoomMate_
@@ -32,17 +31,15 @@ _picture: Context Diagram for RoomMate_
 *   **KeyMaster**: Software for Door-Locking Management. Requires regularly updated information from RoomMate. Is able to generate User-Keys and rooms.
 *   **Github**: Is used for OAuth authentication.
 
-
-<div class="formalpara-title">
-
 # Building Block View
 
-<div class="formalpara-title">
 
-**Level 1 view**
+
+**Abstract view**
 
 ![Component Diagram for Roommate](images/RoomMate_ComponentDiagram.PNG)
-_picture: Level 1 component diagram of RoomMate_
+
+_picture: Abstract component diagram of RoomMate_
 
 | **Name**                | **Description**                                                                                                                                                                                                                               |
 |-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -62,7 +59,7 @@ You can also see the glossary as source for translations if you work in
 multi-language teams.
 
 
-| Term        | Definition        |
-|-------------|-------------------|
-| *\<Term-1>* | *\<definition-1>* |
-| *\<Term-2>* | *\<definition-2>* |
+| Term            | Definition                                                           |
+|-----------------|----------------------------------------------------------------------|
+| *abstract view* | *Our Monolithic architecture view covering level 1 and 2 components* |
+
