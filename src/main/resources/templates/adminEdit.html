@@ -14,7 +14,12 @@
             <table class="table table-striped">
                 <tbody>
                 <tr th:each="item : ${itemList}">
-                    <td th:text="${item.type}"></td>
+                    <td>
+                        <form th:action="@{'/deleteItem/' + ${item.type}}" method="post">
+                        <input type="hidden" name="tagName" th:text="${item.type}" />
+                        <button type="submit">X</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -38,32 +43,11 @@
                 <tbody>
                 <tr th:each="room : ${roomList}">
                     <td th:text="${room.getRoomNumber}"></td>
-                    <td th:text="${room.getWorkspaces}"></td>
+                    <!--<td><a th:href="/room/{room.}">Zum Raum</a></td> -->
                 </tr>
                 </tbody>
             </table>
         </div>
-
-    <div class="col-md-6">
-        <h2>Liste aller Arbeitsplätze</h2>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Arbeitsplätzenummer</th>
-                <th>Items</th>
-                <th>Gebuchte Zeiten</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="workspace : ${workspaceList}">
-
-                <td th:text="${workspace.getWorkspaceNumber}"></td>
-                <td th:text="${workspace.getItems}"></td>
-                <td th:text="${workspace.getBookedTimeframes}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
 </div>
 </body>
