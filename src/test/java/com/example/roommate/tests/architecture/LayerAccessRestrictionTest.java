@@ -13,7 +13,7 @@ import static com.example.roommate.architectureDeclaration.Layers.*;
 public class LayerAccessRestrictionTest {
     @ArchTest
     static ArchRule domainObjectsCanOnlyBeUsedInsideDomainServices = all
-            .whereLayer(DOMAIN_ENTITIES).mayOnlyBeAccessedByLayers(DOMAIN_ENTITIES,DOMAIN_SERVICES,TESTS, FACTORIES);
+            .whereLayer(DOMAIN_ENTITIES).mayOnlyBeAccessedByLayers(DOMAIN_ENTITIES,DOMAIN_SERVICES,TESTS, FACTORIES, EXAMPLES);
 
     
 }

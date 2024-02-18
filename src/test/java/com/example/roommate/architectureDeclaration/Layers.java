@@ -17,6 +17,7 @@ public class Layers {
     public static final String TESTS = "Tests";
     public static final String FORMS = "Forms";
     public static final String FACTORIES = "Factory";
+    public static final String EXAMPLES = "Examples";
     
     public static final Architectures.LayeredArchitecture all = layeredArchitecture().consideringAllDependencies()
                     .layer(CONTROLLERS).definedBy("com.example.roommate.controller..")
@@ -30,5 +31,6 @@ public class Layers {
                     .layer(DOMAIN_SERVICES).definedBy("com.example.roommate.domain.services..")
                     .layer(TESTS).definedBy("com.example.roommate.tests..")
                     .layer(FORMS).definedBy("com.example.roommate.values.forms..")
-                    .layer(FACTORIES).definedBy("com.example.roommate.factories..");
+                    .layer(FACTORIES).definedBy("com.example.roommate.factories..")
+                    .layer(EXAMPLES).definedBy("com.example.roommate.examples..");
 }

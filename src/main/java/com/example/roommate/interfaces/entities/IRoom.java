@@ -1,19 +1,13 @@
 package com.example.roommate.interfaces.entities;
 
 import com.example.roommate.annotations.Interface;
-import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
-import java.util.List;
 import java.util.UUID;
 
 @Interface
 public interface IRoom {
     UUID getRoomID();
-    String getRoomNumber();
-    List<ItemName> getItemNames();
-
-    List<BookedTimeframe> getBookedTimeframes();
-
-
+    RoomNumber getRoomNumber();
+    Iterable<? extends IWorkspace> getWorkspaces();
 }

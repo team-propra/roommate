@@ -2,8 +2,8 @@ package com.example.roommate.domain.models.entities;
 
 
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.values.domainValues.BookedTimeframe;
-import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.interfaces.entities.IWorkspace;
+import com.example.roommate.values.domainValues.RoomNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,31 +13,29 @@ import java.util.UUID;
 public class Room implements IRoom {
 
     private final UUID roomID;
-    private final String roomNumber;
-    private final List<BookedTimeframe> bookedPeriods;
-    private final List<ItemName> itemNameList;
+    private final RoomNumber roomNumber;
+    private final List<Workspace> workspaces;
 
-    public Room(UUID roomID, String roomNumber, List<BookedTimeframe> bookedPeriods, List<ItemName> itemNameList) {
+    public Room(UUID roomID, RoomNumber roomNumber, List<? extends IWorkspace> workspaces) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.bookedPeriods = bookedPeriods;
-        this.itemNameList = itemNameList;
+        this.workspaces = workspaces.stream().map(x->new Workspace(x.getId(),x.getWorkspaceNumber(),x.getItems(),x.getBookedTimeframes())).toList();
     }
 
-    public Room(UUID roomID, String roomNumber) {
-        this.roomID = roomID;
-        this.roomNumber = roomNumber;
-        this.bookedPeriods = new ArrayList<>();
-        this.itemNameList = new ArrayList<>();
+    public Room(UUID roomID, RoomNumber roomNumber) {
+        this(roomID,roomNumber,new ArrayList<>());
     }
+    
 
     public UUID getRoomID() {
         return roomID;
     }
 
-    public String getRoomNumber() {
+    public RoomNumber getRoomNumber() {
         return roomNumber;
     }
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -52,31 +50,14 @@ public class Room implements IRoom {
         return Objects.hash(roomID, roomNumber);
     }
 
-    public void addItem(ItemName item) {
-        itemNameList.add(item);
-    }
 
-    public void addItem(List<ItemName> items) {
-        itemNameList.addAll(items);
-    }
-
-    public List<ItemName> getItemNames() {
-        return itemNameList;
-    }
-
-    public void addBookedTimeframe(BookedTimeframe bookedTimeframe) {
-        bookedPeriods.add(bookedTimeframe);
-    }
 
     @Override
-    public List<BookedTimeframe> getBookedTimeframes() {
-        return bookedPeriods;
+    public List<Workspace> getWorkspaces() {
+        return workspaces.stream().toList(); // TODO consistency /immutability
     }
 
 
-    public boolean isAvailable(BookedTimeframe bookedTimeframe) {
-        return bookedPeriods.stream().noneMatch(timeFrame -> timeFrame.intersects(bookedTimeframe));
-    }
-
+    
 
 }

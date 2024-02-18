@@ -1,9 +1,9 @@
 package com.example.roommate.values.models;
 
 import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.domainValues.RoomNumber;
 
-import java.util.List;
 import java.util.UUID;
 
-public record RoomHomeModel(UUID roomID, String roomNumber, List<ItemName> itemNameList, String reservedTime) {
+public record RoomHomeModel(UUID roomID, UUID workspaceID, RoomNumber roomNumber, int workspaceNumber, String reservedTime, Iterable<ItemName> items) {
 }

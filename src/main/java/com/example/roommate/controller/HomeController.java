@@ -2,8 +2,11 @@ package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.application.services.UserApplicationService;
+import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.DayTimeFrame;
 import com.example.roommate.values.models.RoomHomeModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 
-@Controller
+@Controller()
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService is properly injected")
 public class HomeController {
     private final BookingApplicationService bookingApplicationService;
     private final UserApplicationService userApplicationService;
@@ -46,12 +51,26 @@ public class HomeController {
          */
 
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
-                .filter(x-> !x.getBookedTimeframes().isEmpty())
-                .map(x -> new RoomHomeModel(x.getRoomID(), x.getRoomNumber(), x.getItemNames(), DayTimeFrame.from(x.getBookedTimeframes()).convertToString()))
+                .flatMap(HomeController::toRoomHomeModel)
                 .toList();
-        model.addAttribute("rooms", roomModels);
+        model.addAttribute("homeModels", roomModels);
         return "home";
     }
+
+    private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room){
+        List<RoomHomeModel> list = IterableSupport.toList(room.getWorkspaces()).stream()
+                .filter(workspace -> !IterableSupport.toList(workspace.getBookedTimeframes()).isEmpty())
+                .map(workspace -> new RoomHomeModel(room.getRoomID(),
+                        workspace.getId(),
+                        room.getRoomNumber(),
+                        workspace.getWorkspaceNumber(),
+                        DayTimeFrame.from(IterableSupport.toList(workspace.getBookedTimeframes())).convertToString(),
+                        workspace.getItems()
+                ))
+                .toList();
+        return list.stream();
+    }
+
     @PostMapping("/registration")
     public String registerKey(String keyId, OAuth2AuthenticationToken auth, Model model) {
         OAuth2User user = auth.getPrincipal();

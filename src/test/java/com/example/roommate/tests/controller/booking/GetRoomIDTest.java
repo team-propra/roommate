@@ -4,9 +4,11 @@ import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.domain.models.entities.Room;
+import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.persistence.repositories.ItemRepository;
-import com.example.roommate.persistence.repositories.RoomRepository;
+import com.example.roommate.examples.Officer;
+import com.example.roommate.persistence.ephemeral.ItemRepository;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -44,18 +44,19 @@ public class GetRoomIDTest {
     
 
     @Test
-    @DisplayName("GET /room/{ID} with mocked service successfully yields roomDetails.html")
+    @DisplayName("GET /room/{roomId}/workspace/{workspaceId} with mocked service successfully yields roomDetails.html")
     @WithMockOAuth2User
     void test_1() throws Exception {
-        UUID roomId = UUID.fromString("3c857752-79ed-4fde-a916-770ae34e70e1");
-        Room room = new Room(roomId,"test");
-        when(bookingApplicationService.findRoomByID(roomId)).thenReturn(room);
+        Room office = Officer.Room();
+        Workspace officeWorkspace = Officer.Workspace();
+        when(bookingApplicationService.findRoomByID(office.getRoomID())).thenReturn(office);
 
-        MvcResult result = mvc.perform(get("/room/{ID}", roomId.toString()))
+        MvcResult result = mvc.perform(get("/room/{roomId}/workspace/{workspaceId}", office.getRoomID().toString(), officeWorkspace.getId().toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 
         String html = result.getResponse().getContentAsString();
-        assertThat(html).contains(room.getRoomNumber());
+        assertThat(html).contains(office.getRoomNumber().number());
+        assertThat(html).contains(String.format("%d",officeWorkspace.getWorkspaceNumber()));
     }
 }

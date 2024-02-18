@@ -4,6 +4,9 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.application.services.KeyMasterService;
+import com.example.roommate.exceptions.ArgumentValidationException;
+import com.example.roommate.interfaces.entities.IWorkspace;
+import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
@@ -11,6 +14,8 @@ import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
+import com.example.roommate.values.models.RoomBookingModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
 public class RoomController {
 
     private final BookingApplicationService bookingApplicationService;
@@ -51,14 +57,15 @@ public class RoomController {
 
         List<ItemName> selectedItemsList = gegenstaende.stream()
                 .map(ItemName::new)
-                .collect(Collectors.toList());
+                .toList();
 
+        List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit);
         model.addAttribute("date", datum);
         model.addAttribute("startTime", startUhrzeit);
         model.addAttribute("endTime", endUhrzeit);
-        model.addAttribute("items", bookingApplicationService.getItems());
+        model.addAttribute("items", bookingApplicationService.allItems());
         model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("rooms", bookingApplicationService.findAvailabeRoomsWithItems(selectedItemsList, datum, startUhrzeit, endUhrzeit)); //findRoomsWithItem(selectedItemsList) klappt noch nicht
+        model.addAttribute("roomBookingModels", availableWorkspacesWithItems);
         return "rooms";
     }
 
@@ -75,18 +82,32 @@ public class RoomController {
         return "addRooms";
     }
 
-    @GetMapping("/room/{id}")
-    public ModelAndView roomDetails(Model model, @PathVariable UUID id) {
+    @GetMapping("/room/{roomId}/workspace/{workspaceId}")
+    public ModelAndView roomDetails(Model model, @PathVariable UUID roomId, @PathVariable UUID workspaceId) {
         try {
-            IRoom roomByID = bookingApplicationService.findRoomByID(id);
-
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(roomByID.getBookedTimeframes());
+            IRoom room = bookingApplicationService.findRoomByID(roomId);
+            Optional<? extends IWorkspace> optionalWorkspace = IterableSupport.toList(room.getWorkspaces()).stream()
+                    .filter(x -> x.getId().equals(workspaceId))
+                    .findFirst();
+            if(optionalWorkspace.isEmpty())
+                throw new NotFoundException();
+            IWorkspace workspace = optionalWorkspace.get();
+            List<String> itemsOfWorkspace = workspace.getItems().stream().map(ItemName::type).collect(Collectors.toList());
+            List<String> filteredItems = bookingApplicationService.allItems()
+                    .stream()
+                    .map(ItemName::type)
+                    .filter(type -> !itemsOfWorkspace.contains(type))
+                    .toList();
+            DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
-            ModelAndView modelAndView = new ModelAndView("roomDetails");
+            ModelAndView modelAndView = new ModelAndView("workspaceDetails");
             modelAndView.setStatus(HttpStatus.OK);
 
-            model.addAttribute("room", roomByID);
+            model.addAttribute("room", room);
+            model.addAttribute("workspace", workspace);
+            model.addAttribute("itemStringList", itemsOfWorkspace);
+            model.addAttribute("notSelectedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
@@ -102,17 +123,18 @@ public class RoomController {
             , RedirectAttributes redirectAttributes
             , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
-    ) {
+    ) throws ArgumentValidationException {
 
-
-        if (bindingResult.hasErrors()) {
-            UUID id = form.id();
+        if (bindingResult.hasErrors() || !BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
+            UUID roomId = form.roomId();
+            UUID workspaceId = form.workspaceId();
             String errorMessage = "No Room selected. Please select a room to book or return home";
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
-            return new ModelAndView("redirect:/room/%s".formatted(id));
+            return new ModelAndView("redirect:/room/%s/workspace/%s".formatted(roomId,workspaceId));
         }
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
+
 
         try {
             bookingApplicationService.addBookEntry(addedBookingsForm);
@@ -125,6 +147,4 @@ public class RoomController {
         }
         return new ModelAndView("redirect:/");
     }
-
-
 }
