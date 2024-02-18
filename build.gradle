@@ -36,13 +36,12 @@ repositories {
     mavenCentral()
 }
 
-tasks.register('runOtherSpringApp', Exec) {
-    exec {
-        executable 'java'
-        args '-jar keymaster.jar'
-        workingDir "${buildDir}/foo"
-        commandLine 'bash', '-c', "echo 'Hello world!'"
-    }
+tasks.register('keymaster', Exec) {
+    executable 'java'
+    args '-jar', "keymaster.jar"
+    workingDir "${projectDir}"
+    inputs.file("${projectDir}/keymaster.jar")
+    outputs.dir("${projectDir}")
 }
 
 
