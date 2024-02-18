@@ -92,7 +92,6 @@ public class RoomController {
                     .map(ItemName::type)
                     .filter(type -> !itemsOfWorkspace.contains(type))
                     .toList();
-
             DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
             model.addAttribute("frame",dayTimeFrame);
 
