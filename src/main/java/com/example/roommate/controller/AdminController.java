@@ -95,8 +95,8 @@ public class AdminController {
 
     @AdminOnly
     @PostMapping("/deleteWorkspace/{workspaceID}")
-    public String deleteWorkspace(Model model, @PathVariable UUID workspaceID, @RequestParam UUID roomIDDelete) throws NotFoundException {
-        //bookingApplicationService.removeWorkspace(workspaceID);
+    public String deleteWorkspace(Model model, @PathVariable UUID workspaceID, @RequestParam UUID roomIDDelete) throws NotFoundException, NotFoundRepositoryException {
+        bookingApplicationService.removeWorkspace(workspaceID, roomIDDelete);
         return roomOverview(model, roomIDDelete);
     }
 }

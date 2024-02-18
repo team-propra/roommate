@@ -151,4 +151,8 @@ public class BookingApplicationService {
 
         roomDomainService.addWorkspace(workspaceNumber, roomID);
     }
+
+    public void removeWorkspace(UUID workspaceID, UUID roomID) throws NotFoundRepositoryException {
+        roomDomainService.removeWorkspace(workspaceID, roomID);
+    }
 }
