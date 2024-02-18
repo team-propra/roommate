@@ -24,7 +24,7 @@ public class OnionComplianceTest {
     @ArchTest
     static ArchRule onion = all
                     .whereLayer(CONTROLLERS).mayOnlyBeAccessedByLayers(TESTS)
-                    .whereLayer(DOMAIN).mayOnlyBeAccessedByLayers(TESTS, APPLICATION_SERVICES, FACTORIES)
+                    .whereLayer(DOMAIN).mayOnlyBeAccessedByLayers(TESTS, APPLICATION_SERVICES, FACTORIES, EXAMPLES)
                     .whereLayer(APPLICATION_SERVICES).mayOnlyBeAccessedByLayers(CONTROLLERS,TESTS, FACTORIES)
                     .whereLayer(PERSISTENCE).mayOnlyBeAccessedByLayers(APPLICATION_SERVICES,TESTS, FACTORIES)
                     .whereLayer(FORMS).mayOnlyBeAccessedByLayers(CONTROLLERS,TESTS, APPLICATION_SERVICES, FACTORIES, DOMAIN_VALUES);

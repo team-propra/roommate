@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -8,30 +8,37 @@
 <body>
 <h1>Homepage</h1>
 <a href="/rooms">Arbeitsplatz buchen</a>
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/edit">Bearbeiten von Arbeitsplätzen und Items</a>
+</div>
 <h2>Buchungen</h2>
-<div id="links" th:if="${rooms}">
+<div id="links" th:if="${homeModels}">
     <table class="table" >
         <thead>
         <tr>
             <th>Raum</th>
+            <th>Workspace</th>
             <th>Austattung</th>
             <th>Zeitraum</th>
         </tr>
         </thead>
         <tbody th:remove="all-but-first" >
-        <tr th:each="room:${rooms}">
+        <tr th:each="workspace:${homeModels}">
             <td>
-                <span th:text="${room.roomNumber}"> 123 </span>
+                <span th:text="${workspace.roomNumber}"> 123 </span>
             </td>
             <td>
-                <div th:text="${itemName.type()}" th:each="itemName:${room.itemNameList}">
+                <span th:text="${workspace.workspaceNumber()}"> 123 </span>
+            </td>
+            <td>
+                <div th:text="${item.type()}" th:each="item:${workspace.items()}">
                     <span > Küche </span>
                 </div>
 
             </td>
             <td>
                 <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
-                <pre th:text="${room.reservedTime}">
+                <pre th:text="${workspace.reservedTime}">
                     <span > Zeitraum </span>
                 </pre>
 

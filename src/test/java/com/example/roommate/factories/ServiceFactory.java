@@ -1,8 +1,8 @@
 package com.example.roommate.factories;
 
 import com.example.roommate.annotations.Factory;
-import com.example.roommate.persistence.repositories.ItemRepository;
-import com.example.roommate.persistence.repositories.RoomRepository;
+import com.example.roommate.persistence.ephemeral.ItemRepository;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.domain.services.RoomDomainService;
 

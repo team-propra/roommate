@@ -8,14 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
-
 @Interface
-public interface IItemToRoomDAO extends CrudRepository<ItemToRoomDTO, UUID> {
+public interface IItemToWorkspaceDAO extends CrudRepository<ItemToWorkspaceDTO, UUID> {
 
-    List<ItemToRoomDTO> findByRoomId(UUID roomID);
+    List<ItemToWorkspaceDTO> findByWorkspaceId(UUID workspaceId);
 
-    @Query("INSERT INTO item_to_room (id, item_name, room_id) VALUES (:id, :itemName, :roomId)")
+    @Query("INSERT INTO item_to_workspace (id, item_name, workspace_id) VALUES (:id, :itemName, :workspaceId)")
     @Modifying
-    void insert( @Param("id")UUID id,@Param("itemName") String itemName,@Param("roomId") UUID roomId);
+    void insert(@Param("id")UUID id, @Param("itemName") String itemName, @Param("workspaceId") UUID workspaceId);
 
 }

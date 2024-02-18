@@ -9,6 +9,8 @@ import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
+import com.example.roommate.persistence.ephemeral.RoomRepository;
+import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.persistence.data.RoomEntry;
 import com.example.roommate.persistence.repositories.RoomRepository;
@@ -25,8 +27,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,19 +56,22 @@ public class PostBookTest {
 
     @MockBean
     UserDomainService userDomainService;
-    UUID roomID = UUID.fromString("21f0949f-4824-45b5-be3b-a74da8be8255");
 
-    BookDataForm bookDataForm = new BookDataForm(roomID, 60);
+    UUID roomID = ValuesFactory.roomId;
+    UUID workspaceId = ValuesFactory.roomId;
+
+    BookDataForm bookDataForm = new BookDataForm(workspaceId, roomID,60);
 
     @DisplayName("POST /rooms redirects to /")
     @Test
     @WithMockOAuth2User
     void test_1() throws Exception {
-        roomRepository.add(new RoomEntry(roomID, "randomroomnumber", List.of()));
+        roomRepository.add(ValuesFactory.createRoomEntry("randomroomnumber"));
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .param("id", roomID.toString())
-                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                        .param("cell", "0-1-X")//otherwise invalid
+                       // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(redirectedUrl("/"));
     }
@@ -101,12 +104,13 @@ public class PostBookTest {
     public void test_3() throws Exception {
 
         mvc.perform(post("/rooms")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .param("id", "null")
-                        // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
-                        .param("stepSize", String.valueOf(bookDataForm.stepSize())))
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("roomId", "null")
+                .param("workspaceId ", "null")
+               // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
+                .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/room/*"));
+                .andExpect(redirectedUrlPattern("/room/*/workspace/*")) ;
 
     }
 
@@ -124,8 +128,9 @@ public class PostBookTest {
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        // .param("form", bookDataForm.toString()))
-                        .param("id", roomID.toString())
+                       // .param("form", bookDataForm.toString()))
+                          .param("id", roomID.toString())
+                          .param("cell", "0-1-X")//otherwise invalid
                         //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(view().name("bad-request"))

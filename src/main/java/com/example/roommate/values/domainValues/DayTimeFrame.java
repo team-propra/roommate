@@ -1,19 +1,23 @@
 package com.example.roommate.values.domainValues;
 
+import com.example.roommate.utility.IterableSupport;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressFBWarnings(value = {"EI", "EI2"}, justification = "DayTimeFrame represents a part of an html contract")
 public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
-    public static DayTimeFrame from(List<BookedTimeframe> bookedTimeframes){
+    public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes){
         //Frames
         int times = 23;
         int days = 7;
         int stepSize = 60;
         List<String> dayLabels = generateDayLabels();
         List<String> timeLabels = generateTimeLabels(times, stepSize);
-        List<List<Boolean>> reserved = bookedTimeframesToWeek2dMatrix(bookedTimeframes, stepSize, times);
+        List<List<Boolean>> reserved = bookedTimeframesToWeek2dMatrix(IterableSupport.toList(bookedTimeframes), stepSize, times);
 
 
         if (dayLabels.size() != days)
@@ -69,9 +73,9 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
 
     public String convertToString(){
 
-        List<List<Boolean>> allBookingDays = reserved();
+        Iterable<List<Boolean>> allBookingDays = reserved();
 
-        String outpout = "";
+        StringBuilder outpout = new StringBuilder();
         int count;
         int j = 0;
         for(List<Boolean> bookingList : allBookingDays){
@@ -80,7 +84,7 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
                 j++;
                 continue;
             }
-            outpout = switch (j) {
+            outpout = new StringBuilder(switch (j) {
                 case 0 -> outpout + "Montag[";
                 case 1 -> outpout + "Dienstag[";
                 case 2 -> outpout + "Mittwoch[";
@@ -88,12 +92,12 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
                 case 4 -> outpout + "Freitag[";
                 case 5 -> outpout + "Samstag[";
                 case 6 -> outpout + "Sonntag[";
-                default -> outpout;
-            };
+                default -> outpout.toString();
+            });
 
             j++;
 
-            boolean ersterDurchlauf =  true;
+            boolean firstIteration =  true;
             for (int i = 0; i < bookingList.size(); i++) {
                 LocalTime customTime = LocalTime.of(0, 0);
                 count = 0;
@@ -107,31 +111,30 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
                             i++;
                         }
 
-                        if(ersterDurchlauf){
-                            outpout = outpout + String.format("%s - %s", customTime.plusMinutes((long) stepSize * (i-count-1)), customTime.plusMinutes((long) stepSize * (i-count-1) + stepSize +((long) count * stepSize)));
+                        if(firstIteration){
+                            outpout.append(String.format("%s - %s", customTime.plusMinutes((long) stepSize * (i - count - 1)), customTime.plusMinutes((long) stepSize * (i - count - 1) + stepSize + ((long) count * stepSize))));
 
                         }
                         else{
-                            outpout = outpout + String.format(", %s - %s", customTime.plusMinutes((long) stepSize * (i - count - 1)), customTime.plusMinutes((long) stepSize * (i - count - 1) + stepSize + ((long) count * stepSize)));
+                            outpout.append(String.format(", %s - %s", customTime.plusMinutes((long) stepSize * (i - count - 1)), customTime.plusMinutes((long) stepSize * (i - count - 1) + stepSize + ((long) count * stepSize))));
                         }
-                        ersterDurchlauf = false;
+                        firstIteration = false;
                         continue;
                     }
-                    if(ersterDurchlauf){
-                        outpout = outpout + String.format("%s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize +(count * stepSize)));
+                    if(firstIteration){
+                        outpout.append(String.format("%s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize)));
 
                     }
                     else {
-                        outpout = outpout + String.format(", %s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize + (count * stepSize)));
+                        outpout.append(String.format(", %s - %s", customTime.plusMinutes((long) stepSize * i), customTime.plusMinutes((long) stepSize * i + stepSize)));
                     }
-                    ersterDurchlauf = false;
-                    continue;
+                    firstIteration = false;
                 }
 
             }
-            outpout = outpout + "] \n";
+            outpout.append("] \n");
             System.out.println();
         }
-        return  outpout;
+        return outpout.toString();
     }
 }

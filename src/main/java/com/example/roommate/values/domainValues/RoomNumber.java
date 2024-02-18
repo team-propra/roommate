@@ -1,8 +1,8 @@
 package com.example.roommate.values.domainValues;
 
-public record ItemName(String type) {
+public record RoomNumber(String number) {
     @Override
     public String toString() {
-        return type;
+        return "RoomNumber" + number;
     }
 }
