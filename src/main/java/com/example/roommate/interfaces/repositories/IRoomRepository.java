@@ -24,4 +24,6 @@ public interface IRoomRepository {
     void removeItem(ItemName itemName, IWorkspace iWorkspace) throws NotFoundRepositoryException;
 
     void addWorkspace(IRoom room, IWorkspace x) throws NotFoundRepositoryException;
+
+    void removeWorkspace(UUID workspaceID, IRoom roomByID);
 }

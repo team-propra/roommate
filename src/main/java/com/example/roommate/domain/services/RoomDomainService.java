@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
@@ -180,9 +177,20 @@ public class RoomDomainService {
     public void addWorkspace(IRoom room, IWorkspace x) throws NotFoundRepositoryException {
         roomRepository.addWorkspace(room, x);
     }
+    public void addWorkspace(int workspaceNumber, UUID roomID) throws NotFoundRepositoryException {
+        IRoom room = roomRepository.findRoomByID(roomID);
+        IWorkspace workspace= new Workspace(UUID.randomUUID(), workspaceNumber,new ArrayList<>(), new ArrayList<>());
+        addWorkspace(room, workspace);
+    }
 
     public void removeItem(String itemName) {
         ItemName item = new ItemName(itemName);
         itemRepository.removeItem(item);
+    }
+
+    public void removeWorkspace(UUID workspaceID, UUID roomID) throws NotFoundRepositoryException {
+        IRoom roomByID = roomRepository.findRoomByID(roomID);
+        roomRepository.removeWorkspace(workspaceID, roomByID);
+
     }
 }

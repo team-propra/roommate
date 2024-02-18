@@ -137,6 +137,11 @@ public class RoomRepository implements IRoomRepository {
         _consistentAddWorkspace(workspace,room.getRoomID());
     }
 
+    @Override
+    public void removeWorkspace(UUID workspaceID, IRoom roomByID) {
+        // TODO
+    }
+
     private void _consistentAddWorkspace(IWorkspace workspace, UUID roomId) throws NotFoundRepositoryException {
         IRoom actuallyStoredRoom = findRoomByID(roomId);
 
