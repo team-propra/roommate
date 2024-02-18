@@ -2,8 +2,8 @@ package com.example.roommate.tests.controller;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithMockOAuth2User;
-import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
+import com.example.roommate.application.services.AuthenticationApplicationService;
 import com.example.roommate.controller.HomeController;
 
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-
-
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,13 +28,14 @@ public class  HomeControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    BookingApplicationService bookingApplicationService;
+    AuthenticationApplicationService authenticationApplicationService;
 
 
     @DisplayName("A GET-Request on / returns a status 200 and displays the home.html")
     @Test
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     public void test_01() throws Exception {
+        when(authenticationApplicationService.userHasKey("verified_user")).thenReturn(true);
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"));

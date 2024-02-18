@@ -2,7 +2,6 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
 import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.controller.RoomController;
@@ -62,7 +61,7 @@ public class PostBookTest {
 
     @DisplayName("POST /rooms redirects to /")
     @Test
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     void test_1() throws Exception {
         roomRepository.add(ValuesFactory.createRoomEntry("randomroomnumber"));
         mvc.perform(post("/rooms")
@@ -98,7 +97,7 @@ public class PostBookTest {
 
     @Test
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     public void test_3() throws Exception {
 
         mvc.perform(post("/rooms")
@@ -117,7 +116,7 @@ public class PostBookTest {
     @Test
     @DisplayName("POST /rooms returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     public void test_4() throws Exception {
         //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
         //entryService = mock(BookEntryService.class);
