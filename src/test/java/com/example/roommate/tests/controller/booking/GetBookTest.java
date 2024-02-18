@@ -5,6 +5,8 @@ import com.example.roommate.annotations.WithMockOAuth2User;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.interfaces.application.services.IAdminApplicationService;
 import com.example.roommate.interfaces.application.services.IBookingApplicationService;
+import com.example.roommate.stubs.AdminApplicationServiceDummy;
+import com.example.roommate.stubs.BookingApplicationServiceDummy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,10 @@ public class GetBookTest {
     MockMvc mvc;
     
     @MockBean
-    IAdminApplicationService adminApplicationService;
+    AdminApplicationServiceDummy adminApplicationService;
 
     @MockBean
-    IBookingApplicationService bookingApplicationService;
+    BookingApplicationServiceDummy bookingApplicationService;
 
     @Test
     @DisplayName("A Get-Request on /book returns home.html")
