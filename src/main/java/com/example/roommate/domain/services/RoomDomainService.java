@@ -2,6 +2,7 @@ package com.example.roommate.domain.services;
 
 import com.example.roommate.annotations.DomainService;
 import com.example.roommate.application.data.RoomApplicationData;
+import com.example.roommate.interfaces.domain.services.IRoomDomainService;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.repositories.IItemRepository;
 import com.example.roommate.interfaces.repositories.IRoomRepository;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @DomainService
 //mediate between Repository, domain; map forms to domain-objects/data
 @SuppressFBWarnings(value="EI2", justification="Repositories are properly injected, @Lazy self is required for transactions")
-public class RoomDomainService {
+public class RoomDomainService implements IRoomDomainService {
 
     IRoomRepository roomRepository;
     IItemRepository itemRepository;
@@ -35,10 +36,10 @@ public class RoomDomainService {
         this.self = this;
     }
     @Autowired
-    public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository, @Lazy RoomDomainService self) {
+    public RoomDomainService(IRoomRepository roomRepository, IItemRepository itemRepository, @Lazy IRoomDomainService self) {
         this.roomRepository = roomRepository;
         this.itemRepository = itemRepository;
-        this.self = self;
+        this.self = (RoomDomainService) self;
     }
 
     public void addDummyDummy(){

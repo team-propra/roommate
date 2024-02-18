@@ -1,16 +1,16 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
-import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
+import com.example.roommate.interfaces.application.services.IAdminApplicationService;
+import com.example.roommate.interfaces.application.services.IBookingApplicationService;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
-import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
@@ -30,12 +30,12 @@ import java.util.stream.Collectors;
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
 public class RoomController {
 
-    private final BookingApplicationService bookingApplicationService;
+    private final IBookingApplicationService bookingApplicationService;
 
-    private final AdminApplicationService adminApplicationService;
+    private final IAdminApplicationService adminApplicationService;
 
     @Autowired
-    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
+    public RoomController(IBookingApplicationService bookingApplicationService, IAdminApplicationService adminApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
         this.adminApplicationService = adminApplicationService;
     }

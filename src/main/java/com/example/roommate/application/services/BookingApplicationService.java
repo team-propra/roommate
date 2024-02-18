@@ -3,6 +3,7 @@ package com.example.roommate.application.services;
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
+import com.example.roommate.interfaces.application.services.IBookingApplicationService;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 import java.time.DayOfWeek;
 @ApplicationService
 @SuppressFBWarnings(value="EI2", justification="RoomDomainService is properly injected")
-public class BookingApplicationService {
+public class BookingApplicationService implements IBookingApplicationService {
 
     RoomDomainService roomDomainService;
 
