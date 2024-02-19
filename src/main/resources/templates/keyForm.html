@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KeyForm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<h1>Hallo <span th:text="${username}">fellow human!</span>!</h1>
+<div>
+    <p>Um dir die Buchung von Räumen zu ermöglichen, bitten wir Sie kurz eine personalisierte ID für Sie abzuspeichern. <br>
+        Gehen Sie hierfür wie folgt vor:
+    </p>
+
+    <ol>
+        <li>Tragen Sie Ihren Namen in das Feld <strong>Schlüsselinhaber</strong> ein</li>
+        <li>Klicken Sie auf den Button "Eintragen"</li>
+        <li>Kopieren Sie Ihre personalisierte ID auf der neu erscheinenden Seite</li>
+        <li>Tragen Sie Ihre ID in das unter dem Fenster liegende Feld "keyID" ein</li>
+        <li>Drücken Sie auf "Absenden"</li>
+    </ol>
+</div>
+
+
+
+<div>
+    <iframe src="http://localhost:3000/" width="700" height="200"></iframe>
+
+    <form method="post" th:action="@{/registration}">
+        <label for="keyID">keyID</label> <br>
+        <input type="text" name="keyId" id="keyID" placeholder="ihre keyID">
+        <button type="submit">Absenden</button>
+    </form>
+    <!--
+    <form method="post" th:action="@{http://localhost:3000/key/create}">
+        <input type="text" name="user" id="keyMasterName3">
+        <label for="keyMasterName3">Name</label> <br>
+        <button type="submit">Absenden</button>
+    </form>
+    !-->
+</div>
+
+<div th:if="${keyID}">
+    <p>Die Registrierung war erfolgreich!</p>
+    <a th:href="@{/}">Weiter zur Raumbuchung</a>
+</div>
+
+</body>
+</html>

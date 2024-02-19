@@ -112,21 +112,20 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void add(IRoom room) {
-        System.out.println(room.getRoomID());
         roomDAO.insert(room.getRoomID(), room.getRoomNumber().number());
         room.getWorkspaces()
                 .forEach(workspace->{
                     workspaceDAO.insert(workspace.getId(),workspace.getWorkspaceNumber(),room.getRoomID());
                     workspace.getItems().forEach(item-> itemToWorkspaceDAO.insert(UUID.randomUUID(),item.type(),workspace.getId()));
                     workspace.getBookedTimeframes().forEach(bookedTimeframe -> {
-                        bookedTimeFrameDAO.insert(UUID.randomUUID(),bookedTimeframe.day(),bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID());
+                        bookedTimeFrameDAO.insert(UUID.randomUUID(),bookedTimeframe.day(),bookedTimeframe.startTime(),bookedTimeframe.duration(),room.getRoomID(), bookedTimeframe.userHandle());
                     });
                 });
     }
 
     @Override
     public void addBooking(BookedTimeframe bookedTimeframe, IWorkspace workspace) {
-        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), workspace.getId());
+        bookedTimeFrameDAO.insert(UUID.randomUUID(), bookedTimeframe.day(), bookedTimeframe.startTime(), bookedTimeframe.duration(), workspace.getId(), bookedTimeframe.userHandle());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.rooms;
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithMockOAuth2User;
+import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.domain.models.entities.Room;
 import com.example.roommate.domain.models.entities.Workspace;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,7 +35,7 @@ public class PostRoomsTest {
 
     @Test
     @DisplayName("Same checkboxes remain checked after booking")
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     //@WithCustomMockUser
     void test_1() throws Exception {
       //  List<String> checkedDays = List.of("0-0-X", "0-1");

@@ -28,7 +28,7 @@ public class BookingApplicationServiceTest {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
         IntermediateBookDataForm invalidBookDataForm = ValuesFactory.createInvalidIntermediateBookDataForm();
 
-        assertThatThrownBy(() -> bookingApplicationService.addBookEntry(invalidBookDataForm)).isInstanceOf(GeneralDomainException.class);
+        assertThatThrownBy(() -> bookingApplicationService.addBookEntry(invalidBookDataForm, "user")).isInstanceOf(GeneralDomainException.class);
 
     }
 
@@ -39,7 +39,7 @@ public class BookingApplicationServiceTest {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
 
         assertThatThrownBy(() -> {
-            bookingApplicationService.addBookEntry(null);
+            bookingApplicationService.addBookEntry(null, "user");
 //            throw new IllegalArgumentException();
         }).isInstanceOf(IllegalArgumentException.class);
 

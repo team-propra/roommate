@@ -2,11 +2,15 @@ package com.example.roommate.tests.controller.booking;
 
 
 import com.example.roommate.annotations.TestClass;
-import com.example.roommate.annotations.WithMockOAuth2User;
+import com.example.roommate.annotations.WithMockOAuthVerifiedUser;
+import com.example.roommate.application.services.KeyMasterApplicationService;
+import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.services.RoomDomainService;
+import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.factories.ValuesFactory;
+import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.Disabled;
@@ -28,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest
+@WebMvcTest(RoomController.class)
 @TestClass
 public class PostBookTest {
 
@@ -44,8 +48,11 @@ public class PostBookTest {
     @MockBean
     RoomRepository roomRepository;
 
+    @MockBean
+    KeyMasterApplicationService keyMasterService;
 
-
+    @MockBean
+    UserDomainService userDomainService;
 
     UUID roomID = ValuesFactory.roomId;
     UUID workspaceId = ValuesFactory.roomId;
@@ -54,7 +61,7 @@ public class PostBookTest {
 
     @DisplayName("POST /rooms redirects to /")
     @Test
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     void test_1() throws Exception {
         roomRepository.add(ValuesFactory.createRoomEntry("randomroomnumber"));
         mvc.perform(post("/rooms")
@@ -72,11 +79,11 @@ public class PostBookTest {
     @DisplayName("Booking Details appear on the homepage after submiting the booking form")
     @Test
     void test_2() throws Exception {
-     //   BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
+        //   BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
 
         MvcResult postResult = mvc.perform(post("/rooms")
                         .param("id", roomID.toString())
-                       // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
+                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andReturn();
         MvcResult getResult = mvc.perform(get("/"))
@@ -90,7 +97,7 @@ public class PostBookTest {
 
     @Test
     @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     public void test_3() throws Exception {
 
         mvc.perform(post("/rooms")
@@ -109,12 +116,12 @@ public class PostBookTest {
     @Test
     @DisplayName("POST /rooms returns Bad-Request and 400 status if BookEntryService.addBookEntry " +
             "throws GeneralDomainException")
-    @WithMockOAuth2User
+    @WithMockOAuthVerifiedUser
     public void test_4() throws Exception {
-      //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
+        //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
         //entryService = mock(BookEntryService.class);
         //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
-        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any());
+        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any(), Mockito.anyString());
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -122,8 +129,20 @@ public class PostBookTest {
                           .param("id", roomID.toString())
                           .param("cell", "0-1-X")//otherwise invalid
                         //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
-                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
+                        .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(view().name("bad-request"))
                 .andExpect(status().is(400));
+    }
+
+    @Test
+    @Disabled
+    @WithMockOAuthVerifiedUser
+    @DisplayName("A VerifiedUser has no problems booking rooms, POST-request yields redirection ")
+    public void test_05() throws Exception {
+        mvc.perform(get("/rooms")
+                        .param("id", EntityFactory.id.toString())
+                        .param("stepsize", "60"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 }
