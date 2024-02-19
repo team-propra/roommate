@@ -11,6 +11,7 @@ services:
     environment:
       - "CLIENT_SECRET=${CLIENT_SECRET}"
       - "CLIENT_ID=${CLIENT_ID}"
+      - "DATABASE_URL=${DATABASE_URL}"
   
   
   keymaster:
