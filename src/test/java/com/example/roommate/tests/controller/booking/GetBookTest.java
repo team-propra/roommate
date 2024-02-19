@@ -2,22 +2,24 @@ package com.example.roommate.tests.controller.booking;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.annotations.WithMockOAuth2User;
+import com.example.roommate.application.services.AdminApplicationService;
+import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.interfaces.application.services.IAdminApplicationService;
 import com.example.roommate.interfaces.application.services.IBookingApplicationService;
-import com.example.roommate.stubs.AdminApplicationServiceDummy;
-import com.example.roommate.stubs.BookingApplicationServiceDummy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(RoomController.class)
+@WebMvcTest(controllers = {RoomController.class}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {AdminApplicationService.class, BookingApplicationService.class}))
 @TestClass
 public class GetBookTest {
 
@@ -25,10 +27,10 @@ public class GetBookTest {
     MockMvc mvc;
     
     @MockBean
-    AdminApplicationServiceDummy adminApplicationService;
+    IAdminApplicationService adminApplicationService;
 
     @MockBean
-    BookingApplicationServiceDummy bookingApplicationService;
+    IBookingApplicationService bookingApplicationService;
 
     @Test
     @DisplayName("A Get-Request on /book returns home.html")
