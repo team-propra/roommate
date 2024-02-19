@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AuthenticationApplicationService are properly injected")
@@ -24,11 +25,9 @@ public class ApiController {
         this.bookingApplicationService = bookingApplicationService;
     }
 
-
     @GetMapping("/api/access")
     public List<KeyMasterForm> getKeysAndRooms() {
 
-        //String roomID = bookingApplicationService.getRooms() ...
         return IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
 
 

@@ -112,7 +112,6 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void add(IRoom room) {
-        System.out.println(room.getRoomID());
         roomDAO.insert(room.getRoomID(), room.getRoomNumber().number());
         room.getWorkspaces()
                 .forEach(workspace->{

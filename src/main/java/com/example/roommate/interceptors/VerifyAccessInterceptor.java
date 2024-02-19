@@ -46,15 +46,11 @@ public class VerifyAccessInterceptor implements HandlerInterceptor {
             }
         }
 
-        //Object p = auth.getPrincipal();
         OAuth2User user = (OAuth2User) auth.getPrincipal();
         String login = user.getAttribute("login");
 
-        //System.out.println("principal:" + p);
-        System.out.println("login: " + login);
-
         IUser userFromDatabase = userApplicationService.getUserByLogin(login);
-        //getUserFromDatabase(auth.getName());
+
         if (userFromDatabase != null) {
             // add whatever authorities you want here
             String userRole = userFromDatabase.getRole();

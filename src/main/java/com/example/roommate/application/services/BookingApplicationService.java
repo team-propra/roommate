@@ -165,8 +165,6 @@ public class BookingApplicationService {
                 }
             }
         }
-
-        //ToDo Streams: Alle Räume, alle User durchgehen, und räume mit BookedTimeFrames.userHanlde.equals(user ....)
         return result;
     }
 
