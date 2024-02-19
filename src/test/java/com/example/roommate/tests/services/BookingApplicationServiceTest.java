@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 @TestClass
 public class BookingApplicationServiceTest {
 
-    @DisplayName("adding a invalid bookDataForm results in a GeneralDomainException")
+    @DisplayName("adding an invalid bookDataForm results in GeneralDomainException")
     @Test
     void test_2() throws ArgumentValidationException {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
@@ -33,7 +33,7 @@ public class BookingApplicationServiceTest {
     }
 
 
-    @DisplayName("adding a null results in a GeneralDomainException")
+    @DisplayName("adding a null BookEntry results in IllegalArgumentException")
     @Test
     void test_3() {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
@@ -44,7 +44,7 @@ public class BookingApplicationServiceTest {
         }).isInstanceOf(IllegalArgumentException.class);
 
     }
-    @DisplayName("getRooms() returns a Collection of Rooms")
+    @DisplayName("addRoom() yields getRooms() returning a collection of 1 IRoom")
     @Test
     void test_4() throws NotFoundException {
         BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
