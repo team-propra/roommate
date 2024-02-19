@@ -32,5 +32,10 @@ public class ItemRepository implements IItemRepository {
         itemDAO.insert(itemName.type());
     }
 
+    @Override
+    public void removeItem(ItemName itemName) {
+        itemDAO.delete(itemName.type());
+    }
+
 
 }
