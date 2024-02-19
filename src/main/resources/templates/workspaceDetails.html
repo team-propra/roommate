@@ -84,15 +84,8 @@
 
     <table class="table">
       <thead class="table-header">
-
         <tr>
             <th>Uhrzeit</th>
-            <td><strong>Datum</strong></td>
-<!--          <th></th>-->
-
-        </tr>
-        <tr>
-            <td></td>
             <th th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
                 <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>
             </th>
