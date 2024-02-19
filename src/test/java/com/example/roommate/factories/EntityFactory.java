@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Factory
 public class EntityFactory {
-    public static UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
+    public static final UUID id = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
 
     public static Admin createAdmin() {
         UUID keyId = UUID.fromString("fe060a0b-d410-44a2-901e-11148f986a72");

@@ -17,8 +17,8 @@ import java.util.UUID;
 public class ValuesFactory {
 
 
-    public static UUID roomId = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
-    public static UUID workspaceId = UUID.fromString("30d2d8d5-ce75-499f-b1fe-904b5f55d2f0");
+    public static final UUID roomId = UUID.fromString("9e255449-449b-4564-8bc0-5e4517708364");
+    public static final UUID workspaceId = UUID.fromString("30d2d8d5-ce75-499f-b1fe-904b5f55d2f0");
     public static BookDataForm createValidBookDataForm() {
         return new BookDataForm(workspaceId, roomId, 1);
     }
