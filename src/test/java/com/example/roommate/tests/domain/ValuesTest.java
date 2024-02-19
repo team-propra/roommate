@@ -26,14 +26,6 @@ public class ValuesTest {
         assertThat(bookDataForm).isInstanceOf(BookDataForm.class);
     }
 
-    @DisplayName("cant create a BookDataForm with Null as UUID")
-    @Test
-    @Disabled
-    void testCreateBookDataFormWithNullUUID() {
-        assertThatThrownBy(() -> new BookDataForm(null,null, 60))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
     @DisplayName("can create Item")
     @Test
     void test_3() {
@@ -41,7 +33,7 @@ public class ValuesTest {
         assertThat(item).isInstanceOf(ItemName.class);
     }
 
-    @DisplayName("DaytimeFrame correctly converts bookings")
+    @DisplayName("DaytimeFrame correctly converts bookings to strings")
     @Test
     void test_4() throws ArgumentValidationException {
         Iterable<String> checkedDays = List.of("0-0-X", "1-0-X", "2-0-X","1-3-X", "2-3-X");

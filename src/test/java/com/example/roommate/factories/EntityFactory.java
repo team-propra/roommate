@@ -18,7 +18,10 @@ public class EntityFactory {
     }
 
     public static Room createRoom() {
-        return new Room(id, new RoomNumber("12"), List.of());
+        return createRoom(new RoomNumber("12"));
+    }
+    public static Room createRoom(RoomNumber roomNumber) {
+        return new Room(id, roomNumber, List.of());
     }
 
     public static User createUser() {
