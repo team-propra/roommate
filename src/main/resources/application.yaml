@@ -18,3 +18,4 @@ spring:
     driver-class-name: org.postgresql.Driver
 roommate:
   key-master-url: ${KEYMASTER_URL}
+  admin-handle: ${ADMIN_HANDLE}

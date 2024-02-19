@@ -13,6 +13,7 @@ services:
       - "CLIENT_ID=${CLIENT_ID}"
       - "DATABASE_URL=${DATABASE_URL}"
       - "KEYMASTER_URL=${KEYMASTER_URL}"
+      - "ADMIN_HANDLE=${ADMIN_HANDLE}"
   
   
   keymaster:
