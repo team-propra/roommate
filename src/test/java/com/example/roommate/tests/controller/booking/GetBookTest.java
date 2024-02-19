@@ -30,7 +30,7 @@ public class GetBookTest {
     MockMvc mvc;
 
     @Test
-    @DisplayName("A Get-Request on /rooms returns home.html")
+    @DisplayName("A Get-Request on /rooms returns rooms.html")
     @WithMockOAuth2User
     void test_3() throws Exception {
 
@@ -51,7 +51,7 @@ public class GetBookTest {
     }
 
     @Test
-    @DisplayName("A non-verified user's Get-Request on /rooms doesn't leave the option to continue booking process on /room/{roomID}")
+    @DisplayName("A non-verified user's Get-Request on /rooms doesn't leave the option to continue booking process to /room/{roomID}/workspace/{workspaceId} titled 'Raum ansehen'")
     @WithMockOAuth2User
     void test_5() throws Exception {
 
