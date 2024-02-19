@@ -139,7 +139,11 @@ public class RoomRepository implements IRoomRepository {
 
     @Override
     public void removeWorkspace(UUID workspaceID, IRoom roomByID) {
-        // TODO
+        List<? extends IWorkspace> list = IterableSupport.toList(roomByID.getWorkspaces())
+                .stream()
+                .filter(workspaceEntry -> !(workspaceEntry.getId().equals(workspaceID)))
+                .toList();
+        overwrite(new RoomEntry(roomByID.getRoomID(), roomByID.getRoomNumber(), list));
     }
 
     private void _consistentAddWorkspace(IWorkspace workspace, UUID roomId) throws NotFoundRepositoryException {

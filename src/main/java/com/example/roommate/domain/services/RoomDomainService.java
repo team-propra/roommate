@@ -191,6 +191,5 @@ public class RoomDomainService {
     public void removeWorkspace(UUID workspaceID, UUID roomID) throws NotFoundRepositoryException {
         IRoom roomByID = roomRepository.findRoomByID(roomID);
         roomRepository.removeWorkspace(workspaceID, roomByID);
-
     }
 }
