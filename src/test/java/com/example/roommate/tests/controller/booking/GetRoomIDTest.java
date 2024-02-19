@@ -49,6 +49,7 @@ public class GetRoomIDTest {
     void test_1() throws Exception {
         Room office = Officer.Room();
         Workspace officeWorkspace = Officer.Workspace();
+        when(bookingApplicationService.getWorkspace(office, officeWorkspace.getId())).thenReturn(officeWorkspace);
         when(bookingApplicationService.findRoomByID(office.getRoomID())).thenReturn(office);
 
         MvcResult result = mvc.perform(get("/room/{roomId}/workspace/{workspaceId}", office.getRoomID().toString(), officeWorkspace.getId().toString()))

@@ -38,9 +38,10 @@ public class AdminController {
     public String adminPage(Model model) {
         Collection<ItemName> itemList = bookingApplicationService.allItems();
         Collection<IRoom> roomList = bookingApplicationService.getRooms();
-        List<IWorkspace> workspaceList = roomList.stream()
+        List<IWorkspace> workspaceList = bookingApplicationService.getAllWorkspaces(roomList);
+       /* List<IWorkspace> workspaceList = roomList.stream()
                 .flatMap(room -> StreamSupport.stream(room.getWorkspaces().spliterator(), false))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
         model.addAttribute("itemList", itemList);
         model.addAttribute("roomList", roomList);
