@@ -5,7 +5,6 @@ import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.ItemName;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -37,8 +35,7 @@ public class AdminController {
     public String adminPage(Model model) {
         Collection<ItemName> itemList = bookingApplicationService.allItems();
         Collection<IRoom> roomList = bookingApplicationService.getRooms();
-        List<IWorkspace> workspaceList = bookingApplicationService.getAllWorkspaces(roomList);
-       /* List<IWorkspace> workspaceList = roomList.stream()
+        /* List<IWorkspace> workspaceList = roomList.stream()
                 .flatMap(room -> StreamSupport.stream(room.getWorkspaces().spliterator(), false))
                 .collect(Collectors.toList());*/
 
