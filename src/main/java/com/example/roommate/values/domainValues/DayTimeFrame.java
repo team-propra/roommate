@@ -133,7 +133,6 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
 
             }
             outpout.append("] \n");
-            System.out.println();
         }
         return outpout.toString();
     }

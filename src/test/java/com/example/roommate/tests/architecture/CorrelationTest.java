@@ -27,6 +27,12 @@ public class CorrelationTest {
         return classCorrelations("..roommate.application.data..", ApplicationData.class, ArchConditions.haveSimpleNameEndingWith("ApplicationData"));
     }
 
+
+    @TestFactory
+    public Stream<DynamicTest> interceptors(){
+        return classCorrelations("..roommate.interceptors..", Interceptor.class, ArchConditions.haveSimpleNameEndingWith("Interceptor"));
+    }
+
     @TestFactory
     public Stream<DynamicTest> tests(){
         return classCorrelations("..roommate.tests..", TestClass.class, ArchConditions.haveSimpleNameEndingWith("Test"));

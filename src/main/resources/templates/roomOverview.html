@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" th:object="${room}">
+<head>
+    <meta charset="UTF-8">
+    <title>Raum Übersicht</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Raum <span th:text="*{roomNumber}"></span></h1>
+
+<div class="container mt-5">
+
+    <div class="col-md-6">
+        <h2>Liste aller Arbeitsplätze</h2>
+        <table class="table table-striped">
+            <tbody>
+            <tr th:each="workspace : *{getWorkspaces}">
+                <td><a th:href="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()}}" th:text="${workspace.getWorkspaceNumber()}"></a></td>
+                <td th:text="${workspace.getItems()}"></td>
+                <td th:text="${workspace.getBookedTimeframes()}"></td>
+                <td>
+                    <form th:action="@{'/deleteWorkspace/' + ${workspace.getId()}}" method="post">
+                        <input id="roomIDDelete" type="hidden" name="roomIDDelete" th:value="*{getRoomID}" required/>
+                        <button type="submit">X</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <form th:action="@{'/createWorkspace'}" method="post">
+            <label for="createWorkspace">Neuen Arbeitsplatz hinzufügen:</label>
+            <input id="createWorkspace" type="text" name="newWorkspace" required/>
+            <input id="roomIDCreate" type="hidden" name="roomIDCreate" th:value="*{getRoomID}" required/>
+            <input type="submit">
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

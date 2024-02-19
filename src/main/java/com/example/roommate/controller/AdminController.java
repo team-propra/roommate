@@ -2,6 +2,7 @@ package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.BookingApplicationService;
+import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.interfaces.entities.IWorkspace;
@@ -19,8 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService is properly injected")
@@ -45,22 +44,29 @@ public class AdminController {
 
         model.addAttribute("itemList", itemList);
         model.addAttribute("roomList", roomList);
-        model.addAttribute("workspaceList", workspaceList);
         return "adminEdit";
     }
 
     @AdminOnly
+    @GetMapping("/room/{roomID}")
+    public String roomOverview(Model model, @PathVariable UUID roomID) throws NotFoundException {
+        IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
+        model.addAttribute("room", roomByID);
+        return "roomOverview";
+    }
+
+    @AdminOnly
     @PostMapping("/createItem")
-    public String createItem(Model model, @RequestParam String newItem) {
+    public ModelAndView createItem(@RequestParam String newItem) {
         bookingApplicationService.createItem(newItem);
-        return adminPage(model);
+        return new ModelAndView("redirect:/edit");
     }
 
     @AdminOnly
     @PostMapping("/deleteItem/{itemName}")
-    public String deleteItem(Model model, @PathVariable String itemName) {
-        bookingApplicationService.removeItem(itemName); // have to iterate through all workspaces to maintian consistency
-        return adminPage(model);
+    public ModelAndView deleteItem(@PathVariable String itemName) {
+        bookingApplicationService.removeItem(itemName);
+        return new ModelAndView("redirect:/edit");
     }
 
     @AdminOnly
@@ -73,9 +79,10 @@ public class AdminController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/workspace/{workspaceID}/createItem")
-    public ModelAndView createItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
+    public ModelAndView createItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) {
         bookingApplicationService.createItem(newItem);
-        return addItem(roomID, workspaceID, newItem);
+        String viewName = String.format("redirect:/room/%s/workspace/%s", roomID, workspaceID);
+        return new ModelAndView(viewName);
     }
 
     @AdminOnly
@@ -83,6 +90,22 @@ public class AdminController {
     public ModelAndView deleteItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID , @PathVariable String itemName) throws NotFoundRepositoryException {
         bookingApplicationService.removeItemFromRoom(workspaceID, itemName, roomID);
         String viewName = String.format("redirect:/room/%s/workspace/%s", roomID, workspaceID);
+        return new ModelAndView(viewName);
+    }
+
+    @AdminOnly
+    @PostMapping("/createWorkspace")
+    public ModelAndView createWorkspace(@RequestParam String newWorkspace, @RequestParam UUID roomIDCreate) throws NotFoundRepositoryException {
+        bookingApplicationService.addWorkspace(newWorkspace, roomIDCreate);
+        String viewName = String.format("redirect:/room/%s", roomIDCreate);
+        return new ModelAndView(viewName);
+    }
+
+    @AdminOnly
+    @PostMapping("/deleteWorkspace/{workspaceID}")
+    public ModelAndView deleteWorkspace(@PathVariable UUID workspaceID, @RequestParam UUID roomIDDelete) throws NotFoundRepositoryException {
+        bookingApplicationService.removeWorkspace(workspaceID, roomIDDelete);
+        String viewName = String.format("redirect:/room/%s", roomIDDelete);
         return new ModelAndView(viewName);
     }
 }

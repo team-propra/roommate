@@ -1,7 +1,9 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
+import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
+import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.*;
@@ -17,6 +19,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,9 +44,12 @@ public class RoomController {
         this.adminApplicationService = adminApplicationService;
     }
 
+
     // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
+
     @GetMapping("/rooms")
-    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, /*@RequestParam(required = false)*/ SearchTimeForm timeForm, Model model) {
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, /*@RequestParam(required = false)*/ SearchTimeForm timeForm, Model model,
+                                 OAuth2AuthenticationToken auth) {
       /*  if (timeForm.datum == null) timeForm.datum = "2024-01-01";
         if (timeForm.startUhrzeit == null) timeForm.startUhrzeit = "08:00";
         if (timeForm.endUhrzeit == null) timeForm.endUhrzeit = "16:00";*/
@@ -52,8 +59,10 @@ public class RoomController {
                /* List<ItemName> selectedItemsList = gegenstaende.stream()
                 .map(ItemName::new)
                 .toList();*/
+        OAuth2User user = auth.getPrincipal();
+        String userHandle = user.getAttribute("login");
 
-        List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, timeForm.datum(), timeForm.startUhrzeit(), timeForm.endUhrzeit());
+        List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, timeForm.datum(), timeForm.startUhrzeit(), timeForm.endUhrzeit(), userHandle);
         model.addAttribute("date", timeForm.datum());
         model.addAttribute("startTime", timeForm.startUhrzeit());
         model.addAttribute("endTime", timeForm.endUhrzeit());
@@ -113,7 +122,7 @@ public class RoomController {
         }
     }
 
-
+    @VerifiedOnly
     @PostMapping("/rooms")
 
     public ModelAndView addBooking(@Valid BookDataForm form
@@ -121,6 +130,7 @@ public class RoomController {
             , RedirectAttributes redirectAttributes
             , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
+            , OAuth2AuthenticationToken auth
     ) throws ArgumentValidationException {
 
         if (bindingResult.hasErrors() || !BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
@@ -133,9 +143,11 @@ public class RoomController {
 
         IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
 
+        OAuth2User user = auth.getPrincipal();
+        String userHandle = user.getAttribute("login");
 
         try {
-            bookingApplicationService.addBookEntry(addedBookingsForm);
+            bookingApplicationService.addBookEntry(addedBookingsForm, userHandle);
         } catch (GeneralDomainException | NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);

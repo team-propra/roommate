@@ -11,4 +11,5 @@ public interface IWorkspace {
     int getWorkspaceNumber();
     List<ItemName> getItems();
     Iterable<BookedTimeframe> getBookedTimeframes();
+
 }
