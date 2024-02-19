@@ -111,12 +111,10 @@
               <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
 
                   <div>
-                      <input th:id="${time + '-' + day + '-value'}" type="hidden" name="cell" th:value="${time + '-' + day}"/>
-                      <label th:for="${time + '-' + day}" class = "custom-checkbox-label">
-                          <input class ="box" th:unless="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'"/>
-<!--                      </label>-->
-<!--                      <label th:for="${time + '-' + day}" class="custom-checkbox-label">-->
-                          <input class="box" th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked"/>
+                      <label>
+                          <input th:id="${time + '-' + day + '-value'}" type="hidden" name="cell" th:value="${time + '-' + day}"/>
+                          <input th:unless="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'"/>
+                          <input th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked" disabled="disabled"/>
                       </label>
                   </div>
               </td>

@@ -151,5 +151,10 @@ public class RoomRepository implements IRoomRepository {
         workspace.getItems().forEach(item -> addItem(item,workspace));
     }
 
+    @Override
+    public void removeWorkspace(UUID workspaceID, IRoom roomByID) {
+        // TODO
+    }
+
 
 }

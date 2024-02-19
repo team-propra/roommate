@@ -140,4 +140,19 @@ public class BookingApplicationService {
     public void removeItem(String itemName) {
         roomDomainService.removeItem(itemName);
     }
+
+    public void addWorkspace(String workspaceString, UUID roomID) throws NotFoundRepositoryException {
+        int workspaceNumber;
+        try {
+            workspaceNumber = Integer.parseInt(workspaceString);
+        } catch (NumberFormatException e) {
+            workspaceNumber = 42;
+        }
+
+        roomDomainService.addWorkspace(workspaceNumber, roomID);
+    }
+
+    public void removeWorkspace(UUID workspaceID, UUID roomID) throws NotFoundRepositoryException {
+        roomDomainService.removeWorkspace(workspaceID, roomID);
+    }
 }
