@@ -2,7 +2,7 @@
 
 
 # Introduction and Goals
- This project was created as part of the module "Programmierpraktikum 2" at Heinrich Heine University Düsseldorf. Daniel Maß, (Github: [@themassiveone](https://github.com/themassiveone)), Till ([@nighoge](https://github.com/nighoge)), Felix Loch (Github: [@F3lixLoch](https://github.com/F3lixLoch)) and Timm Krause (Github: [@AhoiKrause](https://github.com/AhoiKrause)) contributed to the project. The aim of the project was to create a complete web application for a room booking software. The goals and requirements of the project were defined as follows:
+ This project was created as part of the module "Programmierpraktikum 2" at Heinrich Heine University Düsseldorf. Daniel Maß ([@themassiveone](https://github.com/themassiveone)), Till Schellscheidt ([@nighoge](https://github.com/nighoge)), Felix Loch ([@F3lixLoch](https://github.com/F3lixLoch)) and Timm Krause ([@AhoiKrause](https://github.com/AhoiKrause)) contributed to the project. The aim of the project was to create a complete web application for a room booking software. The goals and requirements of the project were defined as follows:
  
 
 **Adequate modelling of business logic**
@@ -62,7 +62,7 @@
 
 ## Stakeholders
 
-![Image of Stakeholders](images/Stakeholder_2.PNG)
+![Image of Stakeholders](../images/Stakeholder_2.PNG)
 _picture: very serious stakeholder analysis. We aim to please these people._
 
 
@@ -78,7 +78,7 @@ _picture: very serious stakeholder analysis. We aim to please these people._
 # System Scope and Context
 
 
-![Context image for Roommate](images/RoomMate_Context.PNG)
+![Context image for Roommate](../images/RoomMate_Context.PNG)
 _picture: Context Diagram for RoomMate_
 *   **User**: Searches rooms for existing items and available times and books them.
 *   **Admin**: Manages active bookings and is also able to delete them. Creates new rooms and fills their workstations with items
@@ -91,7 +91,7 @@ _picture: Context Diagram for RoomMate_
 
 **Abstract view**
 
-![Component Diagram for Roommate](images/RoomMate_ComponentDiagram.PNG)
+![Component Diagram for Roommate](../images/RoomMate_ComponentDiagram.PNG)
 
 _picture: Abstract component diagram of RoomMate_
 

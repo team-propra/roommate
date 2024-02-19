@@ -17,6 +17,9 @@ In case you're using IntelliJ, you may follow these steps:
 - Enter the following string (replacing *** with your values) `CLIENT_ID=***;CLIENT_SECRET=***`
 
 Now you will be able to run the application properly with OAuth login :)
+
+## Documentation
+For an overview of the project's scope, basic architecture and goals & requirements see our [documentation](./docs/RoomMate_doc.md)
 ## Current-branch
 [![Tests](https://github.com/team-propra/main/actions/workflows/gradle.yml/badge.svg)](https://github.com/team-propra/main/actions/workflows/gradle.yml)
 
