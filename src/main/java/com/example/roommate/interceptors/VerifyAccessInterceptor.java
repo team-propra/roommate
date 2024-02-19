@@ -12,14 +12,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
 @Interceptor
 public class VerifyAccessInterceptor implements HandlerInterceptor {
 
