@@ -51,16 +51,16 @@ public class AdminController {
 
     @AdminOnly
     @PostMapping("/createItem")
-    public String createItem(Model model, @RequestParam String newItem) {
+    public ModelAndView createItem(@RequestParam String newItem) {
         bookingApplicationService.createItem(newItem);
-        return adminPage(model);
+        return new ModelAndView("redirect:/edit");
     }
 
     @AdminOnly
     @PostMapping("/deleteItem/{itemName}")
-    public String deleteItem(Model model, @PathVariable String itemName) {
-        bookingApplicationService.removeItem(itemName); // have to iterate through all workspaces to maintian consistency
-        return adminPage(model);
+    public ModelAndView deleteItem(@PathVariable String itemName) {
+        bookingApplicationService.removeItem(itemName);
+        return new ModelAndView("redirect:/edit");
     }
 
     @AdminOnly
@@ -73,9 +73,10 @@ public class AdminController {
 
     @AdminOnly
     @PostMapping("/room/{roomID}/workspace/{workspaceID}/createItem")
-    public ModelAndView createItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) throws NotFoundRepositoryException {
+    public ModelAndView createItem(@PathVariable UUID roomID, @PathVariable UUID workspaceID, @RequestParam String newItem) {
         bookingApplicationService.createItem(newItem);
-        return addItem(roomID, workspaceID, newItem);
+        String viewName = String.format("redirect:/room/%s/workspace/%s", roomID, workspaceID);
+        return new ModelAndView(viewName);
     }
 
     @AdminOnly
@@ -88,15 +89,17 @@ public class AdminController {
 
     @AdminOnly
     @PostMapping("/createWorkspace")
-    public String createWorkspace(Model model, @RequestParam String newWorkspace, @RequestParam UUID roomIDCreate) throws NotFoundRepositoryException, NotFoundException {
+    public ModelAndView createWorkspace(@RequestParam String newWorkspace, @RequestParam UUID roomIDCreate) throws NotFoundRepositoryException {
         bookingApplicationService.addWorkspace(newWorkspace, roomIDCreate);
-        return roomOverview(model, roomIDCreate);
+        String viewName = String.format("redirect:/room/%s", roomIDCreate);
+        return new ModelAndView(viewName);
     }
 
     @AdminOnly
     @PostMapping("/deleteWorkspace/{workspaceID}")
-    public String deleteWorkspace(Model model, @PathVariable UUID workspaceID, @RequestParam UUID roomIDDelete) throws NotFoundException, NotFoundRepositoryException {
+    public ModelAndView deleteWorkspace(@PathVariable UUID workspaceID, @RequestParam UUID roomIDDelete) throws NotFoundRepositoryException {
         bookingApplicationService.removeWorkspace(workspaceID, roomIDDelete);
-        return roomOverview(model, roomIDDelete);
+        String viewName = String.format("redirect:/room/%s", roomIDDelete);
+        return new ModelAndView(viewName);
     }
 }
