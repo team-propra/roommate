@@ -61,7 +61,6 @@ public class GetBookTest {
                         .param("endTime", "15:00"))
                 .andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        System.out.println("content:" + contentAsString);
         assertThat(contentAsString).doesNotContain("Raum ansehen");
     }
 }

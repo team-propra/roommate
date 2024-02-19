@@ -1,6 +1,5 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.application.services.AuthenticationApplicationService;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.forms.KeyMasterForm;
@@ -24,11 +23,9 @@ public class ApiController {
         this.bookingApplicationService = bookingApplicationService;
     }
 
-
     @GetMapping("/api/access")
     public List<KeyMasterForm> getKeysAndRooms() {
 
-        //String roomID = bookingApplicationService.getRooms() ...
         return IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
 
 

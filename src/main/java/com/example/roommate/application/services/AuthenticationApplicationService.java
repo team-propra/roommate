@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Component
 @ApplicationService
 @SuppressFBWarnings(value="EI2", justification="UserDomainService is properly injected")
 public class AuthenticationApplicationService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>, IAuthenticationApplicationService {

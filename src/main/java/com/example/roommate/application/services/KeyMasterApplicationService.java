@@ -8,6 +8,7 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -16,11 +17,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
+
 @ApplicationService
 @SuppressFBWarnings(value="EI2", justification="UserDomainService & RoomDomainService are properly injected")
 public class KeyMasterApplicationService {
     UserDomainService userDomainService;
     RoomDomainService roomDomainService;
+
+    @Value("${roommate.key-master-url}")
+    String host;
 
     @Autowired
     public KeyMasterApplicationService(UserDomainService userDomainService, RoomDomainService roomDomainService) {
@@ -28,7 +33,7 @@ public class KeyMasterApplicationService {
         this.roomDomainService = roomDomainService;
     }
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 2000)
     public void fetchKeys() {
 
         List<KeyOwnerApplicationData> keyOwners = WebClient.create()
@@ -36,7 +41,7 @@ public class KeyMasterApplicationService {
                 .uri(
                         uriBuilder -> uriBuilder
                                 .scheme("http")
-                                .host("localhost")
+                                .host(host)
                                 .port(3000)
                                 .path("/key")
                                 .build()
@@ -45,16 +50,14 @@ public class KeyMasterApplicationService {
                 .bodyToFlux(KeyOwnerApplicationData.class)
                 .collectList()
                 .block(Duration.of(8, ChronoUnit.SECONDS));
-        if(keyOwners != null) {
-            for (KeyOwnerApplicationData keyOwner: keyOwners
-            ) {
-                System.out.println(keyOwner.owner());
+        if (keyOwners != null) {
+            for (KeyOwnerApplicationData keyOwner : keyOwners) {
                 userDomainService.verifyUser(UUID.fromString(keyOwner.id()), keyOwner.owner());
             }
         }
-       }
+    }
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 2000)
     public void fetchRooms() {
 
         List<RoomApplicationData> rooms = WebClient.create()
@@ -62,7 +65,7 @@ public class KeyMasterApplicationService {
                 .uri(
                         uriBuilder -> uriBuilder
                                 .scheme("http")
-                                .host("localhost")
+                                .host(host)
                                 .port(3000)
                                 .path("/room")
                                 .build()
@@ -71,13 +74,11 @@ public class KeyMasterApplicationService {
                 .bodyToFlux(RoomApplicationData.class)
                 .collectList()
                 .block(Duration.of(8, ChronoUnit.SECONDS));
-        if(rooms != null) {
-            for (RoomApplicationData room: rooms) {
-                System.out.println(room.roomNumber());
+        if (rooms != null) {
+            for (RoomApplicationData room : rooms) {
                 roomDomainService.addRoom(room);
             }
         }
-
     }
-    }
+}
 

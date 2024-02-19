@@ -1,6 +1,4 @@
-logging:
-  level:
-    ROOT: Warn
+
 spring:
   main:
     banner-mode: "off"
@@ -13,10 +11,10 @@ spring:
             client-secret: ${CLIENT_SECRET}
             scope: read:public_repo
 
-
   datasource:
     url: jdbc:postgresql://${DATABASE_URL}:5432/postgres
-    #url: jdbc:postgresql://database:5432/postgres
     username: user
     password: 1234
     driver-class-name: org.postgresql.Driver
+roommate:
+  key-master-url: ${KEYMASTER_URL}

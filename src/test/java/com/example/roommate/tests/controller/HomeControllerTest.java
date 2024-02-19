@@ -58,7 +58,6 @@ public class  HomeControllerTest {
 //                .andReturn();
 //
 //        String html = mvcResult.getResponse().getContentAsString();
-//        System.out.println("hmtl Antwort: " + html);
 //        assertThat(html).contains("desk");
 //        assertThat(html).contains("12");
 //        assertThat(html).contains("13");
