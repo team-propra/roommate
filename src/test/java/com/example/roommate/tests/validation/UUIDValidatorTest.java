@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestClass
 public class UUIDValidatorTest {
     @Test
-    @DisplayName("Call validator with correct id")
+    @DisplayName("Call validator with correct id returns true")
     public void test_1() {
         String correctUUID = "123e4567-e89b-12d3-a456-426614174000";
         
@@ -21,7 +21,7 @@ public class UUIDValidatorTest {
 
 
     @Test
-    @DisplayName("Call validator with incorrect id")
+    @DisplayName("Call validator with incorrect id returns false")
     public void test_2() {
         String incorrectUUID = "incorrect id";
         
@@ -31,7 +31,7 @@ public class UUIDValidatorTest {
     }
 
     @Test
-    @DisplayName("Call validator with incorrect null")
+    @DisplayName("Call validator with incorrect null returns false")
     public void test_3() {
         String incorrectUUID = null;
 

@@ -17,15 +17,14 @@ class RoomEntryTest {
     UUID id = ValuesFactory.roomId;
 
     @Test
-    @DisplayName("Get Room ID Test")
+    @DisplayName("RoomEntry correctly stores ids")
     void getRoomID() {
-        RoomEntry roomEntry = ValuesFactory.createRoomEntry();
-
+        RoomEntry roomEntry = ValuesFactory.createRoomEntry(id);
         assertThat(roomEntry.getRoomID()).isEqualTo(id);
     }
 
     @Test
-    @DisplayName("Get Room Number Test")
+    @DisplayName("RoomEntry correctly stores RoomNumber")
     void getRoomNumber() {
         String expectedRoomNumber = "14";
         RoomEntry roomEntry = ValuesFactory.createRoomEntry(expectedRoomNumber);
@@ -34,7 +33,7 @@ class RoomEntryTest {
     }
 
     @Test
-    @DisplayName("Get Item Names Test")
+    @DisplayName("Get Item Names of WorkspaceEntry does not throw any exception")
     void getItemNames() {
         WorkspaceEntry roomEntry = ValuesFactory.createWorkspaceEntry();
 

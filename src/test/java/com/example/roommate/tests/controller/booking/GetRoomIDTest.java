@@ -44,7 +44,7 @@ public class GetRoomIDTest {
     
 
     @Test
-    @DisplayName("GET /room/{roomId}/workspace/{workspaceId} with mocked service successfully yields roomDetails.html")
+    @DisplayName("GET /room/{roomId}/workspace/{workspaceId} with mocked service successfully contains roomNumber and workspaceNumber")
     @WithMockOAuth2User
     void test_1() throws Exception {
         Room office = Officer.Room();

@@ -3,7 +3,6 @@ package com.example.roommate.controller;
 import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
-import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.values.domainValues.*;
@@ -132,8 +131,14 @@ public class RoomController {
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
             , OAuth2AuthenticationToken auth
     ) throws ArgumentValidationException {
+        
+        if(bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+            return modelAndView;
+        }
 
-        if (bindingResult.hasErrors() || !BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
+        if (!BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
             UUID roomId = form.roomId();
             UUID workspaceId = form.workspaceId();
             String errorMessage = "No Room selected. Please select a room to book or return home";

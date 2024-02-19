@@ -61,11 +61,4 @@ public class PostRoomDetailsAddItemTest {
                 )
                 .andExpect(status().isOk());
     }
-
-
-    @DisplayName("POST /room/{roomID}/addItem/{itemName} adds the Item to the Room")
-    @Test
-    void test_() {
-
-    }
 }

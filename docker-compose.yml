@@ -7,7 +7,13 @@ services:
       dockerfile: Dockerfile.RoomMate
     image: team-propra/roommate:v1
     ports:
-      - "8081:8081"
+      - "8080:8080"
+    environment:
+      - "CLIENT_SECRET=${CLIENT_SECRET}"
+      - "CLIENT_ID=${CLIENT_ID}"
+      - "DATABASE_URL=${DATABASE_URL}"
+      - "KEYMASTER_URL=${KEYMASTER_URL}"
+      - "ADMIN_HANDLE=${ADMIN_HANDLE}"
   
   
   keymaster:
@@ -17,14 +23,17 @@ services:
     image: team-propra/keymaster:v1
     ports:
       - "3000:3000"
+    environment:
+      - "ROOMMATE_URL=${ROOMMATE_URL}"
+      - "ROOMMATE_ENDPOINT=${ROOMMATE_ENDPOINT}"
 
   database:
     image: postgres:15
     ports:
       - "5432:5432"
     environment:
-      - "POSTGRES_USER=user"
-      - "POSTGRES_PASSWORD=1234"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
 
 
 
