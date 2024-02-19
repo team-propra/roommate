@@ -40,4 +40,8 @@ public class UserDomainService {
     public List<? extends IUser> getAllUser() {
         return userRepository.getAllUser();
     }
+
+    public void addAdmin(String adminHandle) {
+        userRepository.addUser(new User(null, adminHandle, "ADMIN"));
+    }
 }
