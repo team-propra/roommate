@@ -101,7 +101,7 @@
                           <input th:unless="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'"/>
                       </label>
                       <label>
-                          <input th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked"/>
+                          <input th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked" disabled="disabled"/>
                       </label>
                   </div>
               </td>
