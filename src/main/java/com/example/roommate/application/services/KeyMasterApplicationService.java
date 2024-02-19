@@ -6,6 +6,7 @@ import com.example.roommate.application.data.KeyOwnerApplicationData;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationService
+@SuppressFBWarnings(value="EI2", justification="UserDomainService & RoomDomainService are properly injected")
 public class KeyMasterApplicationService {
     UserDomainService userDomainService;
     RoomDomainService roomDomainService;

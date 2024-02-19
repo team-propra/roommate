@@ -3,6 +3,7 @@ package com.example.roommate.persistence.postgres;
 import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.repositories.IUserRepository;
 import com.example.roommate.utility.IterableSupport;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Repository
 @Profile("!test")
+@SuppressFBWarnings(value="EI2", justification="IUserDAO are properly injected")
 public class UserRepository implements IUserRepository {
     IUserDAO userDAO;
 

@@ -15,7 +15,7 @@ public class UserRepository implements IUserRepository {
     List<IUser> users;
 
     public UserRepository(List<IUser> users) {
-        this.users = users;
+        this.users = users.stream().toList();
     }
 
     public UserRepository() {

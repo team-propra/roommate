@@ -4,6 +4,7 @@ import com.example.roommate.application.services.AuthenticationApplicationServic
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.forms.KeyMasterForm;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AuthenticationApplicationService are properly injected")
 public class ApiController {
 
     BookingApplicationService bookingApplicationService;
-    AuthenticationApplicationService userApplicationService;
 
     @Autowired
-    public ApiController(BookingApplicationService bookingApplicationService, AuthenticationApplicationService userApplicationService) {
+    public ApiController(BookingApplicationService bookingApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
-        this.userApplicationService = userApplicationService;
     }
 
 

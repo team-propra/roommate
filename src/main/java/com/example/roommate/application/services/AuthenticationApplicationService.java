@@ -4,6 +4,7 @@ import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.interfaces.application.services.IAuthenticationApplicationService;
 import com.example.roommate.interfaces.entities.IUser;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Component
 @ApplicationService
+@SuppressFBWarnings(value="EI2", justification="UserDomainService is properly injected")
 public class AuthenticationApplicationService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>, IAuthenticationApplicationService {
     UserDomainService userDomainService;
 

@@ -23,8 +23,8 @@ services:
     environment:
       - "ROOMMATE_URL=${ROOMMATE_URL}"
       - "ROOMMATE_ENDPOINT=${ROOMMATE_ENDPOINT}"
-      - "CLIENT_SECRET=${CLIENT_SECRET}" #evtl. notwendig um Zugriff auf /api/access zu bekommen? Noch nicht ausprobiert
-      - "CLIENT_ID=${CLIENT_ID}"
+#      - "CLIENT_SECRET=${CLIENT_SECRET}" #evtl. notwendig um Zugriff auf /api/access zu bekommen? Noch nicht ausprobiert - nein
+#      - "CLIENT_ID=${CLIENT_ID}"
 
   database:
     image: postgres:15

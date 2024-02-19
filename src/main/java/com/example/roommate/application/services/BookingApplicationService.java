@@ -2,7 +2,6 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
-import com.example.roommate.domain.models.entities.Workspace;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IUser;
@@ -155,8 +154,8 @@ public class BookingApplicationService {
                 UUID keyId = user.getKeyId();
                 String handle = user.getHandle();
                 for(IRoom room : rooms) {
-                    List<Workspace> workspaces = (List<Workspace>) IterableSupport.toList(room.getWorkspaces());
-                    for(Workspace w: workspaces) {
+                    List<? extends IWorkspace> workspaces = IterableSupport.toList(room.getWorkspaces());
+                    for(IWorkspace w: workspaces) {
                         List<BookedTimeframe> bookedTimeframes = IterableSupport.toList(w.getBookedTimeframes());
                         for(BookedTimeframe bookedTimeframe : bookedTimeframes)
                             if(bookedTimeframe.userHandle().equals(handle)) {

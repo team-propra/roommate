@@ -4,12 +4,14 @@ import com.example.roommate.annotations.DomainService;
 import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.repositories.IUserRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
+@SuppressFBWarnings(value="EI2", justification="UserRepository is properly injected")
 public class UserDomainService {
     IUserRepository userRepository;
 
