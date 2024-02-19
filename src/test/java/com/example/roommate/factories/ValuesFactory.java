@@ -47,7 +47,12 @@ public class ValuesFactory {
         return new ItemName(type);
     }
 
-    public static RoomEntry createRoomEntry() { return new RoomEntry(roomId,new RoomNumber("14"), List.of());}
+    public static RoomEntry createRoomEntry() { 
+        return new RoomEntry(roomId,new RoomNumber("14"), List.of());
+    }
+    public static RoomEntry createRoomEntry(UUID id) {
+        return new RoomEntry(id,new RoomNumber("14"), List.of());
+    }
 
     public static RoomEntry createRoomEntry(String roomnumber) { return new RoomEntry(roomId,new RoomNumber(roomnumber),List.of());}
 

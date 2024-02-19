@@ -10,6 +10,7 @@ import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.ItemName;
 import com.example.roommate.factories.EntityFactory;
 import com.example.roommate.factories.ValuesFactory;
+import com.example.roommate.values.domainValues.RoomNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,9 +33,9 @@ public class EntitiesTest {
     @DisplayName("Room has correct room number")
     @Test
     void test_3() {
-        Room room = EntityFactory.createRoom();
-        String roomNumber = room.getRoomNumber().number();
-        assertThat(roomNumber).isEqualTo("12");
+        RoomNumber roomNumber = new RoomNumber("12");
+        Room room = EntityFactory.createRoom(roomNumber);
+        assertThat(room.getRoomNumber().number()).isEqualTo(roomNumber.number());
     }
 
     @DisplayName("Can create a User")
@@ -45,7 +46,7 @@ public class EntitiesTest {
     }
 
     @Test
-    @DisplayName("add item to workspace")
+    @DisplayName("add item to workspace results in getItems return said item")
     void test_5() {
         Workspace workspace = EntityFactory.createWorkspace();
         ItemName item = ValuesFactory.createItemName("Chair");
@@ -56,7 +57,7 @@ public class EntitiesTest {
     }
 
     @Test
-    @DisplayName("Add List of Items to a workspace")
+    @DisplayName("Add List of Items to a workspace make getItems() yield all of these")
     void test_6() {
         Workspace workspace = EntityFactory.createWorkspace();
         List<ItemName> items = List.of(ValuesFactory.createItemName("Desk"), ValuesFactory.createItemName("Chair"));
@@ -67,7 +68,7 @@ public class EntitiesTest {
     }
 
     @Test
-    @DisplayName("Get a List of items when getItems() is called")
+    @DisplayName("getItems() returns a list of the exact items, added to a workspace")
     void test_7() {
         Workspace workspace = EntityFactory.createWorkspace();
         ItemName desk = ValuesFactory.createItemName("Desk");
@@ -80,7 +81,7 @@ public class EntitiesTest {
         assertThat(result).containsExactly(chair, desk);
     }
 
-    @DisplayName("A room is availabel if it is not booked for a timeslot is after current booking")
+    @DisplayName("A workspace is available at a timeslot (A) if the workspace contains a prior timeslot (B), that ends at the exact time of (A)'s starting time")
     @Test
     void test_8() {
         Workspace workspace = Officer.Workspace();
@@ -92,7 +93,7 @@ public class EntitiesTest {
         assertThat(available).isTrue();
     }
 
-    @DisplayName("A room is availabel if it is not booked for a timeslot is before current booking")
+    @DisplayName("A workspace is available at a timeslot (A) if the workspace contains a later timeslot (B), that starts at the exact time of (A)'s end time")
     @Test
     void test_9() {
         Workspace workspace = Officer.Workspace();
@@ -104,7 +105,7 @@ public class EntitiesTest {
         assertThat(available).isTrue();
     }
 
-    @DisplayName("A room is not available if the timeslot before is taken")
+    @DisplayName("A room is not available if the booked timeslot before overlaps with the desired one")
     @Test
     void test_10() {
         Workspace workspace = Officer.Workspace();
@@ -116,7 +117,7 @@ public class EntitiesTest {
         assertThat(available).isFalse();
     }
 
-    @DisplayName("A room is not availabel if the timeslot after is taken")
+    @DisplayName("A room is not available if a latter booked timeslot overlaps with the duration of desired one")
     @Test
     void test_11() {
         Workspace workspace = Officer.Workspace();

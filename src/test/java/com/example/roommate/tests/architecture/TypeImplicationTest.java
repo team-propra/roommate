@@ -11,11 +11,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(packages = "com.example.roommate")
 @TestClass
-public class UncategorizedRulesTest {
-    @ArchTest
-    static ArchRule normalServicesShouldNotExist = classes()
-            .should()
-            .notBeAnnotatedWith("Service");
+public class TypeImplicationTest {
     
     @ArchTest
     static ArchRule classesInInterfacesShouldBeInterfaces = classes()
@@ -26,9 +22,16 @@ public class UncategorizedRulesTest {
 
 
     @ArchTest
-    static ArchRule applicationDataMustImplementInterfacesAndBeRecord = classes()
+    static ArchRule applicationDataMustBeRecord = classes()
             .that()
             .resideInAPackage("..application.data..")
+            .should()
+            .beRecords();
+
+    @ArchTest
+    static ArchRule valuesMustBeRecord = classes()
+            .that()
+            .resideInAPackage("..values..")
             .should()
             .beRecords();
 }

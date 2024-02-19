@@ -4,11 +4,12 @@ package com.example.roommate.values.forms;
 import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.values.domainValues.BookingDays;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 
-public record BookDataForm(UUID workspaceId, UUID roomId, int stepSize){
+public record BookDataForm(@NotNull UUID workspaceId, @NotNull UUID roomId, int stepSize){
 
    
 

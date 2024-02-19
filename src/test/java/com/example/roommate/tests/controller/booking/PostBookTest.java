@@ -7,6 +7,7 @@ import com.example.roommate.application.services.KeyMasterApplicationService;
 import com.example.roommate.controller.RoomController;
 import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.domain.services.UserDomainService;
+import com.example.roommate.examples.Officer;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.factories.ValuesFactory;
@@ -59,7 +60,7 @@ public class PostBookTest {
 
     BookDataForm bookDataForm = new BookDataForm(workspaceId, roomID,60);
 
-    @DisplayName("POST /rooms redirects to /")
+    @DisplayName("unsuccessful POST /rooms should not redirects to / if workspaceId is missing")
     @Test
     @WithMockOAuthVerifiedUser
     void test_1() throws Exception {
@@ -70,7 +71,7 @@ public class PostBookTest {
                         .param("cell", "0-1-X")//otherwise invalid
                        // .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
-                .andExpect(redirectedUrl("/"));
+                .andExpect(status().isBadRequest());
     }
 
     //future integration test
@@ -96,14 +97,14 @@ public class PostBookTest {
     }
 
     @Test
-    @DisplayName("POST /rooms redirects to /room/{id} page when BookDataForm is not validated (f.ex.ID is blank)")
+    @DisplayName("POST /rooms redirects to /room/{id} page when checkedDays are invalid")
     @WithMockOAuthVerifiedUser
     public void test_3() throws Exception {
 
         mvc.perform(post("/rooms")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .param("roomId", "null")
-                .param("workspaceId ", "null")
+                .param("roomId", Officer.RoomID().toString())
+                .param("workspaceId", Officer.WorkspaceID().toString())
                // .param("Monday19", Boolean.toString(wrongForm.Monday19())))
                 .param("stepSize", String.valueOf(bookDataForm.stepSize())))
                 .andExpect(status().is3xxRedirection())
@@ -126,7 +127,8 @@ public class PostBookTest {
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                        // .param("form", bookDataForm.toString()))
-                          .param("id", roomID.toString())
+                        .param("roomId", Officer.RoomID().toString())
+                        .param("workspaceId", Officer.WorkspaceID().toString())
                           .param("cell", "0-1-X")//otherwise invalid
                         //   .param("Monday19", Boolean.toString(bookDataForm.Monday19())))
                         .param("stepSize", String.valueOf(bookDataForm.stepSize())))
