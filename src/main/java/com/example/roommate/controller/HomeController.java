@@ -49,15 +49,15 @@ public class HomeController {
         }
 
          */
-
-        List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
+        List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels();
+     /*   List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
                 .flatMap(HomeController::toRoomHomeModel)
-                .toList();
+                .toList();*/
         model.addAttribute("homeModels", roomModels);
         return "home";
     }
 
-    private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room){
+   /* private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room){
         List<RoomHomeModel> list = IterableSupport.toList(room.getWorkspaces()).stream()
                 .filter(workspace -> !IterableSupport.toList(workspace.getBookedTimeframes()).isEmpty())
                 .map(workspace -> new RoomHomeModel(room.getRoomID(),
@@ -69,7 +69,8 @@ public class HomeController {
                 ))
                 .toList();
         return list.stream();
-    }
+    }*/
+
 
     @PostMapping("/registration")
     public String registerKey(String keyId, OAuth2AuthenticationToken auth, Model model) {
