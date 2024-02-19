@@ -31,7 +31,7 @@ public class  HomeControllerTest {
     AuthenticationApplicationService authenticationApplicationService;
 
 
-    @DisplayName("A GET-Request on / returns a status 200 and displays the home.html")
+    @DisplayName("A GET-Request on / returns a status 200 and displays the home.html whenever used has assigned a key already")
     @Test
     @WithMockOAuthVerifiedUser
     public void test_01() throws Exception {

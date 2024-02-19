@@ -43,7 +43,7 @@ public class GetRoomTest {
     @MockBean
     ItemRepository itemRepository;
     @Test
-    @DisplayName("GET /room/{id} successfully yields OK and room number is present in html whenever the service returns successfully")
+    @DisplayName("GET /room/{id}/workspace/{workspaceId} successfully yields OK, roomNumber and workspaceNumber is present in html whenever the service returns successfully")
     @WithMockOAuth2User
     public void test_1() throws Exception {
         Room office = Officer.Room();
