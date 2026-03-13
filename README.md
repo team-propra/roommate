@@ -1,7 +1,7 @@
 # RoomMate: Room booking solution
 
 [![codecov](https://codecov.io/github/team-propra/roommate/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/github/team-propra/roommate)
-[![Tests](https://github.com/team-propra/roommate/actions/workflows/tests.yml/badge.svg)](https://github.com/team-propra/roommate/actions/workflows/tests.yml)
+[![ReleasePipeline](https://github.com/team-propra/roommate/actions/workflows/cd.yml/badge.svg)](https://github.com/team-propra/roommate/actions/workflows/cd.yml)
 
 ## Getting Started
 
