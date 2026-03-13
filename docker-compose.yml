@@ -4,7 +4,7 @@ services:
   roommate:
     build:
       context: .
-      dockerfile: Dockerfile.RoomMate
+      dockerfile: Dockerfile.roommate
     image: team-propra/roommate:v1
     ports:
       - "8080:8080"
@@ -19,7 +19,7 @@ services:
   keymaster:
     build:
       context: .
-      dockerfile: Dockerfile.KeyMaster
+      dockerfile: Dockerfile.keymaster
     image: team-propra/keymaster:v1
     ports:
       - "3000:3000"
