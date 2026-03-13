@@ -5,7 +5,7 @@ COPY . .
 RUN gradle build
 
 # Build Runtime Image stage
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk
 ENV JAR_NAME="RoomMate-prod.jar"
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
