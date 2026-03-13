@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roommate
+  namespace: roommate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roommate
+  template:
+    metadata:
+      labels:
+        app: roommate
+    spec:
+      containers:
+        - name: roommate
+          image: registry.massivecreationlab.com/roommate/roommate:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: roommate-secrets
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: roommate-postgres
+  namespace: roommate
+spec:
+  selector:
+    app: roommate-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

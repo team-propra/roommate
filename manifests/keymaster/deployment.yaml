@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keymaster
+  namespace: roommate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keymaster
+  template:
+    metadata:
+      labels:
+        app: keymaster
+    spec:
+      containers:
+        - name: keymaster
+          image: registry.massivecreationlab.com/roommate/keymaster:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: roommate-secrets
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
