@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: roommate-postgres-public
-  namespace: roommate
+  name: roommate-postgres
+  namespace: {{ .Values.namespace }}
 spec:
-  type: LoadBalancer
   selector:
     app: roommate-postgres
   ports:

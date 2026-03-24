@@ -1,0 +1,6 @@
+apiVersion: v2
+name: roommate
+description: Roommate application deployment (keymaster + postgres + roommate)
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

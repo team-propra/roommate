@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: roommate-ingress
-  namespace: roommate
+  namespace: {{ .Values.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - roommate.massivecreationlab.com
+        - {{ required "host is required" .Values.ingress.host | quote }}
       secretName: roommate-tls
   rules:
-    - host: roommate.massivecreationlab.com
+    - host: {{ required "host is required" .Values.ingress.host | quote }}
       http:
         paths:
           - path: /

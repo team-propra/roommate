@@ -41,5 +41,35 @@ If you are using IntelliJ to start up RoomMate, remember to add these following 
 #### Using Docker compose
 Before you can use `docker compose up` you will need to create an .env file according to our [example.env](./example.env) and set it's values accordingly.
 
+#### Using Kubernetes (helm)
+
+Below is a minimal Kubernetes deployment utilizing the helm package manager.
+
+First, you will need to create the `values.yaml` file and specify your secrets:
+
+```yaml
+namespace: roommate
+ingress:
+  host: ""
+database:
+  user: ""
+  password: ""
+roommate:
+  adminHandle: ""
+  clientId: ""
+  clientSecret: ""
+```
+
+Then deploy the application using helm in your cluster:
+
+```shell
+helm install roommate \
+  oci://registry.massivecreationlab.com/roommate \
+  --version 1.0.0 \
+  -n roommate \
+  --create-namespace \
+  -f values.yaml
+```
+
 ## Documentation
 For an overview of the project's scope, basic architecture and goals & requirements see our [documentation](./docs/RoomMate_doc.md).

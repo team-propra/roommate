@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keymaster
-  namespace: roommate
+  name: roommate
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keymaster
+      app: roommate
   template:
     metadata:
       labels:
-        app: keymaster
+        app: roommate
     spec:
       containers:
-        - name: keymaster
-          image: registry.massivecreationlab.com/roommate/keymaster:latest
+        - name: roommate
+          image: registry.massivecreationlab.com/roommate/roommate:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
             - secretRef:
-                name: roommate-secrets
+                name: roommate-roommate-secrets
   strategy:
     type: RollingUpdate
     rollingUpdate:

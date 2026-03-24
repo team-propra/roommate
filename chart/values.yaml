@@ -1,0 +1,10 @@
+namespace: roommate
+ingress:
+  host: ""
+database:
+  user: ""
+  password: ""
+roommate:
+  adminHandle: ""
+  clientId: ""
+  clientSecret: ""
