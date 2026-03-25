@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: keymaster
+  name: roommate-keymaster
   namespace: {{ .Values.namespace }}
 spec:
   selector:
-    app: keymaster
+    app: roommate-keymaster
   ports:
     - name: http
       port: 80
