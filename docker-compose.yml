@@ -14,7 +14,8 @@ services:
       - "DATABASE_URL=${DATABASE_URL}"
       - "KEYMASTER_URL=${KEYMASTER_URL}"
       - "ADMIN_HANDLE=${ADMIN_HANDLE}"
-  
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
   
   keymaster:
     build:

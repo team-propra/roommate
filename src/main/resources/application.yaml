@@ -13,8 +13,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://${DATABASE_URL}:5432/postgres
-    username: user
-    password: 1234
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 roommate:
   key-master-url: ${KEYMASTER_URL}
