@@ -42,7 +42,11 @@ public class RoomDomainService {
     }
 
     public void addDummyDummy(){
-        self.addDummieRooms();
+        try{
+            self.addDummieRooms();
+        } catch (RuntimeException e) {
+            System.out.println("Ignored duplicated default entries");
+        }
     }
 
     @Transactional

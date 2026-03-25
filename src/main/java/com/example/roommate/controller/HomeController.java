@@ -36,19 +36,8 @@ public class HomeController {
         OAuth2User user = auth.getPrincipal();
         String login = user.getAttribute("login");
 
-        if(!userApplicationService.userHasKey(login)) {
-            model.addAttribute("username", login);
-            return "keyForm";
-        }
-
-        /*
-        diesen Check verlagern an Raumbuchung
-        if(!userApplicationService.isVerified(login)) {
-            model.addAttribute("username", login);
-            return "keyForm";
-        }
-
-         */
+        if(!userApplicationService.tryEnsureUserKey(login))
+            return "error1";
 
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
                 .flatMap(HomeController::toRoomHomeModel)
@@ -69,17 +58,5 @@ public class HomeController {
                 ))
                 .toList();
         return list.stream();
-    }
-
-    @PostMapping("/registration")
-    public String registerKey(String keyId, OAuth2AuthenticationToken auth, Model model) {
-        OAuth2User user = auth.getPrincipal();
-        String login = user.getAttribute("login");
-        UUID keyID = UUID.fromString(keyId);
-
-        userApplicationService.registerKey(keyID, login);
-        model.addAttribute("keyID", keyId);
-        return "keyForm";
-
     }
 }

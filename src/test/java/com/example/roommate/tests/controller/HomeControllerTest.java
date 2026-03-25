@@ -35,7 +35,7 @@ public class  HomeControllerTest {
     @Test
     @WithMockOAuthVerifiedUser
     public void test_01() throws Exception {
-        when(authenticationApplicationService.userHasKey("verified_user")).thenReturn(true);
+        when(authenticationApplicationService.tryEnsureUserKey("verified_user")).thenReturn(true);
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"));
