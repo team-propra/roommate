@@ -38,6 +38,12 @@ If you are using IntelliJ to start up RoomMate, remember to add these following 
 
 `KEYMASTER_URL=localhost`
 
+`POSTGRES_USER=YOUR_POSTGRES_USER`
+
+`POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD`
+
+Make sure the postgres credentials match your local dev database.
+
 #### Using Docker compose
 Before you can use `docker compose up` you will need to create an .env file according to our [example.env](./example.env) and set it's values accordingly.
 
