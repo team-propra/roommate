@@ -18,17 +18,23 @@ spec:
           image: postgres:15
           ports:
             - containerPort: 5432
+          {{- if .Values.database.existingSecret }}
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: roommate-postgres-secrets
-                  key: POSTGRES_USER
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.user }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: roommate-postgres-secrets
-                  key: POSTGRES_PASSWORD
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.password }}
+          {{- else }}
+          envFrom:
+            - secretRef:
+                name: roommate-postgres-secrets
+          {{- end }}
           volumeMounts:
             - name: roommate-postgres-data
               mountPath: /var/lib/postgresql

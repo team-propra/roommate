@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: keymaster
-          image: registry.massivecreationlab.com/roommate/keymaster:latest
+          image: "registry.massivecreationlab.com/roommate/keymaster:{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
