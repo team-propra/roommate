@@ -1,48 +1,52 @@
-# RoomMate: Room booking solution
+# Roommate: Room booking solution
 
 [![codecov](https://codecov.io/github/team-propra/roommate/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/github/team-propra/roommate)
 [![ReleasePipeline](https://github.com/team-propra/roommate/actions/workflows/cd.yml/badge.svg)](https://github.com/team-propra/roommate/actions/workflows/cd.yml)
 
-## Getting Started
+## About
 
-### OAuth
-In order to run the Spring Boot application locally, you will need to provide a GitHub oauth application token.
+Roommate is a room booking software. It was a team project created as part of a module at university.
+
+The project came with a set of challenges:
+- External dependency: Key management software (keymaster.jar), cannot be manipulated
+- Authentication via GitHub OAuth
+- Strict onion architecture
+
+Required features:
+- Use case: Admins manage workspaces and rooms
+- Use case: Users search and book rooms
+
+## Getting Started: Running Roommate
+
+### Setting up OAuth
+In order to run the application, you will need to provide a GitHub oauth application token.
 First go to https://github.com/settings/applications/new and create an oauth application. 
 - `name`: whatever
-- `home-page url`: http://localhost:8080
-- `auth callback url`: http://localhost:8080
+- `home-page url`: http://localhost:8080 (or your domain url when hosted properly)
+- `auth callback url`: http://localhost:8080 (or your domain url when hosted properly)
 
 Now you'll see `ClientID`. You also require a `Client Secret`, so feel free to generate one.
-Afterwards in order to run the application you will need to set the following environment variables: `CLIENT_ID` and `CLIENT_SECRET`
-
-In case you're using IntelliJ, you may follow these steps:
-- Go to RunConfigurations > Edit (top right)
-- Edit the Spring Boot Configuration for this project
-- ModifyOptions > EnvironmentVariables
-- Enter the following string (replacing *** with your values) `CLIENT_ID=***;CLIENT_SECRET=***`
-
-Now you will be able to run the application properly with OAuth login :)
+Store these values for now (e.g. in a password manager).
 
 ### Deployment
 
 #### Using IntelliJ IDEA
-If you are using IntelliJ to start up RoomMate, remember to add these following environment variables to your run configuration:
+If you are using IntelliJ to start up RoomMate, remember to add required environment variables to your run configuration:
+- Go to RunConfigurations > Edit (top right)
+- Edit the Spring Boot Configuration for this project
+- ModifyOptions > EnvironmentVariables
+- Enter environment variables as one string like this: `CLIENT_ID=***;CLIENT_SECRET=***`
 
-`ADMIN_HANDLE=YOUR_GITHUB_HANDLE` (_In case you want to test the application as an admin_)
+You will need all of these environment variables:
+- `ADMIN_HANDLE=YOUR_GITHUB_HANDLE` (_In case you want to test the application as an admin_)
+- `CLIENT_ID=YOUR_CLIENT_ID` (from OAuth step above)
+- `CLIENT_SECRET=YOUR_CLIENT_SECRET` (from OAuth step above)
+- `DATABASE_URL=localhost` (or custom postgres host)
+- `KEYMASTER_URL=localhost` (or custom keymaster host)
+- `POSTGRES_USER=YOUR_POSTGRES_USER`
+- `POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD`
 
-`CLIENT_ID=YOUR_CLIENT_ID` (from OAuth step above)
-
-`CLIENT_SECRET=YOUR_CLIENT_SECRET` (from OAuth step above)
-
-`DATABASE_URL=localhost`
-
-`KEYMASTER_URL=localhost`
-
-`POSTGRES_USER=YOUR_POSTGRES_USER`
-
-`POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD`
-
-Make sure the postgres credentials match your local dev database.
+Make sure the postgres variables match your postgres database credentials.
 
 #### Using Docker compose
 Before you can use `docker compose up` you will need to create an .env file according to our [example.env](./example.env) and set it's values accordingly.
