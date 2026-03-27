@@ -84,7 +84,7 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
         IUser user = userDomainService.getUserByLogin(login);
 
         UUID key = user.getKeyId();
-        if(UUID.fromString("00000000-0000-0000-0000-000000000000").equals(key)){
+        if (key == null || key.equals(new UUID(0L, 0L))) {
             key = keymaster.createKey(login);
             registerKey(key, login);
         }

@@ -111,8 +111,6 @@ public class KeyMasterApplicationService {
             throw new RuntimeException("Key creation failed: empty response");
         }
 
-        System.out.println("request new key: " + response);
-
         String uuidText = extractKeyFromResponse(response);
         return UUID.fromString(uuidText);
     }
