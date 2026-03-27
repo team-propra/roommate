@@ -32,7 +32,7 @@
       "@semantic-release/exec",
       {
         "verifyConditionsCmd": "./.github/scripts/verify-chart.sh",
-        "publishCmd": "./.github/scripts/build-chart.sh ${nextRelease.version}"
+        "publishCmd": "./.github/scripts/publish-chart.sh ${nextRelease.version}"
       }
     ]
   ]
