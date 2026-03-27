@@ -2,6 +2,8 @@
 
 [![codecov](https://codecov.io/github/team-propra/roommate/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/github/team-propra/roommate)
 [![ReleasePipeline](https://github.com/team-propra/roommate/actions/workflows/cd.yml/badge.svg)](https://github.com/team-propra/roommate/actions/workflows/cd.yml)
+[![semantic-release: conventional-commits](https://img.shields.io/badge/semantic--release-conventional--commits-e10079?logo=semantic-release)](https://www.conventionalcommits.org/en/v1.0.0/)
+[![java: 21](https://img.shields.io/badge/compatibility-%E2%89%A5%20java21-c78d18?logo=java)](https://adoptium.net/temurin/releases/?version=21)
 
 ## About
 
@@ -15,6 +17,10 @@ The project came with a set of challenges:
 Required features:
 - Use case: Admins manage workspaces and rooms
 - Use case: Users search and book rooms
+
+## Demo
+
+A public demo is hosted [here](https://roommate.massivecreationlab.com). Contact us for admin access.
 
 ## Getting Started: Running Roommate
 
