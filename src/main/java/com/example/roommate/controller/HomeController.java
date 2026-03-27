@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class HomeController {
         String login = user.getAttribute("login");
 
         if(!userApplicationService.tryEnsureUserKey(login))
-            return "error1";
+            return "redirect:/";
 
         List<RoomHomeModel> roomModels = bookingApplicationService.getRooms().stream()
                 .flatMap(HomeController::toRoomHomeModel)
