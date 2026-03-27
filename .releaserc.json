@@ -27,6 +27,13 @@
         "verifyConditionsCmd": "./.github/scripts/verify-container.sh keymaster",
         "publishCmd": "./.github/scripts/build-container.sh keymaster ${nextRelease.version}"
       }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./.github/scripts/verify-chart.sh ${nextRelease.version}",
+        "publishCmd": "./.github/scripts/build-chart.sh ${nextRelease.version}"
+      }
     ]
   ]
 }
