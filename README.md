@@ -81,7 +81,6 @@ Then deploy the application using helm in your cluster:
 ```shell
 helm install roommate-helm \
   oci://registry.massivecreationlab.com/roommate \
-  --version 1.0.0 \
   -n roommate \
   --create-namespace \
   -f values.yaml
