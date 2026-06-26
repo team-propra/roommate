@@ -4,16 +4,14 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.annotations.VerifiedOnly;
 import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.exceptions.ArgumentValidationException;
-import com.example.roommate.interfaces.entities.IWorkspace;
-import com.example.roommate.values.domainValues.*;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
-import com.example.roommate.interfaces.entities.IRoom;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.values.forms.RoomDataForm;
 import com.example.roommate.values.forms.SearchTimeForm;
-import com.example.roommate.values.models.RoomBookingModel;
+import com.example.roommate.values.models.RoomSearchModel;
+import com.example.roommate.values.models.WorkspaceDetailsModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,30 +42,19 @@ public class RoomController {
     }
 
 
-    // http://localhost:8080/rooms?datum=1221-12-21&uhrzeit=12%3A21&gegenstaende=Table&gegenstaende=Desk
-
     @GetMapping("/rooms")
-    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, /*@RequestParam(required = false)*/ SearchTimeForm timeForm, Model model,
+    public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, SearchTimeForm timeForm, Model model,
                                  OAuth2AuthenticationToken auth) {
-      /*  if (timeForm.datum == null) timeForm.datum = "2024-01-01";
-        if (timeForm.startUhrzeit == null) timeForm.startUhrzeit = "08:00";
-        if (timeForm.endUhrzeit == null) timeForm.endUhrzeit = "16:00";*/
-        if (gegenstaende == null) gegenstaende = new ArrayList<>();
-
-        List<ItemName> selectedItemsList = BookingApplicationService.convertToItemNameList(gegenstaende);
-               /* List<ItemName> selectedItemsList = gegenstaende.stream()
-                .map(ItemName::new)
-                .toList();*/
         OAuth2User user = auth.getPrincipal();
         String userHandle = user.getAttribute("login");
 
-        List<RoomBookingModel> availableWorkspacesWithItems = bookingApplicationService.findAvailableWorkspacesWithItems(selectedItemsList, timeForm.datum(), timeForm.startUhrzeit(), timeForm.endUhrzeit(), userHandle);
-        model.addAttribute("date", timeForm.datum());
-        model.addAttribute("startTime", timeForm.startUhrzeit());
-        model.addAttribute("endTime", timeForm.endUhrzeit());
-        model.addAttribute("items", bookingApplicationService.allItems());
-        model.addAttribute("gegenstaende", gegenstaende);
-        model.addAttribute("roomBookingModels", availableWorkspacesWithItems);
+        RoomSearchModel searchModel = bookingApplicationService.getRoomSearchModel(gegenstaende, timeForm, userHandle);
+        model.addAttribute("date", searchModel.date());
+        model.addAttribute("startTime", searchModel.startTime());
+        model.addAttribute("endTime", searchModel.endTime());
+        model.addAttribute("items", searchModel.items());
+        model.addAttribute("gegenstaende", searchModel.selectedItems());
+        model.addAttribute("roomBookingModels", searchModel.roomBookingModels());
         return "rooms";
     }
 
@@ -87,32 +74,14 @@ public class RoomController {
     @GetMapping("/room/{roomId}/workspace/{workspaceId}")
     public ModelAndView roomDetails(Model model, @PathVariable UUID roomId, @PathVariable UUID workspaceId) {
         try {
-            IRoom room = bookingApplicationService.findRoomByID(roomId);
-            IWorkspace workspace  = bookingApplicationService.getWorkspace(room, workspaceId);
-           /* Optional<? extends IWorkspace> optionalWorkspace = IterableSupport.toList(room.getWorkspaces()).stream()
-                    .filter(x -> x.getId().equals(workspaceId))
-                    .findFirst();*/
-          /*  if(optionalWorkspace.isEmpty())
-                throw new NotFoundException();*/
-          //  IWorkspace workspace = optionalWorkspace.get();
-            List<String> itemsOfWorkspace = BookingApplicationService.getItemsOfWorkspace(workspace);
-           // List<String> itemsOfWorkspace = workspace.getItems().stream().map(ItemName::type).collect(Collectors.toList());
-            List<String> filteredItems = bookingApplicationService.getUnusedItems(itemsOfWorkspace);
-          /*  List<String> filteredItems = bookingApplicationService.allItems()
-                    .stream()
-                    .map(ItemName::type)
-                    .filter(type -> !itemsOfWorkspace.contains(type))
-                    .toList();*/
-            DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
-            model.addAttribute("frame",dayTimeFrame);
+            WorkspaceDetailsModel workspaceDetails = bookingApplicationService.getWorkspaceDetailsModel(roomId, workspaceId);
+            model.addAttribute("workspaceDetails", workspaceDetails);
+            model.addAttribute("frame", workspaceDetails.frame());
+            model.addAttribute("itemStringList", workspaceDetails.selectedItems());
+            model.addAttribute("notSelectedItems", workspaceDetails.notSelectedItems());
 
             ModelAndView modelAndView = new ModelAndView("workspaceDetails");
             modelAndView.setStatus(HttpStatus.OK);
-
-            model.addAttribute("room", room);
-            model.addAttribute("workspace", workspace);
-            model.addAttribute("itemStringList", itemsOfWorkspace);
-            model.addAttribute("notSelectedItems", filteredItems);
             return modelAndView;
         } catch (NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("not-found");
@@ -138,7 +107,7 @@ public class RoomController {
             return modelAndView;
         }
 
-        if (!BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(),checkedDays))) {
+        if (!bookingApplicationService.isBookingSelectionValid(form, checkedDays)) {
             UUID roomId = form.roomId();
             UUID workspaceId = form.workspaceId();
             String errorMessage = "No Room selected. Please select a room to book or return home";
@@ -146,13 +115,11 @@ public class RoomController {
             return new ModelAndView("redirect:/room/%s/workspace/%s".formatted(roomId,workspaceId));
         }
 
-        IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
-
         OAuth2User user = auth.getPrincipal();
         String userHandle = user.getAttribute("login");
 
         try {
-            bookingApplicationService.addBookEntry(addedBookingsForm, userHandle);
+            bookingApplicationService.addBookEntry(form, checkedDays, userHandle);
         } catch (GeneralDomainException | NotFoundException e) {
             ModelAndView modelAndView = new ModelAndView("bad-request");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);

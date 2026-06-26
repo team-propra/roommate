@@ -44,8 +44,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="room : ${roomList}">
-                    <td th:text="${room.getRoomNumber.number}"></td>
-                    <td><a th:href="@{/room/{roomId}(roomId=${room.getRoomID})}">Zum Raum</a>
+                    <td th:text="${room.roomNumber}"></td>
+                    <td><a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Zum Raum</a>
                     </td>
                 </tr>
                 </tbody>

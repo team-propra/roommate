@@ -2,12 +2,13 @@ package com.example.roommate.application.services;
 
 import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.application.data.RoomApplicationData;
-import com.example.roommate.controller.HomeController;
 import com.example.roommate.domain.services.UserDomainService;
+import com.example.roommate.exceptions.ArgumentValidationException;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IUser;
 import com.example.roommate.interfaces.entities.IWorkspace;
 import com.example.roommate.utility.IterableSupport;
+import com.example.roommate.values.domainValues.BookingDays;
 import com.example.roommate.values.domainValues.BookedTimeframe;
 import com.example.roommate.values.domainValues.DayTimeFrame;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
@@ -16,9 +17,10 @@ import com.example.roommate.domain.services.RoomDomainService;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.values.forms.BookDataForm;
 import com.example.roommate.values.forms.KeyMasterForm;
-import com.example.roommate.values.models.RoomBookingModel;
-import com.example.roommate.values.models.RoomHomeModel;
+import com.example.roommate.values.forms.SearchTimeForm;
+import com.example.roommate.values.models.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,23 @@ public class BookingApplicationService {
                 .toList();
     }
 
+    private static List<ItemModel> toItemModels(Collection<ItemName> items) {
+        return items.stream()
+                .map(item -> new ItemModel(item.type()))
+                .toList();
+    }
+
+    private static BookingFrameModel toBookingFrameModel(DayTimeFrame frame) {
+        return new BookingFrameModel(
+                frame.stepSize(),
+                frame.days(),
+                frame.times(),
+                frame.dayLabels(),
+                frame.timeLabels(),
+                frame.reserved()
+        );
+    }
+
     @PostConstruct
     public void initialize() {
         roomDomainService.addDummyDummy();
@@ -88,6 +107,13 @@ public class BookingApplicationService {
         return roomDomainService.getRooms();
     }
 
+    public AdminEditModel getAdminEditModel() {
+        List<AdminRoomModel> rooms = getRooms().stream()
+                .map(room -> new AdminRoomModel(room.getRoomID(), room.getRoomNumber().number()))
+                .toList();
+        return new AdminEditModel(toItemModels(allItems()), rooms);
+    }
+
     public void addRoom(IRoom room) throws NotFoundException {
         roomDomainService.addRoom(new RoomApplicationData(room.getRoomID(), room.getRoomNumber()));
         if (!IterableSupport.toList(room.getWorkspaces()).isEmpty())
@@ -106,6 +132,21 @@ public class BookingApplicationService {
         } catch (NotFoundRepositoryException e) {
             throw new NotFoundException();
         }
+    }
+
+    public RoomOverviewModel getRoomOverviewModel(UUID roomID) throws NotFoundException {
+        IRoom room = findRoomByID(roomID);
+        List<WorkspaceOverviewModel> workspaces = IterableSupport.toList(room.getWorkspaces()).stream()
+                .map(workspace -> new WorkspaceOverviewModel(
+                        workspace.getId(),
+                        workspace.getWorkspaceNumber(),
+                        workspace.getItems().stream().map(ItemName::type).toList(),
+                        IterableSupport.toList(workspace.getBookedTimeframes()).stream()
+                                .map(BookedTimeframe::toString)
+                                .toList()
+                ))
+                .toList();
+        return new RoomOverviewModel(room.getRoomID(), room.getRoomNumber().number(), workspaces);
     }
 
     public List<String> getItemsOfRoom(UUID roomId) throws NotFoundException {
@@ -147,6 +188,27 @@ public class BookingApplicationService {
                 .toList();
     }
 
+    public RoomSearchModel getRoomSearchModel(List<String> selectedItems, SearchTimeForm timeForm, String userHandle) {
+        List<String> normalizedSelectedItems = selectedItems == null ? List.of() : selectedItems;
+        List<ItemName> selectedItemNames = convertToItemNameList(normalizedSelectedItems);
+        List<RoomBookingModel> availableWorkspacesWithItems = findAvailableWorkspacesWithItems(
+                selectedItemNames,
+                timeForm.datum(),
+                timeForm.startUhrzeit(),
+                timeForm.endUhrzeit(),
+                userHandle
+        );
+
+        return new RoomSearchModel(
+                timeForm.datum(),
+                timeForm.startUhrzeit(),
+                timeForm.endUhrzeit(),
+                toItemModels(allItems()),
+                normalizedSelectedItems,
+                availableWorkspacesWithItems
+        );
+    }
+
     public void removeItemFromRoom(UUID workspaceID, String itemName, UUID roomID) throws NotFoundRepositoryException {
         roomDomainService.removeItemFromWorkspace(workspaceID, itemName, roomID);
     }
@@ -158,7 +220,7 @@ public class BookingApplicationService {
     public void createItem(String itemName) {
         roomDomainService.createItem(itemName);
     }
-    public Iterable<KeyMasterForm> getAssociatedBookEntries() {
+    public List<KeyMasterForm> getAssociatedBookEntries() {
         List<? extends IUser> users = userDomainService.getAllUser();
         Collection<IRoom> rooms = roomDomainService.getRooms();
 
@@ -204,6 +266,24 @@ public class BookingApplicationService {
         return workspace;
     }
 
+    public WorkspaceDetailsModel getWorkspaceDetailsModel(UUID roomId, UUID workspaceId) throws NotFoundException {
+        IRoom room = findRoomByID(roomId);
+        IWorkspace workspace = getWorkspace(room, workspaceId);
+        List<String> itemsOfWorkspace = getItemsOfWorkspace(workspace);
+        List<String> filteredItems = getUnusedItems(itemsOfWorkspace);
+        DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
+
+        return new WorkspaceDetailsModel(
+                room.getRoomID(),
+                room.getRoomNumber().number(),
+                workspace.getId(),
+                workspace.getWorkspaceNumber(),
+                itemsOfWorkspace,
+                filteredItems,
+                toBookingFrameModel(dayTimeFrame)
+        );
+    }
+
     public List<String> getUnusedItems(List<String> UsedItemsOfWorkspace) {
         return allItems()
                 .stream()
@@ -246,5 +326,14 @@ public class BookingApplicationService {
 
     public void removeWorkspace(UUID workspaceID, UUID roomID) throws NotFoundRepositoryException {
         roomDomainService.removeWorkspace(workspaceID, roomID);
+    }
+
+    public boolean isBookingSelectionValid(BookDataForm form, List<String> checkedDays) throws ArgumentValidationException {
+        return BookingDays.validateBookingCoorectness(BookingDays.from(form.stepSize(), checkedDays));
+    }
+
+    public void addBookEntry(BookDataForm form, List<String> checkedDays, String userHandle) throws NotFoundException, GeneralDomainException, ArgumentValidationException {
+        IntermediateBookDataForm addedBookingsForm = BookDataForm.addBookingsToForm(checkedDays, form);
+        addBookEntry(addedBookingsForm, userHandle);
     }
 }
