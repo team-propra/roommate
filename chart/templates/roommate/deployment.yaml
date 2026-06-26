@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roommate
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roommate
+  template:
+    metadata:
+      labels:
+        app: roommate
+    spec:
+      containers:
+        - name: roommate
+          image: "registry.massivecreationlab.com/roommate/roommate:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          {{- if .Values.roommate.existingSecret }}
+          env:
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.roommate.existingSecret }}
+                  key: {{ .Values.roommate.existingSecretKeys.clientId }}
+
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.roommate.existingSecret }}
+                  key: {{ .Values.roommate.existingSecretKeys.clientSecret }}
+
+            - name: ADMIN_HANDLE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.roommate.existingSecret }}
+                  key: {{ .Values.roommate.existingSecretKeys.adminHandle }}
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.user }}
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.password }}
+            - name: DATABASE_URL
+              value: 'roommate-postgres'
+            - name: KEYMASTER_URL
+              value: 'roommate-keymaster'
+          {{- else }}
+          envFrom:
+            - secretRef:
+                name: roommate-roommate-secrets
+          {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1

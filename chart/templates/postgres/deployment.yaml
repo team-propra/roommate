@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roommate-postgres
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roommate-postgres
+  template:
+    metadata:
+      labels:
+        app: roommate-postgres
+    spec:
+      containers:
+        - name: roommate-postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          {{- if .Values.database.existingSecret }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.user }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.existingSecretKeys.password }}
+          {{- else }}
+          envFrom:
+            - secretRef:
+                name: roommate-postgres-secrets
+          {{- end }}
+          volumeMounts:
+            - name: roommate-postgres-data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: roommate-postgres-data
+          persistentVolumeClaim:
+            claimName: roommate-postgres-data

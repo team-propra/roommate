@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roommate-keymaster
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roommate-keymaster
+  template:
+    metadata:
+      labels:
+        app: roommate-keymaster
+    spec:
+      containers:
+        - name: keymaster
+          image: "registry.massivecreationlab.com/roommate/keymaster:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: roommate-keymaster-secrets
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1

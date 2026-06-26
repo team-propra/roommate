@@ -1,0 +1,39 @@
+{
+  "branches": ["develop"],
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    "@semantic-release/github",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./.github/scripts/verify-container.sh roommate",
+        "publishCmd": "./.github/scripts/build-container.sh roommate ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./.github/scripts/verify-container.sh keymaster",
+        "publishCmd": "./.github/scripts/build-container.sh keymaster ${nextRelease.version}"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./.github/scripts/verify-chart.sh",
+        "publishCmd": "./.github/scripts/publish-chart.sh ${nextRelease.version}"
+      }
+    ]
+  ]
+}

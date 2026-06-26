@@ -1,34 +1,90 @@
-# RoomMate by Team-Propra
+# Roommate: Room booking solution
 
-## Getting Started
-In order to run the Spring Boot application locally, you will need to provide a GitHub oauth application token.
+[![codecov](https://codecov.io/github/team-propra/roommate/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/github/team-propra/roommate)
+[![ReleasePipeline](https://github.com/team-propra/roommate/actions/workflows/cd.yml/badge.svg)](https://github.com/team-propra/roommate/actions/workflows/cd.yml)
+[![semantic-release: conventional-commits](https://img.shields.io/badge/semantic--release-conventional--commits-e10079?logo=semantic-release)](https://www.conventionalcommits.org/en/v1.0.0/)
+[![java: 21](https://img.shields.io/badge/compatibility-%E2%89%A5%20java21-c78d18?logo=java)](https://adoptium.net/temurin/releases/?version=21)
+
+## About
+
+Roommate is a room booking software. It was a team project created as part of a module at university.
+
+The project came with a set of challenges:
+- External dependency: Key management software (keymaster.jar), cannot be manipulated
+- Authentication via GitHub OAuth
+- Strict onion architecture
+
+Required features:
+- Use case: Admins manage workspaces and rooms
+- Use case: Users search and book rooms
+
+## Demo
+
+A public demo is hosted [here](https://roommate.massivecreationlab.com). Contact us for admin access.
+
+## Getting Started: Running Roommate
+
+### Setting up OAuth
+In order to run the application, you will need to provide a GitHub oauth application token.
 First go to https://github.com/settings/applications/new and create an oauth application. 
 - `name`: whatever
-- `home-page url`: http://localhost:8080
-- `auth callback url`: http://localhost:8080
+- `home-page url`: http://localhost:8080 (or your domain url when hosted properly)
+- `auth callback url`: http://localhost:8080 (or your domain url when hosted properly)
 
 Now you'll see `ClientID`. You also require a `Client Secret`, so feel free to generate one.
-Afterwards in order to run the application you will need to set the following environment variables: `CLIENT_ID` and `CLIENT_SECRET`
+Store these values for now (e.g. in a password manager).
 
-In case you're using IntelliJ, you may follow these steps:
+### Deployment
+
+#### Using IntelliJ IDEA
+If you are using IntelliJ to start up RoomMate, remember to add required environment variables to your run configuration:
 - Go to RunConfigurations > Edit (top right)
 - Edit the Spring Boot Configuration for this project
 - ModifyOptions > EnvironmentVariables
-- Enter the following string (replacing *** with your values) `CLIENT_ID=***;CLIENT_SECRET=***`
+- Enter environment variables as one string like this: `CLIENT_ID=***;CLIENT_SECRET=***`
 
-Now you will be able to run the application properly with OAuth login :)
+You will need all of these environment variables:
+- `ADMIN_HANDLE=YOUR_GITHUB_HANDLE` (_In case you want to test the application as an admin_)
+- `CLIENT_ID=YOUR_CLIENT_ID` (from OAuth step above)
+- `CLIENT_SECRET=YOUR_CLIENT_SECRET` (from OAuth step above)
+- `DATABASE_URL=localhost` (or custom postgres host)
+- `KEYMASTER_URL=localhost` (or custom keymaster host)
+- `POSTGRES_USER=YOUR_POSTGRES_USER`
+- `POSTGRES_PASSWORD=YOUR_POSTGRES_PASSWORD`
+
+Make sure the postgres variables match your postgres database credentials.
+
+#### Using Docker compose
+Before you can use `docker compose up` you will need to create an .env file according to our [example.env](./example.env) and set it's values accordingly.
+
+#### Using Kubernetes (helm)
+
+Below is a minimal Kubernetes deployment utilizing the helm package manager.
+
+First, you will need to create the `values.yaml` file and specify your secrets:
+
+```yaml
+namespace: roommate
+ingress:
+  host: ""
+database:
+  user: ""
+  password: ""
+roommate:
+  adminHandle: ""
+  clientId: ""
+  clientSecret: ""
+```
+
+Then deploy the application using helm in your cluster:
+
+```shell
+helm install roommate-helm \
+  oci://registry.massivecreationlab.com/roommate \
+  -n roommate \
+  --create-namespace \
+  -f values.yaml
+```
 
 ## Documentation
-For an overview of the project's scope, basic architecture and goals & requirements see our [documentation](./docs/RoomMate_doc.md)
-## Current-branch
-[![Tests](https://github.com/team-propra/main/actions/workflows/gradle.yml/badge.svg)](https://github.com/team-propra/main/actions/workflows/gradle.yml)
-
-## Develop-branch
-[![codecov](https://codecov.io/gh/team-propra/main/branch/develop/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/gh/team-propra/main)
-
-![graph](https://codecov.io/gh/team-propra/main/branch/develop/graphs/icicle.svg?token=K9836C4OVS)
-
-## Master-branch
-[![codecov](https://codecov.io/gh/team-propra/main/branch/master/graph/badge.svg?token=K9836C4OVS)](https://codecov.io/gh/team-propra/main)
-
-![graph](https://codecov.io/gh/team-propra/main/branch/master/graphs/icicle.svg?token=K9836C4OVS)
+For an overview of the project's scope, basic architecture and goals & requirements see our [documentation](./docs/RoomMate_doc.md).

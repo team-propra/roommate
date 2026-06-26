@@ -23,12 +23,16 @@ import java.util.UUID;
 @SuppressFBWarnings(value="EI2", justification="UserDomainService is properly injected")
 public class AuthenticationApplicationService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>, IAuthenticationApplicationService {
     UserDomainService userDomainService;
+    KeyMasterApplicationService keymaster;
 
     @Value("${roommate.admin-handle}")
     String adminHandle;
 
-    public AuthenticationApplicationService(UserDomainService userDomainService) {
+    public AuthenticationApplicationService(
+        UserDomainService userDomainService,
+        KeyMasterApplicationService keyMasterApplicationService) {
         this.userDomainService = userDomainService;
+        this.keymaster = keyMasterApplicationService;
     }
 
     private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
@@ -42,7 +46,9 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
         assert login != null;
         if(login.equals(adminHandle)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            userDomainService.addAdmin(login);
+            if (getUserByLogin(login) == null) {
+                userDomainService.addAdmin(login);
+            }
             return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
         }
 
@@ -65,16 +71,24 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
         return userDomainService.getUserByLogin(login);
     }
 
-    public void registerKey(UUID keyId, String login) {
+    private void registerKey(UUID keyId, String login) {
         userDomainService.registerKey(keyId, login);
     }
 
-    public boolean userHasKey(String login) {
+    public boolean tryEnsureUserKey(String login) {
+        
         if(userDomainService.getUserByLogin(login) == null) {
             userDomainService.addUser(login);
             return false;
         }
         IUser user = userDomainService.getUserByLogin(login);
-        return user.getKeyId() != null;
+
+        UUID key = user.getKeyId();
+        if (key == null || key.equals(new UUID(0L, 0L))) {
+            key = keymaster.createKey(login);
+            registerKey(key, login);
+        }
+
+        return true;
     }
 }

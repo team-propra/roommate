@@ -4,7 +4,7 @@ services:
   roommate:
     build:
       context: .
-      dockerfile: Dockerfile.RoomMate
+      dockerfile: Dockerfile.roommate
     image: team-propra/roommate:v1
     ports:
       - "8080:8080"
@@ -14,12 +14,13 @@ services:
       - "DATABASE_URL=${DATABASE_URL}"
       - "KEYMASTER_URL=${KEYMASTER_URL}"
       - "ADMIN_HANDLE=${ADMIN_HANDLE}"
-  
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
   
   keymaster:
     build:
       context: .
-      dockerfile: Dockerfile.KeyMaster
+      dockerfile: Dockerfile.keymaster
     image: team-propra/keymaster:v1
     ports:
       - "3000:3000"

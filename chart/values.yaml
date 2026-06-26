@@ -1,0 +1,19 @@
+namespace: roommate
+ingress:
+  host: ""
+database:
+  user: ""
+  password: ""
+  existingSecret: ""
+  existingSecretKeys:
+    user: POSTGRES_USER
+    password: POSTGRES_PASSWORD
+roommate:
+  adminHandle: ""
+  clientId: ""
+  clientSecret: ""
+  existingSecret: ""
+  existingSecretKeys:
+    clientId: CLIENT_ID
+    clientSecret: CLIENT_SECRET
+    adminHandle: ADMIN_HANDLE

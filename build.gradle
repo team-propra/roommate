@@ -55,6 +55,7 @@ dependencies {
     //  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.flywaydb:flyway-core'
+    implementation 'org.jsoup:jsoup:1.22.1'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.3'
 
