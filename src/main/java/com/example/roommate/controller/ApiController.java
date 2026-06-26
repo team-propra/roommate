@@ -1,7 +1,6 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.application.services.BookingApplicationService;
-import com.example.roommate.utility.IterableSupport;
 import com.example.roommate.values.forms.KeyMasterForm;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,6 @@ public class ApiController {
 
     @GetMapping("/api/access")
     public List<KeyMasterForm> getKeysAndRooms() {
-
-        return IterableSupport.toList(bookingApplicationService.getAssociatedBookEntries());
-
-
+        return bookingApplicationService.getAssociatedBookEntries();
     }
 }

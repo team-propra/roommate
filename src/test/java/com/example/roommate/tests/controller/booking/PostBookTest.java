@@ -28,6 +28,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -122,7 +125,8 @@ public class PostBookTest {
         //  BookDataForm bookDataForm = new BookDataForm(id.toString(),true);
         //entryService = mock(BookEntryService.class);
         //Mockito.doThrow(new GeneralDomainException()).when(entryService).addBookEntry(bookDataForm);
-        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(Mockito.any(), Mockito.anyString());
+        Mockito.when(entryService.isBookingSelectionValid(any(BookDataForm.class), anyList())).thenReturn(true);
+        Mockito.doThrow(new NotFoundException()).when(entryService).addBookEntry(any(BookDataForm.class), anyList(), anyString());
 
         mvc.perform(post("/rooms")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())

@@ -4,8 +4,8 @@ import com.example.roommate.annotations.AdminOnly;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
-import com.example.roommate.interfaces.entities.IRoom;
-import com.example.roommate.values.domainValues.ItemName;
+import com.example.roommate.values.models.AdminEditModel;
+import com.example.roommate.values.models.RoomOverviewModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @Controller
@@ -33,19 +32,17 @@ public class AdminController {
     @AdminOnly
     @GetMapping("/edit")
     public String adminPage(Model model) {
-        Collection<ItemName> itemList = bookingApplicationService.allItems();
-        Collection<IRoom> roomList = bookingApplicationService.getRooms();
-
-        model.addAttribute("itemList", itemList);
-        model.addAttribute("roomList", roomList);
+        AdminEditModel adminEditModel = bookingApplicationService.getAdminEditModel();
+        model.addAttribute("itemList", adminEditModel.itemList());
+        model.addAttribute("roomList", adminEditModel.roomList());
         return "adminEdit";
     }
 
     @AdminOnly
     @GetMapping("/room/{roomID}")
     public String roomOverview(Model model, @PathVariable UUID roomID) throws NotFoundException {
-        IRoom roomByID = bookingApplicationService.findRoomByID(roomID);
-        model.addAttribute("room", roomByID);
+        RoomOverviewModel room = bookingApplicationService.getRoomOverviewModel(roomID);
+        model.addAttribute("room", room);
         return "roomOverview";
     }
 

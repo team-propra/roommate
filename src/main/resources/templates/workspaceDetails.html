@@ -1,4 +1,4 @@
-<html lang="en" th:object="${room}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="en" th:object="${workspaceDetails}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
@@ -36,7 +36,7 @@
     }
 
 </script>
-  <h1>Details zu Raum: <span th:text="*{roomNumber.number()}">-1</span>, Arbeitsplatz: <span th:text="${workspace.getWorkspaceNumber()}">-1</span></h1>
+  <h1>Details zu Raum: <span th:text="*{roomNumber}">-1</span>, Arbeitsplatz: <span th:text="*{workspaceNumber}">-1</span></h1>
 
   <div th:if="${formValidationErrorText}">
     <div th:text="${formValidationErrorText}">ErrorText</div>
@@ -46,7 +46,7 @@
     <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
         <span th:text="${itemName}"></span>
         <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/removeItem/' + ${itemName}}" method="post">
+            <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/removeItem/' + ${itemName}}" method="post">
                 <input type="hidden" name="tagName" th:value="${itemName}" />
                 <button type="submit">X</button>
             </form>
@@ -58,7 +58,7 @@
     <label>Gegenstände hinzufügen</label>
     <ul>
         <li th:each="item : ${notSelectedItems}">
-            <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/addItem/' + ${item}}" method="post">
+            <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/addItem/' + ${item}}" method="post">
                 <button type="submit">
                     <span th:text="${item}"></span>
                 </button>
@@ -68,7 +68,7 @@
 </div>
 
 <div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/room/' + ${room.getRoomID()} + '/workspace/' + ${workspace.getId()} + '/createItem'}" method="post">
+    <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/createItem'}" method="post">
         <label for="createItem">Neuen Gegenstand hinzufügen:</label>
         <input id="createItem" type="text" name="newItem" required="required"/>
         <input type="submit"/>
@@ -78,8 +78,8 @@
 
 
   <form method="post" th:action="@{/rooms}">
-      <input type="hidden" name="roomId" th:value="*{getRoomID()}"/>
-      <input type="hidden" name="workspaceId" th:value="${workspace.getId()}"/>
+      <input type="hidden" name="roomId" th:value="*{roomID}"/>
+      <input type="hidden" name="workspaceId" th:value="*{workspaceID}"/>
       <input type="hidden" name="stepSize" th:value="${frame.stepSize()}"/>
 
     <table class="table">
