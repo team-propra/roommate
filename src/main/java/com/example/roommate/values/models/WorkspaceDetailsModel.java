@@ -12,4 +12,8 @@ public record WorkspaceDetailsModel(
         List<String> notSelectedItems,
         BookingFrameModel frame
 ) {
+    public WorkspaceDetailsModel {
+        selectedItems = List.copyOf(selectedItems);
+        notSelectedItems = List.copyOf(notSelectedItems);
+    }
 }

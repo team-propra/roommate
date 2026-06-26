@@ -10,4 +10,9 @@ public record RoomSearchModel(
         List<String> selectedItems,
         List<RoomBookingModel> roomBookingModels
 ) {
+    public RoomSearchModel {
+        items = List.copyOf(items);
+        selectedItems = List.copyOf(selectedItems);
+        roomBookingModels = List.copyOf(roomBookingModels);
+    }
 }

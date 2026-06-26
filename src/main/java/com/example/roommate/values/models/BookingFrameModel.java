@@ -10,4 +10,18 @@ public record BookingFrameModel(
         List<String> timeLabels,
         List<List<Boolean>> reserved
 ) {
+    public BookingFrameModel {
+        dayLabels = List.copyOf(dayLabels);
+        timeLabels = List.copyOf(timeLabels);
+        reserved = reserved.stream()
+                .map(List::copyOf)
+                .toList();
+    }
+
+    @Override
+    public List<List<Boolean>> reserved() {
+        return reserved.stream()
+                .map(List::copyOf)
+                .toList();
+    }
 }

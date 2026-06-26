@@ -9,4 +9,8 @@ public record WorkspaceOverviewModel(
         List<String> items,
         List<String> bookedTimeframes
 ) {
+    public WorkspaceOverviewModel {
+        items = List.copyOf(items);
+        bookedTimeframes = List.copyOf(bookedTimeframes);
+    }
 }
