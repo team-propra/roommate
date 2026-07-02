@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Center</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
+</head>
+<body>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker">Administration</p>
+            <h1>Admin Center</h1>
+            <p class="page-subtitle">Admin Overview</p>
+        </div>
+    </header>
+
+    <section><a th:href="@{/admin/users}"> User Overview</a>
+    </section>
+
+</main>
+</body>
+</html>

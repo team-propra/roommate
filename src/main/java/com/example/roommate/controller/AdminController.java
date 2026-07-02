@@ -39,6 +39,34 @@ public class AdminController {
     }
 
     @AdminOnly
+    @GetMapping("/admin")
+    public String newAdminPage(Model model){
+
+        return "adminOverview";
+    }
+
+    @AdminOnly
+    @GetMapping("/admin/users")
+    public String adminUsersPage(Model model){
+
+        return "adminUsersOverview";
+    }
+
+    @AdminOnly
+    @GetMapping("/admin/editUser")
+    public String adminEditUserPage(Model model){
+
+        return "adminEditUser";
+    }
+
+    @AdminOnly
+    @PostMapping("/admin/editUsers")
+    public String adminEditUser(Model model){
+
+        return "adminEditUsers";
+    }
+
+    @AdminOnly
     @GetMapping("/room/{roomID}")
     public String roomOverview(Model model, @PathVariable UUID roomID) throws NotFoundException {
         RoomOverviewModel room = bookingApplicationService.getRoomOverviewModel(roomID);
