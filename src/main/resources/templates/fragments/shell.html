@@ -12,6 +12,7 @@
         <a href="/rooms">Arbeitsplätze</a>
         <a sec:authorize="hasRole('ADMIN')" href="/edit">Admin</a>
         <a sec:authorize="hasRole('ADMIN')" href="/rooms/add">Raum hinzufügen</a>
+        <a sec:authorize="isAnonymous()" href="/oauth2/authorization/github">GitHub Login</a>
     </div>
 </nav>
 </body>

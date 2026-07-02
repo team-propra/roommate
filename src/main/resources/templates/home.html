@@ -14,14 +14,25 @@
     <header class="page-header">
         <div>
             <p class="page-kicker">Workspace Operations</p>
-            <h1>Dashboard</h1>
-            <p class="page-subtitle">Aktuelle Buchungen und schneller Zugriff auf die Arbeitsplatzverwaltung.</p>
+            <h1 th:text="${guest} ? 'Willkommen bei Roommate' : 'Dashboard'">Dashboard</h1>
+            <p class="page-subtitle" th:if="${guest}">Arbeitsplätze ansehen und Verfügbarkeiten prüfen. Zum Buchen bitte mit GitHub anmelden.</p>
+            <p class="page-subtitle" th:unless="${guest}">Aktuelle Buchungen und schneller Zugriff auf die Arbeitsplatzverwaltung.</p>
         </div>
         <div class="actions">
-            <a class="btn" href="/rooms">Arbeitsplatz buchen</a>
             <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/edit">Admin Center</a>
         </div>
     </header>
+
+    <section sec:authorize="isAnonymous()" class="guest-panel">
+        <div>
+            <h2>Gastzugang</h2>
+            <p>Als Gast kannst du Räume und Arbeitsplätze ansehen. Buchungen und Admin-Funktionen benötigen einen verifizierten GitHub-Login.</p>
+        </div>
+        <div class="actions">
+            <a class="btn" href="/rooms">Als Gast fortfahren</a>
+            <a class="btn btn-secondary" href="/oauth2/authorization/github">GitHub OAuth nutzen</a>
+        </div>
+    </section>
 
     <section class="table-panel" th:if="${homeModels}">
         <h2>Buchungen</h2>

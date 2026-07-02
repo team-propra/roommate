@@ -27,6 +27,13 @@ public class HomeController {
 
     @GetMapping()
     public String index(Model model, OAuth2AuthenticationToken auth) {
+        if (auth == null) {
+            List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels();
+            model.addAttribute("homeModels", roomModels);
+            model.addAttribute("guest", true);
+            return "home";
+        }
+
         OAuth2User user = auth.getPrincipal();
         String login = user.getAttribute("login");
 

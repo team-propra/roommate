@@ -30,6 +30,7 @@ import java.util.*;
 @Controller
 @SuppressFBWarnings(value="EI2", justification="BookingApplicationService & AdminApplicationService are properly injected")
 public class RoomController {
+    private static final String GUEST_HANDLE = "__guest__";
 
     private final BookingApplicationService bookingApplicationService;
 
@@ -45,8 +46,11 @@ public class RoomController {
     @GetMapping("/rooms")
     public String changeBookings(@RequestParam(required = false) List<String> gegenstaende, SearchTimeForm timeForm, Model model,
                                  OAuth2AuthenticationToken auth) {
-        OAuth2User user = auth.getPrincipal();
-        String userHandle = user.getAttribute("login");
+        String userHandle = GUEST_HANDLE;
+        if (auth != null) {
+            OAuth2User user = auth.getPrincipal();
+            userHandle = user.getAttribute("login");
+        }
 
         RoomSearchModel searchModel = bookingApplicationService.getRoomSearchModel(gegenstaende, timeForm, userHandle);
         model.addAttribute("date", searchModel.date());
