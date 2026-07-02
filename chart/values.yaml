@@ -2,16 +2,22 @@ namespace: roommate
 ingress:
   host: ""
 database:
+  port: 5432
+  containerPort: 5432
   user: ""
   password: ""
   existingSecret: ""
   existingSecretKeys:
     user: POSTGRES_USER
     password: POSTGRES_PASSWORD
+keymaster:
+  port: 3000
+  containerPort: 3000
 roommate:
   adminHandle: ""
   clientId: ""
   clientSecret: ""
+  oauthRedirectUri: ""
   existingSecret: ""
   existingSecretKeys:
     clientId: CLIENT_ID

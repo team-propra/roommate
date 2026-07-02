@@ -11,7 +11,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class RoomMateApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RoomMateApplication.class, args);
+        SpringApplication application = new SpringApplication(RoomMateApplication.class);
+        application.addInitializers(new LocalInfrastructureInitializer());
+        application.run(args);
     }
 
 }

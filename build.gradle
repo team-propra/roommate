@@ -58,6 +58,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.jsoup:jsoup:1.22.1'
+    implementation 'org.testcontainers:testcontainers:1.21.3'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.3'
 
