@@ -30,7 +30,7 @@ public class Layers {
                     .layer(DOMAIN_ENTITIES).definedBy("com.example.roommate.domain.models.entities..")
                     .layer(DOMAIN_VALUES).definedBy("com.example.roommate.values.domainValues..")
                     .layer(DOMAIN_SERVICES).definedBy("com.example.roommate.domain.services..")
-                    .layer(TESTS).definedBy("com.example.roommate.tests..")
+                    .layer(TESTS).definedBy("com.example.roommate.tests..", "com.example.repositorytests..")
                     .layer(FORMS).definedBy("com.example.roommate.values.forms..")
                     .layer(FACTORIES).definedBy("com.example.roommate.factories..")
                     .layer(EXAMPLES).definedBy("com.example.roommate.examples..")

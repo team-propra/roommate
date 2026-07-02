@@ -10,6 +10,8 @@ import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
 import com.example.roommate.exceptions.domainService.GeneralDomainException;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.repositorytests.repositories.RepositoryBackendsTest;
+import com.example.repositorytests.repositories.RepositoryFixture;
 import com.example.roommate.values.domainValues.IntermediateBookDataForm;
 import com.example.roommate.application.services.BookingApplicationService;
 import org.junit.jupiter.api.DisplayName;
@@ -45,9 +47,9 @@ public class BookingApplicationServiceTest {
 
     }
     @DisplayName("addRoom() yields getRooms() returning a collection of 1 IRoom")
-    @Test
-    void test_4() throws NotFoundException {
-        BookingApplicationService bookingApplicationService = ServiceFactory.createBookingService();
+    @RepositoryBackendsTest
+    void test_4(RepositoryFixture fixture) throws NotFoundException {
+        BookingApplicationService bookingApplicationService = fixture.bookingApplicationService();
         Room room = EntityFactory.createRoom();
 
         bookingApplicationService.addRoom(room);

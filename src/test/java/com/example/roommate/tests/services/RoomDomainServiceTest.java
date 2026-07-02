@@ -3,18 +3,17 @@ package com.example.roommate.tests.services;
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.application.data.RoomApplicationData;
 import com.example.roommate.interfaces.entities.IRoom;
+import com.example.roommate.interfaces.repositories.IItemRepository;
+import com.example.roommate.interfaces.repositories.IRoomRepository;
 import com.example.roommate.persistence.ephemeral.RoomEntry;
 import com.example.roommate.domain.models.entities.Room;
-import com.example.roommate.persistence.ephemeral.ItemRepository;
-import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.domain.services.RoomDomainService;
-import com.example.roommate.factories.ServiceFactory;
 import com.example.roommate.factories.ValuesFactory;
+import com.example.repositorytests.repositories.RepositoryBackendsTest;
+import com.example.repositorytests.repositories.RepositoryFixture;
 import com.example.roommate.values.domainValues.RoomNumber;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +24,27 @@ import static org.assertj.core.api.Assertions.*;
 @TestClass
 class RoomDomainServiceTest {
 
-    RoomRepository roomRepository = new RoomRepository();
-    ItemRepository itemRepository = new ItemRepository();
-    RoomDomainService roomDomainService = ServiceFactory.createRoomService(roomRepository, itemRepository);
-
     UUID roomID = ValuesFactory.roomId;
     UUID differentRoomID = UUID.fromString("6d5bbffd-96eb-4475-9095-5f6ba653f118");
     RoomApplicationData room = new RoomApplicationData(roomID, new RoomNumber("101"));
     RoomApplicationData differentRoom = new RoomApplicationData(differentRoomID, new RoomNumber("102"));
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("executing addRoom with 1 room makes finAll() correctly containing that 1 room")
-    void test_1() {
-
+    void test_1(RepositoryFixture fixture) {
+        RoomDomainService roomDomainService = fixture.roomDomainService();
+        IRoomRepository roomRepository = fixture.rooms();
 
         roomDomainService.addRoom(room);
 
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.roomID());
     }
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("adding 1 room followed by removing that 1 room makes findAll not contain that 1 room")
-    void test_2_1() {
+    void test_2_1(RepositoryFixture fixture) {
+        RoomDomainService roomDomainService = fixture.roomDomainService();
+        IRoomRepository roomRepository = fixture.rooms();
 
         roomDomainService.addRoom(room);
 
@@ -57,10 +55,11 @@ class RoomDomainServiceTest {
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).doesNotContain(roomEntry.getRoomID());
     }
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("executing addRoom with 1 room followed by removing a different room with makes finAll() still correctly contain that 1 room")
-    void test_2_2() {
-
+    void test_2_2(RepositoryFixture fixture) {
+        RoomDomainService roomDomainService = fixture.roomDomainService();
+        IRoomRepository roomRepository = fixture.rooms();
 
         roomDomainService.addRoom(room);
 
@@ -69,25 +68,29 @@ class RoomDomainServiceTest {
         assertThat(roomRepository.findAll().stream().map(IRoom::getRoomID)).contains(room.roomID());
     }
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("getRooms properly contains both rooms added to it via add(room)")
-    void test_3() {
+    void test_3(RepositoryFixture fixture) {
+        IRoomRepository roomRepository = fixture.rooms();
+        IItemRepository itemRepository = fixture.items();
         Room room1 = new Room(roomID, new RoomNumber("103"));
         Room room2 = new Room(differentRoomID, new RoomNumber("104"));
         ArrayList<IRoom> rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
-        RoomRepository roomRepository = new RoomRepository(rooms);
-        RoomDomainService roomDomainService = ServiceFactory.createRoomService(roomRepository, itemRepository);
+        rooms.forEach(roomRepository::add);
+        RoomDomainService roomDomainService = new RoomDomainService(roomRepository, itemRepository);
 
         //one room already exists
         assertThat(roomDomainService.getRooms().size()).isEqualTo(2);
         assertThat(roomDomainService.getRooms()).contains(room1, room2);
     }
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("findRoomByID does not throw any exception if the room is already added AND also returns that room correctly")
-    void test_4_1() throws NotFoundRepositoryException {
+    void test_4_1(RepositoryFixture fixture) throws NotFoundRepositoryException {
+        RoomDomainService roomDomainService = fixture.roomDomainService();
+
         roomDomainService.addRoom(room);
 
         assertThatCode(() -> roomDomainService.findRoomByID(room.roomID()))
@@ -96,9 +99,10 @@ class RoomDomainServiceTest {
         assertThat(new RoomApplicationData(roomByID.getRoomID(), roomByID.getRoomNumber())).isEqualTo(room);
     }
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("after adding room A, findRoomById of a different throws NotFoundRepositoryException as its not there")
-    void test_4_2() {
+    void test_4_2(RepositoryFixture fixture) {
+        RoomDomainService roomDomainService = fixture.roomDomainService();
 
         roomDomainService.addRoom(room);
 
@@ -106,10 +110,11 @@ class RoomDomainServiceTest {
     }
 
 
-    @Test
+    @RepositoryBackendsTest
     @DisplayName("executing addRoom with room A makes findAll() contain room A")
-    void test_5() { //Problem: RoomEnrty.CalenderDay's are Objects, not comparable values like Strings or UUDI's
-
+    void test_5(RepositoryFixture fixture) { //Problem: RoomEnrty.CalenderDay's are Objects, not comparable values like Strings or UUDI's
+        RoomDomainService roomDomainService = fixture.roomDomainService();
+        IRoomRepository roomRepository = fixture.rooms();
 
         Room room = new Room(roomID, new RoomNumber("101"));
         roomDomainService.addRoom(new RoomApplicationData(roomID, room.getRoomNumber()));
@@ -211,4 +216,3 @@ class RoomDomainServiceTest {
         assertThat(roomRepository.findAll()).containsOnlyOnce(new RoomEntry(room.getRoomID(), room.getRoomNumber()));
     }*/
 }
-
