@@ -1,51 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Homepage</title>
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
+    <title>Roommate Dashboard</title>
 </head>
 <body>
-<h1>Homepage</h1>
-<a href="/rooms">Arbeitsplatz buchen</a>
-<div sec:authorize="hasRole('ADMIN')">
-    <a href="/edit">Bearbeiten von Arbeitsplätzen und Items</a>
-</div>
-<h2>Buchungen</h2>
-<div id="links" th:if="${homeModels}">
-    <table class="table" >
-        <thead>
-        <tr>
-            <th>Raum</th>
-            <th>Workspace</th>
-            <th>Austattung</th>
-            <th>Zeitraum</th>
-        </tr>
-        </thead>
-        <tbody th:remove="all-but-first" >
-        <tr th:each="workspace:${homeModels}">
-            <td>
-                <span th:text="${workspace.roomNumber}"> 123 </span>
-            </td>
-            <td>
-                <span th:text="${workspace.workspaceNumber()}"> 123 </span>
-            </td>
-            <td>
-                <div th:text="${item.type()}" th:each="item:${workspace.items()}">
-                    <span > Küche </span>
-                </div>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker">Workspace Operations</p>
+            <h1>Dashboard</h1>
+            <p class="page-subtitle">Aktuelle Buchungen und schneller Zugriff auf die Arbeitsplatzverwaltung.</p>
+        </div>
+        <div class="actions">
+            <a class="btn" href="/rooms">Arbeitsplatz buchen</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/edit">Admin Center</a>
+        </div>
+    </header>
 
-            </td>
-            <td>
-                <!--<pre th:text="${timeframe}" th:each="timeframe:${timeframes}">-->
-                <pre th:text="${workspace.reservedTime}">
-                    <span > Zeitraum </span>
-                </pre>
-
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <section class="table-panel" th:if="${homeModels}">
+        <h2>Buchungen</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Raum</th>
+                    <th>Workspace</th>
+                    <th>Ausstattung</th>
+                    <th>Zeitraum</th>
+                </tr>
+                </thead>
+                <tbody th:remove="all-but-first">
+                <tr th:each="workspace:${homeModels}">
+                    <td>
+                        <span th:text="${workspace.roomNumber}">123</span>
+                    </td>
+                    <td>
+                        <span th:text="${workspace.workspaceNumber()}">123</span>
+                    </td>
+                    <td>
+                        <div th:text="${item.type()}" th:each="item:${workspace.items()}">
+                            <span>Küche</span>
+                        </div>
+                    </td>
+                    <td>
+                        <pre th:text="${workspace.reservedTime}"><span>Zeitraum</span></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="empty-state" th:unless="${homeModels}">
+        Keine Buchungen vorhanden.
+    </section>
+</main>
 </body>
 </html>

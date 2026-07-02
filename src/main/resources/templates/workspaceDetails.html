@@ -1,121 +1,106 @@
+<!DOCTYPE html>
 <html lang="en" th:object="${workspaceDetails}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <title th:text="*{roomNumber}" >-1</title>
-    <style>
-        .tag-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-        }
-
-        .tag {
-            margin-right: 10px;
-        }
-        .custom-checkbox-label {
-            display: inline-block;
-            padding: 12px;
-            cursor: pointer;
-}
-        .box {
-                cursor: pointer;
-            }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/roommate.css}"/>
+    <title th:text="*{roomNumber}">Workspace</title>
 </head>
 <body>
-
+<div th:replace="~{fragments/shell :: navbar}"></div>
 <script>
     function renameActualInputField(actualFieldId) {
         const parent = document.getElementById(actualFieldId);
-        if(parent.value.includes('-X'))
-            parent.value = parent.value.replace('-X', '')
-        else
-            parent.value = parent.value + '-X'
+        if (parent.value.includes('-X')) {
+            parent.value = parent.value.replace('-X', '');
+        } else {
+            parent.value = parent.value + '-X';
+        }
     }
-
 </script>
-  <h1>Details zu Raum: <span th:text="*{roomNumber}">-1</span>, Arbeitsplatz: <span th:text="*{workspaceNumber}">-1</span></h1>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker">Workspace Detail</p>
+            <h1>Raum <span th:text="*{roomNumber}">-1</span> · Arbeitsplatz <span th:text="*{workspaceNumber}">-1</span></h1>
+            <p class="page-subtitle">Ausstattung verwalten und Buchungsfenster auswählen.</p>
+        </div>
+        <a class="btn btn-secondary" href="/rooms">Zur Suche</a>
+    </header>
 
-  <div th:if="${formValidationErrorText}">
-    <div th:text="${formValidationErrorText}">ErrorText</div>
-  </div>
+    <div class="alert-error" th:if="${formValidationErrorText}" th:text="${formValidationErrorText}">ErrorText</div>
 
-<ul class="tag-list">
-    <li th:each="itemName : ${itemStringList}" class="tag" style="display: flex;margin-right: 5px;">
-        <span th:text="${itemName}"></span>
-        <div sec:authorize="hasRole('ADMIN')">
-            <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/removeItem/' + ${itemName}}" method="post">
-                <input type="hidden" name="tagName" th:value="${itemName}" />
-                <button type="submit">X</button>
+    <section class="panel">
+        <h2>Ausstattung</h2>
+        <ul class="tag-list">
+            <li th:each="itemName : ${itemStringList}" class="tag">
+                <span th:text="${itemName}"></span>
+                <div sec:authorize="hasRole('ADMIN')">
+                    <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/removeItem/' + ${itemName}}" method="post">
+                        <input type="hidden" name="tagName" th:value="${itemName}"/>
+                        <button class="icon-danger compact-button" type="submit" aria-label="Entfernen">X</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section sec:authorize="hasRole('ADMIN')" class="admin-grid">
+        <div class="panel">
+            <h2>Gegenstände hinzufügen</h2>
+            <div class="actions">
+                <form th:each="item : ${notSelectedItems}" th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/addItem/' + ${item}}" method="post">
+                    <button class="btn btn-secondary" type="submit">
+                        <span th:text="${item}"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="panel">
+            <h2>Neuer Gegenstand</h2>
+            <form class="toolbar" th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/createItem'}" method="post">
+                <label class="sr-only" for="createItem">Neuen Gegenstand hinzufügen</label>
+                <input id="createItem" type="text" name="newItem" required="required" placeholder="Bezeichnung"/>
+                <input type="submit" value="Anlegen"/>
             </form>
         </div>
-    </li>
-</ul>
+    </section>
 
-<div sec:authorize="hasRole('ADMIN')">
-    <label>Gegenstände hinzufügen</label>
-    <ul>
-        <li th:each="item : ${notSelectedItems}">
-            <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/addItem/' + ${item}}" method="post">
-                <button type="submit">
-                    <span th:text="${item}"></span>
-                </button>
-            </form>
-        </li>
-    </ul>
-</div>
+    <section class="table-panel booking-grid">
+        <form method="post" th:action="@{/rooms}">
+            <input type="hidden" name="roomId" th:value="*{roomID}"/>
+            <input type="hidden" name="workspaceId" th:value="*{workspaceID}"/>
+            <input type="hidden" name="stepSize" th:value="${frame.stepSize()}"/>
 
-<div sec:authorize="hasRole('ADMIN')">
-    <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/createItem'}" method="post">
-        <label for="createItem">Neuen Gegenstand hinzufügen:</label>
-        <input id="createItem" type="text" name="newItem" required="required"/>
-        <input type="submit"/>
-    </form>
-</div>
-
-
-
-  <form method="post" th:action="@{/rooms}">
-      <input type="hidden" name="roomId" th:value="*{roomID}"/>
-      <input type="hidden" name="workspaceId" th:value="*{workspaceID}"/>
-      <input type="hidden" name="stepSize" th:value="${frame.stepSize()}"/>
-
-    <table class="table">
-      <thead class="table-header">
-        <tr>
-            <th>Uhrzeit</th>
-            <th th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
-                <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>
-            </th>
-        </tr>
-      </thead>
-      <tbody>
-<!--          <tr>-->
-<!--              <td></td>-->
-<!--              <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">-->
-<!--                  <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>-->
-<!--              </td>-->
-<!--          </tr>-->
-
-          <tr th:each="time: ${#numbers.sequence(0, (((frame.times())* 60) / frame.stepSize()) - 1,1)}">
-              <td> <span th:text="${frame.timeLabels()[time]}">19:00</span> </td>
-              <td th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
-
-                  <div>
-                      <label>
-                          <input th:id="${time + '-' + day + '-value'}" type="hidden" name="cell" th:value="${time + '-' + day}"/>
-                          <input th:unless="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'"/>
-                          <input th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked" disabled="disabled"/>
-                      </label>
-                  </div>
-              </td>
-          </tr>
-      </tbody>
-    </table>
-
-    <input type="submit"/>
-  </form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Uhrzeit</th>
+                    <th th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
+                        <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="time: ${#numbers.sequence(0, (((frame.times())* 60) / frame.stepSize()) - 1,1)}">
+                    <td><span th:text="${frame.timeLabels()[time]}">19:00</span></td>
+                    <td class="booking-cell" th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}">
+                        <label>
+                            <input th:id="${time + '-' + day + '-value'}" type="hidden" name="cell" th:value="${time + '-' + day}"/>
+                            <input th:unless="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'"/>
+                            <input th:if="${frame.reserved.get(day).get(time)}" th:id="${time + '-' + day}" type="checkbox" name="box" th:onchange="'renameActualInputField(\'' + ${time} + '-' + ${day} + '-value\')'" checked="checked" disabled="disabled"/>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="actions mt-3">
+                <input type="submit" value="Buchung speichern"/>
+            </div>
+        </form>
+    </section>
+</main>
 </body>
 </html>

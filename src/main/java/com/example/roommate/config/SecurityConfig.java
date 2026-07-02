@@ -15,6 +15,7 @@ public class SecurityConfig {
         chainBuilder
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults());
 
