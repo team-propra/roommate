@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="app-nav" th:fragment="navbar">
+    <a class="brand" href="/">
+        <span class="brand-mark">RM</span>
+        <span>Roommate</span>
+    </a>
+    <div class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/rooms">Arbeitsplätze</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/edit">Admin</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/rooms/add">Raum hinzufügen</a>
+    </div>
+</nav>
+</body>
+</html>

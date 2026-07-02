@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>error1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fehler</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
 <body>
-<h1>Unser Error!</h1>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <section class="panel">
+        <p class="page-kicker">Fehler</p>
+        <h1>Unser Error!</h1>
+        <p class="page-subtitle">Es ist ein unerwarteter Fehler aufgetreten.</p>
+        <div class="actions mt-3">
+            <a class="btn" href="/">Dashboard</a>
+            <a class="btn btn-secondary" href="/rooms">Arbeitsplätze</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>

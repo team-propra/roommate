@@ -2,60 +2,68 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Edit Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Center</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="mb-4">Admin Edit Page</h1>
-
-        <div class="col-md-6">
-            <h2>Liste aller Items</h2>
-            <table class="table table-striped">
-                <tbody>
-                <tr th:each="item : ${itemList}">
-                    <td>
-                        <form th:action="@{'/deleteItem/' + ${item.type}}" method="post">
-                        <input type="hidden" name="tagName" th:text="${item.type}" />
-                        <button type="submit">X</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker">Administration</p>
+            <h1>Admin Center</h1>
+            <p class="page-subtitle">Räume, Arbeitsplätze und Ausstattung verwalten.</p>
         </div>
+        <a class="btn" href="/rooms/add">Raum hinzufügen</a>
+    </header>
 
-        <div class="container">
-            <form th:action="@{'/createItem'}" method="post">
-                <label for="createItem">Neuen Gegenstand hinzufügen:</label>
-                <input id="createItem" type="text" name="newItem" required/>
-                <input type="submit">
+    <section class="admin-grid">
+        <div class="table-panel">
+            <h2>Items</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr th:each="item : ${itemList}">
+                        <td th:text="${item.type}"></td>
+                        <td class="text-right">
+                            <form th:action="@{'/deleteItem/' + ${item.type}}" method="post">
+                                <input type="hidden" name="tagName" th:value="${item.type}">
+                                <button class="icon-danger" type="submit">X</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <form class="toolbar mt-3" th:action="@{'/createItem'}" method="post">
+                <label class="sr-only" for="createItem">Neuen Gegenstand hinzufügen</label>
+                <input id="createItem" type="text" name="newItem" required placeholder="Neuer Gegenstand">
+                <input type="submit" value="Anlegen">
             </form>
         </div>
 
-        <div class="col-md-6">
-            <h2>Liste aller Räume</h2>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Raumnummer</th>
-                    <th>Link zum Raum</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="room : ${roomList}">
-                    <td th:text="${room.roomNumber}"></td>
-                    <td><a th:href="@{/room/{roomId}(roomId=${room.roomID})}">Zum Raum</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="table-panel">
+            <h2>Räume</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Raumnummer</th>
+                        <th>Link zum Raum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="room : ${roomList}">
+                        <td th:text="${room.roomNumber}"></td>
+                        <td><a class="btn btn-secondary" th:href="@{/room/{roomId}(roomId=${room.roomID})}">Zum Raum</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-    <div class="container">
-        <a href="/rooms/add">Um Räume hinzuzufügen, bitte hier klicken</a>
-    </div>
-
-</div>
+    </section>
+</main>
 </body>
 </html>

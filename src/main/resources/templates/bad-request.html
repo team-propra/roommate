@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Bad Request!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Request</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
 <body>
-
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <section class="panel">
+        <p class="page-kicker">400</p>
+        <h1>Bad Request</h1>
+        <p class="page-subtitle">Die Anfrage konnte nicht verarbeitet werden.</p>
+        <div class="actions mt-3">
+            <a class="btn" href="/">Dashboard</a>
+            <a class="btn btn-secondary" href="/rooms">Arbeitsplätze</a>
+        </div>
+    </section>
+</main>
 </body>
 </html>
