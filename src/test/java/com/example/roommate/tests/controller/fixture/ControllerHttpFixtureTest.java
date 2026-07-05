@@ -1,4 +1,4 @@
-package com.example.roommate.tests.controller;
+package com.example.roommate.tests.controller.fixture;
 
 import com.example.roommate.annotations.TestClass;
 import com.example.roommate.application.services.AdminApplicationService;

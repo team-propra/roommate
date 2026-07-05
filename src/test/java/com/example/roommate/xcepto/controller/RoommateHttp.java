@@ -42,6 +42,11 @@ public final class RoommateHttp {
                 .withCustomName("Guest opens the Roommate dashboard");
     }
 
+    public SsrStateBuilderIdentity opensWorkspaceSearch() {
+        return browser.get("/rooms")
+                .withCustomName("Guest opens workspace search");
+    }
+
     public SsrStateBuilderIdentity searchesForWorkspaces(String date, String startTime, String endTime, String item) {
         return browser.get("/rooms")
                 .withCustomName("Guest searches available workspaces")
@@ -54,6 +59,16 @@ public final class RoommateHttp {
     public SsrStateBuilderIdentity opensWorkspace(UUID roomId, UUID workspaceId) {
         return browser.get("/room/%s/workspace/%s".formatted(roomId, workspaceId))
                 .withCustomName("Guest opens workspace details");
+    }
+
+    public SsrStateBuilderIdentity opensAddRoomForm() {
+        return browser.get("/rooms/add")
+                .withCustomName("Admin opens the add-room form");
+    }
+
+    public SsrStateBuilderIdentity opensStylesheet() {
+        return browser.get("/css/roommate.css")
+                .withCustomName("Browser requests the Roommate stylesheet");
     }
 
     public SsrStateBuilderIdentity opensKeymasterAccessRegistry() {
@@ -110,6 +125,16 @@ public final class RoommateHttp {
                 .withFormContent(Map.of(
                         "roomId", roomId.toString(),
                         "workspaceId", workspaceId.toString(),
+                        "stepSize", String.valueOf(stepSize),
+                        "cell", selectedCell
+                ));
+    }
+
+    public SsrStateBuilderIdentity submitsBookingSelectionWithoutWorkspace(UUID roomId, int stepSize, String selectedCell) {
+        return browser.post("/rooms")
+                .withCustomName("Verified booker submits an incomplete booking selection")
+                .withFormContent(Map.of(
+                        "roomId", roomId.toString(),
                         "stepSize", String.valueOf(stepSize),
                         "cell", selectedCell
                 ));

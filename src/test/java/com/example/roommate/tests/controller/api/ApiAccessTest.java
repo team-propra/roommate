@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.api;
 
 import com.example.roommate.annotations.ControllerRouteTest;
-import com.example.roommate.tests.controller.ControllerHttpFixtureTest;
+import com.example.roommate.tests.controller.fixture.ControllerHttpFixtureTest;
 import com.example.roommate.values.forms.KeyMasterForm;
 import com.example.roommate.xcepto.controller.RoommateHttp;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @ControllerRouteTest
-class ApiAccessRouteTest extends ControllerHttpFixtureTest {
+public class ApiAccessTest extends ControllerHttpFixtureTest {
     @Test
     void keymasterCanReadTheCurrentWorkspaceAccessRegistry() throws Exception {
         when(bookingApplicationService.getAssociatedBookEntries())

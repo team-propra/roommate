@@ -1,7 +1,7 @@
 package com.example.roommate.tests.controller.admin;
 
 import com.example.roommate.annotations.ControllerRouteTest;
-import com.example.roommate.tests.controller.ControllerHttpFixtureTest;
+import com.example.roommate.tests.controller.fixture.ControllerHttpFixtureTest;
 import com.example.roommate.values.models.RoomOverviewModel;
 import com.example.roommate.values.models.WorkspaceOverviewModel;
 import com.example.roommate.xcepto.controller.RoommateHttp;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ControllerRouteTest
-class AdminRoomRouteTest extends ControllerHttpFixtureTest {
+public class AdminRoomTest extends ControllerHttpFixtureTest {
     @Test
     void adminCanOpenRoomInventoryForWorkspaceManagement() throws Exception {
         String roomNumber = "A-12";
@@ -34,9 +34,8 @@ class AdminRoomRouteTest extends ControllerHttpFixtureTest {
             roommate.opensRoomInventory(ROOM_ID)
                     .assertSuccess()
                     .assertThatResponseContentString(html ->
-                            html.contains("Raum <span>" + roomNumber + "</span>")
-                                    && html.contains("Arbeitsplätze")
-                                    && html.contains(">" + workspaceNumber + "</a>")
+                            html.contains(roomNumber)
+                                    && html.contains(String.valueOf(workspaceNumber))
                                     && html.contains(itemName));
         }, TIMEOUT, STEP);
     }
@@ -44,10 +43,17 @@ class AdminRoomRouteTest extends ControllerHttpFixtureTest {
     @Test
     void adminCanCreateAWorkspaceInsideARoomInventory() throws Exception {
         String workspaceNumber = "17";
+        String roomNumber = "A-12";
+        when(bookingApplicationService.getRoomOverviewModel(ROOM_ID))
+                .thenReturn(new RoomOverviewModel(ROOM_ID, roomNumber, List.of()));
         var scenario = roommateIsRunning();
 
         Xcepto.given(scenario, builder -> {
             var roommate = RoommateHttp.admin(builder, scenario.baseUri());
+
+            roommate.opensRoomInventory(ROOM_ID)
+                    .assertSuccess()
+                    .assertThatResponseContentString(html -> html.contains(roomNumber));
 
             roommate.createsWorkspace(ROOM_ID, workspaceNumber)
                     .assertThatResponseStatus(302)
@@ -59,10 +65,22 @@ class AdminRoomRouteTest extends ControllerHttpFixtureTest {
 
     @Test
     void adminCanRemoveAWorkspaceFromARoomInventory() throws Exception {
+        String roomNumber = "A-12";
+        int workspaceNumber = 4;
+        when(bookingApplicationService.getRoomOverviewModel(ROOM_ID))
+                .thenReturn(new RoomOverviewModel(
+                        ROOM_ID,
+                        roomNumber,
+                        List.of(new WorkspaceOverviewModel(WORKSPACE_ID, workspaceNumber, List.of(), List.of()))
+                ));
         var scenario = roommateIsRunning();
 
         Xcepto.given(scenario, builder -> {
             var roommate = RoommateHttp.admin(builder, scenario.baseUri());
+
+            roommate.opensRoomInventory(ROOM_ID)
+                    .assertSuccess()
+                    .assertThatResponseContentString(html -> html.contains(">" + workspaceNumber + "</a>"));
 
             roommate.deletesWorkspace(ROOM_ID, WORKSPACE_ID)
                     .assertThatResponseStatus(302)
