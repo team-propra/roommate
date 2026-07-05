@@ -69,6 +69,9 @@ dependencies {
     testImplementation 'com.tngtech.archunit:archunit-junit5-engine:1.2.1'
     testImplementation 'org.testcontainers:junit-jupiter:1.21.3'
     testImplementation 'org.testcontainers:postgresql:1.21.3'
+    testImplementation 'org.xcepto:xcepto:3.0.0'
+    testImplementation 'org.xcepto:xcepto-http:3.0.0'
+    testImplementation 'org.xcepto:xcepto-ssr:3.0.0'
 
     runtimeOnly 'org.postgresql:postgresql:42.7.1'
 }
