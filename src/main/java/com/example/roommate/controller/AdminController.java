@@ -39,21 +39,22 @@ public class AdminController {
     }
 
     @AdminOnly
-    @GetMapping("/admin")
+    @GetMapping({"/admin", "/admin/"})
+
     public String newAdminPage(Model model){
 
         return "adminOverview";
     }
 
     @AdminOnly
-    @GetMapping("/admin/users")
+    @GetMapping({"/admin/users", "/admin/users/"} )
     public String adminUsersPage(Model model){
 
         return "adminUsersOverview";
     }
 
     @AdminOnly
-    @GetMapping("/admin/editUser")
+    @GetMapping({"/admin/editUser" ,"/admin/editUser/"})
     public String adminEditUserPage(Model model){
 
         return "adminEditUser";
