@@ -1,9 +1,1 @@
 rootProject.name = 'RoomMate'
-
-includeBuild('../xceptoj') {
-    dependencySubstitution {
-        substitute module('org.xcepto:xcepto') using project(':xceptoj')
-        substitute module('org.xcepto:xcepto-http') using project(':xceptoj.http')
-        substitute module('org.xcepto:xcepto-ssr') using project(':xceptoj.ssr')
-    }
-}
