@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -33,6 +34,10 @@ public class VerifyAccessInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof OAuth2AuthenticationToken) || auth instanceof AnonymousAuthenticationToken) {
+            return true;
+        }
+
         Set<GrantedAuthority> authorities = new HashSet<>();
         if (auth.isAuthenticated()) {
             Collection<? extends GrantedAuthority> authorities1 = auth.getAuthorities();

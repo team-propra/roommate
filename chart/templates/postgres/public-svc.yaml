@@ -8,5 +8,5 @@ spec:
   selector:
     app: roommate-postgres
   ports:
-    - port: 5432
-      targetPort: 5432
+    - port: {{ .Values.database.port }}
+      targetPort: {{ .Values.database.containerPort }}

@@ -2,7 +2,7 @@
 FROM gradle:8.5-jdk21 AS BUILD
 WORKDIR /usr/app/
 COPY . . 
-RUN gradle build
+RUN gradle bootJar
 
 # Build Runtime Image stage
 FROM eclipse-temurin:21-jdk

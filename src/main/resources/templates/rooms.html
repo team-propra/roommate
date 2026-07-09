@@ -17,8 +17,9 @@
             <h1>Arbeitsplatzreservierung</h1>
             <p class="page-subtitle">Arbeitsplätze nach Zeitraum und Ausstattung filtern.</p>
         </div>
-        <div sec:authorize="hasRole('ADMIN')" class="actions">
-            <a class="btn btn-secondary" href="/rooms/add">Räume hinzufügen</a>
+        <div class="actions">
+            <a sec:authorize="isAnonymous()" class="btn btn-secondary" href="/oauth2/authorization/github">Zum Buchen anmelden</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/rooms/add">Räume hinzufügen</a>
         </div>
     </header>
 
@@ -54,7 +55,6 @@
                 <tr>
                     <th>Raum</th>
                     <th>Workspace</th>
-                    <th>Datum/Uhrzeit</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -62,11 +62,8 @@
                 <tr th:each="roomBookingModel : ${roomBookingModels}">
                     <td th:text="${'Raum ' + roomBookingModel.roomNumber}"></td>
                     <td th:text="${'Workspace ' + roomBookingModel.workspaceNumber}"></td>
-                    <td>Uhrzeit</td>
                     <td>
-                        <div sec:authorize="hasAnyRole('ADMIN', 'VERIFIED_USER')">
-                            <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>
-                        </div>
+                        <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>
                     </td>
                 </tr>
                 </tbody>

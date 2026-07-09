@@ -17,9 +17,13 @@ spec:
         - name: roommate-postgres
           image: postgres:15
           ports:
-            - containerPort: 5432
-          {{- if .Values.database.existingSecret }}
+            - containerPort: {{ .Values.database.containerPort }}
           env:
+          {{- if ne (toString .Values.database.containerPort) "5432" }}
+            - name: PGPORT
+              value: {{ .Values.database.containerPort | quote }}
+          {{- end }}
+          {{- if .Values.database.existingSecret }}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -31,9 +35,16 @@ spec:
                   name: {{ .Values.database.existingSecret }}
                   key: {{ .Values.database.existingSecretKeys.password }}
           {{- else }}
-          envFrom:
-            - secretRef:
-                name: roommate-postgres-secrets
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: roommate-postgres-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: roommate-postgres-secrets
+                  key: POSTGRES_PASSWORD
           {{- end }}
           volumeMounts:
             - name: roommate-postgres-data

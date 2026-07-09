@@ -18,7 +18,7 @@ spec:
           image: "registry.massivecreationlab.com/roommate/keymaster:{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: {{ .Values.keymaster.containerPort }}
           envFrom:
             - secretRef:
                 name: roommate-keymaster-secrets

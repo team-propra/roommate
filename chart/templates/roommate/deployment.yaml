@@ -33,6 +33,9 @@ spec:
                   name: {{ .Values.roommate.existingSecret }}
                   key: {{ .Values.roommate.existingSecretKeys.clientSecret }}
 
+            - name: OAUTH2_GITHUB_REDIRECT_URI
+              value: {{ default (printf "https://%s/login/oauth2/code/github" (required "host is required" .Values.ingress.host)) .Values.roommate.oauthRedirectUri | quote }}
+
             - name: ADMIN_HANDLE
               valueFrom:
                 secretKeyRef:
@@ -50,10 +53,18 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.existingSecret }}
                   key: {{ .Values.database.existingSecretKeys.password }}
+            - name: SPRING_DATASOURCE_EXTERNAL
+              value: "true"
+            - name: SPRING_DATASOURCE_URL
+              value: {{ printf "jdbc:postgresql://roommate-postgres:%v/postgres" .Values.database.port | quote }}
             - name: DATABASE_URL
               value: 'roommate-postgres'
+            - name: ROOMMATE_KEY_MASTER_EXTERNAL
+              value: "true"
             - name: KEYMASTER_URL
               value: 'roommate-keymaster'
+            - name: ROOMMATE_KEY_MASTER_PORT
+              value: {{ .Values.keymaster.port | quote }}
           {{- else }}
           envFrom:
             - secretRef:

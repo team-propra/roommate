@@ -37,6 +37,9 @@ public class KeyMasterApplicationService {
     @Value("${roommate.key-master-url}")
     String host;
 
+    @Value("${roommate.key-master-port:3000}")
+    int port;
+
     @Autowired
     public KeyMasterApplicationService(UserDomainService userDomainService, RoomDomainService roomDomainService) {
         this.userDomainService = userDomainService;
@@ -52,7 +55,7 @@ public class KeyMasterApplicationService {
                         uriBuilder -> uriBuilder
                                 .scheme("http")
                                 .host(host)
-                                .port(3000)
+                                .port(port)
                                 .path("/key")
                                 .build()
                 )
@@ -76,7 +79,7 @@ public class KeyMasterApplicationService {
                         uriBuilder -> uriBuilder
                                 .scheme("http")
                                 .host(host)
-                                .port(3000)
+                                .port(port)
                                 .path("/room")
                                 .build()
                 )
@@ -97,7 +100,7 @@ public class KeyMasterApplicationService {
             .uri(uriBuilder -> uriBuilder
                 .scheme("http")
                 .host(host)
-                .port(3000)
+                .port(port)
                 .path("/key/create")
                 .build()
             )
@@ -126,4 +129,3 @@ public class KeyMasterApplicationService {
         return element.text();
     }
 }
-

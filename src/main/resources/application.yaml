@@ -1,4 +1,7 @@
 
+server:
+  forward-headers-strategy: framework
+
 spring:
   main:
     banner-mode: "off"
@@ -7,15 +10,19 @@ spring:
       client:
         registration:
           github:
-            client-id: ${CLIENT_ID}
-            client-secret: ${CLIENT_SECRET}
+            client-id: ${CLIENT_ID:unused-local-client-id}
+            client-secret: ${CLIENT_SECRET:unused-local-client-secret}
+            redirect-uri: "${OAUTH2_GITHUB_REDIRECT_URI:{baseUrl}/login/oauth2/code/{registrationId}}"
             scope: read:public_repo
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_URL}:5432/postgres
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    external: ${SPRING_DATASOURCE_EXTERNAL:${SPRING_DATASOURCE_EXTERAL:false}}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DATABASE_URL:localhost}:5432/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:postgres}}
     driver-class-name: org.postgresql.Driver
 roommate:
-  key-master-url: ${KEYMASTER_URL}
-  admin-handle: ${ADMIN_HANDLE}
+  key-master-external: ${ROOMMATE_KEY_MASTER_EXTERNAL:false}
+  key-master-url: ${ROOMMATE_KEY_MASTER_URL:${KEYMASTER_URL:localhost}}
+  key-master-port: ${ROOMMATE_KEY_MASTER_PORT:3000}
+  admin-handle: ${ADMIN_HANDLE:}
