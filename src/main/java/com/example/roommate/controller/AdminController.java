@@ -40,7 +40,6 @@ public class AdminController {
 
     @AdminOnly
     @GetMapping({"/admin", "/admin/"})
-
     public String newAdminPage(Model model){
 
         return "adminOverview";
@@ -61,10 +60,10 @@ public class AdminController {
     }
 
     @AdminOnly
-    @PostMapping("/admin/editUsers")
+    @PostMapping("/admin/editUser")
     public String adminEditUser(Model model){
 
-        return "adminEditUsers";
+        return "adminEditUser";
     }
 
     @AdminOnly

@@ -1,7 +1,6 @@
 package com.example.roommate.tests.controller.admin;
 
 import com.example.roommate.annotations.ControllerRouteTest;
-import com.example.roommate.annotations.TestClass;
 import com.example.roommate.tests.controller.fixture.ControllerHttpFixtureTest;
 import com.example.roommate.xcepto.controller.RoommateHttpClients;
 import com.example.roommate.xcepto.controller.RunningRoommateScenario;
@@ -13,10 +12,9 @@ import org.xcepto.xceptoj.exceptions.XceptoScenarioResetException;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 import org.xcepto.xceptoj.ssr.SsrXceptoAdapter;
 import org.xcepto.xceptoj.ssr.builders.SsrAdapterBuilder;
-import org.xcepto.xceptoj.ssr.builders.SsrStateBuilderIdentity;
 
 @ControllerRouteTest
-public class AdminOverview extends ControllerHttpFixtureTest {
+public class AdminOverviewTest extends ControllerHttpFixtureTest {
     @Test
     public void adminOverviewIsReachable() throws XceptoAdapterTerminationException, XceptoAdapterInitializationException, XceptoTestFailedException, XceptoScenarioResetException {
         RunningRoommateScenario scenario = roommateIsRunning();
@@ -25,11 +23,16 @@ public class AdminOverview extends ControllerHttpFixtureTest {
                     .withHttpClient(RoommateHttpClients.browserFor("admin", "admin"))
                     .withBaseUrl(scenario.baseUri())
                     .build();
+
             browser.get("/admin")
-                    .withCustomName("reachableCheck")
-                    .assertSuccess();
-            browser.get("/admin")
-                    .withCustomName("html check")
+                    .withCustomName("/admin check")
+                    .assertSuccess()
+                    .assertThatResponseContentString(html ->
+                            html.contains("User Overview"));
+
+            browser.get("/admin/")
+                    .withCustomName("/admin/ check")
+                    .assertSuccess()
                     .assertThatResponseContentString(html ->
                             html.contains("User Overview"));
         });
