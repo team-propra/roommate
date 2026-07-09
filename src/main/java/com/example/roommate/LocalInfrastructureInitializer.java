@@ -18,9 +18,9 @@ public class LocalInfrastructureInitializer implements ApplicationContextInitial
     private static final String POSTGRES_USERNAME = "postgres";
     private static final String POSTGRES_PASSWORD = "postgres";
 
-    private static GenericContainer<?> postgres;
+    private GenericContainer<?> postgres;
 
-    private static GenericContainer<?> keymaster;
+    private GenericContainer<?> keymaster;
 
     private static GenericContainer<?> createPostgres() {
         return new GenericContainer<>(DockerImageName.parse("postgres:15"))
@@ -68,7 +68,7 @@ public class LocalInfrastructureInitializer implements ApplicationContextInitial
             environment.getPropertySources().addFirst(new MapPropertySource("localTestcontainersInfrastructure", localProperties));
             applicationContext.addApplicationListener(event -> {
                 if (event instanceof ContextClosedEvent) {
-                    stopLocalInfrastructure();
+                    this.stopLocalInfrastructure();
                 }
             });
         }
@@ -85,7 +85,7 @@ public class LocalInfrastructureInitializer implements ApplicationContextInitial
         }
     }
 
-    private static void stopLocalInfrastructure() {
+    private void stopLocalInfrastructure() {
         if (keymaster != null && keymaster.isRunning()) {
             keymaster.stop();
         }
@@ -94,7 +94,7 @@ public class LocalInfrastructureInitializer implements ApplicationContextInitial
         }
     }
 
-    private static String postgresJdbcUrl() {
+    private String postgresJdbcUrl() {
         return "jdbc:postgresql://" + postgres.getHost() + ":" + postgres.getMappedPort(5432) + "/" + POSTGRES_DATABASE;
     }
 }

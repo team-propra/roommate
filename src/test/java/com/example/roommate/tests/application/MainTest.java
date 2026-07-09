@@ -11,6 +11,6 @@ public class MainTest {
     @Test
     @DisplayName("Main can be run")
     public void test_1() {
-        RoomMateApplication.main(new String[]{});
+        RoomMateApplication.main(new String[]{"--server.port=0"});
     }
 }
