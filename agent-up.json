@@ -1,0 +1,49 @@
+{
+  "name": "Roommate",
+  "applications": [
+    {
+      "name": "Roommate",
+      "command": "set -a && source .env && set +a && DATABASE_URL=localhost SPRING_DATASOURCE_EXTERNAL=true ROOMMATE_KEY_MASTER_EXTERNAL=true ./gradlew bootRun",
+      "path": "/",
+      "ports": [
+        {
+          "variable": "SERVER_PORT",
+          "defaultPort": 8080,
+          "protocol": "http"
+        }
+      ]
+    },
+    {
+      "name": "Keymaster",
+      "command": "SERVER_PORT=${KEYMASTER_PORT} ROOMMATE_URL=http://localhost:${SERVER_PORT} ROOMMATE_ENDPOINT=/api/access java -jar keymaster.jar",
+      "path": "/",
+      "ports": [
+        {
+          "variable": "KEYMASTER_PORT",
+          "defaultPort": 3000,
+          "protocol": "http"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "Database",
+      "image": "postgres:15",
+      "ports": [
+        {
+          "variable": "POSTGRES_PORT",
+          "defaultPort": 5432,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": {
+        "POSTGRES_USER": "user",
+        "POSTGRES_PASSWORD": "1234"
+      },
+      "volumes": [
+        "roommate-pgdata:/var/lib/postgresql/data"
+      ]
+    }
+  ]
+}
