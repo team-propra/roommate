@@ -46,21 +46,13 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
         assert login != null;
         if(login.equals(adminHandle)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            if (getUserByLogin(login) == null) {
-                userDomainService.addAdmin(login);
-            }
+            userDomainService.addAdmin(login);
             return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
         }
 
-        String userRole;
         IUser userByLogin = getUserByLogin(login);
         if (userByLogin != null) {
-            userRole = userByLogin.getRole();
-            if (userRole.equals("ADMIN")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            } else if (userRole.equals("VERIFIED_USER")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_VERIFIED_USER"));
-            }
+            userByLogin.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
         }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
     }

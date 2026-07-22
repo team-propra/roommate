@@ -3,17 +3,22 @@ package com.example.roommate.domain.models.entities;
 import com.example.roommate.interfaces.entities.IUser;
 
 import java.util.UUID;
+import java.util.Set;
 
 public class User implements IUser {
     private UUID keyId;
     private String handle;
-    private String role;
+    private Set<String> roles;
     private String keyMasterName;
 
     public User(UUID keyId, String handle, String role) {
+        this(keyId, handle, Set.of(role));
+    }
+
+    public User(UUID keyId, String handle, Set<String> roles) {
         this.keyId = keyId;
         this.handle = handle;
-        this.role = role;
+        this.roles = Set.copyOf(roles);
     }
     public User(UUID keyId, String handle, String role, String keyMasterName) {
         this(keyId, handle, role);
@@ -36,8 +41,8 @@ public class User implements IUser {
         this.handle = handle;
     }
 
-    public String getRole() {
-        return role;
+    public Set<String> getRoles() {
+        return roles;
     }
 
     @Override
@@ -45,7 +50,7 @@ public class User implements IUser {
         return keyMasterName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<String> roles) {
+        this.roles = Set.copyOf(roles);
     }
 }

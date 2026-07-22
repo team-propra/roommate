@@ -42,6 +42,10 @@ public class UserDomainService {
     }
 
     public void addAdmin(String adminHandle) {
-        userRepository.addUser(new User(null, adminHandle, "ADMIN"));
+        if (userRepository.getUserByLogin(adminHandle) == null) {
+            userRepository.addUser(new User(null, adminHandle, "ADMIN"));
+        } else {
+            userRepository.addRole(adminHandle, "ADMIN");
+        }
     }
 }

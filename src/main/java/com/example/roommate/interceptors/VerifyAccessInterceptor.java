@@ -54,13 +54,7 @@ public class VerifyAccessInterceptor implements HandlerInterceptor {
         IUser userFromDatabase = userApplicationService.getUserByLogin(login);
 
         if (userFromDatabase != null) {
-            // add whatever authorities you want here
-            String userRole = userFromDatabase.getRole();
-            if (userRole.equals("ADMIN")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            } else if (userRole.equals("VERIFIED_USER")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_VERIFIED_USER"));
-            }
+            userFromDatabase.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
         }
 
         Authentication newAuth = null;

@@ -3,6 +3,7 @@ package com.example.roommate.interfaces.entities;
 import com.example.roommate.annotations.Interface;
 
 import java.util.UUID;
+import java.util.Set;
 
 @Interface
 public interface IUser {
@@ -10,7 +11,7 @@ public interface IUser {
 
     String getHandle();
 
-    String getRole();
+    Set<String> getRoles();
 
     String getKeyMasterName();
 }

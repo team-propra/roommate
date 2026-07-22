@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -22,7 +23,8 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void addUser(IUser user) {
-        userDAO.insert(user.getKeyId(), user.getHandle(), user.getRole());
+        userDAO.insert(user.getKeyId(), user.getHandle());
+        user.getRoles().forEach(role -> userDAO.addRole(user.getHandle(), role));
     }
 
     @Override
@@ -33,24 +35,30 @@ public class UserRepository implements IUserRepository {
     @Override
     public IUser getUserByLogin(String login) {
         UserDTO userDTO = userDAO.findByHandle(login);
-        if(userDTO == null) {
-            return null;
-        }
-        return new UserOOP(userDTO.keyId(), userDTO.handle(), userDTO.role());
+        return userDTO == null ? null : toUser(userDTO);
     }
 
     @Override
     public void verifyUser(UUID key, String keymasterName) {
         userDAO.verifyUser(key, keymasterName);
+        getAllUser().stream()
+                .filter(user -> key.equals(user.getKeyId()))
+                .findFirst()
+                .ifPresent(user -> userDAO.addRole(user.getHandle(), "VERIFIED_USER"));
+    }
+
+    @Override
+    public void addRole(String login, String role) {
+        userDAO.addRole(login, role);
     }
 
     @Override
     public List<? extends IUser> getAllUser() {
-        return IterableSupport.toList(userDAO.findAll()).stream()
-                .map(userDTO -> new UserOOP(userDTO.keyId(), userDTO.handle(), userDTO.role()))
-                .toList();
-                
+        return IterableSupport.toList(userDAO.findAll()).stream().map(this::toUser).toList();
     }
 
-
+    private UserOOP toUser(UserDTO userDTO) {
+        return new UserOOP(userDTO.keyId(), userDTO.handle(),
+                Set.copyOf(userDAO.findRolesByHandle(userDTO.handle())), userDTO.keymasterName());
+    }
 }

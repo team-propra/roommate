@@ -2,9 +2,10 @@ package com.example.roommate.persistence.postgres;
 
 import com.example.roommate.interfaces.entities.IUser;
 
+import java.util.Set;
 import java.util.UUID;
 
-public record UserOOP(UUID id, String handle, String role) implements IUser {
+public record UserOOP(UUID id, String handle, Set<String> roles, String keymasterName) implements IUser {
     @Override
     public UUID getKeyId() {
         return id;
@@ -16,12 +17,12 @@ public record UserOOP(UUID id, String handle, String role) implements IUser {
     }
 
     @Override
-    public String getRole() {
-        return role;
+    public Set<String> getRoles() {
+        return roles;
     }
 
     @Override
     public String getKeyMasterName() {
-        return null;
+        return keymasterName;
     }
 }

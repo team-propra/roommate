@@ -6,5 +6,5 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.util.UUID;
 
 @Table("users")
-public record UserDTO(UUID keyId, @Id String handle, String role){
+public record UserDTO(UUID keyId, @Id String handle, String keymasterName) {
 }

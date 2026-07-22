@@ -1,7 +1,12 @@
 package com.example.roommate.tests.controller.admin;
 
 import com.example.roommate.annotations.ControllerRouteTest;
+import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.tests.controller.fixture.ControllerHttpFixtureTest;
+import com.example.roommate.values.forms.SearchTimeForm;
+import com.example.roommate.values.models.RoomSearchModel;
+import com.example.roommate.values.models.UserModel;
+import com.example.roommate.values.models.UsersModel;
 import com.example.roommate.xcepto.controller.RoommateHttpClients;
 import com.example.roommate.xcepto.controller.RunningRoommateScenario;
 import org.junit.jupiter.api.Test;
@@ -13,10 +18,24 @@ import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 import org.xcepto.xceptoj.ssr.SsrXceptoAdapter;
 import org.xcepto.xceptoj.ssr.builders.SsrAdapterBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
 @ControllerRouteTest
 public class AdminUserOverviewTest extends ControllerHttpFixtureTest {
     @Test
     public void adminUsersIsReachable() throws XceptoAdapterTerminationException, XceptoAdapterInitializationException, XceptoTestFailedException, XceptoScenarioResetException {
+        UserModel user1 = new UserModel("Peter","ROLE_ADMIN");
+        UserModel user2 = new UserModel("Manfred","ROLE_VERIFIED_USER");
+        UserModel user3 = new UserModel("Günther","ROLE_ADMIN");
+        UsersModel users = new UsersModel(List.of(user1,user2,user3));
+        when(adminApplicationService.getUsers())
+                .thenReturn(users);
+
         RunningRoommateScenario scenario = roommateIsRunning();
         String userName = "admin";
         Xcepto.given(scenario, builder -> {
@@ -29,16 +48,13 @@ public class AdminUserOverviewTest extends ControllerHttpFixtureTest {
                     .withCustomName("/admin/users check")
                     .assertSuccess()
                     .assertThatResponseContentString(html ->
-                    {
-                        System.out.println(html);
-                        return html.contains("User: " + "F3lix.Lo3h");
-                    }) ;
+                            html.contains(user1.userName()) && html.contains(user2.userName()));
             
             browser.get("/admin/users/")
                     .withCustomName("/admin/users/ check")
                     .assertSuccess()
                     .assertThatResponseContentString(html ->
-                            html.contains("User: " + "F3lix.Lo3h"));
+                            html.contains(user1.userName()) && html.contains(user2.userName()));
         });
 
     }

@@ -34,7 +34,7 @@ public class AdminApplicationService {
     }
     public UsersModel getUsers(){
         List<? extends IUser> allUser = userDomainService.getAllUser();
-        List<UserModel> list = allUser.stream().map(x -> new UserModel(x.getHandle(), x.getRole())).toList();
+        List<UserModel> list = allUser.stream().map(x -> new UserModel(x.getHandle(), String.join(", ", x.getRoles()))).toList();
         return new UsersModel(list);
     }
 }
