@@ -20,7 +20,49 @@
     </header>
 
     <div>This is the adminUserOverview</div>
-    <div> User: F3lix.Lo3h <a th:href="@{/admin/editUser}">Edit User</a></div>
+
+
+    <section class="table-panel">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="roomBookingModel : ${roomBookingModels}">
+                    <td th:text="${roomBookingModel.name}">
+                        Example: F3lix.Lo3h
+                    </td>
+
+                    <td>
+                        <a th:href="@{/admin/editUser}">
+                            Edit User
+                        </a>
+                    </td>
+                </tr>
+
+
+<!--                <tr th:each="roomBookingModel : ${roomBookingModels}">-->
+<!--                   <p th:unless="${}">-->
+<!--                        <td> Example : F3lix.Lo3h </td>-->
+<!--                        <td>Edit User <a th:href="@{/admin/editUser}"></a></td>-->
+<!--                   </p>-->
+<!--                    <td th:text="${'Name: ' + }"></td>-->
+<!--                    <td>Edit User <a th:href="@{/admin/editUser}"></a></td>-->
+<!--                    <td>-->
+<!--                        <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 </main>
 </body>
 </html>
