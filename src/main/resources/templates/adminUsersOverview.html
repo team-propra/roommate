@@ -28,17 +28,19 @@
                 <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Role</th>
                     <th>Edit</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <tr th:each="roomBookingModel : ${roomBookingModels}">
-                    <td th:text="${roomBookingModel.name}">
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.userName}">
                         Example: F3lix.Lo3h
                     </td>
-
+                    <td th:text="${user.role}">
+                        Example: Role: Admin
+                    </td>
                     <td>
                         <a th:href="@{/admin/editUser}">
                             Edit User

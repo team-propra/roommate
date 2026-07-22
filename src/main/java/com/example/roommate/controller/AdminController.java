@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
+import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
@@ -23,10 +24,12 @@ import java.util.UUID;
 public class AdminController {
 
     private final BookingApplicationService bookingApplicationService;
+    private final AdminApplicationService adminApplicationService;
 
     @Autowired
-    public AdminController(BookingApplicationService bookingApplicationService) {
+    public AdminController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
+        this.adminApplicationService = adminApplicationService;
     }
 
     @AdminOnly
@@ -48,7 +51,7 @@ public class AdminController {
     @AdminOnly
     @GetMapping({"/admin/users", "/admin/users/"} )
     public String adminUsersPage(Model model){
-
+        model.addAttribute("users", adminApplicationService.getUsers().users());
         return "adminUsersOverview";
     }
 
