@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benutzer bearbeiten</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
+</head>
+<body>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker" th:text="|User: ${user.userName}|">User</p>
+            <p class="page-subtitle">Berechtigungen verwalten</p>
+        </div>
+    </header>
+
+    <section>
+        <p>Aktuelle Rollen: <span th:text="${user.joinedRoles}">USER</span></p>
+
+        <p th:if="${user.roles.contains('INJECTED_ADMIN')}" class="page-subtitle">Dieser konfigurierte Admin kann nicht entzogen werden.</p>
+
+        <form th:if="${user.roles.contains('ADMIN') and !user.roles.contains('INJECTED_ADMIN')}"
+              th:action="@{/admin/revokeAdmin/{handle}(handle=${user.userName})}" method="post">
+            <button type="submit" class="btn btn-danger">Admin-Berechtigung entziehen</button>
+        </form>
+
+        <form th:unless="${user.roles.contains('ADMIN')}"
+              th:action="@{/admin/grantAdmin/{handle}(handle=${user.userName})}" method="post">
+            <button type="submit" class="btn btn-primary">Admin-Berechtigung geben</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -4,6 +4,7 @@ import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.interfaces.application.services.IAuthenticationApplicationService;
 import com.example.roommate.interfaces.entities.IUser;
+import jakarta.annotation.PostConstruct;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,13 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
 
+    @PostConstruct
+    void ensureConfiguredAdminCannotBeRevoked() {
+        if (adminHandle != null && !adminHandle.isBlank()) {
+            userDomainService.addAdmin(adminHandle);
+        }
+    }
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User originalUser = Objects.requireNonNull(defaultService.loadUser(userRequest), "OAuth2 user is required");
@@ -47,21 +55,13 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
         String login = requireLogin(originalUser);
         if(login.equals(adminHandle)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            if (getUserByLogin(login) == null) {
-                userDomainService.addAdmin(login);
-            }
+            userDomainService.addAdmin(login);
             return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
         }
 
-        String userRole;
         IUser userByLogin = getUserByLogin(login);
         if (userByLogin != null) {
-            userRole = userByLogin.getRole();
-            if (userRole.equals("ADMIN")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            } else if (userRole.equals("VERIFIED_USER")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_VERIFIED_USER"));
-            }
+            userByLogin.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
         }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
     }
@@ -78,7 +78,7 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     
     public IUser getUserByLogin(String login) {
-        return userDomainService.getUserByLogin(login);
+        return userDomainService.getUserByHandle(login);
     }
 
     private void registerKey(UUID keyId, String login) {
@@ -87,11 +87,11 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     public boolean tryEnsureUserKey(String login) {
         
-        if(userDomainService.getUserByLogin(login) == null) {
+        if(userDomainService.getUserByHandle(login) == null) {
             userDomainService.addUser(login);
             return false;
         }
-        IUser user = userDomainService.getUserByLogin(login);
+        IUser user = userDomainService.getUserByHandle(login);
 
         UUID key = user.getKeyId();
         if (key == null || key.equals(new UUID(0L, 0L))) {

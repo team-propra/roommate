@@ -8,6 +8,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @DomainService
@@ -20,7 +21,7 @@ public class UserDomainService {
         this.userRepository = userRepository;
     }
 
-    public IUser getUserByLogin(String login) {
+    public IUser getUserByHandle(String login) {
         //return new User(null, "Timm", "USER");
        return userRepository.getUserByLogin(login);
     }
@@ -37,11 +38,27 @@ public class UserDomainService {
         userRepository.verifyUser(key, owner);
     }
 
+    public void addRole(String login, String role) {
+        userRepository.addRole(login, role);
+    }
+
+    public void removeRole(String login, String role) {
+        IUser user = userRepository.getUserByLogin(login);
+        if (user == null || !user.getRoles().contains("INJECTED_ADMIN")) {
+            userRepository.removeRole(login, role);
+        }
+    }
+
     public List<? extends IUser> getAllUser() {
         return userRepository.getAllUser();
     }
 
     public void addAdmin(String adminHandle) {
-        userRepository.addUser(new User(null, adminHandle, "ADMIN"));
+        if (userRepository.getUserByLogin(adminHandle) == null) {
+            userRepository.addUser(new User(null, adminHandle, Set.of("ADMIN", "INJECTED_ADMIN")));
+        } else {
+            userRepository.addRole(adminHandle, "ADMIN");
+            userRepository.addRole(adminHandle, "INJECTED_ADMIN");
+        }
     }
 }

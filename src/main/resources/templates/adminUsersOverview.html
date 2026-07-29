@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Center</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/roommate.css}">
+</head>
+<body>
+<div th:replace="~{fragments/shell :: navbar}"></div>
+<main class="page-shell">
+    <header class="page-header">
+        <div>
+            <p class="page-kicker">User Administration</p>
+
+            <p class="page-subtitle">Overview über alle User und deren Berechtigungen</p>
+        </div>
+
+    </header>
+
+    <section class="table-panel">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.userName}">
+                        Example: F3lix.Lo3h
+                    </td>
+                    <td th:text="${user.joinedRoles}">
+                        Example: Role: Admin
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/editUser/{handle}(handle=${user.userName})}">
+                            Edit User
+                        </a>
+                    </td>
+                </tr>
+
+
+<!--                <tr th:each="roomBookingModel : ${roomBookingModels}">-->
+<!--                   <p th:unless="${}">-->
+<!--                        <td> Example : F3lix.Lo3h </td>-->
+<!--                        <td>Edit User <a th:href="@{/admin/editUser}"></a></td>-->
+<!--                   </p>-->
+<!--                    <td th:text="${'Name: ' + }"></td>-->
+<!--                    <td>Edit User <a th:href="@{/admin/editUser}"></a></td>-->
+<!--                    <td>-->
+<!--                        <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

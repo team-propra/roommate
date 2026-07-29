@@ -16,5 +16,9 @@ public interface IUserRepository {
 
     void verifyUser(UUID key, String keymasterName);
 
+    void addRole(String login, String role);
+
+    void removeRole(String login, String role);
+
     List<? extends IUser> getAllUser();
 }

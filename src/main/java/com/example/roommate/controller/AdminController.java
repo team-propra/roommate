@@ -1,11 +1,13 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.annotations.AdminOnly;
+import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.values.models.AdminEditModel;
 import com.example.roommate.values.models.RoomOverviewModel;
+import com.example.roommate.values.models.UserModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +26,12 @@ import java.util.UUID;
 public class AdminController {
 
     private final BookingApplicationService bookingApplicationService;
+    private final AdminApplicationService adminApplicationService;
 
     @Autowired
-    public AdminController(BookingApplicationService bookingApplicationService) {
+    public AdminController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
         this.bookingApplicationService = bookingApplicationService;
+        this.adminApplicationService = adminApplicationService;
     }
 
     @AdminOnly
@@ -37,6 +41,42 @@ public class AdminController {
         model.addAttribute("itemList", adminEditModel.itemList());
         model.addAttribute("roomList", adminEditModel.roomList());
         return "adminEdit";
+    }
+
+    @AdminOnly
+    @GetMapping({"/admin", "/admin/"})
+    public String newAdminPage(Model model){
+
+        return "adminOverview";
+    }
+
+    @AdminOnly
+    @GetMapping({"/admin/users", "/admin/users/"} )
+    public String adminUsersPage(Model model){
+        model.addAttribute("users", adminApplicationService.getUsers().users());
+        return "adminUsersOverview";
+    }
+
+    @AdminOnly
+    @GetMapping({"/admin/editUser/{handle}" ,"/admin/editUser/{handle}/"})
+    public String adminEditUserPage(Model model, @PathVariable String handle){
+        UserModel userByHandle = adminApplicationService.getUserByHandle(handle);
+        model.addAttribute("user", userByHandle);
+        return "adminEditUser";
+    }
+
+    @AdminOnly
+    @PostMapping("/admin/grantAdmin/{handle}")
+    public ModelAndView grantAdmin(@PathVariable String handle) {
+        adminApplicationService.grantAdmin(handle);
+        return new ModelAndView("redirect:/admin/users");
+    }
+
+    @AdminOnly
+    @PostMapping("/admin/revokeAdmin/{handle}")
+    public ModelAndView revokeAdmin(@PathVariable String handle) {
+        adminApplicationService.revokeAdmin(handle);
+        return new ModelAndView("redirect:/admin/users");
     }
 
     @AdminOnly

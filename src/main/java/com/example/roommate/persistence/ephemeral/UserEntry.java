@@ -2,11 +2,16 @@ package com.example.roommate.persistence.ephemeral;
 
 import com.example.roommate.interfaces.entities.IUser;
 
+import java.util.Set;
 import java.util.UUID;
 
-public record UserEntry(UUID id, String handle, String role, String keymasterName) implements IUser {
+public record UserEntry(UUID id, String handle, Set<String> roles, String keymasterName) implements IUser {
+    public UserEntry {
+        roles = Set.copyOf(roles);
+    }
+
     public UserEntry(UUID id, String handle, String role) {
-        this(id,handle,role, "");
+        this(id, handle, Set.of(role), "");
     }
 
     @Override
@@ -20,8 +25,13 @@ public record UserEntry(UUID id, String handle, String role, String keymasterNam
     }
 
     @Override
-    public String getRole() {
-        return role;
+    public Set<String> getRoles() {
+        return Set.copyOf(roles);
+    }
+
+    @Override
+    public Set<String> roles() {
+        return Set.copyOf(roles);
     }
 
     @Override
