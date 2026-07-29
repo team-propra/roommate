@@ -135,6 +135,10 @@ public class BookingApplicationService {
     }
 
     public RoomOverviewModel getRoomOverviewModel(UUID roomID) throws NotFoundException {
+        return getRoomOverviewModel(roomID, Locale.GERMAN);
+    }
+
+    public RoomOverviewModel getRoomOverviewModel(UUID roomID, Locale locale) throws NotFoundException {
         IRoom room = findRoomByID(roomID);
         List<WorkspaceOverviewModel> workspaces = IterableSupport.toList(room.getWorkspaces()).stream()
                 .map(workspace -> new WorkspaceOverviewModel(
@@ -142,7 +146,7 @@ public class BookingApplicationService {
                         workspace.getWorkspaceNumber(),
                         workspace.getItems().stream().map(ItemName::type).toList(),
                         IterableSupport.toList(workspace.getBookedTimeframes()).stream()
-                                .map(BookedTimeframe::toString)
+                                .map(bookedTimeframe -> DayTimeFrame.from(List.of(bookedTimeframe), locale).convertToString(locale))
                                 .toList()
                 ))
                 .toList();
@@ -267,11 +271,15 @@ public class BookingApplicationService {
     }
 
     public WorkspaceDetailsModel getWorkspaceDetailsModel(UUID roomId, UUID workspaceId) throws NotFoundException {
+        return getWorkspaceDetailsModel(roomId, workspaceId, Locale.GERMAN);
+    }
+
+    public WorkspaceDetailsModel getWorkspaceDetailsModel(UUID roomId, UUID workspaceId, Locale locale) throws NotFoundException {
         IRoom room = findRoomByID(roomId);
         IWorkspace workspace = getWorkspace(room, workspaceId);
         List<String> itemsOfWorkspace = getItemsOfWorkspace(workspace);
         List<String> filteredItems = getUnusedItems(itemsOfWorkspace);
-        DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes());
+        DayTimeFrame dayTimeFrame = DayTimeFrame.from(workspace.getBookedTimeframes(), locale);
 
         return new WorkspaceDetailsModel(
                 room.getRoomID(),
@@ -293,18 +301,22 @@ public class BookingApplicationService {
     }
 
     public List<RoomHomeModel> getRoomHomeModels() {
+        return getRoomHomeModels(Locale.GERMAN);
+    }
+
+    public List<RoomHomeModel> getRoomHomeModels(Locale locale) {
         return getRooms().stream()
-                .flatMap(BookingApplicationService::toRoomHomeModel)
+                .flatMap(room -> BookingApplicationService.toRoomHomeModel(room, locale))
                 .toList();
     }
-    private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room) {
+    private static Stream<RoomHomeModel> toRoomHomeModel(IRoom room, Locale locale) {
         List<RoomHomeModel> list = IterableSupport.toList(room.getWorkspaces()).stream()
                 .filter(workspace -> !IterableSupport.toList(workspace.getBookedTimeframes()).isEmpty())
                 .map(workspace -> new RoomHomeModel(room.getRoomID(),
                         workspace.getId(),
                         room.getRoomNumber(),
                         workspace.getWorkspaceNumber(),
-                        DayTimeFrame.from(IterableSupport.toList(workspace.getBookedTimeframes())).convertToString(),
+                        DayTimeFrame.from(IterableSupport.toList(workspace.getBookedTimeframes()), locale).convertToString(locale),
                         workspace.getItems()
                 ))
                 .toList();

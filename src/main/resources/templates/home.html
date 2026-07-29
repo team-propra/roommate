@@ -1,49 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html th:lang="${#locale.language}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
-    <title>Roommate Dashboard</title>
+    <title th:text="#{home.title}">Roommate Dashboard</title>
 </head>
 <body>
 <div th:replace="~{fragments/shell :: navbar}"></div>
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Workspace Operations</p>
-            <h1 th:text="${guest} ? 'Willkommen bei Roommate' : 'Dashboard'">Dashboard</h1>
-            <p class="page-subtitle" th:if="${guest}">Arbeitsplätze ansehen und Verfügbarkeiten prüfen. Zum Buchen bitte mit GitHub anmelden.</p>
-            <p class="page-subtitle" th:unless="${guest}">Aktuelle Buchungen und schneller Zugriff auf die Arbeitsplatzverwaltung.</p>
+            <p class="page-kicker" th:text="#{home.kicker}">Workspace Operations</p>
+            <h1 th:if="${guest}" th:text="#{home.heading.guest}">Willkommen bei Roommate</h1>
+            <h1 th:unless="${guest}" th:text="#{home.heading.user}">Dashboard</h1>
+            <p class="page-subtitle" th:if="${guest}" th:text="#{home.subtitle.guest}">Arbeitsplätze ansehen und Verfügbarkeiten prüfen. Zum Buchen bitte mit GitHub anmelden.</p>
+            <p class="page-subtitle" th:unless="${guest}" th:text="#{home.subtitle.user}">Aktuelle Buchungen und schneller Zugriff auf die Arbeitsplatzverwaltung.</p>
         </div>
         <div class="actions">
-            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/edit">Admin Center</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/edit" th:text="#{home.adminCenter}">Admin Center</a>
         </div>
     </header>
 
     <section sec:authorize="isAnonymous()" class="guest-panel">
         <div>
-            <h2>Gastzugang</h2>
-            <p>Als Gast kannst du Räume und Arbeitsplätze ansehen. Buchungen und Admin-Funktionen benötigen einen verifizierten GitHub-Login.</p>
+            <h2 th:text="#{home.guestAccess}">Gastzugang</h2>
+            <p th:text="#{home.guestText}">Als Gast kannst du Räume und Arbeitsplätze ansehen. Buchungen und Admin-Funktionen benötigen einen verifizierten GitHub-Login.</p>
         </div>
         <div class="actions">
-            <a class="btn" href="/rooms">Als Gast fortfahren</a>
-            <a class="btn btn-secondary" href="/oauth2/authorization/github">GitHub OAuth nutzen</a>
+            <a class="btn" href="/rooms" th:text="#{home.continueAsGuest}">Als Gast fortfahren</a>
+            <a class="btn btn-secondary" href="/oauth2/authorization/github" th:text="#{home.useGithub}">GitHub OAuth nutzen</a>
         </div>
     </section>
 
     <section class="table-panel" th:if="${homeModels}">
-        <h2>Buchungen</h2>
+        <h2 th:text="#{home.bookings}">Buchungen</h2>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Raum</th>
-                    <th>Workspace</th>
-                    <th>Ausstattung</th>
-                    <th>Zeitraum</th>
+                    <th th:text="#{table.room}">Raum</th>
+                    <th th:text="#{table.workspace}">Workspace</th>
+                    <th th:text="#{table.equipment}">Ausstattung</th>
+                    <th th:text="#{table.period}">Zeitraum</th>
                 </tr>
                 </thead>
                 <tbody th:remove="all-but-first">
@@ -67,7 +68,7 @@
             </table>
         </div>
     </section>
-    <section class="empty-state" th:unless="${homeModels}">
+    <section class="empty-state" th:unless="${homeModels}" th:text="#{home.empty}">
         Keine Buchungen vorhanden.
     </section>
 </main>

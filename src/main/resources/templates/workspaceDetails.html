@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${workspaceDetails}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html th:lang="${#locale.language}" th:object="${workspaceDetails}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" th:href="@{/css/roommate.css}"/>
-    <title th:text="*{roomNumber}">Workspace</title>
+    <title th:text="#{workspace.title}">Workspace</title>
 </head>
 <body>
 <div th:replace="~{fragments/shell :: navbar}"></div>
@@ -23,24 +23,24 @@
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Workspace Detail</p>
-            <h1>Raum <span th:text="*{roomNumber}">-1</span> · Arbeitsplatz <span th:text="*{workspaceNumber}">-1</span></h1>
-            <p class="page-subtitle">Ausstattung verwalten und Buchungsfenster auswählen.</p>
+            <p class="page-kicker" th:text="#{workspace.kicker}">Workspace Detail</p>
+            <h1 th:text="#{workspace.heading(${workspaceDetails.roomNumber}, ${workspaceDetails.workspaceNumber})}">Raum</h1>
+            <p class="page-subtitle" th:text="#{workspace.subtitle}">Ausstattung verwalten und Buchungsfenster auswählen.</p>
         </div>
-        <a class="btn btn-secondary" href="/rooms">Zur Suche</a>
+        <a class="btn btn-secondary" href="/rooms" th:text="#{workspace.backToSearch}">Zur Suche</a>
     </header>
 
     <div class="alert-error" th:if="${formValidationErrorText}" th:text="${formValidationErrorText}">ErrorText</div>
 
     <section class="panel">
-        <h2>Ausstattung</h2>
+        <h2 th:text="#{workspace.equipment}">Ausstattung</h2>
         <ul class="tag-list">
             <li th:each="itemName : ${itemStringList}" class="tag">
                 <span th:text="${itemName}"></span>
                 <div sec:authorize="hasRole('ADMIN')">
                     <form th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/removeItem/' + ${itemName}}" method="post">
                         <input type="hidden" name="tagName" th:value="${itemName}"/>
-                        <button class="icon-danger compact-button" type="submit" aria-label="Entfernen">X</button>
+                        <button class="icon-danger compact-button" type="submit" th:aria-label="#{workspace.remove}">X</button>
                     </form>
                 </div>
             </li>
@@ -49,7 +49,7 @@
 
     <section sec:authorize="hasRole('ADMIN')" class="admin-grid">
         <div class="panel">
-            <h2>Gegenstände hinzufügen</h2>
+            <h2 th:text="#{workspace.addEquipment}">Gegenstände hinzufügen</h2>
             <div class="actions">
                 <form th:each="item : ${notSelectedItems}" th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/addItem/' + ${item}}" method="post">
                     <button class="btn btn-secondary" type="submit">
@@ -59,11 +59,11 @@
             </div>
         </div>
         <div class="panel">
-            <h2>Neuer Gegenstand</h2>
+            <h2 th:text="#{workspace.newEquipment}">Neuer Gegenstand</h2>
             <form class="toolbar" th:action="@{'/room/' + ${workspaceDetails.roomID} + '/workspace/' + ${workspaceDetails.workspaceID} + '/createItem'}" method="post">
-                <label class="sr-only" for="createItem">Neuen Gegenstand hinzufügen</label>
-                <input id="createItem" type="text" name="newItem" required="required" placeholder="Bezeichnung"/>
-                <input type="submit" value="Anlegen"/>
+                <label class="sr-only" for="createItem" th:text="#{workspace.newEquipmentLabel}">Neuen Gegenstand hinzufügen</label>
+                <input id="createItem" type="text" name="newItem" required="required" th:placeholder="#{workspace.newEquipmentPlaceholder}"/>
+                <input type="submit" th:value="#{roomOverview.create}"/>
             </form>
         </div>
     </section>
@@ -77,7 +77,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Uhrzeit</th>
+                    <th th:text="#{workspace.time}">Uhrzeit</th>
                     <th th:each="day: ${#numbers.sequence(0, frame.days()-1,1)}" th:remove="all-but-first">
                         <span th:text="${frame.dayLabels()[day]}">Monday Tuesday...</span>
                     </th>
@@ -97,13 +97,15 @@
                 </tbody>
             </table>
             <div class="actions mt-3">
-                <input type="submit" value="Buchung speichern"/>
+                <input type="submit" th:value="#{workspace.saveBooking}"/>
             </div>
         </form>
         <div sec:authorize="isAnonymous()" class="empty-state">
+            <span th:text="#{workspace.guestNotice}">
             Als Gast kannst du diesen Arbeitsplatz ansehen. Melde dich mit GitHub an, um Buchungen zu speichern.
+            </span>
             <div class="actions mt-3">
-                <a class="btn" href="/oauth2/authorization/github">Mit GitHub anmelden</a>
+                <a class="btn" href="/oauth2/authorization/github" th:text="#{workspace.loginWithGithub}">Mit GitHub anmelden</a>
             </div>
         </div>
     </section>

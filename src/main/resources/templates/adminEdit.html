@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Center</title>
+    <title th:text="#{admin.title}">Admin Center</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
@@ -12,16 +12,16 @@
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Administration</p>
-            <h1>Admin Center</h1>
-            <p class="page-subtitle">Räume, Arbeitsplätze und Ausstattung verwalten.</p>
+            <p class="page-kicker" th:text="#{admin.kicker}">Administration</p>
+            <h1 th:text="#{admin.heading}">Admin Center</h1>
+            <p class="page-subtitle" th:text="#{admin.subtitle}">Räume, Arbeitsplätze und Ausstattung verwalten.</p>
         </div>
-        <a class="btn" href="/rooms/add">Raum hinzufügen</a>
+        <a class="btn" href="/rooms/add" th:text="#{admin.addRoom}">Raum hinzufügen</a>
     </header>
 
     <section class="admin-grid">
         <div class="table-panel">
-            <h2>Items</h2>
+            <h2 th:text="#{admin.items}">Items</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <tbody>
@@ -38,26 +38,26 @@
                 </table>
             </div>
             <form class="toolbar mt-3" th:action="@{'/createItem'}" method="post">
-                <label class="sr-only" for="createItem">Neuen Gegenstand hinzufügen</label>
-                <input id="createItem" type="text" name="newItem" required placeholder="Neuer Gegenstand">
-                <input type="submit" value="Anlegen">
+                <label class="sr-only" for="createItem" th:text="#{admin.newEquipmentLabel}">Neuen Gegenstand hinzufügen</label>
+                <input id="createItem" type="text" name="newItem" required th:placeholder="#{admin.newEquipmentPlaceholder}">
+                <input type="submit" th:value="#{admin.create}">
             </form>
         </div>
 
         <div class="table-panel">
-            <h2>Räume</h2>
+            <h2 th:text="#{admin.rooms}">Räume</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Raumnummer</th>
-                        <th>Link zum Raum</th>
+                        <th th:text="#{admin.roomNumber}">Raumnummer</th>
+                        <th th:text="#{admin.roomLink}">Link zum Raum</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="room : ${roomList}">
                         <td th:text="${room.roomNumber}"></td>
-                        <td><a class="btn btn-secondary" th:href="@{/room/{roomId}(roomId=${room.roomID})}">Zum Raum</a></td>
+                        <td><a class="btn btn-secondary" th:href="@{/room/{roomId}(roomId=${room.roomID})}" th:text="#{admin.openRoom}">Zum Raum</a></td>
                     </tr>
                     </tbody>
                 </table>
