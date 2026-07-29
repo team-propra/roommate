@@ -231,7 +231,7 @@ public class BookingApplicationService {
         List<KeyMasterForm> result = new ArrayList<>();
 
         for(IUser user : users) {
-            if(user.getRoles().contains("VERIFIED_USER") || user.getRoles().contains("ADMIN")) {
+            if(user.getRoles().contains("VERIFIED_USER")) {
                 UUID keyId = user.getKeyId();
                 String handle = user.getHandle();
                 for(IRoom room : rooms) {

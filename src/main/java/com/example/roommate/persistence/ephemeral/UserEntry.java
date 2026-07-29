@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public record UserEntry(UUID id, String handle, Set<String> roles, String keymasterName) implements IUser {
+    public UserEntry {
+        roles = Set.copyOf(roles);
+    }
+
     public UserEntry(UUID id, String handle, String role) {
         this(id, handle, Set.of(role), "");
     }
@@ -22,7 +26,12 @@ public record UserEntry(UUID id, String handle, Set<String> roles, String keymas
 
     @Override
     public Set<String> getRoles() {
-        return roles;
+        return Set.copyOf(roles);
+    }
+
+    @Override
+    public Set<String> roles() {
+        return Set.copyOf(roles);
     }
 
     @Override

@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @Profile("!test")
@@ -59,11 +61,23 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public List<? extends IUser> getAllUser() {
-        return IterableSupport.toList(userDAO.findAll()).stream().map(this::toUser).toList();
+        Map<String, Set<String>> rolesByHandle = userDAO.findAllRoles().stream()
+                .collect(Collectors.groupingBy(
+                        UserRoleDTO::userHandle,
+                        Collectors.mapping(UserRoleDTO::role, Collectors.toSet())
+                ));
+
+        return IterableSupport.toList(userDAO.findAll()).stream()
+                .map(user -> toUser(user, rolesByHandle.getOrDefault(user.handle(), Set.of())))
+                .toList();
     }
 
     private UserOOP toUser(UserDTO userDTO) {
         return new UserOOP(userDTO.keyId(), userDTO.handle(),
                 Set.copyOf(userDAO.findRolesByHandle(userDTO.handle())), userDTO.keymasterName());
+    }
+
+    private UserOOP toUser(UserDTO userDTO, Set<String> roles) {
+        return new UserOOP(userDTO.keyId(), userDTO.handle(), Set.copyOf(roles), userDTO.keymasterName());
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IUserDAO extends CrudRepository<UserDTO, String> {
-    @Query("INSERT INTO users (key_id, handle) VALUES (:keyId, :handle)")
+    @Query("INSERT INTO users (key_id, handle) VALUES (:keyId, :handle) ON CONFLICT DO NOTHING")
     @Modifying
     void insert(@Param("keyId") UUID keyId, @Param("handle") String handle);
 
@@ -33,4 +33,7 @@ public interface IUserDAO extends CrudRepository<UserDTO, String> {
 
     @Query("SELECT role FROM user_role WHERE user_handle = :handle")
     List<String> findRolesByHandle(@Param("handle") String handle);
+
+    @Query("SELECT user_handle AS userHandle, role FROM user_role")
+    List<UserRoleDTO> findAllRoles();
 }

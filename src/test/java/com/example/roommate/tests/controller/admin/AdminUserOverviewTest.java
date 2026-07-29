@@ -58,13 +58,13 @@ public class AdminUserOverviewTest extends ControllerHttpFixtureTest {
                     .withRetry(false)
                     .assertSuccess()
                     .assertThatResponseContentString(html ->
-                            html.contains(user1.userName()) && html.contains(user2.userName()));
+                            html.contains(user1.userName()) && html.contains(user2.userName()) && html.contains(user3.userName()));
             
             browser.get("/admin/users/")
                     .withCustomName("/admin/users/ check")
                     .assertSuccess()
                     .assertThatResponseContentString(html ->
-                            html.contains(user1.userName()) && html.contains(user2.userName()));
+                            html.contains(user1.userName()) && html.contains(user2.userName()) && html.contains(user3.userName()));
         });
 
     }

@@ -51,7 +51,7 @@ public class AdminEditUserTest extends ControllerHttpFixtureTest {
             browser.post("/admin/revokeAdmin/" + userName)
                     .withCustomName("Admin revokes another user's admin role")
                     .assertThatResponseStatus(302)
-                    .assertThatResponse(response -> assertRedirectsTo(response, "/admin/editUser/" + userName));
+                    .assertThatResponse(response -> assertRedirectsTo(response, "/admin/users"));
         });
 
         verify(adminApplicationService).revokeAdmin(userName);

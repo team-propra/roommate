@@ -37,8 +37,8 @@ public class VerifyAccessInterceptor extends OncePerRequestFilter {
 
         if (authentication instanceof OAuth2AuthenticationToken token) {
             OAuth2User principal = token.getPrincipal();
-            String login = principal.getAttribute("login");
-            if (login != null) {
+            Object loginAttribute = principal == null ? null : principal.getAttribute("login");
+            if (loginAttribute instanceof String login) {
                 Set<GrantedAuthority> authorities = authentication.getAuthorities().stream()
                         .filter(authority -> !DATABASE_MANAGED_AUTHORITIES.contains(authority.getAuthority()))
                         .collect(Collectors.toSet());

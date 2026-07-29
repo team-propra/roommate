@@ -58,7 +58,7 @@ public class AdminController {
     }
 
     @AdminOnly
-    @GetMapping({"/admin/editUser/{handle}" ,"/admin/editUser/{handle}"})
+    @GetMapping({"/admin/editUser/{handle}" ,"/admin/editUser/{handle}/"})
     public String adminEditUserPage(Model model, @PathVariable String handle){
         UserModel userByHandle = adminApplicationService.getUserByHandle(handle);
         model.addAttribute("user", userByHandle);
@@ -69,14 +69,14 @@ public class AdminController {
     @PostMapping("/admin/grantAdmin/{handle}")
     public ModelAndView grantAdmin(@PathVariable String handle) {
         adminApplicationService.grantAdmin(handle);
-        return new ModelAndView("redirect:/admin/editUser/" + handle);
+        return new ModelAndView("redirect:/admin/users");
     }
 
     @AdminOnly
     @PostMapping("/admin/revokeAdmin/{handle}")
     public ModelAndView revokeAdmin(@PathVariable String handle) {
         adminApplicationService.revokeAdmin(handle);
-        return new ModelAndView("redirect:/admin/editUser/" + handle);
+        return new ModelAndView("redirect:/admin/users");
     }
 
     @AdminOnly

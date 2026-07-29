@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public record UserOOP(UUID id, String handle, Set<String> roles, String keymasterName) implements IUser {
+    public UserOOP {
+        roles = Set.copyOf(roles);
+    }
+
     @Override
     public UUID getKeyId() {
         return id;
@@ -18,7 +22,12 @@ public record UserOOP(UUID id, String handle, Set<String> roles, String keymaste
 
     @Override
     public Set<String> getRoles() {
-        return roles;
+        return Set.copyOf(roles);
+    }
+
+    @Override
+    public Set<String> roles() {
+        return Set.copyOf(roles);
     }
 
     @Override
