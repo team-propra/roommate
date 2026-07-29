@@ -13,11 +13,6 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalModelControllerAdvice {
 
-    @ModelAttribute("currentPath")
-    public String currentPath(HttpServletRequest request) {
-        return request.getRequestURI();
-    }
-
     @ModelAttribute("languageUrlDe")
     public String languageUrlDe(HttpServletRequest request) {
         return languageUrl(request, "de");
