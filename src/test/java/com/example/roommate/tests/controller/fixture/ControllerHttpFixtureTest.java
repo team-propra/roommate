@@ -5,10 +5,12 @@ import com.example.roommate.application.services.AdminApplicationService;
 import com.example.roommate.application.services.AuthenticationApplicationService;
 import com.example.roommate.application.services.BookingApplicationService;
 import com.example.roommate.application.services.KeyMasterApplicationService;
+import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.values.models.BookingFrameModel;
 import com.example.roommate.values.models.WorkspaceDetailsModel;
 import com.example.roommate.xcepto.controller.RunningRoommateScenario;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.xcepto.xceptoj.TimeoutConfig;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
@@ -17,6 +19,8 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+
+import static org.mockito.Mockito.when;
 
 @TestClass
 public abstract class ControllerHttpFixtureTest {
@@ -41,6 +45,14 @@ public abstract class ControllerHttpFixtureTest {
 
     @MockBean
     protected KeyMasterApplicationService keyMasterApplicationService;
+
+    @BeforeEach
+    void loadRolesForHttpTestUsers() {
+        when(authenticationApplicationService.getUserByLogin("admin"))
+                .thenReturn(new User(UUID.randomUUID(), "admin", "ADMIN"));
+        when(authenticationApplicationService.getUserByLogin("verified"))
+                .thenReturn(new User(UUID.randomUUID(), "verified", "VERIFIED_USER"));
+    }
 
     protected RunningRoommateScenario roommateIsRunning() {
         return new RunningRoommateScenario(port);
