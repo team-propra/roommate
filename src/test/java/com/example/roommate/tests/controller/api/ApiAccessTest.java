@@ -20,7 +20,7 @@ public class ApiAccessTest extends ControllerHttpFixtureTest {
         var scenario = roommateIsRunning();
 
         Xcepto.given(scenario, builder -> {
-            var roommate = RoommateHttp.admin(builder, scenario.baseUri());
+            var roommate = RoommateHttp.anonymousGuest(builder, scenario.baseUri());
 
             roommate.opensKeymasterAccessRegistry()
                     .assertSuccess()

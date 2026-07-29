@@ -16,6 +16,7 @@ public class SecurityConfig {
         chainBuilder
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers(HttpMethod.GET, "/", "/rooms", "/room/*/workspace/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/access").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
