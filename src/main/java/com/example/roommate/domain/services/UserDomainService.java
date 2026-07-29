@@ -8,6 +8,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @DomainService
@@ -42,7 +43,10 @@ public class UserDomainService {
     }
 
     public void removeRole(String login, String role) {
-        userRepository.removeRole(login, role);
+        IUser user = userRepository.getUserByLogin(login);
+        if (user == null || !user.getRoles().contains("INJECTED_ADMIN")) {
+            userRepository.removeRole(login, role);
+        }
     }
 
     public List<? extends IUser> getAllUser() {
@@ -51,9 +55,10 @@ public class UserDomainService {
 
     public void addAdmin(String adminHandle) {
         if (userRepository.getUserByLogin(adminHandle) == null) {
-            userRepository.addUser(new User(null, adminHandle, "ADMIN"));
+            userRepository.addUser(new User(null, adminHandle, Set.of("ADMIN", "INJECTED_ADMIN")));
         } else {
             userRepository.addRole(adminHandle, "ADMIN");
+            userRepository.addRole(adminHandle, "INJECTED_ADMIN");
         }
     }
 }

@@ -4,6 +4,7 @@ import com.example.roommate.annotations.ApplicationService;
 import com.example.roommate.domain.services.UserDomainService;
 import com.example.roommate.interfaces.application.services.IAuthenticationApplicationService;
 import com.example.roommate.interfaces.entities.IUser;
+import jakarta.annotation.PostConstruct;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,13 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
     }
 
     private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
+
+    @PostConstruct
+    void ensureConfiguredAdminCannotBeRevoked() {
+        if (adminHandle != null && !adminHandle.isBlank()) {
+            userDomainService.addAdmin(adminHandle);
+        }
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

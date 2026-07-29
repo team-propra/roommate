@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Interceptor
 public class VerifyAccessInterceptor extends OncePerRequestFilter {
     private static final Set<String> DATABASE_MANAGED_AUTHORITIES = Set.of(
-            "ROLE_USER", "ROLE_VERIFIED_USER", "ROLE_ADMIN");
+            "ROLE_USER", "ROLE_VERIFIED_USER", "ROLE_ADMIN", "ROLE_INJECTED_ADMIN");
 
     private final IAuthenticationApplicationService authenticationApplicationService;
 

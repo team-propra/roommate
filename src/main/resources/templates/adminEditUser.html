@@ -20,7 +20,9 @@
     <section>
         <p>Aktuelle Rollen: <span th:text="${user.joinedRoles}">USER</span></p>
 
-        <form th:if="${user.roles.contains('ADMIN')}"
+        <p th:if="${user.roles.contains('INJECTED_ADMIN')}" class="page-subtitle">Dieser konfigurierte Admin kann nicht entzogen werden.</p>
+
+        <form th:if="${user.roles.contains('ADMIN') and !user.roles.contains('INJECTED_ADMIN')}"
               th:action="@{/admin/revokeAdmin/{handle}(handle=${user.userName})}" method="post">
             <button type="submit" class="btn btn-danger">Admin-Berechtigung entziehen</button>
         </form>
