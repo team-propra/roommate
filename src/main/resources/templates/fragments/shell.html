@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html th:lang="${#locale.language}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <nav class="app-nav" th:fragment="navbar">
@@ -8,11 +8,13 @@
         <span>Roommate</span>
     </a>
     <div class="nav-links">
-        <a href="/">Dashboard</a>
-        <a href="/rooms">Arbeitsplätze</a>
-        <a sec:authorize="hasRole('ADMIN')" href="/edit">Admin</a>
-        <a sec:authorize="hasRole('ADMIN')" href="/rooms/add">Raum hinzufügen</a>
-        <a sec:authorize="isAnonymous()" href="/oauth2/authorization/github">GitHub Login</a>
+        <a href="/" th:text="#{nav.dashboard}">Dashboard</a>
+        <a href="/rooms" th:text="#{nav.workspaces}">Arbeitsplätze</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/edit" th:text="#{nav.admin}">Admin</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/rooms/add" th:text="#{nav.addRoom}">Raum hinzufügen</a>
+        <a sec:authorize="isAnonymous()" href="/oauth2/authorization/github" th:text="#{nav.login}">GitHub Login</a>
+        <a th:href="@{${currentPath}(lang='de')}" th:aria-label="#{nav.languageGerman}">DE</a>
+        <a th:href="@{${currentPath}(lang='en')}" th:aria-label="#{nav.languageEnglish}">EN</a>
     </div>
 </nav>
 </body>

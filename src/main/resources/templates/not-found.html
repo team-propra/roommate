@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicht gefunden</title>
+    <title th:text="#{error.notFound.title}">Nicht gefunden</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
@@ -12,11 +12,11 @@
 <main class="page-shell">
     <section class="panel">
         <p class="page-kicker">404</p>
-        <h1>Nicht gefunden</h1>
-        <p class="page-subtitle">Die angeforderte Ressource konnte nicht gefunden werden.</p>
+        <h1 th:text="#{error.notFound.heading}">Nicht gefunden</h1>
+        <p class="page-subtitle" th:text="#{error.notFound.subtitle}">Die angeforderte Ressource konnte nicht gefunden werden.</p>
         <div class="actions mt-3">
-            <a class="btn" href="/">Dashboard</a>
-            <a class="btn btn-secondary" href="/rooms">Arbeitsplätze</a>
+            <a class="btn" href="/" th:text="#{nav.dashboard}">Dashboard</a>
+            <a class="btn btn-secondary" href="/rooms" th:text="#{nav.workspaces}">Arbeitsplätze</a>
         </div>
     </section>
 </main>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html th:lang="${#locale.language}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raumreservierung</title>
+    <title th:text="#{rooms.title}">Raumreservierung</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
@@ -13,13 +13,13 @@
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Booking Console</p>
-            <h1>Arbeitsplatzreservierung</h1>
-            <p class="page-subtitle">Arbeitsplätze nach Zeitraum und Ausstattung filtern.</p>
+            <p class="page-kicker" th:text="#{rooms.kicker}">Booking Console</p>
+            <h1 th:text="#{rooms.heading}">Arbeitsplatzreservierung</h1>
+            <p class="page-subtitle" th:text="#{rooms.subtitle}">Arbeitsplätze nach Zeitraum und Ausstattung filtern.</p>
         </div>
         <div class="actions">
-            <a sec:authorize="isAnonymous()" class="btn btn-secondary" href="/oauth2/authorization/github">Zum Buchen anmelden</a>
-            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/rooms/add">Räume hinzufügen</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-secondary" href="/oauth2/authorization/github" th:text="#{rooms.loginToBook}">Zum Buchen anmelden</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" href="/rooms/add" th:text="#{rooms.addRooms}">Räume hinzufügen</a>
         </div>
     </header>
 
@@ -27,24 +27,24 @@
         <form method="GET">
             <div class="filter-grid">
                 <div class="form-group">
-                    <label for="datum">Datum</label>
+                    <label for="datum" th:text="#{rooms.date}">Datum</label>
                     <input type="date" id="datum" name="datum" class="form-control" required th:value="${date}">
                 </div>
                 <div class="form-group">
-                    <label>Uhrzeit</label>
+                    <label th:text="#{rooms.time}">Uhrzeit</label>
                     <div class="time-fields">
-                        <input type="time" id="startUhrzeit" name="startUhrzeit" class="form-control" required th:value="${startTime}" aria-label="Von">
-                        <input type="time" id="endUhrzeit" name="endUhrzeit" class="form-control" required th:value="${endTime}" aria-label="Bis">
+                        <input type="time" id="startUhrzeit" name="startUhrzeit" class="form-control" required th:value="${startTime}" th:aria-label="#{rooms.from}">
+                        <input type="time" id="endUhrzeit" name="endUhrzeit" class="form-control" required th:value="${endTime}" th:aria-label="#{rooms.to}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="gegenstaende">Gegenstände im Raum</label>
+                    <label for="gegenstaende" th:text="#{rooms.equipmentInRoom}">Gegenstände im Raum</label>
                     <select multiple id="gegenstaende" name="gegenstaende" class="form-control">
                         <option th:each="item : ${items}" th:value="${item.type}" th:text="${item.type}" th:selected="${gegenstaende != null and gegenstaende.contains(item.type)}"></option>
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn">Passenden Raum suchen</button>
+            <button type="submit" class="btn" th:text="#{rooms.search}">Passenden Raum suchen</button>
         </form>
     </section>
 
@@ -53,17 +53,17 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Raum</th>
-                    <th>Workspace</th>
+                    <th th:text="#{table.room}">Raum</th>
+                    <th th:text="#{table.workspace}">Workspace</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="roomBookingModel : ${roomBookingModels}">
-                    <td th:text="${'Raum ' + roomBookingModel.roomNumber}"></td>
-                    <td th:text="${'Workspace ' + roomBookingModel.workspaceNumber}"></td>
+                    <td th:text="#{table.roomWithNumber(${roomBookingModel.roomNumber})}"></td>
+                    <td th:text="#{table.workspaceWithNumber(${roomBookingModel.workspaceNumber})}"></td>
                     <td>
-                        <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}">Workspace ansehen</a>
+                        <a class="btn btn-secondary" th:href="@{/room/{roomId}/workspace/{workspaceId}(roomId=${roomBookingModel.roomID},workspaceId=${roomBookingModel.workspaceID})}" th:text="#{rooms.viewWorkspace}">Workspace ansehen</a>
                     </td>
                 </tr>
                 </tbody>

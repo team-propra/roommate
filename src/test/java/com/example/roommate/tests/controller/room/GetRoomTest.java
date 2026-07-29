@@ -7,6 +7,10 @@ import com.example.roommate.xcepto.controller.RoommateHttp;
 import org.junit.jupiter.api.Test;
 import org.xcepto.xceptoj.Xcepto;
 
+import java.util.Locale;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ControllerRouteTest
@@ -17,7 +21,7 @@ public class GetRoomTest extends ControllerHttpFixtureTest {
         int workspaceNumber = 4;
         String selectedEquipment = "Monitor";
         String availableEquipment = "Dock";
-        when(bookingApplicationService.getWorkspaceDetailsModel(ROOM_ID, WORKSPACE_ID))
+        when(bookingApplicationService.getWorkspaceDetailsModel(eq(ROOM_ID), eq(WORKSPACE_ID), any(Locale.class)))
                 .thenReturn(workspaceDetails(roomNumber, workspaceNumber, selectedEquipment, availableEquipment));
         var scenario = roommateIsRunning();
 
@@ -35,7 +39,7 @@ public class GetRoomTest extends ControllerHttpFixtureTest {
 
     @Test
     void missingWorkspaceIsReportedAsANotFoundBookingResource() throws Exception {
-        when(bookingApplicationService.getWorkspaceDetailsModel(ROOM_ID, WORKSPACE_ID))
+        when(bookingApplicationService.getWorkspaceDetailsModel(eq(ROOM_ID), eq(WORKSPACE_ID), any(Locale.class)))
                 .thenThrow(new NotFoundException());
         var scenario = roommateIsRunning();
 

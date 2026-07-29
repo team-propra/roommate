@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raum hinzufügen</title>
+    <title th:text="#{addRooms.title}">Raum hinzufügen</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
@@ -12,20 +12,20 @@
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Room Provisioning</p>
-            <h1>Raum hinzufügen</h1>
-            <p class="page-subtitle">Neuen Raum für die Arbeitsplatzbuchung registrieren.</p>
+            <p class="page-kicker" th:text="#{addRooms.kicker}">Room Provisioning</p>
+            <h1 th:text="#{addRooms.heading}">Raum hinzufügen</h1>
+            <p class="page-subtitle" th:text="#{addRooms.subtitle}">Neuen Raum für die Arbeitsplatzbuchung registrieren.</p>
         </div>
-        <a class="btn btn-secondary" href="/rooms">Zur Raumbuchungsübersicht</a>
+        <a class="btn btn-secondary" href="/rooms" th:text="#{addRooms.backToRooms}">Zur Raumbuchungsübersicht</a>
     </header>
 
     <section class="form-panel">
         <form method="post" th:action="@{/rooms/add}">
             <div class="form-group">
-                <label for="roomNumber">Raumnummer</label>
+                <label for="roomNumber" th:text="#{addRooms.roomNumber}">Raumnummer</label>
                 <input name="roomNumber" id="roomNumber" type="text" required>
             </div>
-            <input type="submit" value="Raum anlegen">
+            <input type="submit" th:value="#{addRooms.create}">
         </form>
     </section>
 </main>

@@ -15,6 +15,7 @@ import com.example.roommate.values.models.WorkspaceDetailsModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -35,11 +36,13 @@ public class RoomController {
     private final BookingApplicationService bookingApplicationService;
 
     private final AdminApplicationService adminApplicationService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService) {
+    public RoomController(BookingApplicationService bookingApplicationService, AdminApplicationService adminApplicationService, MessageSource messageSource) {
         this.bookingApplicationService = bookingApplicationService;
         this.adminApplicationService = adminApplicationService;
+        this.messageSource = messageSource;
     }
 
 
@@ -76,9 +79,9 @@ public class RoomController {
     }
 
     @GetMapping("/room/{roomId}/workspace/{workspaceId}")
-    public ModelAndView roomDetails(Model model, @PathVariable UUID roomId, @PathVariable UUID workspaceId) {
+    public ModelAndView roomDetails(Model model, @PathVariable UUID roomId, @PathVariable UUID workspaceId, Locale locale) {
         try {
-            WorkspaceDetailsModel workspaceDetails = bookingApplicationService.getWorkspaceDetailsModel(roomId, workspaceId);
+            WorkspaceDetailsModel workspaceDetails = bookingApplicationService.getWorkspaceDetailsModel(roomId, workspaceId, locale);
             model.addAttribute("workspaceDetails", workspaceDetails);
             model.addAttribute("frame", workspaceDetails.frame());
             model.addAttribute("itemStringList", workspaceDetails.selectedItems());
@@ -103,6 +106,7 @@ public class RoomController {
             , @RequestParam(value = "cell", defaultValue = "false") List<String> checkedDays
 //             ,@RequestParam(value="box", defaultValue = "false")List<String> boxes
             , OAuth2AuthenticationToken auth
+            , Locale locale
     ) throws ArgumentValidationException {
         
         if(bindingResult.hasErrors()) {
@@ -114,7 +118,7 @@ public class RoomController {
         if (!bookingApplicationService.isBookingSelectionValid(form, checkedDays)) {
             UUID roomId = form.roomId();
             UUID workspaceId = form.workspaceId();
-            String errorMessage = "No Room selected. Please select a room to book or return home";
+            String errorMessage = messageSource.getMessage("workspace.noSelection", null, locale);
             redirectAttributes.addFlashAttribute("formValidationErrorText", errorMessage);
             return new ModelAndView("redirect:/room/%s/workspace/%s".formatted(roomId,workspaceId));
         }

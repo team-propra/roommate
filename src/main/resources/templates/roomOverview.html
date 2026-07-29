@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" th:object="${room}" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" th:object="${room}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raum Übersicht</title>
+    <title th:text="#{roomOverview.title}">Raum Übersicht</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/roommate.css}">
 </head>
@@ -12,22 +12,22 @@
 <main class="page-shell">
     <header class="page-header">
         <div>
-            <p class="page-kicker">Room Inventory</p>
-            <h1>Raum <span th:text="*{roomNumber}"></span></h1>
-            <p class="page-subtitle">Arbeitsplätze und gebuchte Zeitfenster für diesen Raum.</p>
+            <p class="page-kicker" th:text="#{roomOverview.kicker}">Room Inventory</p>
+            <h1 th:text="#{roomOverview.heading(${room.roomNumber})}">Raum</h1>
+            <p class="page-subtitle" th:text="#{roomOverview.subtitle}">Arbeitsplätze und gebuchte Zeitfenster für diesen Raum.</p>
         </div>
-        <a class="btn btn-secondary" href="/edit">Zurück zum Admin Center</a>
+        <a class="btn btn-secondary" href="/edit" th:text="#{roomOverview.backToAdmin}">Zurück zum Admin Center</a>
     </header>
 
     <section class="table-panel">
-        <h2>Arbeitsplätze</h2>
+        <h2 th:text="#{roomOverview.workspaces}">Arbeitsplätze</h2>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Workspace</th>
-                    <th>Ausstattung</th>
-                    <th>Buchungen</th>
+                    <th th:text="#{table.workspace}">Workspace</th>
+                    <th th:text="#{table.equipment}">Ausstattung</th>
+                    <th th:text="#{roomOverview.bookings}">Buchungen</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -49,12 +49,12 @@
     </section>
 
     <section class="form-panel">
-        <h2>Neuen Arbeitsplatz hinzufügen</h2>
+        <h2 th:text="#{roomOverview.addWorkspace}">Neuen Arbeitsplatz hinzufügen</h2>
         <form class="toolbar" th:action="@{'/createWorkspace'}" method="post">
-            <label class="sr-only" for="createWorkspace">Neuen Arbeitsplatz hinzufügen</label>
-            <input id="createWorkspace" type="text" name="newWorkspace" required placeholder="Arbeitsplatznummer">
+            <label class="sr-only" for="createWorkspace" th:text="#{roomOverview.addWorkspace}">Neuen Arbeitsplatz hinzufügen</label>
+            <input id="createWorkspace" type="text" name="newWorkspace" required th:placeholder="#{roomOverview.workspacePlaceholder}">
             <input id="roomIDCreate" type="hidden" name="roomIDCreate" th:value="*{roomID}" required>
-            <input type="submit" value="Anlegen">
+            <input type="submit" th:value="#{roomOverview.create}">
         </form>
     </section>
 </main>
