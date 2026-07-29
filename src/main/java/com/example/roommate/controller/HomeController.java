@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Locale;
 
 
 @Controller()
@@ -26,9 +27,9 @@ public class HomeController {
     }
 
     @GetMapping()
-    public String index(Model model, OAuth2AuthenticationToken auth) {
+    public String index(Model model, OAuth2AuthenticationToken auth, Locale locale) {
         if (auth == null) {
-            List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels();
+            List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels(locale);
             model.addAttribute("homeModels", roomModels);
             model.addAttribute("guest", true);
             return "home";
@@ -40,7 +41,7 @@ public class HomeController {
         if(!userApplicationService.tryEnsureUserKey(login))
             return "redirect:/";
 
-        List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels();
+        List<RoomHomeModel> roomModels = bookingApplicationService.getRoomHomeModels(locale);
         model.addAttribute("homeModels", roomModels);
         return "home";
     }

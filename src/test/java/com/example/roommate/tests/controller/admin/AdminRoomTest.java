@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.xcepto.xceptoj.Xcepto;
 
 import java.util.List;
+import java.util.Locale;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +23,7 @@ public class AdminRoomTest extends ControllerHttpFixtureTest {
         String roomNumber = "A-12";
         int workspaceNumber = 4;
         String itemName = "Monitor";
-        when(bookingApplicationService.getRoomOverviewModel(ROOM_ID))
+        when(bookingApplicationService.getRoomOverviewModel(eq(ROOM_ID), any(Locale.class)))
                 .thenReturn(new RoomOverviewModel(
                         ROOM_ID,
                         roomNumber,
@@ -44,7 +47,7 @@ public class AdminRoomTest extends ControllerHttpFixtureTest {
     void adminCanCreateAWorkspaceInsideARoomInventory() throws Exception {
         String workspaceNumber = "17";
         String roomNumber = "A-12";
-        when(bookingApplicationService.getRoomOverviewModel(ROOM_ID))
+        when(bookingApplicationService.getRoomOverviewModel(eq(ROOM_ID), any(Locale.class)))
                 .thenReturn(new RoomOverviewModel(ROOM_ID, roomNumber, List.of()));
         var scenario = roommateIsRunning();
 
@@ -67,7 +70,7 @@ public class AdminRoomTest extends ControllerHttpFixtureTest {
     void adminCanRemoveAWorkspaceFromARoomInventory() throws Exception {
         String roomNumber = "A-12";
         int workspaceNumber = 4;
-        when(bookingApplicationService.getRoomOverviewModel(ROOM_ID))
+        when(bookingApplicationService.getRoomOverviewModel(eq(ROOM_ID), any(Locale.class)))
                 .thenReturn(new RoomOverviewModel(
                         ROOM_ID,
                         roomNumber,
