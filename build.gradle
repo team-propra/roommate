@@ -61,6 +61,7 @@ dependencies {
     implementation 'org.testcontainers:testcontainers:2.0.5'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.3'
+    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

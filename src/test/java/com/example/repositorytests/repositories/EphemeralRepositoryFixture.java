@@ -6,7 +6,9 @@ import com.example.roommate.interfaces.repositories.IUserRepository;
 import com.example.roommate.persistence.ephemeral.ItemRepository;
 import com.example.roommate.persistence.ephemeral.RoomRepository;
 import com.example.roommate.persistence.ephemeral.UserRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Repository fixture exposes shared repositories used by default fixture services")
 final class EphemeralRepositoryFixture implements RepositoryFixture {
     private final RoomRepository rooms = new RoomRepository();
     private final ItemRepository items = new ItemRepository();

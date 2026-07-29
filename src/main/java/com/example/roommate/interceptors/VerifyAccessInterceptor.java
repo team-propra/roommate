@@ -16,6 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Interceptor
@@ -48,8 +49,8 @@ public class VerifyAccessInterceptor implements HandlerInterceptor {
             }
         }
 
-        OAuth2User user = (OAuth2User) auth.getPrincipal();
-        String login = user.getAttribute("login");
+        OAuth2User user = Objects.requireNonNull((OAuth2User) auth.getPrincipal(), "OAuth2 principal is required");
+        String login = Objects.requireNonNull(user.getAttribute("login"), "OAuth2 user login attribute is required");
 
         IUser userFromDatabase = userApplicationService.getUserByLogin(login);
 

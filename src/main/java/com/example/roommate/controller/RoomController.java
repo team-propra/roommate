@@ -59,8 +59,8 @@ public class RoomController {
                                  OAuth2AuthenticationToken auth, HttpServletRequest request, HttpServletResponse response) {
         String userHandle = GUEST_HANDLE;
         if (auth != null) {
-            OAuth2User user = auth.getPrincipal();
-            userHandle = user.getAttribute("login");
+            OAuth2User user = Objects.requireNonNull(auth.getPrincipal(), "OAuth2 principal is required");
+            userHandle = requireLogin(user);
         }
 
         if (hasSubmittedSearchFilter(request)) {
@@ -231,8 +231,8 @@ public class RoomController {
             return new ModelAndView("redirect:/room/%s/workspace/%s".formatted(roomId,workspaceId));
         }
 
-        OAuth2User user = auth.getPrincipal();
-        String userHandle = user.getAttribute("login");
+        OAuth2User user = Objects.requireNonNull(auth.getPrincipal(), "OAuth2 principal is required");
+        String userHandle = requireLogin(user);
 
         try {
             bookingApplicationService.addBookEntry(form, checkedDays, userHandle);
@@ -244,5 +244,9 @@ public class RoomController {
             throw new RuntimeException(e);
         }
         return new ModelAndView("redirect:/");
+    }
+
+    private static String requireLogin(OAuth2User user) {
+        return Objects.requireNonNull(user.getAttribute("login"), "OAuth2 user login attribute is required");
     }
 }
