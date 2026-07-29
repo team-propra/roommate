@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.xcepto.xceptoj.Xcepto;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +60,7 @@ public class PostBookTest extends ControllerHttpFixtureTest {
         int workspaceNumber = 4;
         String selectedEquipment = "Monitor";
         String availableEquipment = "Dock";
-        when(bookingApplicationService.getWorkspaceDetailsModel(ROOM_ID, WORKSPACE_ID))
+        when(bookingApplicationService.getWorkspaceDetailsModel(eq(ROOM_ID), eq(WORKSPACE_ID), any(Locale.class)))
                 .thenReturn(workspaceDetails(roomNumber, workspaceNumber, selectedEquipment, availableEquipment));
         when(bookingApplicationService.isBookingSelectionValid(any(BookDataForm.class), anyList())).thenReturn(true);
         var scenario = roommateIsRunning();

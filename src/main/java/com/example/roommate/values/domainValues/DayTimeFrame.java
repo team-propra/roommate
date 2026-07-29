@@ -7,15 +7,20 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-@SuppressFBWarnings(value = {"EI", "EI2"}, justification = "DayTimeFrame represents a part of an html contract")
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "DayTimeFrame represents a part of an html contract")
 public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
     public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes){
+        return from(bookedTimeframes, Locale.GERMAN);
+    }
+
+    public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes, Locale locale){
         //Frames
         int times = 23;
         int days = 7;
         int stepSize = 60;
-        List<String> dayLabels = generateDayLabels();
+        List<String> dayLabels = generateDayLabels(locale);
         List<String> timeLabels = generateTimeLabels(times, stepSize);
         List<List<Boolean>> reserved = bookedTimeframesToWeek2dMatrix(IterableSupport.toList(bookedTimeframes), stepSize, times);
 
@@ -25,8 +30,11 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
 
         return new DayTimeFrame(days,times,stepSize,dayLabels,timeLabels,reserved);
     }
-    private static List<String> generateDayLabels() {
-        return List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+    private static List<String> generateDayLabels(Locale locale) {
+        if (isEnglish(locale)) {
+            return List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+        }
+        return List.of("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
     }
 
     private static List<String> generateTimeLabels(int times, int stepSize) {
@@ -72,6 +80,10 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
 
 
     public String convertToString(){
+        return convertToString(Locale.GERMAN);
+    }
+
+    public String convertToString(Locale locale){
 
         Iterable<List<Boolean>> allBookingDays = reserved();
 
@@ -85,13 +97,13 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
                 continue;
             }
             outpout = new StringBuilder(switch (j) {
-                case 0 -> outpout + "Montag[";
-                case 1 -> outpout + "Dienstag[";
-                case 2 -> outpout + "Mittwoch[";
-                case 3 -> outpout + "Donnerstag[";
-                case 4 -> outpout + "Freitag[";
-                case 5 -> outpout + "Samstag[";
-                case 6 -> outpout + "Sonntag[";
+                case 0 -> outpout + dayLabel(locale, 0) + "[";
+                case 1 -> outpout + dayLabel(locale, 1) + "[";
+                case 2 -> outpout + dayLabel(locale, 2) + "[";
+                case 3 -> outpout + dayLabel(locale, 3) + "[";
+                case 4 -> outpout + dayLabel(locale, 4) + "[";
+                case 5 -> outpout + dayLabel(locale, 5) + "[";
+                case 6 -> outpout + dayLabel(locale, 6) + "[";
                 default -> outpout.toString();
             });
 
@@ -135,5 +147,13 @@ public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLa
             outpout.append("] \n");
         }
         return outpout.toString();
+    }
+
+    private static String dayLabel(Locale locale, int dayIndex) {
+        return generateDayLabels(locale).get(dayIndex);
+    }
+
+    private static boolean isEnglish(Locale locale) {
+        return Locale.ENGLISH.getLanguage().equals(locale.getLanguage());
     }
 }

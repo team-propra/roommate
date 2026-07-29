@@ -38,6 +38,7 @@ public class ControllerRouteSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers(HttpMethod.GET, "/", "/rooms", "/room/*/workspace/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/access").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())

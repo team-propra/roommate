@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -80,8 +81,8 @@ public class AdminController {
 
     @AdminOnly
     @GetMapping("/room/{roomID}")
-    public String roomOverview(Model model, @PathVariable UUID roomID) throws NotFoundException {
-        RoomOverviewModel room = bookingApplicationService.getRoomOverviewModel(roomID);
+    public String roomOverview(Model model, @PathVariable UUID roomID, Locale locale) throws NotFoundException {
+        RoomOverviewModel room = bookingApplicationService.getRoomOverviewModel(roomID, locale);
         model.addAttribute("room", room);
         return "roomOverview";
     }

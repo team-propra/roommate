@@ -16,9 +16,9 @@ import java.lang.annotation.RetentionPolicy;
         properties = {
                 "spring.main.allow-bean-definition-overriding=true",
                 "spring.autoconfigure.exclude="
-                        + "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,"
-                        + "org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration,"
-                        + "org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration",
+                        + "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration,"
+                        + "org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration,"
+                        + "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration",
                 "roommate.key-master-external=true",
                 "spring.datasource.external=true"
         })

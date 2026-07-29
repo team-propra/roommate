@@ -13,10 +13,12 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -47,11 +49,10 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User originalUser = defaultService.loadUser(userRequest);
+        OAuth2User originalUser = Objects.requireNonNull(defaultService.loadUser(userRequest), "OAuth2 user is required");
         Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
 
-        String login = originalUser.getAttribute("login");
-        assert login != null;
+        String login = requireLogin(originalUser);
         if(login.equals(adminHandle)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             userDomainService.addAdmin(login);
@@ -63,6 +64,15 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
             userByLogin.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
         }
         return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
+    }
+
+    private static String requireLogin(OAuth2User user) {
+        String login = user.getAttribute("login");
+        if (login == null) {
+            OAuth2Error error = new OAuth2Error("missing_login_attribute");
+            throw new OAuth2AuthenticationException(error, "OAuth2 user is missing required login attribute");
+        }
+        return login;
     }
 
 

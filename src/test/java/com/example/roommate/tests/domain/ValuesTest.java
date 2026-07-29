@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -47,6 +48,24 @@ public class ValuesTest {
 
         assertThat(bookedTimes).contains("Montag[00:00 - 03:00]");
         assertThat(bookedTimes).contains("Donnerstag[01:00 - 03:00]");
+
+    }
+
+    @DisplayName("DaytimeFrame can render booking labels in English")
+    @Test
+    void test_5() throws ArgumentValidationException {
+        Iterable<String> checkedDays = List.of("0-0-X", "1-0-X", "2-0-X","1-3-X", "2-3-X");
+        BookingDays bookingDays = BookingDays.from(60,checkedDays);
+
+        Iterable<BookedTimeframe> bookedTimeframes = bookingDays.toBookedTimeframes("SomeUser");
+
+        DayTimeFrame dayTimeFrame =  DayTimeFrame.from(bookedTimeframes, Locale.ENGLISH);
+
+        String bookedTimes = dayTimeFrame.convertToString(Locale.ENGLISH);
+
+        assertThat(dayTimeFrame.dayLabels()).containsExactly("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+        assertThat(bookedTimes).contains("Monday[00:00 - 03:00]");
+        assertThat(bookedTimes).contains("Thursday[01:00 - 03:00]");
 
     }
 }

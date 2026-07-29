@@ -17,12 +17,12 @@ spring:
 
   datasource:
     external: ${SPRING_DATASOURCE_EXTERNAL:${SPRING_DATASOURCE_EXTERAL:false}}
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DATABASE_URL:localhost}:5432/postgres}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DATABASE_URL:localhost}:${POSTGRES_PORT:5432}/postgres}
     username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:postgres}}
     password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:postgres}}
     driver-class-name: org.postgresql.Driver
 roommate:
   key-master-external: ${ROOMMATE_KEY_MASTER_EXTERNAL:false}
   key-master-url: ${ROOMMATE_KEY_MASTER_URL:${KEYMASTER_URL:localhost}}
-  key-master-port: ${ROOMMATE_KEY_MASTER_PORT:3000}
+  key-master-port: ${KEYMASTER_PORT:${ROOMMATE_KEY_MASTER_PORT:3000}}
   admin-handle: ${ADMIN_HANDLE:}

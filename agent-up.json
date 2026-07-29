@@ -1,0 +1,62 @@
+{
+  "name": "Roommate",
+  "applications": [
+    {
+      "name": "Roommate",
+      "command": "gradle --no-daemon bootRun",
+      "path": ".",
+      "environmentFiles": [
+        ".env"
+      ],
+      "environment": {
+        "LD_LIBRARY_PATH": "",
+        "DATABASE_URL": "localhost",
+        "SPRING_DATASOURCE_EXTERNAL": "true",
+        "ROOMMATE_KEY_MASTER_EXTERNAL": "true",
+        "ROOMMATE_KEY_MASTER_URL": "localhost"
+      },
+      "ports": [
+        {
+          "variable": "SERVER_PORT",
+          "defaultPort": 8080,
+          "protocol": "http"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "Keymaster",
+      "image": "team-propra/keymaster:v1",
+      "environment": {
+        "ROOMMATE_URL": "http://host.agent-up:${SERVER_PORT}",
+        "ROOMMATE_ENDPOINT": "/api/access"
+      },
+      "ports": [
+        {
+          "variable": "KEYMASTER_PORT",
+          "defaultPort": 3000,
+          "protocol": "http"
+        }
+      ]
+    },
+    {
+      "name": "Database",
+      "image": "postgres:15",
+      "ports": [
+        {
+          "variable": "POSTGRES_PORT",
+          "defaultPort": 5432,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": {
+        "POSTGRES_USER": "user",
+        "POSTGRES_PASSWORD": "1234"
+      },
+      "volumes": [
+        "roommate-pgdata:/var/lib/postgresql/data"
+      ]
+    }
+  ]
+}

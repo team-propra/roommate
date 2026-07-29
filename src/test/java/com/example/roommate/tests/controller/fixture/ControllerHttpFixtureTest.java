@@ -9,9 +9,10 @@ import com.example.roommate.domain.models.entities.User;
 import com.example.roommate.values.models.BookingFrameModel;
 import com.example.roommate.values.models.WorkspaceDetailsModel;
 import com.example.roommate.xcepto.controller.RunningRoommateScenario;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.xcepto.xceptoj.TimeoutConfig;
 import org.xcepto.xceptoj.exceptions.XceptoTestFailedException;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 @TestClass
+@ActiveProfiles("test")
 public abstract class ControllerHttpFixtureTest {
     protected static final TimeoutConfig TIMEOUT = new TimeoutConfig(Duration.ofSeconds(15), Duration.ofSeconds(5));
     protected static final Duration STEP = Duration.ofMillis(100);
@@ -34,16 +36,16 @@ public abstract class ControllerHttpFixtureTest {
     @LocalServerPort
     protected int port;
 
-    @MockBean
+    @MockitoBean
     protected BookingApplicationService bookingApplicationService;
 
-    @MockBean
+    @MockitoBean
     protected AuthenticationApplicationService authenticationApplicationService;
 
-    @MockBean
+    @MockitoBean
     protected AdminApplicationService adminApplicationService;
 
-    @MockBean
+    @MockitoBean
     protected KeyMasterApplicationService keyMasterApplicationService;
 
     @BeforeEach
