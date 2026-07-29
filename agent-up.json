@@ -3,8 +3,18 @@
   "applications": [
     {
       "name": "Roommate",
-      "command": "set -a && source .env && set +a && DATABASE_URL=localhost SPRING_DATASOURCE_EXTERNAL=true ROOMMATE_KEY_MASTER_EXTERNAL=true ./gradlew bootRun",
-      "path": "/",
+      "command": "gradle --no-daemon bootRun",
+      "path": ".",
+      "environmentFiles": [
+        ".env"
+      ],
+      "environment": {
+        "LD_LIBRARY_PATH": "",
+        "DATABASE_URL": "localhost",
+        "SPRING_DATASOURCE_EXTERNAL": "true",
+        "ROOMMATE_KEY_MASTER_EXTERNAL": "true",
+        "ROOMMATE_KEY_MASTER_URL": "localhost"
+      },
       "ports": [
         {
           "variable": "SERVER_PORT",
@@ -12,11 +22,16 @@
           "protocol": "http"
         }
       ]
-    },
+    }
+  ],
+  "services": [
     {
       "name": "Keymaster",
-      "command": "SERVER_PORT=${KEYMASTER_PORT} ROOMMATE_URL=http://localhost:${SERVER_PORT} ROOMMATE_ENDPOINT=/api/access java -jar keymaster.jar",
-      "path": "/",
+      "image": "team-propra/keymaster:v1",
+      "environment": {
+        "ROOMMATE_URL": "http://host.agent-up:${SERVER_PORT}",
+        "ROOMMATE_ENDPOINT": "/api/access"
+      },
       "ports": [
         {
           "variable": "KEYMASTER_PORT",
@@ -24,9 +39,7 @@
           "protocol": "http"
         }
       ]
-    }
-  ],
-  "services": [
+    },
     {
       "name": "Database",
       "image": "postgres:15",
