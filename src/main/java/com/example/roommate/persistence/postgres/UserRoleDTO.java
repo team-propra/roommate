@@ -1,4 +1,6 @@
 package com.example.roommate.persistence.postgres;
 
-public record UserRoleDTO(String userHandle, String role) {
+import org.springframework.data.relational.core.mapping.Column;
+
+public record UserRoleDTO(@Column("user_handle") String userHandle, String role) {
 }

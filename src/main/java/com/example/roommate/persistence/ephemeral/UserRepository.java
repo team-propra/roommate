@@ -26,13 +26,22 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void addUser(IUser user) {
+        if (getUserByLogin(user.getHandle()) != null) {
+            user.getRoles().forEach(role -> addRole(user.getHandle(), role));
+            return;
+        }
         users.add(user);
     }
 
     @Override
     public void registerKey(UUID keyId, String login) {
-        IUser user = new UserEntry(keyId, login, "USER");
-        users.add(user);
+        for (int i = 0; i < users.size(); i++) {
+            IUser user = users.get(i);
+            if (user.getHandle().equals(login)) {
+                users.set(i, new UserEntry(keyId, login, user.getRoles(), user.getKeyMasterName()));
+                return;
+            }
+        }
     }
 
     @Override

@@ -34,6 +34,6 @@ public interface IUserDAO extends CrudRepository<UserDTO, String> {
     @Query("SELECT role FROM user_role WHERE user_handle = :handle")
     List<String> findRolesByHandle(@Param("handle") String handle);
 
-    @Query("SELECT user_handle AS userHandle, role FROM user_role")
+    @Query("SELECT user_handle, role FROM user_role")
     List<UserRoleDTO> findAllRoles();
 }

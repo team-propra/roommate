@@ -34,7 +34,32 @@ public class AdminEditUserTest extends ControllerHttpFixtureTest {
                     .withCustomName("Admin opens the user edit page")
                     .assertSuccess()
                     .assertThatResponseContentString(html -> html.contains("Berechtigungen verwalten"));
+
+            browser.get("/admin/editUser/" + userName + "/")
+                    .withCustomName("Admin opens the user edit page with trailing slash")
+                    .assertSuccess()
+                    .assertThatResponseContentString(html -> html.contains("Berechtigungen verwalten"));
         });
+    }
+
+    @Test
+    void adminCanGrantAnotherUserAdminRole() throws Exception {
+        String userName = "other-user";
+        RunningRoommateScenario scenario = roommateIsRunning();
+
+        Xcepto.given(scenario, builder -> {
+            SsrXceptoAdapter browser = new SsrAdapterBuilder(builder)
+                    .withHttpClient(RoommateHttpClients.browserFor("admin", "admin"))
+                    .withBaseUrl(scenario.baseUri())
+                    .build();
+
+            browser.post("/admin/grantAdmin/" + userName)
+                    .withCustomName("Admin grants another user the admin role")
+                    .assertThatResponseStatus(302)
+                    .assertThatResponse(response -> assertRedirectsTo(response, "/admin/users"));
+        });
+
+        verify(adminApplicationService).grantAdmin(userName);
     }
 
     @Test
