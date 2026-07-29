@@ -18,5 +18,7 @@ public interface IUserRepository {
 
     void addRole(String login, String role);
 
+    void removeRole(String login, String role);
+
     List<? extends IUser> getAllUser();
 }

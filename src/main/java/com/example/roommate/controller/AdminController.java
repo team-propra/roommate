@@ -7,6 +7,7 @@ import com.example.roommate.exceptions.applicationService.NotFoundException;
 import com.example.roommate.exceptions.persistence.NotFoundRepositoryException;
 import com.example.roommate.values.models.AdminEditModel;
 import com.example.roommate.values.models.RoomOverviewModel;
+import com.example.roommate.values.models.UserModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,17 +57,25 @@ public class AdminController {
     }
 
     @AdminOnly
-    @GetMapping({"/admin/editUser" ,"/admin/editUser/"})
-    public String adminEditUserPage(Model model){
-
+    @GetMapping({"/admin/editUser/{handle}" ,"/admin/editUser/{handle}"})
+    public String adminEditUserPage(Model model, @PathVariable String handle){
+        UserModel userByHandle = adminApplicationService.getUserByHandle(handle);
+        model.addAttribute("user", userByHandle);
         return "adminEditUser";
     }
 
     @AdminOnly
-    @PostMapping("/admin/editUser")
-    public String adminEditUser(Model model){
+    @PostMapping("/admin/grantAdmin/{handle}")
+    public ModelAndView grantAdmin(@PathVariable String handle) {
+        adminApplicationService.grantAdmin(handle);
+        return new ModelAndView("redirect:/admin/editUser/" + handle);
+    }
 
-        return "adminEditUser";
+    @AdminOnly
+    @PostMapping("/admin/revokeAdmin/{handle}")
+    public ModelAndView revokeAdmin(@PathVariable String handle) {
+        adminApplicationService.revokeAdmin(handle);
+        return new ModelAndView("redirect:/admin/editUser/" + handle);
     }
 
     @AdminOnly

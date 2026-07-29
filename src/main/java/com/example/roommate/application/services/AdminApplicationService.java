@@ -34,7 +34,19 @@ public class AdminApplicationService {
     }
     public UsersModel getUsers(){
         List<? extends IUser> allUser = userDomainService.getAllUser();
-        List<UserModel> list = allUser.stream().map(x -> new UserModel(x.getHandle(), String.join(", ", x.getRoles()))).toList();
+        List<UserModel> list = allUser.stream().map(x -> new UserModel(x.getHandle(), x.getRoles())).toList();
         return new UsersModel(list);
+    }
+    public void grantAdmin(String handle) {
+        userDomainService.addRole(handle, "ADMIN");
+    }
+
+    public void revokeAdmin(String handle) {
+        userDomainService.removeRole(handle, "ADMIN");
+    }
+
+    public UserModel getUserByHandle(String handle){
+        IUser userByHandle = userDomainService.getUserByHandle(handle);
+        return new UserModel(userByHandle.getHandle(),userByHandle.getRoles());
     }
 }

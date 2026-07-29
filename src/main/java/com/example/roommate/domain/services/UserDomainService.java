@@ -20,7 +20,7 @@ public class UserDomainService {
         this.userRepository = userRepository;
     }
 
-    public IUser getUserByLogin(String login) {
+    public IUser getUserByHandle(String login) {
         //return new User(null, "Timm", "USER");
        return userRepository.getUserByLogin(login);
     }
@@ -35,6 +35,14 @@ public class UserDomainService {
 
     public void verifyUser(UUID key, String owner) {
         userRepository.verifyUser(key, owner);
+    }
+
+    public void addRole(String login, String role) {
+        userRepository.addRole(login, role);
+    }
+
+    public void removeRole(String login, String role) {
+        userRepository.removeRole(login, role);
     }
 
     public List<? extends IUser> getAllUser() {

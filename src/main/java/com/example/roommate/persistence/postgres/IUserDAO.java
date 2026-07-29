@@ -27,6 +27,10 @@ public interface IUserDAO extends CrudRepository<UserDTO, String> {
     @Modifying
     void addRole(@Param("handle") String handle, @Param("role") String role);
 
+    @Query("DELETE FROM user_role WHERE user_handle = :handle AND role = :role")
+    @Modifying
+    void removeRole(@Param("handle") String handle, @Param("role") String role);
+
     @Query("SELECT role FROM user_role WHERE user_handle = :handle")
     List<String> findRolesByHandle(@Param("handle") String handle);
 }

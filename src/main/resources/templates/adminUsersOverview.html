@@ -38,11 +38,11 @@
                     <td th:text="${user.userName}">
                         Example: F3lix.Lo3h
                     </td>
-                    <td th:text="${user.role}">
+                    <td th:text="${user.joinedRoles}">
                         Example: Role: Admin
                     </td>
                     <td>
-                        <a th:href="@{/admin/editUser}">
+                        <a th:href="@{/admin/editUser/{handle}(handle=${user.userName})}">
                             Edit User
                         </a>
                     </td>

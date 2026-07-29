@@ -53,6 +53,11 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public void removeRole(String login, String role) {
+        userDAO.removeRole(login, role);
+    }
+
+    @Override
     public List<? extends IUser> getAllUser() {
         return IterableSupport.toList(userDAO.findAll()).stream().map(this::toUser).toList();
     }

@@ -60,7 +60,7 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     
     public IUser getUserByLogin(String login) {
-        return userDomainService.getUserByLogin(login);
+        return userDomainService.getUserByHandle(login);
     }
 
     private void registerKey(UUID keyId, String login) {
@@ -69,11 +69,11 @@ public class AuthenticationApplicationService implements OAuth2UserService<OAuth
 
     public boolean tryEnsureUserKey(String login) {
         
-        if(userDomainService.getUserByLogin(login) == null) {
+        if(userDomainService.getUserByHandle(login) == null) {
             userDomainService.addUser(login);
             return false;
         }
-        IUser user = userDomainService.getUserByLogin(login);
+        IUser user = userDomainService.getUserByHandle(login);
 
         UUID key = user.getKeyId();
         if (key == null || key.equals(new UUID(0L, 0L))) {

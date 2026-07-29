@@ -66,6 +66,19 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public void removeRole(String login, String role) {
+        for (int i = 0; i < users.size(); i++) {
+            IUser user = users.get(i);
+            if (user.getHandle().equals(login)) {
+                Set<String> roles = new HashSet<>(user.getRoles());
+                roles.remove(role);
+                users.set(i, new UserEntry(user.getKeyId(), user.getHandle(), roles, user.getKeyMasterName()));
+                return;
+            }
+        }
+    }
+
+    @Override
     public List<? extends IUser> getAllUser() {
         return users.stream()
                 .map(user -> new UserEntry(user.getKeyId(), user.getHandle(), user.getRoles(), user.getKeyMasterName()))
