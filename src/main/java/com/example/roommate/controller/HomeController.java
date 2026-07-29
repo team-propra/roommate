@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 
 @Controller()
@@ -36,7 +37,7 @@ public class HomeController {
         }
 
         OAuth2User user = auth.getPrincipal();
-        String login = user.getAttribute("login");
+        String login = Objects.requireNonNull(user.getAttribute("login"), "OAuth2 user login attribute is required");
 
         if(!userApplicationService.tryEnsureUserKey(login))
             return "redirect:/";

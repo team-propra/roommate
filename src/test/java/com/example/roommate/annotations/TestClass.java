@@ -5,6 +5,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.lang.annotation.*;
 
 @Documented
+@Inherited
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @ActiveProfiles("test") //ensure test classes use ephemeral repositories

@@ -6,7 +6,7 @@ import com.example.roommate.interfaces.repositories.IUserRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 final class PostgresRepositoryFixture implements RepositoryFixture {
-    private final PostgreSQLContainer<?> postgres;
+    private final PostgreSQLContainer postgres;
     private final String databaseName;
     private final ConfigurableApplicationContext context;
 

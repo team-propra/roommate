@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressFBWarnings(value = {"EI", "EI2"}, justification = "DayTimeFrame represents a part of an html contract")
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "DayTimeFrame represents a part of an html contract")
 public record DayTimeFrame(int days, int times, int stepSize, List<String> dayLabels, List<String> timeLabels, List<List<Boolean>> reserved) {
     public static DayTimeFrame from(Iterable<BookedTimeframe> bookedTimeframes){
         return from(bookedTimeframes, Locale.GERMAN);
