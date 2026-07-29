@@ -1,14 +1,14 @@
 package com.example.repositorytests.repositories;
 
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.images.builder.ImageFromDockerfile;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.nio.file.Path;
 
 final class SharedRepositoryTestContainers {
-    private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
+    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer(DockerImageName.parse("postgres:15"))
             .withDatabaseName("postgres")
             .withUsername("test")
             .withPassword("test");
@@ -27,7 +27,7 @@ final class SharedRepositoryTestContainers {
     private SharedRepositoryTestContainers() {
     }
 
-    static synchronized PostgreSQLContainer<?> postgres() {
+    static synchronized PostgreSQLContainer postgres() {
         start();
         return POSTGRES;
     }
