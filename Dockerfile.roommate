@@ -1,7 +1,7 @@
 # Build stage
-FROM gradle:9.6-jdk21 AS BUILD
+FROM gradle:9.6-jdk21 AS build
 WORKDIR /usr/app/
-COPY . . 
+COPY . .
 RUN gradle bootJar
 
 # Build Runtime Image stage
@@ -9,6 +9,6 @@ FROM eclipse-temurin:25-jdk
 ENV JAR_NAME="RoomMate-prod.jar"
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
-COPY --from=BUILD $APP_HOME .
+COPY --from=build $APP_HOME .
 EXPOSE 8080
-ENTRYPOINT exec java -jar $APP_HOME/build/libs/$JAR_NAME  
+ENTRYPOINT ["sh", "-c", "exec java -jar $APP_HOME/build/libs/$JAR_NAME"]
