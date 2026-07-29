@@ -95,6 +95,8 @@ public class RoomController {
         Cookie cookie = new Cookie(SEARCH_FILTER_COOKIE, cookieValue);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setAttribute("SameSite", "Lax");
         cookie.setMaxAge(SEARCH_FILTER_COOKIE_MAX_AGE_SECONDS);
         response.addCookie(cookie);
     }
@@ -107,8 +109,16 @@ public class RoomController {
         return Arrays.stream(request.getCookies())
                 .filter(cookie -> SEARCH_FILTER_COOKIE.equals(cookie.getName()))
                 .findFirst()
-                .map(RoomController::decodeSearchFilter)
+                .map(RoomController::tryDecodeSearchFilter)
                 .orElse(null);
+    }
+
+    private static SavedSearchFilter tryDecodeSearchFilter(Cookie cookie) {
+        try {
+            return decodeSearchFilter(cookie);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     private static String encodeSearchFilter(List<String> gegenstaende, SearchTimeForm timeForm) {

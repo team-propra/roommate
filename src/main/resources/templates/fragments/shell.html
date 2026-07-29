@@ -13,8 +13,8 @@
         <a sec:authorize="hasRole('ADMIN')" href="/edit" th:text="#{nav.admin}">Admin</a>
         <a sec:authorize="hasRole('ADMIN')" href="/rooms/add" th:text="#{nav.addRoom}">Raum hinzufügen</a>
         <a sec:authorize="isAnonymous()" href="/oauth2/authorization/github" th:text="#{nav.login}">GitHub Login</a>
-        <a th:href="@{${currentPath}(lang='de')}" th:aria-label="#{nav.languageGerman}">DE</a>
-        <a th:href="@{${currentPath}(lang='en')}" th:aria-label="#{nav.languageEnglish}">EN</a>
+        <a th:href="${languageUrlDe}" th:aria-label="#{nav.languageGerman}">DE</a>
+        <a th:href="${languageUrlEn}" th:aria-label="#{nav.languageEnglish}">EN</a>
     </div>
 </nav>
 </body>
