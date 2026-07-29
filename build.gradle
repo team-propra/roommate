@@ -73,7 +73,7 @@ dependencies {
     testImplementation 'org.xcepto:xceptoj-http:3.0.0'
     testImplementation 'org.xcepto:xceptoj-ssr:3.0.0'
 
-    runtimeOnly 'org.postgresql:postgresql:42.7.1'
+    runtimeOnly 'org.postgresql:postgresql:42.7.12'
 }
 
 tasks.named('test') {
