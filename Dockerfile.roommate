@@ -1,5 +1,5 @@
 # Build stage
-FROM gradle:9.6-jdk21 AS build
+FROM gradle:9.7-jdk21 AS build
 WORKDIR /usr/app/
 COPY . .
 RUN gradle bootJar
