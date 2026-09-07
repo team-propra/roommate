@@ -1,10 +1,10 @@
 plugins {
     id 'application'
-    id 'org.springframework.boot' version '4.1.0'
+    id 'org.springframework.boot' version '4.1.1'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
-    id "org.flywaydb.flyway" version "13.2.0"
-    id "com.github.spotbugs" version "6.5.10"
+    id "org.flywaydb.flyway" version "13.5.0"
+    id "com.github.spotbugs" version "6.5.11"
 }
 
 group = 'com.example'
@@ -57,11 +57,11 @@ dependencies {
     //  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-flyway'
-    implementation 'org.jsoup:jsoup:1.23.1'
+    implementation 'org.jsoup:jsoup:1.23.2'
     implementation 'org.testcontainers:testcontainers:2.0.5'
 
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.3'
-    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.3'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.4'
+    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.10.4'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
